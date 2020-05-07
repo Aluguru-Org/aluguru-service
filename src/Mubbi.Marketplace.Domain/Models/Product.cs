@@ -12,7 +12,7 @@ namespace Mubbi.Marketplace.Domain.Models
     [Table("Product")]
     public class Product : Entity
     {
-        public Product(Guid categoryId, string name, string description, string image, decimal price, bool isActive, int stockQuantity, Dimensions dimensions)
+        public Product(Guid categoryId, string name, string description, string image, decimal price, bool isActive, int stockQuantity, TimeSpan minLocationTime, TimeSpan maxLocationTime, Dimensions dimensions)
         {
             CategoryId = categoryId;
             Name = name;
@@ -22,6 +22,8 @@ namespace Mubbi.Marketplace.Domain.Models
             IsActive = isActive;
             StockQuantity = stockQuantity;
             Dimensions = dimensions;
+            MinLocationTime = minLocationTime;
+            MaxLocationTime = maxLocationTime;
 
             CreationDate = DateTime.UtcNow;
 
@@ -35,9 +37,13 @@ namespace Mubbi.Marketplace.Domain.Models
         public decimal Price { get; private set; }
         public bool IsActive { get; private set; }
         public int StockQuantity { get; private set; }
-        public DateTime CreationDate { get; private set; }
+        public TimeSpan MinLocationTime { get; private set; }
+        public TimeSpan MaxLocationTime { get; private set; }
         public Dimensions Dimensions { get; private set; }
-        public Category Category { get; private set; }
+        public DateTime CreationDate { get; private set; }
+
+        //EF Relational
+        public virtual Category Category { get; set; }
 
         public void Active() => IsActive = true;
         public void Deactivate() => IsActive = false;
@@ -85,6 +91,8 @@ namespace Mubbi.Marketplace.Domain.Models
             EntityConcerns.IsEqual(CategoryId, Guid.Empty, "The field CategoryId from Product cannot be empty");
             EntityConcerns.SmallerOrEqualThan(0, Price, "The field Price from Product cannot be smaller or equal than zero");
             EntityConcerns.SmallerThan(0, StockQuantity, "The field StockQuantity from Product cannot be smaller than zero");
+            EntityConcerns.GreaterThan(MaxLocationTime, MinLocationTime, "The field MinLocationTime from Product cannot be greater than MaxLocationTime");
+            EntityConcerns.IsNull(Dimensions, "The field Dimensions from Product cannot be null");
         }
     }
 }

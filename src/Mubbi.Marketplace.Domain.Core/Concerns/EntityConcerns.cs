@@ -1,4 +1,5 @@
-﻿using Mubbi.Marketplace.Domain.Core.Exceptions;
+﻿using Microsoft.Win32.SafeHandles;
+using Mubbi.Marketplace.Domain.Core.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -42,6 +43,10 @@ namespace Mubbi.Marketplace.Domain.Core.Concerns
             if (!a.Equals(b)) throw new DomainException(message);
         }
 
+        public static void SmallerThan(TimeSpan minimum, TimeSpan value, string message)
+        {
+            if (value < minimum) throw new DomainException(message);
+        }
         public static void SmallerThan(decimal minimum, decimal value, string message)
         {
             if (value < minimum) throw new DomainException(message);
@@ -60,6 +65,11 @@ namespace Mubbi.Marketplace.Domain.Core.Concerns
         public static void SmallerThan(int minimum, int value, string message)
         {
             if (value < minimum) throw new DomainException(message);
+        }
+
+        public static void SmallerOrEqualThan(TimeSpan minimum, TimeSpan value, string message)
+        {
+            if (value <= minimum) throw new DomainException(message);
         }
 
         public static void SmallerOrEqualThan(decimal minimum, decimal value, string message)
@@ -82,6 +92,11 @@ namespace Mubbi.Marketplace.Domain.Core.Concerns
             if (value <= minimum) throw new DomainException(message);
         }
 
+        public static void GreaterThan(TimeSpan maximum, TimeSpan value, string message)
+        {
+            if (value > maximum) throw new DomainException(message);
+        }
+
         public static void GreaterThan(decimal maximum, decimal value, string message)
         {
             if (value > maximum) throw new DomainException(message);
@@ -100,6 +115,11 @@ namespace Mubbi.Marketplace.Domain.Core.Concerns
         public static void GreaterThan(int maximum, int value, string message)
         {
             if (value > maximum) throw new DomainException(message);
+        }
+
+        public static void GreaterOrEqualThan(TimeSpan maximum, TimeSpan value, string message)
+        {
+            if (value >= maximum) throw new DomainException(message);
         }
 
         public static void GreaterOrEqualThan(decimal maximum, decimal value, string message)

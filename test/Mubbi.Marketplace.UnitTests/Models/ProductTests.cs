@@ -13,43 +13,55 @@ namespace Mubbi.Marketplace.UnitTests.Models
         [Fact]
         public void CreateProduct_WhenEmptyCategoryId_ShouldThrowException()
         {
-            Assert.Throws<DomainException>(() => new Product(Guid.Empty, "name", "description", "image.png", 50000, true, 1, new Dimensions(10, 10, 10)));
+            Assert.Throws<DomainException>(() => new Product(Guid.Empty, "name", "description", "image.png", 50000, true, 1, new TimeSpan(2, 0, 0), new TimeSpan(30, 0, 0, 0), new Dimensions(10, 10, 10)));
         }
 
         [Fact]
         public void CreateProduct_WhenEmptyName_ShouldThrowException()
         {
-            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), "", "description", "image.png", 50000, true, 1, new Dimensions(10, 10, 10)));
+            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), "", "description", "image.png", 50000, true, 1, new TimeSpan(2, 0, 0), new TimeSpan(30, 0, 0, 0), new Dimensions(10, 10, 10)));
         }
 
         [Fact]
         public void CreateProduct_WhenEmptyDescription_ShouldThrowException()
         {
-            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), "name", "", "image.png", 50000, true, 1, new Dimensions(10, 10, 10)));
+            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), "name", "", "image.png", 50000, true, 1, new TimeSpan(2, 0, 0), new TimeSpan(30, 0, 0, 0), new Dimensions(10, 10, 10)));
         }
 
         [Fact]
         public void CreateProduct_WhenEmptyImage_ShouldThrowException()
         {
-            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), "name", "description", "", 50000, true, 1, new Dimensions(10, 10, 10)));
+            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), "name", "description", "", 50000, true, 1, new TimeSpan(2, 0, 0), new TimeSpan(30, 0, 0, 0), new Dimensions(10, 10, 10)));
         }
 
         [Fact]
         public void CreateProduct_WhenPriceIsZero_ShouldThrowException()
         {
-            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), "name", "description", "image.png", 0, true, 1, new Dimensions(10, 10, 10)));
+            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), "name", "description", "image.png", 0, true, 1, new TimeSpan(2, 0, 0), new TimeSpan(30, 0, 0, 0), new Dimensions(10, 10, 10)));
         }
 
         [Fact]
         public void CreateProduct_WhenStockQuantityIsNegative_ShouldThrowException()
         {
-            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), "name", "description", "image.png", 50000, true, -1, new Dimensions(10, 10, 10)));
+            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), "name", "description", "image.png", 50000, true, -1, new TimeSpan(2, 0, 0), new TimeSpan(30, 0, 0, 0), new Dimensions(10, 10, 10)));
+        }
+
+        [Fact]
+        public void CreateProduct_WhenMinLocationTimeIsGreaterThanMaxLocationTime_ShouldThrowException()
+        {
+            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), "name", "description", "image.png", 50000, true, -1, new TimeSpan(30, 0, 0), TimeSpan.Zero, new Dimensions(10, 10, 10)));
+        }
+
+        [Fact]
+        public void CreateProduct_WhenDimensionsIsNull_ShouldThrowException()
+        {
+            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), "name", "description", "image.png", 50000, true, -1, new TimeSpan(2, 0, 0), new TimeSpan(30, 0, 0, 0), null));
         }
 
         [Fact]
         public void Activate_ShouldActivateProduct()
         {
-            var product = new Product(Guid.NewGuid(), "name", "description", "image.png", 50000, true, 1, new Dimensions(10, 10, 10));
+            var product = new Product(Guid.NewGuid(), "name", "description", "image.png", 50000, true, 1, new TimeSpan(2, 0, 0), new TimeSpan(30, 0, 0, 0), new Dimensions(10, 10, 10));
 
             product.Active();
 
@@ -59,7 +71,7 @@ namespace Mubbi.Marketplace.UnitTests.Models
         [Fact]
         public void Deactivate_ShouldDeactivateProduct()
         {
-            var product = new Product(Guid.NewGuid(), "name", "description", "image.png", 50000, true, 1, new Dimensions(10, 10, 10));
+            var product = new Product(Guid.NewGuid(), "name", "description", "image.png", 50000, true, 1, new TimeSpan(2, 0, 0), new TimeSpan(30, 0, 0, 0), new Dimensions(10, 10, 10));
 
             product.Deactivate();
 
@@ -69,7 +81,7 @@ namespace Mubbi.Marketplace.UnitTests.Models
         [Fact]
         public void UpdateCategory_SholdChangeCategory()
         {
-            var product = new Product(Guid.NewGuid(), "name", "description", "image.png", 50000, true, 1, new Dimensions(10, 10, 10));
+            var product = new Product(Guid.NewGuid(), "name", "description", "image.png", 50000, true, 1, new TimeSpan(2, 0, 0), new TimeSpan(30, 0, 0, 0), new Dimensions(10, 10, 10));
             
             var category = new Category("test", 1000);
             product.UpdateCategory(category);
@@ -80,7 +92,7 @@ namespace Mubbi.Marketplace.UnitTests.Models
         [Fact]
         public void UpdateCategory_WhenCategoryIsNull_SholdThrowException()
         {
-            var product = new Product(Guid.NewGuid(), "name", "description", "image.png", 50000, true, 1, new Dimensions(10, 10, 10));
+            var product = new Product(Guid.NewGuid(), "name", "description", "image.png", 50000, true, 1, new TimeSpan(2, 0, 0), new TimeSpan(30, 0, 0, 0), new Dimensions(10, 10, 10));
             
             Assert.Throws<DomainException>(() => product.UpdateCategory(null));
         }
@@ -88,7 +100,7 @@ namespace Mubbi.Marketplace.UnitTests.Models
         [Fact]
         public void UpdateDescription_SholdChangeDescription()
         {
-            var product = new Product(Guid.NewGuid(), "name", "description", "image.png", 50000, true, 1, new Dimensions(10, 10, 10));
+            var product = new Product(Guid.NewGuid(), "name", "description", "image.png", 50000, true, 1, new TimeSpan(2, 0, 0), new TimeSpan(30, 0, 0, 0), new Dimensions(10, 10, 10));
 
             product.UpdateDescription("new description");
 
@@ -98,7 +110,7 @@ namespace Mubbi.Marketplace.UnitTests.Models
         [Fact]
         public void UpdateDescription_WhenEmptyDescription_ShouldThrowException()
         {
-            var product = new Product(Guid.NewGuid(), "name", "description", "image.png", 50000, true, 1, new Dimensions(10, 10, 10));
+            var product = new Product(Guid.NewGuid(), "name", "description", "image.png", 50000, true, 1, new TimeSpan(2, 0, 0), new TimeSpan(30, 0, 0, 0), new Dimensions(10, 10, 10));
 
             Assert.Throws<DomainException>(() => product.UpdateDescription(""));
         }
@@ -106,7 +118,7 @@ namespace Mubbi.Marketplace.UnitTests.Models
         [Fact]
         public void ReplenishStock_ShouldAddValueToStock()
         {
-            var product = new Product(Guid.NewGuid(), "name", "description", "image.png", 50000, true, 1, new Dimensions(10, 10, 10));
+            var product = new Product(Guid.NewGuid(), "name", "description", "image.png", 50000, true, 1, new TimeSpan(2, 0, 0), new TimeSpan(30, 0, 0, 0), new Dimensions(10, 10, 10));
 
             product.ReplenishStock(2);
 
@@ -116,7 +128,7 @@ namespace Mubbi.Marketplace.UnitTests.Models
         [Fact]
         public void ReplenishStock_WhenNegativeStock_ShouldThrowException()
         {
-            var product = new Product(Guid.NewGuid(), "name", "description", "image.png", 50000, true, 1, new Dimensions(10, 10, 10));
+            var product = new Product(Guid.NewGuid(), "name", "description", "image.png", 50000, true, 1, new TimeSpan(2, 0, 0), new TimeSpan(30, 0, 0, 0), new Dimensions(10, 10, 10));
 
             Assert.Throws<DomainException>(() => product.ReplenishStock(-2));
         }
@@ -124,7 +136,7 @@ namespace Mubbi.Marketplace.UnitTests.Models
         [Fact]
         public void DebitStock_ShouldDebitValueFromStock()
         {
-            var product = new Product(Guid.NewGuid(), "name", "description", "image.png", 50000, true, 1, new Dimensions(10, 10, 10));
+            var product = new Product(Guid.NewGuid(), "name", "description", "image.png", 50000, true, 1, new TimeSpan(2, 0, 0), new TimeSpan(30, 0, 0, 0), new Dimensions(10, 10, 10));
 
             product.DebitStock(1);
 
@@ -134,7 +146,7 @@ namespace Mubbi.Marketplace.UnitTests.Models
         [Fact]
         public void DebitStock_WhenInsufficientStock_ShouldThrowException()
         {
-            var product = new Product(Guid.NewGuid(), "name", "description", "image.png", 50000, true, 1, new Dimensions(10, 10, 10));
+            var product = new Product(Guid.NewGuid(), "name", "description", "image.png", 50000, true, 1, new TimeSpan(2, 0, 0), new TimeSpan(30, 0, 0, 0), new Dimensions(10, 10, 10));
 
             Assert.Throws<DomainException>(() => product.DebitStock(10));
         }
