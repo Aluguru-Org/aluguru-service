@@ -1,6 +1,7 @@
 ﻿using Mubbi.Marketplace.Domain.Core.Concerns;
 using Mubbi.Marketplace.Domain.Core.Exceptions;
 using Mubbi.Marketplace.Domain.Core.Models;
+using Mubbi.Marketplace.Domain.Enums;
 using Mubbi.Marketplace.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace Mubbi.Marketplace.Domain.Models
     [Table("Product")]
     public class Product : Entity
     {
-        public Product(Guid categoryId, string name, string description, string image, decimal price, bool isActive, int stockQuantity, TimeSpan minLocationTime, TimeSpan maxLocationTime, Dimensions dimensions)
+        public Product(Guid categoryId, string name, string description, string image, decimal price, bool isActive, int stockQuantity, ERentType rentType, TimeSpan minRentTime, TimeSpan maxRentTime, Dimensions dimensions)
         {
             CategoryId = categoryId;
             Name = name;
@@ -21,9 +22,10 @@ namespace Mubbi.Marketplace.Domain.Models
             Price = price;
             IsActive = isActive;
             StockQuantity = stockQuantity;
+            RentType = rentType;
             Dimensions = dimensions;
-            MinLocationTime = minLocationTime;
-            MaxLocationTime = maxLocationTime;
+            MinRentTime = minRentTime;
+            MaxRentTime = maxRentTime;
 
             CreationDate = DateTime.UtcNow;
 
@@ -37,8 +39,9 @@ namespace Mubbi.Marketplace.Domain.Models
         public decimal Price { get; private set; }
         public bool IsActive { get; private set; }
         public int StockQuantity { get; private set; }
-        public TimeSpan MinLocationTime { get; private set; }
-        public TimeSpan MaxLocationTime { get; private set; }
+        public ERentType RentType { get; private set; }
+        public TimeSpan MinRentTime { get; private set; }
+        public TimeSpan MaxRentTime { get; private set; }
         public Dimensions Dimensions { get; private set; }
         public DateTime CreationDate { get; private set; }
 
@@ -91,7 +94,7 @@ namespace Mubbi.Marketplace.Domain.Models
             EntityConcerns.IsEqual(CategoryId, Guid.Empty, "The field CategoryId from Product cannot be empty");
             EntityConcerns.SmallerOrEqualThan(0, Price, "The field Price from Product cannot be smaller or equal than zero");
             EntityConcerns.SmallerThan(0, StockQuantity, "The field StockQuantity from Product cannot be smaller than zero");
-            EntityConcerns.GreaterThan(MaxLocationTime, MinLocationTime, "The field MinLocationTime from Product cannot be greater than MaxLocationTime");
+            EntityConcerns.GreaterThan(MaxRentTime, MinRentTime, "The field MinRentTime from Product cannot be greater than MaxRentTime");
             EntityConcerns.IsNull(Dimensions, "The field Dimensions from Product cannot be null");
         }
     }
