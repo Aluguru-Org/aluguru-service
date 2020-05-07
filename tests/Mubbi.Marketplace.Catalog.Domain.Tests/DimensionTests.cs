@@ -1,11 +1,10 @@
-﻿using Mubbi.Marketplace.Domain.Core.Exceptions;
-using Mubbi.Marketplace.Domain.ValueObjects;
+﻿using Mubbi.Marketplace.Shared.DomainObjects;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
 
-namespace Mubbi.Marketplace.UnitTests.ValueObjects
+namespace Mubbi.Marketplace.Catalog.Domain.Tests
 {
     public class DimensionsTests
     {

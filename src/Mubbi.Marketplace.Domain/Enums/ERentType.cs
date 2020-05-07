@@ -1,6 +1,6 @@
 ﻿namespace Mubbi.Marketplace.Domain.Enums
 {
-    public enum ELocationType
+    public enum ERentType
     {
         Daily,
         Monthly

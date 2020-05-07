@@ -1,11 +1,7 @@
-﻿using Mubbi.Marketplace.Domain.Core.Exceptions;
-using Mubbi.Marketplace.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Mubbi.Marketplace.Shared.DomainObjects;
 using Xunit;
 
-namespace Mubbi.Marketplace.UnitTests.Models
+namespace Mubbi.Marketplace.Catalog.Domain.Tests
 {
     public class CategoryTests
     {

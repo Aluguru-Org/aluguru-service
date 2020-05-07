@@ -1,10 +1,8 @@
-﻿using Microsoft.Win32.SafeHandles;
-using Mubbi.Marketplace.Domain.Core.Exceptions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mubbi.Marketplace.Domain.Core.Concerns
+namespace Mubbi.Marketplace.Shared.DomainObjects
 {
     public static class EntityConcerns
     {
@@ -143,4 +141,5 @@ namespace Mubbi.Marketplace.Domain.Core.Concerns
         }
 
     }
+
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Mubbi.Marketplace.Domain.Core.Models
+namespace Mubbi.Marketplace.Shared.DomainObjects
 {
     public abstract class Entity
     {

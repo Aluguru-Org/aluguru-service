@@ -1,17 +1,13 @@
-﻿using Mubbi.Marketplace.Domain.Core.Concerns;
-using Mubbi.Marketplace.Domain.Core.Exceptions;
-using Mubbi.Marketplace.Domain.Core.Models;
-using Mubbi.Marketplace.Domain.Enums;
-using Mubbi.Marketplace.Domain.ValueObjects;
+﻿using Mubbi.Marketplace.Shared.DomainObjects;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Mubbi.Marketplace.Domain.Models
+namespace Mubbi.Marketplace.Catalog.Domain
 {
     [Table("Product")]
-    public class Product : Entity
+    public class Product : Entity, IAggregateRoot
     {
         public Product(Guid categoryId, string name, string description, string image, decimal price, bool isActive, int stockQuantity, ERentType rentType, TimeSpan minRentTime, TimeSpan maxRentTime, Dimensions dimensions)
         {
@@ -51,6 +47,11 @@ namespace Mubbi.Marketplace.Domain.Models
         public void Active() => IsActive = true;
         public void Deactivate() => IsActive = false;
 
+        public void UpdateRentType(ERentType rentType)
+        {
+            EntityConcerns.IsEqual(RentType, rentType, $"The Rent Type is already {RentType}");
+        }
+
         public void UpdateCategory(Category category)
         {
             EntityConcerns.IsNull(category, "The field category cannot be null");
@@ -69,7 +70,7 @@ namespace Mubbi.Marketplace.Domain.Models
         public void DebitStock(int amount)
         {
             if (amount < 0) amount *= -1;
-            if (!HasStockFor(amount)) throw new DomainException("Insufficient stock");
+            if (!HasStockFor(amount)) throw new DomainException($"Insufficient stock. Only the amount of {amount} is avaiable");
 
             StockQuantity -= amount;
         }

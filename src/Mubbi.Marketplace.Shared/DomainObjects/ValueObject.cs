@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mubbi.Marketplace.Domain.Core.ValueObjects
+namespace Mubbi.Marketplace.Shared.DomainObjects
 {
     public abstract class ValueObject
     {
