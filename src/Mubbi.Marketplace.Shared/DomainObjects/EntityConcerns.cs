@@ -1,11 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Mubbi.Marketplace.Shared.DomainObjects
 {
     public static class EntityConcerns
     {
+        public static void IsMatch(string pattern, string text, string message, RegexOptions regexOptions = RegexOptions.None)
+        {
+            var regex = new Regex(pattern, regexOptions);
+            if (regex.IsMatch(text)) throw new DomainException(message);
+        }
+
+        public static void IsNotMatch(string pattern, string text, string message, RegexOptions regexOptions = RegexOptions.None)
+        {
+            var regex = new Regex(pattern, regexOptions);
+            if (!regex.IsMatch(text)) throw new DomainException(message);
+        }
+
         public static void IsEmpty(string text, string message)
         {
             if (string.IsNullOrEmpty(text)) throw new DomainException(message);
@@ -139,7 +152,6 @@ namespace Mubbi.Marketplace.Shared.DomainObjects
         {
             if (value >= maximum) throw new DomainException(message);
         }
-
     }
 
 }

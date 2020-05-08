@@ -10,7 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Mubbi.Marketplace.Domain\Mubbi.Marketplace.Domain.csproj" />
     <ProjectReference Include="..\Mubbi.Marketplace.Infra.CrossCutting.Commons\Mubbi.Marketplace.Infra.CrossCutting.Commons.csproj" />
   </ItemGroup>
 

@@ -12,9 +12,5 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Mubbi.Marketplace.Infra.Data\Mubbi.Marketplace.Infra.Data.csproj" />
-  </ItemGroup>
-
 
 </Project>

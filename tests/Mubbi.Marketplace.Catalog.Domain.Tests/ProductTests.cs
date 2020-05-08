@@ -1,4 +1,7 @@
-﻿using Mubbi.Marketplace.Shared.DomainObjects;
+﻿using Mubbi.Marketplace.Catalog.Domain.Enums;
+using Mubbi.Marketplace.Catalog.Domain.Models;
+using Mubbi.Marketplace.Catalog.Domain.ValueObjects;
+using Mubbi.Marketplace.Shared.DomainObjects;
 using System;
 using Xunit;
 
