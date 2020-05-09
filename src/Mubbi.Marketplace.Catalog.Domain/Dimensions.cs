@@ -1,6 +1,6 @@
 ﻿using Mubbi.Marketplace.Shared.DomainObjects;
 
-namespace Mubbi.Marketplace.Catalog.Domain.ValueObjects
+namespace Mubbi.Marketplace.Catalog.Domain
 {
     public class Dimensions : ValueObject
     {

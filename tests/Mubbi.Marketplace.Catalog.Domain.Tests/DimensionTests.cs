@@ -1,5 +1,4 @@
-﻿using Mubbi.Marketplace.Catalog.Domain.ValueObjects;
-using Mubbi.Marketplace.Shared.DomainObjects;
+﻿using Mubbi.Marketplace.Shared.DomainObjects;
 using Xunit;
 
 namespace Mubbi.Marketplace.Catalog.Domain.Tests

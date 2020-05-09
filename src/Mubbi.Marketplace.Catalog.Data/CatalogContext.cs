@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Mubbi.Marketplace.Catalog.Domain.Models;
+using Mubbi.Marketplace.Catalog.Domain;
 using Mubbi.Marketplace.Shared.Data;
-using System;
 using System.Threading.Tasks;
 
 namespace Mubbi.Marketplace.Catalog.Data
@@ -19,7 +18,7 @@ namespace Mubbi.Marketplace.Catalog.Data
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
+        {            
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(CatalogContext).Assembly);
         }
     }

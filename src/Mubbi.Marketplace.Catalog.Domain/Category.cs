@@ -1,9 +1,7 @@
 ﻿using Mubbi.Marketplace.Shared.DomainObjects;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Mubbi.Marketplace.Catalog.Domain.Models
+namespace Mubbi.Marketplace.Catalog.Domain
 {
     public class Category : Entity
     {

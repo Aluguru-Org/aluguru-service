@@ -1,10 +1,8 @@
-﻿using Mubbi.Marketplace.Catalog.Domain.Enums;
-using Mubbi.Marketplace.Catalog.Domain.ValueObjects;
-using Mubbi.Marketplace.Shared.DomainObjects;
+﻿using Mubbi.Marketplace.Shared.DomainObjects;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Mubbi.Marketplace.Catalog.Domain.Models
+namespace Mubbi.Marketplace.Catalog.Domain
 {
     [Table("Product")]
     public class Product : Entity, IAggregateRoot

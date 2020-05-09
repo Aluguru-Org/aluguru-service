@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Mubbi.Marketplace.Catalog.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Mubbi.Marketplace.Catalog.Domain;
 
 namespace Mubbi.Marketplace.Catalog.Data.Mappings
 {

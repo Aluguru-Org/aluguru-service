@@ -1,4 +1,4 @@
-﻿namespace Mubbi.Marketplace.Catalog.Domain.Enums
+﻿namespace Mubbi.Marketplace.Catalog.Domain
 {
     public enum ERentType
     {
