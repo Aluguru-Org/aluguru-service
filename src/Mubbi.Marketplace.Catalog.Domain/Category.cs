@@ -10,7 +10,7 @@ namespace Mubbi.Marketplace.Catalog.Domain
             Name = name;
             Code = code;
 
-            Validate();
+            ValidateCreation();
         }
 
         public string Name { get; private set; }
@@ -18,7 +18,7 @@ namespace Mubbi.Marketplace.Catalog.Domain
 
         public ICollection<Product> Products { get; set; }
 
-        public override void Validate()
+        public override void ValidateCreation()
         {
             EntityConcerns.IsEmpty(Name, "The field Name cannot be empty");
             EntityConcerns.SmallerOrEqualThan(0, Code, "The field Code smaller or equal than 0");

@@ -23,7 +23,7 @@ namespace Mubbi.Marketplace.Catalog.Domain
 
             CreationDate = DateTime.UtcNow;
 
-            Validate();
+            ValidateCreation();
         }
 
         public Guid CategoryId { get; private set; }
@@ -85,7 +85,7 @@ namespace Mubbi.Marketplace.Catalog.Domain
             return StockQuantity >= amount;
         }
 
-        public override void Validate()
+        public override void ValidateCreation()
         {
             EntityConcerns.IsEmpty(Name, "The field Name from product cannot be empty");
             EntityConcerns.IsEmpty(Description, "The field Description from Product cannot be empty");

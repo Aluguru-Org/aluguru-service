@@ -37,13 +37,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A8EE8DE1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Register.Domain", "src\Mubbi.Marketplace.Register.Domain\Mubbi.Marketplace.Register.Domain.csproj", "{8DD02A95-2F56-44CD-B5AC-2967E57A510E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mubbi.Marketplace.Register.Domain.Tests", "tests\Mubbi.Marketplace.Register.Domain.Tests\Mubbi.Marketplace.Register.Domain.Tests.csproj", "{B4480873-B718-4AD5-8313-0DDDD026E13B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Register.Domain.Tests", "tests\Mubbi.Marketplace.Register.Domain.Tests\Mubbi.Marketplace.Register.Domain.Tests.csproj", "{B4480873-B718-4AD5-8313-0DDDD026E13B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mubbi.Marketplace.Catalog.Data", "src\Mubbi.Marketplace.Catalog.Data\Mubbi.Marketplace.Catalog.Data.csproj", "{0A435525-405F-4FC5-86B7-C93A1F8CC5FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Catalog.Data", "src\Mubbi.Marketplace.Catalog.Data\Mubbi.Marketplace.Catalog.Data.csproj", "{0A435525-405F-4FC5-86B7-C93A1F8CC5FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mubbi.Marketplace.Catalog.Application", "src\Mubbi.Marketplace.Catalog.Application\Mubbi.Marketplace.Catalog.Application.csproj", "{42C067A4-EE82-484E-BF53-AFD05A2F74FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Catalog.Application", "src\Mubbi.Marketplace.Catalog.Application\Mubbi.Marketplace.Catalog.Application.csproj", "{42C067A4-EE82-484E-BF53-AFD05A2F74FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mubbi.Marketplace.Catalog.Application.Tests", "tests\Mubbi.Marketplace.Catalog.Application.Tests\Mubbi.Marketplace.Catalog.Application.Tests.csproj", "{339745BE-C625-4EB8-A72B-3A776BEF622B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Catalog.Application.Tests", "tests\Mubbi.Marketplace.Catalog.Application.Tests\Mubbi.Marketplace.Catalog.Application.Tests.csproj", "{339745BE-C625-4EB8-A72B-3A776BEF622B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mubbi.Marketplace.Rent.Domain", "src\Mubbi.Marketplace.Rent.Domain\Mubbi.Marketplace.Rent.Domain.csproj", "{20CD8EB5-8DDE-4938-B0DC-C4A577CD4D25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,6 +93,10 @@ Global
 		{339745BE-C625-4EB8-A72B-3A776BEF622B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{339745BE-C625-4EB8-A72B-3A776BEF622B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{339745BE-C625-4EB8-A72B-3A776BEF622B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20CD8EB5-8DDE-4938-B0DC-C4A577CD4D25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20CD8EB5-8DDE-4938-B0DC-C4A577CD4D25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20CD8EB5-8DDE-4938-B0DC-C4A577CD4D25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20CD8EB5-8DDE-4938-B0DC-C4A577CD4D25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -116,6 +122,7 @@ Global
 		{0A435525-405F-4FC5-86B7-C93A1F8CC5FC} = {9A6BF904-B7E5-4FFB-8E58-FE66A73681C9}
 		{42C067A4-EE82-484E-BF53-AFD05A2F74FA} = {9A6BF904-B7E5-4FFB-8E58-FE66A73681C9}
 		{339745BE-C625-4EB8-A72B-3A776BEF622B} = {9541875E-66D8-4878-9FC1-A4024413DF43}
+		{20CD8EB5-8DDE-4938-B0DC-C4A577CD4D25} = {D1B84E38-3359-4772-86D1-174BB6F7B6A0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7D3D5A09-667D-49DA-B8AA-6194FE3C3F51}

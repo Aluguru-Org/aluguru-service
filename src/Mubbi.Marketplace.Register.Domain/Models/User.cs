@@ -17,7 +17,7 @@ namespace Mubbi.Marketplace.Register.Domain.Models
         public Address Address { get; private set; }
         public Document Document { get; private set; }
 
-        public override void Validate()
+        public override void ValidateCreation()
         {
             EntityConcerns.IsEmpty(Username, "The field Username from User cannot be empty");
             EntityConcerns.IsEmpty(Password, "The field Password from User cannot be empty");
