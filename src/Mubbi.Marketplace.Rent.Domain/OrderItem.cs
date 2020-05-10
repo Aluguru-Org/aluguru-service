@@ -11,6 +11,8 @@ namespace Mubbi.Marketplace.Rent.Domain
             ProductName = productName;
             Amount = amount;
             ProductPrice = productPrice;
+
+            ValidateCreation();
         }
 
         public Guid OrderId { get; private set; }
@@ -33,17 +35,24 @@ namespace Mubbi.Marketplace.Rent.Domain
 
         internal void AddAmount(int amount)
         {
+            EntityConcerns.SmallerOrEqualThan(0, amount, "The amount cannot be smaller or equal than 0");
+
             Amount += amount;
         }
 
         internal void UpdateAmount(int amount)
         {
+            EntityConcerns.SmallerThan(0, amount, "The amount cannot be smaller than 0");
+
             Amount = amount;
         }
 
         public override void ValidateCreation()
         {
-            throw new NotImplementedException();
+            EntityConcerns.IsEqual(Guid.Empty, ProductId, "The field ProductId be empty");
+            EntityConcerns.IsEmpty(ProductName, "The field ProductName cannot be empty");
+            EntityConcerns.SmallerOrEqualThan(0, Amount, "The field Amount cannot be smaller or qual than 0");
+            EntityConcerns.SmallerOrEqualThan(0, ProductPrice, "The field ProductPrice cannot be smaller or qual than 0");
         }
     }
 }

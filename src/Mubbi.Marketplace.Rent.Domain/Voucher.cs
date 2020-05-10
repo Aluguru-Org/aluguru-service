@@ -44,7 +44,7 @@ namespace Mubbi.Marketplace.Rent.Domain
         public bool Active { get; private set; }
         public bool Used { get; private set; }
 
-        internal ValidationResult IsApplicable()
+        internal ValidationResult IsValid()
         {
             return new VoucherApplicableValidation().Validate(this);
         }
