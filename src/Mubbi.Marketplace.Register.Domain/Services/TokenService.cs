@@ -12,8 +12,8 @@ namespace Mubbi.Marketplace.Register.Domain.Services
 {
     public class TokenService : ITokenService
     {
-        private readonly UserContextSettigns _userContextSettigns;
-        public TokenService(IOptions<UserContextSettigns> options)
+        private readonly UserContextSettings _userContextSettigns;
+        public TokenService(IOptions<UserContextSettings> options)
         {
             _userContextSettigns = options?.Value;
         }
