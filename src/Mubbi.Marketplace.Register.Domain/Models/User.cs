@@ -11,7 +11,7 @@ namespace Mubbi.Marketplace.Register.Domain.Models
     {
         public string Username { get; private set; }
         public int Password { get; private set; }
-        public ERoles Role { get; private set; }
+        public ERoles Role { get; private set; }        
         public Name Name { get; private set; }
         public Email Email { get; private set; }
         public Address Address { get; private set; }
