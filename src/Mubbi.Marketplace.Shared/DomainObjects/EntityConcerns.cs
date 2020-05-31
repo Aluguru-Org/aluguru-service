@@ -83,6 +83,11 @@ namespace Mubbi.Marketplace.Shared.DomainObjects
             if (value <= minimum) throw new DomainException(message);
         }
 
+        public static void SmallerOrEqualThan(DateTime minimum, DateTime value, string message)
+        {
+            if (value <= minimum) throw new DomainException(message);
+        }
+
         public static void SmallerOrEqualThan(decimal minimum, decimal value, string message)
         {
             if (value <= minimum) throw new DomainException(message);

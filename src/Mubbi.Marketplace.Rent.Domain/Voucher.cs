@@ -9,7 +9,7 @@ namespace Mubbi.Marketplace.Rent.Domain
 {
     public class Voucher : Entity
     {
-        public Voucher(string code, EVoucherType voucherType, decimal? discount, int amount, DateTime expirationDate)
+        public Voucher(string code, EVoucherType voucherType, decimal discount, int amount, DateTime expirationDate)
         {
             Active = true;
             Used = false;
@@ -30,6 +30,8 @@ namespace Mubbi.Marketplace.Rent.Domain
             Amount = amount;
 
             ExpirationDate = expirationDate;
+
+            ValidateCreation();
         }
 
         public string Code { get; private set; }
@@ -37,7 +39,6 @@ namespace Mubbi.Marketplace.Rent.Domain
         public decimal? ValueDiscount { get; private set; }
         public int Amount { get; private set; }
         public EVoucherType VoucherType { get; private set; }
-
         public DateTime CreationDate { get; private set; }
         public DateTime? UpdatedDate { get; private set; }
         public DateTime ExpirationDate { get; private set; }
@@ -50,9 +51,16 @@ namespace Mubbi.Marketplace.Rent.Domain
         }
         public override void ValidateCreation()
         {
-            throw new NotImplementedException();
+            EntityConcerns.IsEmpty(Code, "The field Code cannot be empty");
+            if (ValueDiscount != null) EntityConcerns.SmallerOrEqualThan(0, ValueDiscount.Value, "The field ValueDiscount cannot be smaller or equal to 0");
+            if (PercentualDiscount != null)
+            {
+                EntityConcerns.SmallerOrEqualThan(0, PercentualDiscount.Value, "The field PercentualDiscount cannot be smaller or equal to 0");
+                EntityConcerns.GreaterThan(100, PercentualDiscount.Value, "The field PercentualDiscount cannot be greater than 100");
+            }
+            EntityConcerns.SmallerOrEqualThan(0, Amount, "The field Amount cannot be smaller or equal to 0");
+            EntityConcerns.SmallerOrEqualThan(DateTime.UtcNow, ExpirationDate, "The field ExpirationDate cannot be smaller than the current day");
         }
-
     }
 
     public class VoucherApplicableValidation : AbstractValidator<Voucher>

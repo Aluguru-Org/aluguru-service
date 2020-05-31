@@ -10,7 +10,7 @@ namespace Mubbi.Marketplace.Register.Domain.Models
     public class User : Entity
     {
         public string Username { get; private set; }
-        public string Password { get; private set; }
+        public int Password { get; private set; }
         public ERoles Role { get; private set; }
         public Name Name { get; private set; }
         public Email Email { get; private set; }
@@ -20,7 +20,6 @@ namespace Mubbi.Marketplace.Register.Domain.Models
         public override void ValidateCreation()
         {
             EntityConcerns.IsEmpty(Username, "The field Username from User cannot be empty");
-            EntityConcerns.IsEmpty(Password, "The field Password from User cannot be empty");
             EntityConcerns.IsEqual(ERoles.Admin, Role, "The field Role from User cannot be created as Admin");
         }
     }
