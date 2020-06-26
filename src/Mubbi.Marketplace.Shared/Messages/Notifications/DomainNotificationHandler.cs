@@ -29,6 +29,11 @@ namespace Mubbi.Marketplace.Shared.Messages.Notifications
             return _notifications;
         }
 
+        public virtual List<string> GetNotificationErrors()
+        {
+            return _notifications.Select(x => x.Value).ToList();
+        }
+
         public virtual bool HasNotifications()
         {
             return _notifications.Any();

@@ -7,16 +7,16 @@ using System.Text;
 
 namespace Mubbi.Marketplace.Register.Data.Mappings
 {
-    public class UserMapping : IEntityTypeConfiguration<User>
-    {
-        public void Configure(EntityTypeBuilder<User> builder)
-        {
-            builder.HasKey(u => u.Id);
+    //public class UserMapping : IEntityTypeConfiguration<User>
+    //{
+    //    public void Configure(EntityTypeBuilder<User> builder)
+    //    {
+    //        builder.HasKey(u => u.Id);
 
-            builder.Property(u => u.Username)
-                .IsRequired();
-            builder.Property(u => u.Password)
-                .IsRequired();
-        }
-    }
+    //        builder.Property(u => u.Username)
+    //            .IsRequired();
+    //        builder.Property(u => u.Password)
+    //            .IsRequired();
+    //    }
+    //}
 }

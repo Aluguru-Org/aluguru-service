@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Mubbi.Marketplace.Shared\Mubbi.Marketplace.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

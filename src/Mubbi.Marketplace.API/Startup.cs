@@ -1,8 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using Mubbi.Marketplace.Register.Data;
+using Mubbi.Marketplace.Register.Domain.Models;
 
 namespace Mubbi.Marketplace.API
 {
@@ -22,6 +27,20 @@ namespace Mubbi.Marketplace.API
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             //services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
 
+            services.AddDbContext<RegisterContext>(options =>
+            {
+                options.UseInMemoryDatabase("Database");
+            });
+
+            services.AddDefaultIdentity<User>(options =>
+                {
+                    options.SignIn.RequireConfirmedEmail = true;
+                    options.Lockout.MaxFailedAccessAttempts = 5;
+                })
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<RegisterContext>()
+                .AddDefaultTokenProviders();
+
             services.AddControllers();
         }
 
@@ -37,6 +56,7 @@ namespace Mubbi.Marketplace.API
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

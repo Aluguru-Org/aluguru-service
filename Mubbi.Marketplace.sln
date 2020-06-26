@@ -51,14 +51,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5536BAD7
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Rent.Domain.Tests", "tests\Mubbi.Marketplace.Rent.Domain.Tests\Mubbi.Marketplace.Rent.Domain.Tests.csproj", "{5CE0698C-BA70-4340-8F56-18BFEAAEB4EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mubbi.Marketplace.Register.Application", "src\Mubbi.Marketplace.Register.Application\Mubbi.Marketplace.Register.Application.csproj", "{A9B68217-C30D-4BD6-A25C-3CCD0E97075F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Register.Application", "src\Mubbi.Marketplace.Register.Application\Mubbi.Marketplace.Register.Application.csproj", "{A9B68217-C30D-4BD6-A25C-3CCD0E97075F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mubbi.Marketplace.Register.Data", "src\Mubbi.Marketplace.Register.Data\Mubbi.Marketplace.Register.Data.csproj", "{013C32F4-2BB3-44EE-BDE4-421CB6D822C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Register.Data", "src\Mubbi.Marketplace.Register.Data\Mubbi.Marketplace.Register.Data.csproj", "{013C32F4-2BB3-44EE-BDE4-421CB6D822C6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D972DF72-39E6-442E-91DF-95030097E134}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Migrations", "Migrations", "{B70520C1-48AF-44B0-B8D7-9A1190B66ED3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -152,6 +154,7 @@ Global
 		{5CE0698C-BA70-4340-8F56-18BFEAAEB4EC} = {5536BAD7-59AC-4934-BCFF-C41A6F57914E}
 		{A9B68217-C30D-4BD6-A25C-3CCD0E97075F} = {15B276AB-A4C8-4FFE-B0FB-095FFC8CED92}
 		{013C32F4-2BB3-44EE-BDE4-421CB6D822C6} = {15B276AB-A4C8-4FFE-B0FB-095FFC8CED92}
+		{B70520C1-48AF-44B0-B8D7-9A1190B66ED3} = {095C17CE-6F36-4CBB-8036-D361C4206076}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7D3D5A09-667D-49DA-B8AA-6194FE3C3F51}

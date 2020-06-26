@@ -4,7 +4,7 @@ using System;
 
 namespace Mubbi.Marketplace.Shared.Messages
 {
-    public abstract class Command : Message, IRequest<bool>
+    public abstract class Command<T> : Message, IRequest<T>
     {
         public DateTime Timestamp { get; private set; }
         public ValidationResult ValidationResult;
@@ -14,9 +14,6 @@ namespace Mubbi.Marketplace.Shared.Messages
             Timestamp = DateTime.UtcNow;
         }
 
-        public virtual bool IsValid()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract bool IsValid();
     }
 }
