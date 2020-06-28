@@ -1,15 +1,16 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
-using Mubbi.Marketplace.Shared.DomainObjects;
+using Mubbi.Marketplace.Domain;
+using PampaDevs.Utils;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using static PampaDevs.Utils.Helpers.IdHelper;
 
 namespace Mubbi.Marketplace.Rent.Domain
 {
     public class Voucher : Entity
     {
         public Voucher(string code, EVoucherType voucherType, decimal discount, int amount, DateTime expirationDate)
+            : base(NewId())
         {
             Active = true;
             Used = false;
@@ -46,20 +47,20 @@ namespace Mubbi.Marketplace.Rent.Domain
         public bool Used { get; private set; }
 
         internal ValidationResult IsValid()
-        {
+        {            
             return new VoucherApplicableValidation().Validate(this);
         }
-        public override void ValidateCreation()
+        protected override void ValidateCreation()
         {
-            EntityConcerns.IsEmpty(Code, "The field Code cannot be empty");
-            if (ValueDiscount != null) EntityConcerns.SmallerOrEqualThan(0, ValueDiscount.Value, "The field ValueDiscount cannot be smaller or equal to 0");
+            Ensure.NotNullOrEmpty(Code, "The field Code cannot be empty");
+            if (ValueDiscount != null) Ensure.That(ValueDiscount.Value > 0, "The field ValueDiscount cannot be smaller or equal to 0");
             if (PercentualDiscount != null)
             {
-                EntityConcerns.SmallerOrEqualThan(0, PercentualDiscount.Value, "The field PercentualDiscount cannot be smaller or equal to 0");
-                EntityConcerns.GreaterThan(100, PercentualDiscount.Value, "The field PercentualDiscount cannot be greater than 100");
+                Ensure.That(PercentualDiscount.Value > 0, "The field PercentualDiscount cannot be smaller or equal to 0");
+                Ensure.That(PercentualDiscount.Value <= 100, "The field PercentualDiscount cannot be greater than 100");
             }
-            EntityConcerns.SmallerOrEqualThan(0, Amount, "The field Amount cannot be smaller or equal to 0");
-            EntityConcerns.SmallerOrEqualThan(DateTime.UtcNow, ExpirationDate, "The field ExpirationDate cannot be smaller than the current day");
+            Ensure.That(Amount > 0, "The field Amount cannot be smaller or equal to 0");
+            Ensure.That(ExpirationDate > DateTime.UtcNow, "The field ExpirationDate cannot be smaller than the current day");
         }
     }
 

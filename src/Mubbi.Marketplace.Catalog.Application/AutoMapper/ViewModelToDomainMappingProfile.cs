@@ -14,7 +14,7 @@ namespace Mubbi.Marketplace.Catalog.Application.AutoMapper
             CreateMap<ProductViewModel, Product>()
                 .ConstructUsing(p =>
                     new Product(p.CategoryId, p.Name, p.Descrpition, p.Image, p.Price, p.IsActive,
-                    p.StockQuantity, p.RentType, p.MinRentTime, p.MaxRentTime, new Dimensions(p.Height, p.Width, p.Depth)));
+                    p.StockQuantity, p.RentType, p.MinRentTime, p.MaxRentTime));
 
             CreateMap<CategoryViewModel, Category>()
                 .ConstructUsing(c => new Category(c.Name, c.Code));

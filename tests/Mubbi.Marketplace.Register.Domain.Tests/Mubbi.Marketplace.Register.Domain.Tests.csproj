@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Mubbi.Marketplace.Register.Domain\Mubbi.Marketplace.Register.Domain.csproj" />
-    <ProjectReference Include="..\..\src\Mubbi.Marketplace.Shared\Mubbi.Marketplace.Shared.csproj" />
   </ItemGroup>
 
 </Project>

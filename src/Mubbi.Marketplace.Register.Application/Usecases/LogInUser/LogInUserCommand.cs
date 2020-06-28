@@ -1,13 +1,18 @@
 ﻿using FluentValidation;
-using Mubbi.Marketplace.Shared.Messages;
-using System.Security.Cryptography.X509Certificates;
+using Mubbi.Marketplace.Infrastructure.Bus.Messages;
 
 namespace Mubbi.Marketplace.Register.Application.Usecases.LogInUser
 {
     public class LogInUserCommand : Command<LogInUserCommandResponse>
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public LogInUserCommand(string username, string password)
+        {
+            Username = username;
+            Password = password;
+        }
+
+        public string Username { get; private set; }
+        public string Password { get; private set; }
 
         public override bool IsValid()
         {

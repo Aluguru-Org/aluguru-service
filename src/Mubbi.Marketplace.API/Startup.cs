@@ -1,13 +1,12 @@
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
-using Mubbi.Marketplace.Register.Data;
-using Mubbi.Marketplace.Register.Domain.Models;
+using Mubbi.Marketplace.Data;
+using Mubbi.Marketplace.Infrastructure.Bus.Communication;
 
 namespace Mubbi.Marketplace.API
 {
@@ -25,22 +24,20 @@ namespace Mubbi.Marketplace.API
         {
             //services.AddDbContext<DataContext>(opt => opt.UseInMemoryDatabase("Database"));
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
-            //services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
 
-            services.AddDbContext<RegisterContext>(options =>
-            {
-                options.UseInMemoryDatabase("Database");
-            });
+            services.AddDbContext<MubbiContext>(options => options.UseSqlServer(connectionString));
 
-            services.AddDefaultIdentity<User>(options =>
-                {
-                    options.SignIn.RequireConfirmedEmail = true;
-                    options.Lockout.MaxFailedAccessAttempts = 5;
-                })
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<RegisterContext>()
-                .AddDefaultTokenProviders();
+            //services.AddDbContext<MubbiContext>(options =>
+            //{
+            //    options.UseInMemoryDatabase("Database");
+            //});
 
+            services.AddMediatR(typeof(Startup));
+            services.AddScoped<IMediatorHandler, MediatorHandler>();
+
+            services.AddSwagger();
+
+            services.AddRouting(options => options.LowercaseUrls = true);
             services.AddControllers();
         }
 
@@ -51,6 +48,12 @@ namespace Mubbi.Marketplace.API
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+            }
+
+            app.UseSwagger();
 
             app.UseHttpsRedirection();
 

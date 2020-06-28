@@ -1,8 +1,4 @@
-﻿using Mubbi.Marketplace.Register.Domain.ValueObjects;
-using Mubbi.Marketplace.Shared.DomainObjects;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using Xunit;
 
 namespace Mubbi.Marketplace.Register.Domain.Tests
@@ -27,7 +23,7 @@ namespace Mubbi.Marketplace.Register.Domain.Tests
         [InlineData("General Lima e Silva", "480", "Cidade Baixa", "Porto Alegre", "Rio Grande do Sul", "Brasil", "")]
         public void CreateAddress_WhenInvalidData_ShouldThrowDomainException(string street, string number, string neighborhood, string city, string state, string country, string zipcode)
         {
-            Assert.Throws<DomainException>(() => new Address(street, number, neighborhood, city, state, country, zipcode));
+            Assert.Throws<Exception>(() => new Address(street, number, neighborhood, city, state, country, zipcode));
 
         }
     }

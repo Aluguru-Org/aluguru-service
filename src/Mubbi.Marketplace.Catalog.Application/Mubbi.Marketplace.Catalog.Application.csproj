@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Mubbi.Marketplace.Catalog.Domain\Mubbi.Marketplace.Catalog.Domain.csproj" />
+    <ProjectReference Include="..\Mubbi.Marketplace.Infrastructure.Data\Mubbi.Marketplace.Infrastructure.Data.csproj" />
   </ItemGroup>
 
 </Project>

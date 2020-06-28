@@ -22,20 +22,20 @@ namespace Mubbi.Marketplace.Catalog.Data.Mappings
                    .IsRequired()
                    .HasColumnType("varchar(250)");
 
-            builder.OwnsOne(p => p.Dimensions, onb =>
-            {
-                onb.Property(d => d.Height)
-                  .HasColumnName("Height")
-                  .HasColumnType("int");
+            //builder.OwnsOne(p => p.Dimensions, onb =>
+            //{
+            //    onb.Property(d => d.Height)
+            //      .HasColumnName("Height")
+            //      .HasColumnType("int");
 
-                onb.Property(d => d.Width)
-                  .HasColumnName("Width")
-                  .HasColumnType("int");
+            //    onb.Property(d => d.Width)
+            //      .HasColumnName("Width")
+            //      .HasColumnType("int");
 
-                onb.Property(d => d.Depth)
-                  .HasColumnName("Depth")
-                  .HasColumnType("int");
-            });
+            //    onb.Property(d => d.Depth)
+            //      .HasColumnName("Depth")
+            //      .HasColumnType("int");
+            //});
         }
     }
 }

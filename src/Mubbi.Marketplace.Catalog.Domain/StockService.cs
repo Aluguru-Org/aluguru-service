@@ -1,41 +1,41 @@
-﻿using Mubbi.Marketplace.Shared.Communication;
-using Mubbi.Marketplace.Shared.Messages.Notifications;
+﻿using Mubbi.Marketplace.Catalog.Repositories;
+using Mubbi.Marketplace.Infrastructure.Bus.Communication;
+using Mubbi.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
+using Mubbi.Marketplace.Infrastructure.Data;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Mubbi.Marketplace.Catalog.Domain
 {
     public class StockService : IStockService
     {
-        private readonly IProductRepository _productRepository;
+        private readonly IEfUnitOfWork _unitOfWork;
         private readonly IMediatorHandler _mediatorHandler;
         
-        public StockService(IProductRepository productRepository,
-                            IMediatorHandler mediatorHandler)
+        public StockService(IMediatorHandler mediatorHandler, IEfUnitOfWork unitOfWork)
         {
-            _productRepository = productRepository;
             _mediatorHandler = mediatorHandler;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<bool> DebitStock(Guid productId, int amount)
         {
             if (!await DebitItemStock(productId, amount)) return false;
 
-            return await _productRepository.UnitOfWork.Commit();
+            return await _unitOfWork.SaveChangesAsync(new CancellationToken()) == 1;
         }
 
         public async Task<bool> ReplenishStock(Guid productId, int amount)
         {
             if (!await ReplenishItemStock(productId, amount)) return false;
-
-            return await _productRepository.UnitOfWork.Commit();
+            
+            return await _unitOfWork.SaveChangesAsync(new CancellationToken()) == 1;
         }
 
         private async Task<bool> DebitItemStock(Guid productId, int amount)
         {
-            var product = await _productRepository.GetById(productId);
+            var product = await _unitOfWork.QueryRepository<Product>().GetProductAsync(productId);
 
             if (product == null) return false;
 
@@ -47,27 +47,27 @@ namespace Mubbi.Marketplace.Catalog.Domain
 
             product.DebitStock(amount);
 
-            _productRepository.UpdateProduct(product);
+            _unitOfWork.Repository<Product>().Update(product);
 
             return true;
         }
 
         private async Task<bool> ReplenishItemStock(Guid productId, int amount)
         {
-            var product = await _productRepository.GetById(productId);
+            var product = await _unitOfWork.QueryRepository<Product>().GetProductAsync(productId);
 
             if (product == null) return false;
 
             product.ReplenishStock(amount);
 
-            _productRepository.UpdateProduct(product);
+            _unitOfWork.Repository<Product>().Update(product);
 
             return true;
         }
 
         public void Dispose()
         {
-            _productRepository?.Dispose();
+            _unitOfWork.Dispose();
         }
     }
 }

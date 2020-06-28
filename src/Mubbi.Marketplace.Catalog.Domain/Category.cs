@@ -1,11 +1,14 @@
-﻿using Mubbi.Marketplace.Shared.DomainObjects;
+﻿using Mubbi.Marketplace.Domain;
+using PampaDevs.Utils;
 using System.Collections.Generic;
+using static PampaDevs.Utils.Helpers.IdHelper;
 
 namespace Mubbi.Marketplace.Catalog.Domain
 {
-    public class Category : Entity
+    public class Category : AggregateRoot
     {
         public Category(string name, int code)
+            : base(NewId())
         {
             Name = name;
             Code = code;
@@ -18,10 +21,10 @@ namespace Mubbi.Marketplace.Catalog.Domain
 
         public ICollection<Product> Products { get; set; }
 
-        public override void ValidateCreation()
+        protected override void ValidateCreation()
         {
-            EntityConcerns.IsEmpty(Name, "The field Name cannot be empty");
-            EntityConcerns.SmallerOrEqualThan(0, Code, "The field Code smaller or equal than 0");
+            Ensure.NotNullOrEmpty(Name, "The field Name cannot be empty");
+            Ensure.That(Code > 0, "The field Code cannot be smaller or equal to 0");            
         }
 
         public override string ToString()

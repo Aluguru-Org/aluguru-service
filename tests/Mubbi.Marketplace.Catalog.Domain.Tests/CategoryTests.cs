@@ -1,4 +1,4 @@
-﻿using Mubbi.Marketplace.Shared.DomainObjects;
+﻿using System;
 using Xunit;
 
 namespace Mubbi.Marketplace.Catalog.Domain.Tests
@@ -8,7 +8,7 @@ namespace Mubbi.Marketplace.Catalog.Domain.Tests
         [Fact]
         public void CreateCategory_WhenEmptyName_ShouldThrowException()
         {
-            Assert.Throws<DomainException>(() => new Category("", 1000));
+            Assert.Throws<Exception>(() => new Category("", 1000));
         }
 
         [Theory]
@@ -16,7 +16,7 @@ namespace Mubbi.Marketplace.Catalog.Domain.Tests
         [InlineData(-1)]
         public void CreateCategory_WhenCodeSmallerOrEqualThanZero_ShouldThrowException(int category)
         {
-            Assert.Throws<DomainException>(() => new Category("Toys", category));
+            Assert.Throws<Exception>(() => new Category("Toys", category));
         }
     }
 }

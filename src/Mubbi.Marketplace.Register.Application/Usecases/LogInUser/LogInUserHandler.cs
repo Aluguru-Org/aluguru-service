@@ -1,10 +1,7 @@
 ﻿using MediatR;
-using Mubbi.Marketplace.Shared.Communication;
-using Mubbi.Marketplace.Shared.Messages;
-using Mubbi.Marketplace.Shared.Messages.Notifications;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Mubbi.Marketplace.Infrastructure.Bus.Communication;
+using Mubbi.Marketplace.Infrastructure.Bus.Messages;
+using Mubbi.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,9 +18,9 @@ namespace Mubbi.Marketplace.Register.Application.Usecases.LogInUser
 
         public async Task<LogInUserCommandResponse> Handle(LogInUserCommand command, CancellationToken cancellationToken)
         {
-            if (IsValidCommand(command)) return new LogInUserCommandResponse() { Success = false };
+            if (IsValidCommand(command)) return new LogInUserCommandResponse();
 
-
+            return null;
         }
 
         private bool IsValidCommand<T>(Command<T> command) where T : class

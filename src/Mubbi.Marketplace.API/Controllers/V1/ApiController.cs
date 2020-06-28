@@ -1,12 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Mubbi.Marketplace.API.Models;
-using Mubbi.Marketplace.Shared.Communication;
-using Mubbi.Marketplace.Shared.Messages.Notifications;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Mubbi.Marketplace.Infrastructure.Bus.Communication;
+using Mubbi.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 
 namespace Mubbi.Marketplace.API.Controllers.V1
 {
@@ -23,32 +19,32 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         protected bool IsValidOperation() => !_notifications.HasNotifications();
 
-        protected ActionResult GetResponse(object result = null)
+        protected ActionResult GetResponse(object data = null)
         {
-            if (IsValidOperation()) return Ok(new ApiResponse(result, "The resource has been fetched successfully"));
+            if (IsValidOperation()) return Ok(new ApiResponse(true, "The resource has been fetched successfully", data));
 
-            return BadRequest(new ApiResponse(_notifications.GetNotificationErrors()));
+            return BadRequest(new ApiResponse(false, "The server was not able to process the request", _notifications.GetNotificationErrors()));
         }
 
-        protected ActionResult PostResponse(string actionName, object result = null)
+        protected ActionResult PostResponse(string actionName, object data = null)
         {
-            if (IsValidOperation()) return CreatedAtAction(actionName, new ApiResponse(result, "The resource was successfully created."));
+            if (IsValidOperation()) return CreatedAtAction(actionName, new ApiResponse(true, "The resource was successfully created.", data));
 
-            return BadRequest(new ApiResponse(_notifications.GetNotificationErrors()));
+            return BadRequest(new ApiResponse(false, "The server was not able to process the request", _notifications.GetNotificationErrors()));
         }
 
         protected ActionResult PutResponse()
         {
-            if (IsValidOperation()) return Ok(new ApiResponse("The resource was updated successfully"));
+            if (IsValidOperation()) return Ok(new ApiResponse(true, "The resource was updated successfully"));
 
-            return BadRequest(new ApiResponse(_notifications.GetNotificationErrors()));
+            return BadRequest(new ApiResponse(false, "The server was not able to process the request", _notifications.GetNotificationErrors()));
         }
 
         protected ActionResult DeleteResponse()
         {
-            if (IsValidOperation()) return Ok(new ApiResponse("The resource was deleted successfully"));
+            if (IsValidOperation()) return Ok(new ApiResponse(true, "The resource was deleted successfully"));
 
-            return BadRequest(new ApiResponse(_notifications.GetNotificationErrors()));
+            return BadRequest(new ApiResponse(false, "The server was not able to process the request", _notifications.GetNotificationErrors()));
         }
     }
 

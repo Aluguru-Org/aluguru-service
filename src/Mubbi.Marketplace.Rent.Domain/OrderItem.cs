@@ -1,11 +1,14 @@
-﻿using Mubbi.Marketplace.Shared.DomainObjects;
+﻿using Mubbi.Marketplace.Domain;
+using PampaDevs.Utils;
 using System;
+using static PampaDevs.Utils.Helpers.IdHelper;
 
 namespace Mubbi.Marketplace.Rent.Domain
 {
     public class OrderItem : Entity
     {
         public OrderItem(Guid productId, string productName, int amount, decimal productPrice)
+            : base(NewId())
         {
             ProductId = productId;
             ProductName = productName;
@@ -35,24 +38,24 @@ namespace Mubbi.Marketplace.Rent.Domain
 
         internal void AddAmount(int amount)
         {
-            EntityConcerns.SmallerOrEqualThan(0, amount, "The amount cannot be smaller or equal than 0");
+            Ensure.That(amount > 0, "The amount cannot be smaller or equal than 0");
 
             Amount += amount;
         }
 
         internal void UpdateAmount(int amount)
         {
-            EntityConcerns.SmallerThan(0, amount, "The amount cannot be smaller than 0");
+            Ensure.That(amount > 0, "The amount cannot be smaller than 0");
 
             Amount = amount;
         }
 
-        public override void ValidateCreation()
+        protected override void ValidateCreation()
         {
-            EntityConcerns.IsEqual(Guid.Empty, ProductId, "The field ProductId be empty");
-            EntityConcerns.IsEmpty(ProductName, "The field ProductName cannot be empty");
-            EntityConcerns.SmallerOrEqualThan(0, Amount, "The field Amount cannot be smaller or qual than 0");
-            EntityConcerns.SmallerOrEqualThan(0, ProductPrice, "The field ProductPrice cannot be smaller or qual than 0");
+            Ensure.NotEqual(Guid.Empty, ProductId, "The field ProductId be empty");
+            Ensure.NotNullOrEmpty(ProductName, "The field ProductName cannot be empty");
+            Ensure.That(Amount > 0, "The field Amount cannot be smaller or qual than 0");
+            Ensure.That(ProductPrice > 0, "The field ProductPrice cannot be smaller or qual than 0");
         }
     }
 }

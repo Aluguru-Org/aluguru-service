@@ -7,6 +7,6 @@ namespace Mubbi.Marketplace.Register.Application.ViewModels
         [Required]
         public string UserName { get; set; }
         [Required]
-        public int Password { get; set; }
+        public string Password { get; set; }
     }
 }

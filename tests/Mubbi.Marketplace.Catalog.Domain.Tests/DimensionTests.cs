@@ -1,4 +1,4 @@
-﻿using Mubbi.Marketplace.Shared.DomainObjects;
+﻿using System;
 using Xunit;
 
 namespace Mubbi.Marketplace.Catalog.Domain.Tests
@@ -10,7 +10,7 @@ namespace Mubbi.Marketplace.Catalog.Domain.Tests
         [InlineData(-1)]
         public void CreateDimensions_WhenHeightSmallerOrEqualThanZero_ShouldThrowException(int height)
         {
-            Assert.Throws<DomainException>(() => new Dimensions(height, 1, 1));
+            Assert.Throws<Exception>(() => new Dimensions(height, 1, 1));
         }
 
         [Theory]
@@ -18,7 +18,7 @@ namespace Mubbi.Marketplace.Catalog.Domain.Tests
         [InlineData(-1)]
         public void CreateDimensions_WhenWidthSmallerOrEqualThanZero_ShouldThrowException(int width)
         {
-            Assert.Throws<DomainException>(() => new Dimensions(1, width, 1));
+            Assert.Throws<Exception>(() => new Dimensions(1, width, 1));
         }
 
         [Theory]
@@ -26,7 +26,7 @@ namespace Mubbi.Marketplace.Catalog.Domain.Tests
         [InlineData(-1)]
         public void CreateDimensions_WhenDepthSmallerOrEqualThanZero_ShouldThrowException(int depth)
         {
-            Assert.Throws<DomainException>(() => new Dimensions(1, 1, depth));
+            Assert.Throws<Exception>(() => new Dimensions(1, 1, depth));
         }
     }
 }

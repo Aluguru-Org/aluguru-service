@@ -1,8 +1,4 @@
-﻿using Mubbi.Marketplace.Register.Domain.ValueObjects;
-using Mubbi.Marketplace.Shared.DomainObjects;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using Xunit;
 
 namespace Mubbi.Marketplace.Register.Domain.Tests
@@ -28,7 +24,7 @@ namespace Mubbi.Marketplace.Register.Domain.Tests
         [InlineData("Felipe_Almeida@dell@com")]
         public void CreateEmail_WhenInvalidEmail_ShouldThrowDomainException(string emailAddress)
         {
-            Assert.Throws<DomainException>(() => new Email(emailAddress));
+            Assert.Throws<Exception>(() => new Email(emailAddress));
         }
     }
 }

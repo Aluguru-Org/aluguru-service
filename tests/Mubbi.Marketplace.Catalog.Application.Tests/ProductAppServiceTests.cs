@@ -1,12 +1,4 @@
-﻿using Moq;
-using Mubbi.Marketplace.Catalog.Application.Services;
-using Mubbi.Marketplace.Shared.DomainObjects;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Xunit;
-
-namespace Mubbi.Marketplace.Catalog.Application.Tests
+﻿namespace Mubbi.Marketplace.Catalog.Application.Tests
 {
     public class ProductAppServiceTests
     {

@@ -1,9 +1,4 @@
-﻿using Mubbi.Marketplace.Register.Domain.Enums;
-using Mubbi.Marketplace.Register.Domain.ValueObjects;
-using Mubbi.Marketplace.Shared.DomainObjects;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using Xunit;
 
 namespace Mubbi.Marketplace.Register.Domain.Tests
@@ -27,7 +22,7 @@ namespace Mubbi.Marketplace.Register.Domain.Tests
         [InlineData("4727933608")]
         public void CreateDocument_WhenCPF_AndInvalidNumber_ShouldNotThrowDomainException(string number)
         {
-            Assert.Throws<DomainException>(() => new Document(number, EDocumentType.CPF));
+            Assert.Throws<Exception>(() => new Document(number, EDocumentType.CPF));
         }
 
         [Theory]
@@ -47,7 +42,7 @@ namespace Mubbi.Marketplace.Register.Domain.Tests
         [InlineData("4184624600016")]
         public void CreateDocument_WhenCNPJ_AndInvalidNumber_ShouldNotThrowDomainException(string number)
         {
-            Assert.Throws<DomainException>(() => new Document(number, EDocumentType.CNPJ));
+            Assert.Throws<Exception>(() => new Document(number, EDocumentType.CNPJ));
 
         }
     }
