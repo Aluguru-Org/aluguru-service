@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Mubbi.Marketplace.Domain;
 using Mubbi.Marketplace.Infrastructure.Bus.Communication;
-using Mubbi.Marketplace.Infrastructure.Bus.Messages;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,8 +10,6 @@ namespace Mubbi.Marketplace.Infrastructure.Data
     public abstract class AppDbContext : DbContext
     {
         private readonly IMediatorHandler _mediatorHandler = null;
-
-        protected AppDbContext() : base() { }
 
         protected AppDbContext(DbContextOptions options, IMediatorHandler mediatorHandler)
             : base(options)

@@ -52,19 +52,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Migrations", "Migrations", "{B70520C1-48AF-44B0-B8D7-9A1190B66ED3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mubbi.Marketplace.Security", "src\Mubbi.Marketplace.Shared.Security\Mubbi.Marketplace.Security.csproj", "{976E9106-D06A-4F62-9E3D-9EB6DA1D2AA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Security", "src\Mubbi.Marketplace.Shared.Security\Mubbi.Marketplace.Security.csproj", "{976E9106-D06A-4F62-9E3D-9EB6DA1D2AA5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{76966833-6C35-49CA-B107-896E3426BA89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mubbi.Marketplace.Infrastructure.Data", "src\Mubbi.Marketplace.Infrastructure.Data\Mubbi.Marketplace.Infrastructure.Data.csproj", "{02056C0A-B113-40A3-8A98-21C304CDBBDF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Infrastructure.Data", "src\Mubbi.Marketplace.Infrastructure.Data\Mubbi.Marketplace.Infrastructure.Data.csproj", "{02056C0A-B113-40A3-8A98-21C304CDBBDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mubbi.Marketplace.Infrastructure.Bus", "src\Mubbi.Marketplace.Infrastructure.Bus\Mubbi.Marketplace.Infrastructure.Bus.csproj", "{F82DAE17-7B77-4066-B3FF-0AC6D58DC28C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Infrastructure.Bus", "src\Mubbi.Marketplace.Infrastructure.Bus\Mubbi.Marketplace.Infrastructure.Bus.csproj", "{F82DAE17-7B77-4066-B3FF-0AC6D58DC28C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mubbi.Marketplace.Domain", "src\Mubbi.Marketplace.Domain\Mubbi.Marketplace.Domain.csproj", "{53175E3F-BFFE-4FDB-99E6-61CD94F8EA76}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Domain", "src\Mubbi.Marketplace.Domain\Mubbi.Marketplace.Domain.csproj", "{53175E3F-BFFE-4FDB-99E6-61CD94F8EA76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mubbi.Marketplace.Infrastructure", "src\Mubbi.Marketplace.Infrastructure\Mubbi.Marketplace.Infrastructure.csproj", "{B562816D-1BCC-4FBB-B17F-CEACE62FC901}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Infrastructure", "src\Mubbi.Marketplace.Infrastructure\Mubbi.Marketplace.Infrastructure.csproj", "{B562816D-1BCC-4FBB-B17F-CEACE62FC901}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Data", "src\Mubbi.Marketplace.DbMigrations\Mubbi.Marketplace.Data.csproj", "{305337A2-8126-4652-9E7B-A1F24FBEC376}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Crosscutting", "Crosscutting", "{4583262A-C887-40E3-8D5E-2A0C67406B1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mubbi.Marketplace.Crosscutting.IoC", "src\Mubbi.Marketplace.Crosscutting.IoC\Mubbi.Marketplace.Crosscutting.IoC.csproj", "{8AF9545F-8F3A-459C-8609-045496CD068A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -136,6 +140,10 @@ Global
 		{305337A2-8126-4652-9E7B-A1F24FBEC376}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{305337A2-8126-4652-9E7B-A1F24FBEC376}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{305337A2-8126-4652-9E7B-A1F24FBEC376}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AF9545F-8F3A-459C-8609-045496CD068A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AF9545F-8F3A-459C-8609-045496CD068A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AF9545F-8F3A-459C-8609-045496CD068A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AF9545F-8F3A-459C-8609-045496CD068A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -169,6 +177,8 @@ Global
 		{53175E3F-BFFE-4FDB-99E6-61CD94F8EA76} = {76966833-6C35-49CA-B107-896E3426BA89}
 		{B562816D-1BCC-4FBB-B17F-CEACE62FC901} = {76966833-6C35-49CA-B107-896E3426BA89}
 		{305337A2-8126-4652-9E7B-A1F24FBEC376} = {B70520C1-48AF-44B0-B8D7-9A1190B66ED3}
+		{4583262A-C887-40E3-8D5E-2A0C67406B1F} = {095C17CE-6F36-4CBB-8036-D361C4206076}
+		{8AF9545F-8F3A-459C-8609-045496CD068A} = {4583262A-C887-40E3-8D5E-2A0C67406B1F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7D3D5A09-667D-49DA-B8AA-6194FE3C3F51}

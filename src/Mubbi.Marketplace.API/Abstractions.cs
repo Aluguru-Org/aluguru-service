@@ -13,7 +13,7 @@ namespace Mubbi.Marketplace.API
 {
     public static class Abstractions
     {
-        public static IServiceCollection AddSwagger(this IServiceCollection services)
+        public static IServiceCollection AddMubbiSwagger(this IServiceCollection services)
         {
             return services.AddSwaggerGen(ConfigureSwaggerOptions);
         }
@@ -30,20 +30,18 @@ namespace Mubbi.Marketplace.API
                 Description = "Mubbi API",
                 Contact = new OpenApiContact
                 {
-                    Name = "Mubbi",
-                    Url = new Uri("www.mubbi.com.br")
+                    Name = "Mubbi"
                 },
                 License = new OpenApiLicense
                 {
-                    Name = "Lincense..",
-                    Url = new Uri("")
+                    Name = "Lincense.."
                 }
             });
 
             options.EnableAnnotations();
         }
 
-        public static IApplicationBuilder UseSwagger(this IApplicationBuilder app)
+        public static IApplicationBuilder UseMubbiSwagger(this IApplicationBuilder app)
         {
             app.UseSwagger();
 

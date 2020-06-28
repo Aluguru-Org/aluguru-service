@@ -5,8 +5,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Mubbi.Marketplace.API.Middleware;
+using Mubbi.Marketplace.Crosscutting.IoC;
 using Mubbi.Marketplace.Data;
 using Mubbi.Marketplace.Infrastructure.Bus.Communication;
+using System.Reflection;
 
 namespace Mubbi.Marketplace.API
 {
@@ -21,21 +24,10 @@ namespace Mubbi.Marketplace.API
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
-            //services.AddDbContext<DataContext>(opt => opt.UseInMemoryDatabase("Database"));
-            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+        {          
+            services.AddMubbiSwagger();
 
-            services.AddDbContext<MubbiContext>(options => options.UseSqlServer(connectionString));
-
-            //services.AddDbContext<MubbiContext>(options =>
-            //{
-            //    options.UseInMemoryDatabase("Database");
-            //});
-
-            services.AddMediatR(typeof(Startup));
-            services.AddScoped<IMediatorHandler, MediatorHandler>();
-
-            services.AddSwagger();
+            services.AddServiceComponents(Configuration, typeof(Startup).Assembly);
 
             services.AddRouting(options => options.LowercaseUrls = true);
             services.AddControllers();
@@ -50,10 +42,11 @@ namespace Mubbi.Marketplace.API
             }
             else
             {
-                app.UseExceptionHandler("/Error");
             }
 
-            app.UseSwagger();
+            app.UseMiddleware(typeof(ErrorHandlingMiddleware));
+
+            app.UseMubbiSwagger();
 
             app.UseHttpsRedirection();
 

@@ -23,21 +23,6 @@ namespace Mubbi.Marketplace.Data.Mappings
                    .HasColumnType("varchar(250)");
 
             builder.ToTable("Product");
-
-            //builder.OwnsOne(p => p.Dimensions, onb =>
-            //{
-            //    onb.Property(d => d.Height)
-            //      .HasColumnName("Height")
-            //      .HasColumnType("int");
-
-            //    onb.Property(d => d.Width)
-            //      .HasColumnName("Width")
-            //      .HasColumnType("int");
-
-            //    onb.Property(d => d.Depth)
-            //      .HasColumnName("Depth")
-            //      .HasColumnType("int");
-            //});
         }
     }
 }

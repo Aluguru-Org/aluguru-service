@@ -8,13 +8,19 @@ namespace Mubbi.Marketplace.Register.Domain.Tests
         [Fact]
         public void CreateName_WhenEmptyFirstName_ShouldThrowDomainException()
         {
-            Assert.Throws<Exception>(() => new Name("", "Almeida"));
+            Assert.Throws<Exception>(() => new Name("", "Almeida", "Felipe de Almeida"));
         }
 
         [Fact]
         public void CreateName_WhenEmptyLastName_ShouldThrowDomainException()
         {
-            Assert.Throws<Exception>(() => new Name("Felipe", ""));
+            Assert.Throws<Exception>(() => new Name("Felipe", "", "Felipe de Almeida"));
+        }
+
+        [Fact]
+        public void CreateName_WhenEmptyFullName_ShouldThrowDomainException()
+        {
+            Assert.Throws<Exception>(() => new Name("Felipe", "Almeida", ""));
         }
     }
 }
