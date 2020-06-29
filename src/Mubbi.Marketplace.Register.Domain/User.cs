@@ -1,34 +1,34 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Mubbi.Marketplace.Domain;
 using PampaDevs.Utils;
+using static PampaDevs.Utils.Helpers.IdHelper;
 
 namespace Mubbi.Marketplace.Register.Domain.Models
 {
     public class User : AggregateRoot
     {
         private User() { }
-        public User(string username, int password, ERoles role, Name name, Email email, Address address, Document document)
+        public User(Email email, string password, ERoles role, string fullName, Address address, Document document)
+            : base(NewId())
         {
-            Username = username;
             Password = password;
             Role = role;
-            Name = name;
+            FullName = fullName;
             Email = email;
             Address = address;
             Document = document;
         }
 
-        public string Username { get; private set; }
-        public int Password { get; private set; }
-        public ERoles Role { get; private set; }        
-        public Name Name { get; private set; }
         public Email Email { get; private set; }
+        public string Password { get; private set; }
+        public ERoles Role { get; private set; }        
+        public string FullName { get; private set; }
         public Address Address { get; private set; }
         public Document Document { get; private set; }
 
         protected override void ValidateCreation()
         {
-            Ensure.NotNullOrEmpty(Username, "The field Username from User cannot be empty");
+            Ensure.That<DomainException>(!string.IsNullOrEmpty(Password), "The field Password from User cannot be created null or empty");
             Ensure.NotEqual(ERoles.Admin, Role, "The field Role from User cannot be created as Admin");
         }
     }

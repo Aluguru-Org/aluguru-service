@@ -3,6 +3,7 @@
     public enum ERoles
     {
         User = 0,
+        Company,
         Admin
     }
 }
