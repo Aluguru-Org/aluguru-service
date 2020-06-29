@@ -15,7 +15,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1.Attributes
             if (!context.ModelState.IsValid)
             {
                 var errors = context.ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage).ToList();
-                var response = new ApiResponse(false, "The request model is not valid.", errors);
+                var response = new ApiResponse<List<string>>(false, "The request model is not valid.", errors);
                 context.Result = new BadRequestObjectResult(response);
             }
         }

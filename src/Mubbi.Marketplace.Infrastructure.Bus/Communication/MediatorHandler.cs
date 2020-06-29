@@ -1,9 +1,6 @@
 ﻿using MediatR;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Mubbi.Marketplace.Infrastructure.Bus.Communication
@@ -25,11 +22,6 @@ namespace Mubbi.Marketplace.Infrastructure.Bus.Communication
         public async Task PublishNotification<T>(T notification) where T : DomainNotification
         {
             await _mediator.Publish(notification);
-        }
-
-        public async Task SendCommand<T>(T command) where T : Command
-        {
-            await _mediator.Send(command);
         }
 
         public async Task<TResponse> SendCommand<T, TResponse>(T command) where T : Command<TResponse>

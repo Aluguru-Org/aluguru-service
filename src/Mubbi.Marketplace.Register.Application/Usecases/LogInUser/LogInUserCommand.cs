@@ -29,4 +29,9 @@ namespace Mubbi.Marketplace.Register.Application.Usecases.LogInUser
             RuleFor(x => x.Password).NotEmpty();
         }
     }
+
+    public class LogInUserCommandResponse
+    {
+        public string Token { get; set; }
+    }
 }

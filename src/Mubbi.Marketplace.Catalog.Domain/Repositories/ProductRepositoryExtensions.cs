@@ -17,8 +17,6 @@ namespace Mubbi.Marketplace.Catalog.Repositories
                 productQueryable => productQueryable.Include(x => x.Category),
                 !disableTracking);
 
-            Ensure.NotNull(product, $"Could not find the product [{product}]");
-
             return product;
         }
     }

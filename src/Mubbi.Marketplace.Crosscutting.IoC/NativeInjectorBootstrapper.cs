@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Mubbi.Marketplace.Data;
 using Mubbi.Marketplace.Infrastructure.Bus.Communication;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
+using Mubbi.Marketplace.Infrastructure.Bus.Messages.Handlers;
 using Mubbi.Marketplace.Infrastructure.Data;
 using Mubbi.Marketplace.Register.Application.Usecases.LogInUser;
 using System;
@@ -21,6 +22,8 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
             services.AddScoped<IEfUnitOfWork<MubbiContext>, EfUnitOfWork<MubbiContext>>();
 
             services.AddMediatR(assemblies);
+
+            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(CommandValidationHandler<,>));
 
             services.AddScoped<IMediatorHandler, MediatorHandler>();
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();

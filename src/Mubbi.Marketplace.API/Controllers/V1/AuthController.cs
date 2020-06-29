@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -30,14 +31,14 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         [SwaggerOperation(Summary = "LogIn a user", Description = "Try to LogIn a existing user")]
         [Consumes("application/json")]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(LogInUserCommandResponse))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse))]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ApiResponse<LogInUserCommandResponse>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> LogIn([FromBody] UserLoginViewModel viewModel)
         {
             var command = new LogInUserCommand(viewModel.UserName, viewModel.Password);
-            var response = await _mediator.SendCommand<LogInUserCommand, LogInUserCommandResponse>(command);
-            return PostResponse(nameof(LogIn), response);
+            var response = await _mediatorHandler.SendCommand<LogInUserCommand, LogInUserCommandResponse>(command);
+            return PostResponse(nameof(LogIn), response); 
         }
     }
 }
