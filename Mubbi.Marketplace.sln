@@ -31,7 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A8EE8DE1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Register.Domain", "src\Mubbi.Marketplace.Register.Domain\Mubbi.Marketplace.Register.Domain.csproj", "{8DD02A95-2F56-44CD-B5AC-2967E57A510E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Register.Domain.Tests", "tests\Mubbi.Marketplace.Register.Domain.Tests\Mubbi.Marketplace.Register.Domain.Tests.csproj", "{B4480873-B718-4AD5-8313-0DDDD026E13B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Register.Domain.UnitTests", "tests\Mubbi.Marketplace.Register.Domain.Tests\Mubbi.Marketplace.Register.Domain.UnitTests.csproj", "{B4480873-B718-4AD5-8313-0DDDD026E13B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Catalog.Application", "src\Mubbi.Marketplace.Catalog.Application\Mubbi.Marketplace.Catalog.Application.csproj", "{42C067A4-EE82-484E-BF53-AFD05A2F74FA}"
 EndProject
@@ -68,7 +68,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Data", "s
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Crosscutting", "Crosscutting", "{4583262A-C887-40E3-8D5E-2A0C67406B1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mubbi.Marketplace.Crosscutting.IoC", "src\Mubbi.Marketplace.Crosscutting.IoC\Mubbi.Marketplace.Crosscutting.IoC.csproj", "{8AF9545F-8F3A-459C-8609-045496CD068A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Crosscutting.IoC", "src\Mubbi.Marketplace.Crosscutting.IoC\Mubbi.Marketplace.Crosscutting.IoC.csproj", "{8AF9545F-8F3A-459C-8609-045496CD068A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mubbi.Marketplace.Register.Application.UnitTests", "tests\Mubbi.Marketplace.Register.Application.UnitTests\Mubbi.Marketplace.Register.Application.UnitTests.csproj", "{B0D2DC1E-255A-402C-8FC9-11A692B92AD5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -144,6 +146,10 @@ Global
 		{8AF9545F-8F3A-459C-8609-045496CD068A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8AF9545F-8F3A-459C-8609-045496CD068A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8AF9545F-8F3A-459C-8609-045496CD068A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0D2DC1E-255A-402C-8FC9-11A692B92AD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0D2DC1E-255A-402C-8FC9-11A692B92AD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0D2DC1E-255A-402C-8FC9-11A692B92AD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0D2DC1E-255A-402C-8FC9-11A692B92AD5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -179,6 +185,7 @@ Global
 		{305337A2-8126-4652-9E7B-A1F24FBEC376} = {B70520C1-48AF-44B0-B8D7-9A1190B66ED3}
 		{4583262A-C887-40E3-8D5E-2A0C67406B1F} = {095C17CE-6F36-4CBB-8036-D361C4206076}
 		{8AF9545F-8F3A-459C-8609-045496CD068A} = {4583262A-C887-40E3-8D5E-2A0C67406B1F}
+		{B0D2DC1E-255A-402C-8FC9-11A692B92AD5} = {A8EE8DE1-8777-4A6D-976F-D835DBC92DA9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7D3D5A09-667D-49DA-B8AA-6194FE3C3F51}

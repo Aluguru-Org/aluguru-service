@@ -11,7 +11,7 @@ namespace Mubbi.Marketplace.Infrastructure.Data
 {
     public interface IEfUnitOfWork : IUnitOfWork { }
 
-    public interface IEfUnitOfWork<TDbContext> : IUnitOfWork where TDbContext : DbContext { }
+    public interface IEfUnitOfWork<TDbContext> : IEfUnitOfWork where TDbContext : DbContext { }
 
     public class EfUnitOfWork<TDbContext> : IEfUnitOfWork<TDbContext> where TDbContext : DbContext
     {
@@ -55,9 +55,9 @@ namespace Mubbi.Marketplace.Infrastructure.Data
             return _context.SaveChanges();
         }
 
-        public Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
-            return _context.SaveChangesAsync(cancellationToken);
+            return await _context.SaveChangesAsync(cancellationToken);
         }
 
         public void Dispose()

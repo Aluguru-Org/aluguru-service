@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -20,11 +21,8 @@ namespace Mubbi.Marketplace.API.Controllers.V1
     [ApiController]
     public class AuthController : ApiController
     {
-        public AuthController(INotificationHandler<DomainNotification> notifications, IMediatorHandler mediator)
-            : base(notifications, mediator)
-        {
-
-        }
+        public AuthController(INotificationHandler<DomainNotification> notifications, IMediatorHandler mediator, IMapper mapper)
+            : base(notifications, mediator, mapper) { }
 
         [HttpPost]
         [Route("login")]

@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Mubbi.Marketplace.API.Controllers.V1.Attributes;
@@ -21,11 +22,8 @@ namespace Mubbi.Marketplace.API.Controllers.V1
     [ApiController]
     public class UserController : ApiController
     {
-        public UserController(INotificationHandler<DomainNotification> notifications, IMediatorHandler mediator)
-            : base(notifications, mediator)
-        {
-
-        }
+        public UserController(INotificationHandler<DomainNotification> notifications, IMediatorHandler mediator, IMapper mapper)
+            : base(notifications, mediator, mapper) { }
 
         [HttpGet]
         [Route("{id}")]
@@ -37,8 +35,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> Get([FromRoute] Guid id)
         {
-            var command = new GetUserByIdCommand(id);
-            var response = await _mediatorHandler.SendCommand<GetUserByIdCommand, GetUserByIdCommandResponse>(command);
+            var response = await _mediatorHandler.SendCommand<GetUserByIdCommand, GetUserByIdCommandResponse>(new GetUserByIdCommand(id));
             return GetResponse(response);
         }
 
@@ -52,20 +49,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> Post([FromBody] UserRegistrationViewModel viewModel)
         {
-            var command = new CreateUserCommand(
-                viewModel.FullName, 
-                viewModel.Password, 
-                viewModel.Email, 
-                viewModel.Role,
-                viewModel.Document.DocumentType, 
-                viewModel.Document.Number,
-                viewModel.Address.Number, 
-                viewModel.Address.State, 
-                viewModel.Address.Neighborhood, 
-                viewModel.Address.City, 
-                viewModel.Address.State, 
-                viewModel.Address.Country, 
-                viewModel.Address.ZipCode);
+            var command = _mapper.Map<CreateUserCommand>(viewModel);
 
             var response = await _mediatorHandler.SendCommand<CreateUserCommand, CreateUserCommandResponse>(command);
 

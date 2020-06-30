@@ -10,6 +10,6 @@ namespace Mubbi.Marketplace.Register.Application.ViewModels
         /// <summary>
         /// Document type - CNPJ or CPF
         /// </summary>
-        public string DocumentType { get; set; }
+        public string Type { get; set; }
     }
 }

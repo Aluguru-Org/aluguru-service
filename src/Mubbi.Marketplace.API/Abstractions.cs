@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace Mubbi.Marketplace.API
 {
     public static class Abstractions
-    {
+    {        
         public static IServiceCollection AddMubbiSwagger(this IServiceCollection services)
         {
             return services.AddSwaggerGen(ConfigureSwaggerOptions);

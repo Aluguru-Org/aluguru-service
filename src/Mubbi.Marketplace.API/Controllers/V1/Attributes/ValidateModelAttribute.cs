@@ -10,7 +10,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1.Attributes
 {
     public class ValidateModelAttribute : ActionFilterAttribute
     {
-        public override void OnActionExecuted(ActionExecutedContext context)
+        public override void OnActionExecuting(ActionExecutingContext context)
         {
             if (!context.ModelState.IsValid)
             {

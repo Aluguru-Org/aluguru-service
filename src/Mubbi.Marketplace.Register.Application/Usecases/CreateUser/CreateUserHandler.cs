@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
+using Mubbi.Marketplace.Domain;
 using Mubbi.Marketplace.Infrastructure.Data;
 using Mubbi.Marketplace.Register.Application.ViewModels;
 using Mubbi.Marketplace.Register.Domain;
@@ -13,11 +15,13 @@ namespace Mubbi.Marketplace.Register.Application.Usecases.CreateUser
 {
     public class CreateUserHandler : IRequestHandler<CreateUserCommand, CreateUserCommandResponse>
     {
-        private readonly IEfUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public CreateUserHandler(IEfUnitOfWork unitOfWork)
+        public CreateUserHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<CreateUserCommandResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -45,28 +49,7 @@ namespace Mubbi.Marketplace.Register.Application.Usecases.CreateUser
 
             return new CreateUserCommandResponse()
             {
-                User = new UserViewModel()
-                {
-                    Id = user.Id,
-                    Role = user.Role.ToString(),
-                    FullName = user.FullName,
-                    Email = user.Email.Address,
-                    Address = new ViewModels.AddressViewModel
-                    {
-                        Number = user.Address.Number,
-                        Street = user.Address.Street,
-                        Neighborhood = user.Address.Neighborhood,
-                        City = user.Address.City,
-                        State = user.Address.State,
-                        Country = user.Address.Country,
-                        ZipCode = user.Address.ZipCode
-                    },
-                    Document = new ViewModels.DocumentViewModel
-                    {
-                        DocumentType = user.Document.DocumentType.ToString(),
-                        Number = user.Document.Number
-                    }
-                }
+                User = _mapper.Map<UserViewModel>(user)
             };
         }
     }

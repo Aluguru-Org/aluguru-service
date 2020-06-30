@@ -1,3 +1,4 @@
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,6 +10,7 @@ using Mubbi.Marketplace.API.Middleware;
 using Mubbi.Marketplace.Crosscutting.IoC;
 using Mubbi.Marketplace.Data;
 using Mubbi.Marketplace.Infrastructure.Bus.Communication;
+using Mubbi.Marketplace.Register.Application.AutoMapper;
 using System.Reflection;
 
 namespace Mubbi.Marketplace.API
@@ -24,7 +26,8 @@ namespace Mubbi.Marketplace.API
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {          
+        {           
+
             services.AddMubbiSwagger();
 
             services.AddServiceComponents(Configuration, typeof(Startup).Assembly);

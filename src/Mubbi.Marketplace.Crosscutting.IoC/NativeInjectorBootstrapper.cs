@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,8 +10,9 @@ using Mubbi.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages.Handlers;
 using Mubbi.Marketplace.Infrastructure.Data;
 using Mubbi.Marketplace.Infrastructure.UnitOfWork;
+using Mubbi.Marketplace.Register.Application.AutoMapper;
+using Mubbi.Marketplace.Register.Application.Usecases.CreateUser;
 using Mubbi.Marketplace.Register.Application.Usecases.LogInUser;
-using System;
 using System.Reflection;
 
 namespace Mubbi.Marketplace.Crosscutting.IoC
@@ -21,8 +23,9 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
         {
             services.AddDbContext<MubbiContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddAutoMapper(typeof(RegisterContextMappingConfiguration));
+
             services.AddScoped<IUnitOfWork, EfUnitOfWork<MubbiContext>>();
-            services.AddScoped<IEfUnitOfWork<MubbiContext>, EfUnitOfWork<MubbiContext>>();
 
             services.AddMediatR(assemblies);
 
@@ -33,6 +36,7 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
 
             services.AddScoped<IRequestHandler<LogInUserCommand, LogInUserCommandResponse>, LogInUserHandler>();
+            services.AddScoped<IRequestHandler<CreateUserCommand, CreateUserCommandResponse>, CreateUserHandler>();
 
             return services;
         }

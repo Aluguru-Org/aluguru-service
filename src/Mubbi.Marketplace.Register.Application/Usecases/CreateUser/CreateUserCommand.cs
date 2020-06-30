@@ -27,8 +27,8 @@ namespace Mubbi.Marketplace.Register.Application.Usecases.CreateUser
         public string FullName { get; private set; }
         public string Password { get; private set; }
         public string Email { get; private set; }
-        public string Role { get; private set; }
         public string DocumentType { get; private set; }
+        public string Role { get; private set; }
         public string DocumentNumber { get; private set; }
         public string AddressNumber { get; private set; }
         public string AddressStreet { get; private set; }

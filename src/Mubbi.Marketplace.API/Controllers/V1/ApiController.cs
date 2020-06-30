@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Mubbi.Marketplace.API.Models;
 using Mubbi.Marketplace.Infrastructure.Bus.Communication;
@@ -11,11 +12,13 @@ namespace Mubbi.Marketplace.API.Controllers.V1
     {
         protected readonly DomainNotificationHandler _notifications;
         protected readonly IMediatorHandler _mediatorHandler;
+        protected readonly IMapper _mapper;
 
-        public ApiController(INotificationHandler<DomainNotification> notifications, IMediatorHandler mediator)
+        public ApiController(INotificationHandler<DomainNotification> notifications, IMediatorHandler mediator, IMapper mapper)
         {
             _notifications = notifications as DomainNotificationHandler;
             _mediatorHandler = mediator;
+            _mapper = mapper;
         }
 
         protected bool IsValidOperation() => !_notifications.HasNotifications();
