@@ -1,5 +1,6 @@
 ﻿using Mubbi.Marketplace.Domain;
 using PampaDevs.Utils;
+using System;
 using System.Collections.Generic;
 using static PampaDevs.Utils.Helpers.IdHelper;
 
@@ -7,19 +8,24 @@ namespace Mubbi.Marketplace.Catalog.Domain
 {
     public class Category : AggregateRoot
     {
+        private readonly List<Category> _childrenCategories;
         public Category(string name, int code)
             : base(NewId())
         {
             Name = name;
             Code = code;
 
+            _childrenCategories = new List<Category>();
+
             ValidateCreation();
         }
 
         public string Name { get; private set; }
         public int Code { get; private set; }
-
-        public ICollection<Product> Products { get; set; }
+        public Guid? MainCategoryId { get; private set; }
+        public Category MainCategory { get; set; }
+        public IReadOnlyCollection<Category> ChildrenCategories { get { return _childrenCategories; } }
+        public List<Product> Products { get; set; }
 
         protected override void ValidateCreation()
         {

@@ -25,7 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9541875E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Catalog.Domain", "src\Mubbi.Marketplace.Catalog.Domain\Mubbi.Marketplace.Catalog.Domain.csproj", "{D8A3C2DB-44CB-4C58-9EB8-6F46B7E74E8B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Catalog.Domain.Tests", "tests\Mubbi.Marketplace.Catalog.Domain.Tests\Mubbi.Marketplace.Catalog.Domain.Tests.csproj", "{4B7BAABD-24EE-4CB5-B1A6-2983D2A27B0B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Catalog.Domain.UnitTests", "tests\Mubbi.Marketplace.Catalog.Domain.Tests\Mubbi.Marketplace.Catalog.Domain.UnitTests.csproj", "{4B7BAABD-24EE-4CB5-B1A6-2983D2A27B0B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A8EE8DE1-8777-4A6D-976F-D835DBC92DA9}"
 EndProject
@@ -35,7 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Register.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Catalog.Application", "src\Mubbi.Marketplace.Catalog.Application\Mubbi.Marketplace.Catalog.Application.csproj", "{42C067A4-EE82-484E-BF53-AFD05A2F74FA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Catalog.Application.Tests", "tests\Mubbi.Marketplace.Catalog.Application.Tests\Mubbi.Marketplace.Catalog.Application.Tests.csproj", "{339745BE-C625-4EB8-A72B-3A776BEF622B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Catalog.Application.UnitTests", "tests\Mubbi.Marketplace.Catalog.Application.Tests\Mubbi.Marketplace.Catalog.Application.UnitTests.csproj", "{339745BE-C625-4EB8-A72B-3A776BEF622B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Rent.Domain", "src\Mubbi.Marketplace.Rent.Domain\Mubbi.Marketplace.Rent.Domain.csproj", "{20CD8EB5-8DDE-4938-B0DC-C4A577CD4D25}"
 EndProject
@@ -70,7 +70,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Crosscutting", "Crosscuttin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Crosscutting.IoC", "src\Mubbi.Marketplace.Crosscutting.IoC\Mubbi.Marketplace.Crosscutting.IoC.csproj", "{8AF9545F-8F3A-459C-8609-045496CD068A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mubbi.Marketplace.Register.Application.UnitTests", "tests\Mubbi.Marketplace.Register.Application.UnitTests\Mubbi.Marketplace.Register.Application.UnitTests.csproj", "{B0D2DC1E-255A-402C-8FC9-11A692B92AD5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Register.Application.UnitTests", "tests\Mubbi.Marketplace.Register.Application.UnitTests\Mubbi.Marketplace.Register.Application.UnitTests.csproj", "{B0D2DC1E-255A-402C-8FC9-11A692B92AD5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

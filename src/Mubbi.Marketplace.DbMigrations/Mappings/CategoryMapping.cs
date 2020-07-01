@@ -18,6 +18,10 @@ namespace Mubbi.Marketplace.Data.Mappings
                    .WithOne(p => p.Category)
                    .HasForeignKey(p => p.CategoryId);
 
+            builder.HasMany(c => c.ChildrenCategories)
+                .WithOne(c => c.MainCategory)
+                .HasForeignKey(c => c.MainCategoryId);
+
             builder.ToTable("Category");
         }
     }

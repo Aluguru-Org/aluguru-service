@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Mubbi.Marketplace.Catalog.Application.AutoMapper;
 using Mubbi.Marketplace.Data;
 using Mubbi.Marketplace.Domain;
 using Mubbi.Marketplace.Infrastructure.Bus.Communication;
@@ -24,7 +25,7 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
         {
             services.AddDbContext<MubbiContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddAutoMapper(typeof(RegisterContextMappingConfiguration));
+            services.AddAutoMapper(typeof(RegisterContextMappingConfiguration), typeof(CatalogContextMappingConfiguration));
 
             services.AddScoped<IUnitOfWork, EfUnitOfWork<MubbiContext>>();
 

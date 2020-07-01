@@ -16,13 +16,11 @@ namespace Mubbi.Marketplace.Register.Application.Usecases.DeleteUser
     public class DeleteUserHandler : IRequestHandler<DeleteUserCommand, bool>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
         private readonly IMediatorHandler _mediatorHandler;
 
-        public DeleteUserHandler(IUnitOfWork unitOfWork, IMapper mapper, IMediatorHandler mediatorHandler)
+        public DeleteUserHandler(IUnitOfWork unitOfWork, IMediatorHandler mediatorHandler)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
             _mediatorHandler = mediatorHandler;
         }
 

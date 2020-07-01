@@ -25,8 +25,6 @@ namespace Mubbi.Marketplace.Catalog.Domain
             MinRentTime = minRentTime;
             MaxRentTime = maxRentTime;
 
-            CreationDate = DateTime.UtcNow;
-
             ValidateCreation();
         }
 
@@ -39,8 +37,7 @@ namespace Mubbi.Marketplace.Catalog.Domain
         public int StockQuantity { get; private set; }
         public ERentType RentType { get; private set; }
         public TimeSpan MinRentTime { get; private set; }
-        public TimeSpan? MaxRentTime { get; private set; }
-        public DateTime CreationDate { get; private set; }        
+        public TimeSpan? MaxRentTime { get; private set; }     
 
         //EF Relational
         public virtual Category Category { get; set; }        

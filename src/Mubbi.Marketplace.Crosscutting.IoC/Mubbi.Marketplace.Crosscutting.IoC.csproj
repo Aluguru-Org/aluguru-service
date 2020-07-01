@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Mubbi.Marketplace.Catalog.Application\Mubbi.Marketplace.Catalog.Application.csproj" />
     <ProjectReference Include="..\Mubbi.Marketplace.DbMigrations\Mubbi.Marketplace.Data.csproj" />
     <ProjectReference Include="..\Mubbi.Marketplace.Register.Application\Mubbi.Marketplace.Register.Application.csproj" />
   </ItemGroup>
