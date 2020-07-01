@@ -39,7 +39,7 @@ namespace Mubbi.Marketplace.Infrastructure.Data
 
         public int Delete(TEntity entity)
         {
-            var entry = _dbSet.Remove(entity);
+            _dbSet.Remove(entity);
             return 1;
         }
 

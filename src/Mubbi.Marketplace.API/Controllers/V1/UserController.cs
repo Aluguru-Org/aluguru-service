@@ -7,6 +7,7 @@ using Mubbi.Marketplace.API.Models;
 using Mubbi.Marketplace.Infrastructure.Bus.Communication;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using Mubbi.Marketplace.Register.Application.Usecases.CreateUser;
+using Mubbi.Marketplace.Register.Application.Usecases.DeleteUser;
 using Mubbi.Marketplace.Register.Application.Usecases.GetUserById;
 using Mubbi.Marketplace.Register.Application.ViewModels;
 using Swashbuckle.AspNetCore.Annotations;
@@ -54,6 +55,20 @@ namespace Mubbi.Marketplace.API.Controllers.V1
             var response = await _mediatorHandler.SendCommand<CreateUserCommand, CreateUserCommandResponse>(command);
 
             return PostResponse(nameof(Post), response);
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        [SwaggerOperation(Summary = "Delete a user", Description = "Delete a existing user. You need to inform the user Id.")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task<ActionResult> Delete([FromRoute] Guid id)
+        {
+            await _mediatorHandler.SendCommand<DeleteUserCommand, bool>(new DeleteUserCommand(id));
+            return DeleteResponse();
         }
     }
 }

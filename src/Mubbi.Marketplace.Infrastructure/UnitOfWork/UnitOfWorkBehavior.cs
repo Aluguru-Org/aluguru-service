@@ -17,7 +17,7 @@ namespace Mubbi.Marketplace.Infrastructure.UnitOfWork
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
             var result = await next();
-            _unitOfWork.SaveChanges();
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
             return result;
         }
     }

@@ -57,6 +57,6 @@ namespace Mubbi.Marketplace.Catalog.Application.ViewModels
         [Required(ErrorMessage = "The field {0} is required")]
         public int Depth { get; set; }
 
-        public IEnumerable<CategoryViewModel> Categproes { get; set; }
+        public IEnumerable<CategoryViewModel> Categories { get; set; }
     }
 }

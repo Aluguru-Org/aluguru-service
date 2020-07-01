@@ -12,6 +12,7 @@ using Mubbi.Marketplace.Infrastructure.Data;
 using Mubbi.Marketplace.Infrastructure.UnitOfWork;
 using Mubbi.Marketplace.Register.Application.AutoMapper;
 using Mubbi.Marketplace.Register.Application.Usecases.CreateUser;
+using Mubbi.Marketplace.Register.Application.Usecases.DeleteUser;
 using Mubbi.Marketplace.Register.Application.Usecases.LogInUser;
 using System.Reflection;
 
@@ -37,6 +38,7 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
 
             services.AddScoped<IRequestHandler<LogInUserCommand, LogInUserCommandResponse>, LogInUserHandler>();
             services.AddScoped<IRequestHandler<CreateUserCommand, CreateUserCommandResponse>, CreateUserHandler>();
+            services.AddScoped<IRequestHandler<DeleteUserCommand, bool>, DeleteUserHandler>();
 
             return services;
         }

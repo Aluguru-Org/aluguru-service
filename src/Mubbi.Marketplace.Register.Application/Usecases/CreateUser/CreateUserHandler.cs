@@ -1,13 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
 using Mubbi.Marketplace.Domain;
-using Mubbi.Marketplace.Infrastructure.Data;
 using Mubbi.Marketplace.Register.Application.ViewModels;
 using Mubbi.Marketplace.Register.Domain;
 using Mubbi.Marketplace.Register.Domain.Models;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 

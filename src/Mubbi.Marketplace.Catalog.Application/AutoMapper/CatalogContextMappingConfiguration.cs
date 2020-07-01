@@ -1,15 +1,12 @@
 ﻿using AutoMapper;
 using Mubbi.Marketplace.Catalog.Application.ViewModels;
 using Mubbi.Marketplace.Catalog.Domain;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Mubbi.Marketplace.Catalog.Application.AutoMapper
 {
-    public class ViewModelToDomainMappingProfile : Profile
+    public class CatalogContextMappingConfiguration : Profile
     {
-        public ViewModelToDomainMappingProfile()
+        public CatalogContextMappingConfiguration()
         {
             CreateMap<ProductViewModel, Product>()
                 .ConstructUsing(p =>
