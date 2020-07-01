@@ -15,7 +15,7 @@ namespace Mubbi.Marketplace.Register.Application.Usecases.GetUserById
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public GetUserByIdHandler(IEfUnitOfWork unitOfWork, IMapper mapper)
+        public GetUserByIdHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -27,10 +27,7 @@ namespace Mubbi.Marketplace.Register.Application.Usecases.GetUserById
 
             var user = await userRepository.GetUserAsync(command.UserId);
 
-            return new GetUserByIdCommandResponse()
-            {
-                User = _mapper.Map<UserViewModel>(user)
-            };
+            return new GetUserByIdCommandResponse { User = _mapper.Map<UserViewModel>(user) };
         }
     }
 }
