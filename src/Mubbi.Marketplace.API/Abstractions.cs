@@ -18,6 +18,21 @@ namespace Mubbi.Marketplace.API
             return services.AddSwaggerGen(ConfigureSwaggerOptions);
         }
 
+        public static IApplicationBuilder UseMubbiSwagger(this IApplicationBuilder app)
+        {
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mubbi API V1");
+                c.RoutePrefix = string.Empty;
+            });
+
+            return app;
+        }
+
         private static void ConfigureSwaggerOptions(SwaggerGenOptions options)
         {
             //TODO: Swagger configuration should be loaded
@@ -39,21 +54,6 @@ namespace Mubbi.Marketplace.API
             });
 
             options.EnableAnnotations();
-        }
-
-        public static IApplicationBuilder UseMubbiSwagger(this IApplicationBuilder app)
-        {
-            app.UseSwagger();
-
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
-            // specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mubbi API V1");
-                c.RoutePrefix = string.Empty;
-            });
-
-            return app;
         }
     }
 }

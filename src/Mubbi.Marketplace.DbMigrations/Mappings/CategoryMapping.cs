@@ -4,12 +4,10 @@ using Mubbi.Marketplace.Catalog.Domain;
 
 namespace Mubbi.Marketplace.Data.Mappings
 {
-    public class CategoryMapping : IEntityTypeConfiguration<Category>
+    public class CategoryMapping : BaseMapConfiguration<Category>
     {
-        public void Configure(EntityTypeBuilder<Category> builder)
+        public override void Configure(EntityTypeBuilder<Category> builder)
         {
-            builder.HasKey(c => c.Id);
-
             builder.Property(c => c.Name)
                    .IsRequired()
                    .HasColumnType("varchar(250)");
@@ -18,7 +16,7 @@ namespace Mubbi.Marketplace.Data.Mappings
                    .WithOne(p => p.Category)
                    .HasForeignKey(p => p.CategoryId);
 
-            builder.HasMany(c => c.ChildrenCategories)
+            builder.HasMany(c => c.SubCategories)
                 .WithOne(c => c.MainCategory)
                 .HasForeignKey(c => c.MainCategoryId);
 

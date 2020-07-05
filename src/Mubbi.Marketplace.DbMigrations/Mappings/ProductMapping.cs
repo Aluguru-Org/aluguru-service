@@ -1,26 +1,33 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Mubbi.Marketplace.Catalog.Domain;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Mubbi.Marketplace.Data.Mappings
 {
-    public class ProductMapping : IEntityTypeConfiguration<Product>
+    public class ProductMapping : BaseMapConfiguration<Product>
     {
-        public void Configure(EntityTypeBuilder<Product> builder)
+        public override void Configure(EntityTypeBuilder<Product> builder)
         {
-            builder.HasKey(p => p.Id);
+            base.Configure(builder);
 
             builder.Property(p => p.Name)
-                   .IsRequired()
-                   .HasColumnType("varchar(250)");            
+                   .IsRequired();            
 
             builder.Property(p => p.Description)
-                    .IsRequired()
-                   .HasColumnType("varchar(1000)");
+                    .IsRequired();
 
-            builder.Property(p => p.ImageUrl)
+            builder.Property(p => p.ImageUrls)
                    .IsRequired()
-                   .HasColumnType("varchar(250)");
+                   .HasConversion(
+                        v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
+                        v => JsonConvert.DeserializeObject<IReadOnlyCollection<string>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
+                    );
+
+            builder.HasMany(x => x.CustomFields)
+                .WithOne(x => x.Product)
+                .HasForeignKey(x => x.ProductId);
 
             builder.ToTable("Product");
         }

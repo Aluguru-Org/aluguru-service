@@ -69,7 +69,7 @@ namespace Mubbi.Marketplace.Register.Application.AutoMapper
                         x.FullName,
                         x.Password,
                         x.Email,
-                        x.Role,
+                        x.Role, 
                         x.Document.Type,
                         x.Document.Number,
                         x.Address.Number,

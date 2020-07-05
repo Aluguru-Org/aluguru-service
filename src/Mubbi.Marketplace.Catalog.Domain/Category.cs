@@ -9,6 +9,10 @@ namespace Mubbi.Marketplace.Catalog.Domain
     public class Category : AggregateRoot
     {
         private readonly List<Category> _childrenCategories;
+        private Category()
+        {
+            _childrenCategories = new List<Category>();
+        }
         public Category(string name, int code)
             : base(NewId())
         {
@@ -24,8 +28,9 @@ namespace Mubbi.Marketplace.Catalog.Domain
         public int Code { get; private set; }
         public Guid? MainCategoryId { get; private set; }
         public Category MainCategory { get; set; }
-        public IReadOnlyCollection<Category> ChildrenCategories { get { return _childrenCategories; } }
+        public IReadOnlyCollection<Category> SubCategories { get { return _childrenCategories; } }
         public List<Product> Products { get; set; }
+               
 
         protected override void ValidateCreation()
         {

@@ -19,6 +19,15 @@ namespace Mubbi.Marketplace.Register.Domain.Repositories
             return user;
         }
 
+        public static async Task<User> GetUserByEmailAsync(this IQueryRepository<User> repository, string email, bool disableTracking = true)
+        {
+            var user = await repository.Queryable()
+                .Where(x => x.Email.Address == email)
+                .FirstOrDefaultAsync();
+
+            return user;
+        }
+
         public static async Task<List<User>> GetUsersByRoleAsync(this IQueryRepository<User> repository, ERoles role, bool disableTracking = true)
         {
             var users = await repository.Queryable()

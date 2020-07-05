@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Mubbi.Marketplace.API.Controllers.V1.Attributes;
 using Mubbi.Marketplace.API.Models;
+using Mubbi.Marketplace.Catalog.Application.Usecases.CreateCategory;
 using Mubbi.Marketplace.Catalog.Application.Usecases.CreateProduct;
+using Mubbi.Marketplace.Catalog.Application.Usecases.GetCategories;
 using Mubbi.Marketplace.Catalog.Application.Usecases.GetProducts;
 using Mubbi.Marketplace.Catalog.Application.ViewModels;
 using Mubbi.Marketplace.Domain;
@@ -21,38 +23,38 @@ namespace Mubbi.Marketplace.API.Controllers.V1
     [Route("api/v1/[controller]")]
     [ValidateModel]
     [ApiController]
-    public class ProductController : ApiController
+    public class CategoryController : ApiController
     {
-        public ProductController(INotificationHandler<DomainNotification> notifications, IMediatorHandler mediatorHandler, IMapper mapper)
-            : base(notifications, mediatorHandler, mapper) { }
+        public CategoryController(INotificationHandler<DomainNotification> notifications, IMediatorHandler mediator, IMapper mapper)
+            : base(notifications, mediator, mapper) { }
 
-        [HttpPost]
-        [Route("paginate")]
-        [SwaggerOperation(Summary = "Get products", Description = "Return a list of paginated products by pagination creteria")]
+        [HttpGet]
+        [Route("")]
+        [SwaggerOperation(Summary = "Get all categories", Description = "Get a list of all categories")]
         [Consumes("application/json")]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiResponse<GetProductsCommandResponse>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiResponse<GetAllCategoriesCommandResponse>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> GetProducts([SwaggerParameter("The pagination criteria", Required = true)][FromBody] PaginateCriteria paginateCriteria)
+        public async Task<ActionResult> GetAll()
         {
-            var response = await _mediatorHandler.SendCommand<GetProductsCommand, GetProductsCommandResponse> (new GetProductsCommand(paginateCriteria));
+            var response = await _mediatorHandler.SendCommand<GetAllCategoriesCommand, GetAllCategoriesCommandResponse>(new GetAllCategoriesCommand());
             return GetResponse(response);
         }
 
         [HttpPost]
         [Route("")]
-        [SwaggerOperation(Summary = "Create Product", Description = "Create a new product in the catalog")]
+        [SwaggerOperation(Summary = "Create a new category", Description = "Used to create a new main category")]
         [Consumes("application/json")]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiResponse<>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiResponse<CreateCategoryCommandResponse>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> Post([FromBody] CreateProductViewModel viewModel)
+        public async Task<ActionResult> CreateCategory([FromBody]CreateCategoryViewModel viewModel)
         {
-            var command = _mapper.Map<CreateProductCommand>(viewModel);
-            var response = await _mediatorHandler.SendCommand<CreateProductCommand, CreateProductCommandResponse>(command);
-            return GetResponse(response);
+            var command = _mapper.Map<CreateCategoryCommand>(viewModel);
+            var response = await _mediatorHandler.SendCommand<CreateCategoryCommand, CreateCategoryCommandResponse>(command);
+            return PostResponse(nameof(CreateCategory), response);
         }
     }
 }

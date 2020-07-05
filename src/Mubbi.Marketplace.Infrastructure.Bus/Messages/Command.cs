@@ -14,6 +14,9 @@ namespace Mubbi.Marketplace.Infrastructure.Bus.Messages
             Timestamp = DateTime.UtcNow;
         }
 
-        public abstract bool IsValid();
+        public virtual bool IsValid()
+        {
+            return true;
+        }
     }
 }
