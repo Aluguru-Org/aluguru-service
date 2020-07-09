@@ -13,9 +13,10 @@ namespace Mubbi.Marketplace.Catalog.Domain
         {
             _childrenCategories = new List<Category>();
         }
-        public Category(string name, int code)
+        public Category(string name, int code, Guid? mainCategoryId)
             : base(NewId())
         {
+            MainCategoryId = mainCategoryId;
             Name = name;
             Code = code;
 
@@ -34,8 +35,12 @@ namespace Mubbi.Marketplace.Catalog.Domain
 
         protected override void ValidateCreation()
         {
-            Ensure.NotNullOrEmpty(Name, "The field Name cannot be empty");
-            Ensure.That(Code > 0, "The field Code cannot be smaller or equal to 0");            
+            Ensure.That<DomainException>(!string.IsNullOrEmpty(Name), "The field Name cannot be empty");
+            Ensure.That<DomainException>(Code > 0, "The field Code cannot be smaller or equal to 0");
+            if (MainCategoryId != null)
+            {
+                Ensure.That<DomainException>(MainCategoryId != Guid.Empty, "The field MainCategoryId cannot be empty");
+            }
         }
 
         public override string ToString()

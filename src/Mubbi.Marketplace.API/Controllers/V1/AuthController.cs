@@ -29,7 +29,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         [SwaggerOperation(Summary = "LogIn a user", Description = "Try to LogIn a existing user")]
         [Consumes("application/json")]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ApiResponse<LogInUserCommandResponse>))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(LogInUserCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> LogIn([FromBody] UserLoginViewModel viewModel)

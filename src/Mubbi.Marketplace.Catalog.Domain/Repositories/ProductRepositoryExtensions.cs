@@ -14,7 +14,7 @@ namespace Mubbi.Marketplace.Catalog.Repositories
         {
             var product = await repository.GetByIdAsync(
                 productId,
-                productQueryable => productQueryable.Include(x => x.Category),
+                null,
                 !disableTracking);
 
             return product;

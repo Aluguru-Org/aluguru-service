@@ -21,10 +21,8 @@ namespace Mubbi.Marketplace.Catalog.Application.ViewModels
         [SwaggerSchema("If the Product will appear on the catalog")]
         public bool IsActive { get; set; }
         [Required]
-        public string RentType { get; set; }
-        [Required]
-        public TimeSpan MinRentTime { get; set; }
-        public TimeSpan? MaxRentTime { get; set; }
+        public int MinRentDays { get; set; }
+        public int? MaxRentDays { get; set; }
         [Required]
         public int StockQuantity { get; set; }
         public List<string> ImageUrls { get; set; }

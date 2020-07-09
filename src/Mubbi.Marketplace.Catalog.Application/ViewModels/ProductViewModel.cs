@@ -17,9 +17,8 @@ namespace Mubbi.Marketplace.Catalog.Application.ViewModels
         public string Description { get; set; }
         public bool IsActive { get; set; }
         public decimal Price { get; set; }
-        public ERentType RentType { get; set; }
-        public TimeSpan MinRentTime { get; set; }
-        public TimeSpan MaxRentTime { get; set; }
+        public int MinRentTime { get; set; }
+        public int? MaxRentTime { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
         public int StockQuantity { get; set; }

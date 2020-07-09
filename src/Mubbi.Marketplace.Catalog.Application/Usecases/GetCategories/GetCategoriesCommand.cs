@@ -6,12 +6,12 @@ using System.Text;
 
 namespace Mubbi.Marketplace.Catalog.Application.Usecases.GetCategories
 {
-    public class GetAllCategoriesCommand : Command<GetAllCategoriesCommandResponse>
+    public class GetCategoriesCommand : Command<GetCategoriesCommandResponse>
     {
 
     }
 
-    public class GetAllCategoriesCommandResponse
+    public class GetCategoriesCommandResponse
     {
         public List<CategoryViewModel> Categories { get; set; }
     }

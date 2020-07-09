@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Mubbi.Marketplace.Catalog.Application.Usecases.GetCategories
 {
-    public class GetCategoriesCommandHandler : IRequestHandler<GetAllCategoriesCommand, GetAllCategoriesCommandResponse>
+    public class GetCategoriesCommandHandler : IRequestHandler<GetCategoriesCommand, GetCategoriesCommandResponse>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -22,13 +22,13 @@ namespace Mubbi.Marketplace.Catalog.Application.Usecases.GetCategories
             _mapper = mapper;
         }
 
-        public async Task<GetAllCategoriesCommandResponse> Handle(GetAllCategoriesCommand request, CancellationToken cancellationToken)
+        public async Task<GetCategoriesCommandResponse> Handle(GetCategoriesCommand request, CancellationToken cancellationToken)
         {
             var categoryQueryRepository = _unitOfWork.QueryRepository<Category>();
 
             var categories = await categoryQueryRepository.GetCategories();
 
-            return new GetAllCategoriesCommandResponse()
+            return new GetCategoriesCommandResponse()
             {
                 Categories = _mapper.Map<List<CategoryViewModel>>(categories)
             };

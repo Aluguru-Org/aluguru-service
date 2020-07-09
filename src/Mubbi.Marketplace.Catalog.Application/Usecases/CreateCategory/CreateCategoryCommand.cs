@@ -9,12 +9,14 @@ namespace Mubbi.Marketplace.Catalog.Application.Usecases.CreateCategory
 {
     public class CreateCategoryCommand : Command<CreateCategoryCommandResponse>
     {
-        public CreateCategoryCommand(string name, int code)
+        public CreateCategoryCommand(string name, int code, Guid? mainCategoryId = null)
         {
             Name = name;
             Code = code;
+            MainCategoryId = mainCategoryId;
         }
 
+        public Guid? MainCategoryId { get; private set; }
         public string Name { get; private set; }
         public int Code { get; private set; }
 

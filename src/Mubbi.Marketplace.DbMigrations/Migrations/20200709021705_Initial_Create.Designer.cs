@@ -10,8 +10,8 @@ using Mubbi.Marketplace.Data;
 namespace Mubbi.Marketplace.Data.Migrations
 {
     [DbContext(typeof(MubbiContext))]
-    [Migration("20200705183415_AddedCustomFieldsAndSubCategories")]
-    partial class AddedCustomFieldsAndSubCategories
+    [Migration("20200709021705_Initial_Create")]
+    partial class Initial_Create
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -62,12 +62,12 @@ namespace Mubbi.Marketplace.Data.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2020, 7, 5, 18, 34, 14, 674, DateTimeKind.Utc).AddTicks(2193));
+                        .HasDefaultValue(new DateTime(2020, 7, 9, 2, 17, 5, 412, DateTimeKind.Utc).AddTicks(3143));
 
                     b.Property<DateTime?>("DateUpdated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2020, 7, 5, 18, 34, 14, 680, DateTimeKind.Utc).AddTicks(5688));
+                        .HasDefaultValue(new DateTime(2020, 7, 9, 2, 17, 5, 417, DateTimeKind.Utc).AddTicks(8312));
 
                     b.Property<int>("FieldType")
                         .HasColumnType("int");
@@ -103,12 +103,12 @@ namespace Mubbi.Marketplace.Data.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2020, 7, 5, 18, 34, 14, 690, DateTimeKind.Utc).AddTicks(7755));
+                        .HasDefaultValue(new DateTime(2020, 7, 9, 2, 17, 5, 424, DateTimeKind.Utc).AddTicks(2142));
 
                     b.Property<DateTime?>("DateUpdated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2020, 7, 5, 18, 34, 14, 690, DateTimeKind.Utc).AddTicks(9471));
+                        .HasDefaultValue(new DateTime(2020, 7, 9, 2, 17, 5, 424, DateTimeKind.Utc).AddTicks(3396));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -121,11 +121,11 @@ namespace Mubbi.Marketplace.Data.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<TimeSpan?>("MaxRentTime")
-                        .HasColumnType("time");
+                    b.Property<int?>("MaxRentTime")
+                        .HasColumnType("int");
 
-                    b.Property<TimeSpan>("MinRentTime")
-                        .HasColumnType("time");
+                    b.Property<int>("MinRentTime")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -133,9 +133,6 @@ namespace Mubbi.Marketplace.Data.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("RentType")
-                        .HasColumnType("int");
 
                     b.Property<int>("StockQuantity")
                         .HasColumnType("int");

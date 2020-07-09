@@ -4,6 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Mubbi.Marketplace.Catalog.Application.AutoMapper;
+using Mubbi.Marketplace.Catalog.Application.Usecases.CreateCategory;
+using Mubbi.Marketplace.Catalog.Application.Usecases.CreateProduct;
+using Mubbi.Marketplace.Catalog.Application.Usecases.GetCategories;
+using Mubbi.Marketplace.Catalog.Application.Usecases.GetProduct;
+using Mubbi.Marketplace.Catalog.Application.Usecases.GetProducts;
 using Mubbi.Marketplace.Data;
 using Mubbi.Marketplace.Domain;
 using Mubbi.Marketplace.Infrastructure.Bus.Communication;
@@ -37,9 +42,19 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
             services.AddScoped<IMediatorHandler, MediatorHandler>();
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
 
+            // User Command Handlers
             services.AddScoped<IRequestHandler<LogInUserCommand, LogInUserCommandResponse>, LogInUserHandler>();
             services.AddScoped<IRequestHandler<CreateUserCommand, CreateUserCommandResponse>, CreateUserHandler>();
             services.AddScoped<IRequestHandler<DeleteUserCommand, bool>, DeleteUserHandler>();
+
+            // Product Command Handlers
+            services.AddScoped<IRequestHandler<CreateProductCommand, CreateProductCommandResponse>, CreateProductHandler>();
+            services.AddScoped<IRequestHandler<GetProductCommand, GetProductCommandResponse>, GetProductHandler>();
+            services.AddScoped<IRequestHandler<GetProductsCommand, GetProductsCommandResponse>, GetProductsHandler>();
+
+            // Category Command Handlers
+            services.AddScoped<IRequestHandler<CreateCategoryCommand, CreateCategoryCommandResponse>, CreateCategoryHandler>();            
+            services.AddScoped<IRequestHandler<GetCategoriesCommand, GetCategoriesCommandResponse>, GetCategoriesCommandHandler>();
 
             return services;
         }

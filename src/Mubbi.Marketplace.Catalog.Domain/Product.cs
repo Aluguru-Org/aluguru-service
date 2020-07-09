@@ -16,7 +16,7 @@ namespace Mubbi.Marketplace.Catalog.Domain
             _customFields = new List<CustomField>();
         }
 
-        public Product(Guid categoryId, Guid? subCategoryId, string name, string description, decimal price, bool isActive, int stockQuantity, ERentType rentType, TimeSpan minRentTime, TimeSpan? maxRentTime, List<string> imageUrls, List<CustomField> customFields)
+        public Product(Guid categoryId, Guid? subCategoryId, string name, string description, decimal price, bool isActive, int stockQuantity, int minRentTime, int? maxRentTime, List<string> imageUrls, List<CustomField> customFields)
         {
             CategoryId = categoryId;
             SubCategoryId = subCategoryId;
@@ -25,7 +25,6 @@ namespace Mubbi.Marketplace.Catalog.Domain
             Price = price;
             IsActive = isActive;
             StockQuantity = stockQuantity;
-            RentType = rentType;
             MinRentTime = minRentTime;
             MaxRentTime = maxRentTime;
 
@@ -42,9 +41,8 @@ namespace Mubbi.Marketplace.Catalog.Domain
         public decimal Price { get; private set; }
         public bool IsActive { get; private set; }
         public int StockQuantity { get; private set; }
-        public ERentType RentType { get; private set; }
-        public TimeSpan MinRentTime { get; private set; }
-        public TimeSpan? MaxRentTime { get; private set; }
+        public int MinRentTime { get; private set; }
+        public int? MaxRentTime { get; private set; }
         public IReadOnlyCollection<string> ImageUrls { get { return _imageUrls; } }
         public IReadOnlyCollection<CustomField> CustomFields { get { return _customFields; } }
 
@@ -54,11 +52,6 @@ namespace Mubbi.Marketplace.Catalog.Domain
 
         public void Active() => IsActive = true;
         public void Deactivate() => IsActive = false;
-
-        public void UpdateRentType(ERentType rentType)
-        {
-            Ensure.Argument.IsNot(RentType == rentType, $"The Rent Type is already {RentType}");
-        }
 
         public void UpdateCategory(Category category)
         {

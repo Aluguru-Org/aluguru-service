@@ -14,4 +14,8 @@
     <ProjectReference Include="..\Mubbi.Marketplace.Infrastructure.Data\Mubbi.Marketplace.Infrastructure.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Usecases\UpdateCategory\" />
+  </ItemGroup>
+
 </Project>

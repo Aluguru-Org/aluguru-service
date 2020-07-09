@@ -19,14 +19,14 @@ namespace Mubbi.Marketplace.Catalog.Application.AutoMapper
         private void ViewModelToDomainConfiguration()
         {
             CreateMap<CreateCategoryViewModel, CreateCategoryCommand>()
-                .ConstructUsing(x => new CreateCategoryCommand(x.Name, x.Code))
+                .ConstructUsing(x => new CreateCategoryCommand(x.Name, x.Code, x.MainCategoryId))
                 .ForMember(x => x.Timestamp, c => c.Ignore())
                 .ForMember(x => x.AggregateId, c => c.Ignore())
                 .ForMember(x => x.MessageType, c => c.Ignore())
                 .ForMember(x => x.ValidationResult, c => c.Ignore());
 
             CreateMap<CategoryViewModel, Category>()
-                .ConstructUsing(c => new Category(c.Name, c.Code));
+                .ConstructUsing(c => new Category(c.Name, c.Code, c.MainCategoryId));
 
             CreateMap<ProductViewModel, Product>()
                 .ConstructUsing((x, rc) =>
@@ -41,7 +41,6 @@ namespace Mubbi.Marketplace.Catalog.Application.AutoMapper
                         x.Price,
                         x.IsActive,
                         x.StockQuantity,
-                        x.RentType,
                         x.MinRentTime,
                         x.MaxRentTime,
                         x.ImageUrls,
@@ -52,7 +51,6 @@ namespace Mubbi.Marketplace.Catalog.Application.AutoMapper
                 .ConstructUsing((x, rc) =>
                 {
                     var customFields = rc.Mapper.Map<List<CustomField>>(x.CustomFields);
-
                     return new CreateProductCommand(
                         x.CategoryId,
                         x.SubCategoryId,
@@ -61,9 +59,8 @@ namespace Mubbi.Marketplace.Catalog.Application.AutoMapper
                         x.Price,
                         x.IsActive,
                         x.StockQuantity,
-                        (ERentType)Enum.Parse(typeof(ERentType), x.RentType),
-                        x.MinRentTime,
-                        x.MaxRentTime,
+                        x.MinRentDays,
+                        x.MaxRentDays,
                         x.ImageUrls,
                         customFields);
                 })

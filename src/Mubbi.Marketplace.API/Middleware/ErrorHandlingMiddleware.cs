@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Mubbi.Marketplace.API.Models;
 using Mubbi.Marketplace.Domain;
+using Mubbi.Marketplace.Infrastructure;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -39,7 +40,7 @@ namespace Mubbi.Marketplace.API.Middleware
                 _ => StatusCodes.Status500InternalServerError
             };
 
-            var result = JsonConvert.SerializeObject(new ApiResponse<string>(false, "The request finished on error.", ex.Message));
+            var result = JsonConvert.SerializeObject(new ApiResponse<List<string>>(false, "The request finished on error.", ex.GetErrorList()));
 
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = code;

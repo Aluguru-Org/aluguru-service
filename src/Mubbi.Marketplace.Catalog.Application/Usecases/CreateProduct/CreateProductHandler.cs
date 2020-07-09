@@ -25,7 +25,7 @@ namespace Mubbi.Marketplace.Catalog.Application.Usecases.CreateProduct
             var productRepository = _unitOfWork.Repository<Product>();
 
             var product = new Product(request.CategoryId, request.SubCategoryId, request.Name, request.Description, request.Price, request.IsActive,
-                request.StockQuantity, request.RentType, request.MinRentTime, request.MaxRentTime, request.ImageUrls, request.CustomFields);
+                request.StockQuantity, request.MinRentDays, request.MaxRentDays, request.ImageUrls, request.CustomFields);
 
             product = await productRepository.AddAsync(product);
 

@@ -37,7 +37,7 @@ namespace Mubbi.Marketplace.Catalog.Application.Usecases.CreateCategory
 
             var repository = _unitOfWork.Repository<Category>();
 
-            category = new Category(request.Name, request.Code);
+            category = new Category(request.Name, request.Code, request.MainCategoryId);
 
             category = await repository.AddAsync(category);
 

@@ -22,7 +22,7 @@ namespace Mubbi.Marketplace.Data.Mappings
                    .IsRequired()
                    .HasConversion(
                         v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
-                        v => JsonConvert.DeserializeObject<IReadOnlyCollection<string>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
+                        v => JsonConvert.DeserializeObject<List<string>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
                     );
 
             builder.HasMany(x => x.CustomFields)

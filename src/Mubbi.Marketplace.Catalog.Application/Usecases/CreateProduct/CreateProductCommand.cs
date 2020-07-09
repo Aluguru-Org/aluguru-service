@@ -10,7 +10,7 @@ namespace Mubbi.Marketplace.Catalog.Application.Usecases.CreateProduct
     public class CreateProductCommand : Command<CreateProductCommandResponse>
     {
         public CreateProductCommand(Guid categoryId, Guid? subCategoryId, string name, string description, decimal price, bool isActive, int stockQuantity, 
-            ERentType rentType, TimeSpan minRentTime, TimeSpan? maxRentTime, List<string> imageUrls, List<CustomField> customFields)
+            int minRentDays, int? maxRentDays, List<string> imageUrls, List<CustomField> customFields)
         {
             CategoryId = categoryId;
             SubCategoryId = subCategoryId;
@@ -19,9 +19,8 @@ namespace Mubbi.Marketplace.Catalog.Application.Usecases.CreateProduct
             Price = price;
             IsActive = isActive;
             StockQuantity = stockQuantity;
-            RentType = rentType;
-            MinRentTime = minRentTime;
-            MaxRentTime = maxRentTime;
+            MinRentDays = minRentDays;
+            MaxRentDays = maxRentDays;
             ImageUrls = imageUrls;
             CustomFields = customFields;
         }
@@ -33,9 +32,8 @@ namespace Mubbi.Marketplace.Catalog.Application.Usecases.CreateProduct
         public decimal Price { get; private set; }
         public bool IsActive { get; private set; }
         public int StockQuantity { get; private set; }
-        public ERentType RentType { get; private set; }
-        public TimeSpan MinRentTime { get; private set; }
-        public TimeSpan? MaxRentTime { get; private set; }
+        public int MinRentDays { get; private set; }
+        public int? MaxRentDays { get; private set; }
         public List<string> ImageUrls { get; private set; }
         public List<CustomField> CustomFields { get; private set; }
 
@@ -54,9 +52,9 @@ namespace Mubbi.Marketplace.Catalog.Application.Usecases.CreateProduct
             RuleFor(x => x.Description).NotEmpty();
             RuleFor(x => x.ImageUrls).NotEmpty();
 
-            When(x => x.MaxRentTime.HasValue, () =>
+            When(x => x.MaxRentDays.HasValue, () =>
             {
-                RuleFor(x => x.MinRentTime).LessThan(x => x.MaxRentTime);
+                RuleFor(x => x.MinRentDays).LessThan(x => x.MaxRentDays);
             });
         }
     }
