@@ -7,10 +7,12 @@ using Mubbi.Marketplace.Catalog.Application.Usecases.GetProductsByCategory;
 using Mubbi.Marketplace.Catalog.AutoMapper;
 using Mubbi.Marketplace.Catalog.Usecases.CreateCategory;
 using Mubbi.Marketplace.Catalog.Usecases.CreateProduct;
+using Mubbi.Marketplace.Catalog.Usecases.DeleteCategory;
 using Mubbi.Marketplace.Catalog.Usecases.GetCategories;
 using Mubbi.Marketplace.Catalog.Usecases.GetProduct;
 using Mubbi.Marketplace.Catalog.Usecases.GetProducts;
 using Mubbi.Marketplace.Catalog.Usecases.GetProductsByCategory;
+using Mubbi.Marketplace.Catalog.Usecases.UpdateCategory;
 using Mubbi.Marketplace.Data;
 using Mubbi.Marketplace.Domain;
 using Mubbi.Marketplace.Infrastructure.Bus.Communication;
@@ -56,8 +58,10 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
             services.AddScoped<IRequestHandler<GetProductsCommand, GetProductsCommandResponse>, GetProductsHandler>();
 
             // Category Command Handlers
-            services.AddScoped<IRequestHandler<CreateCategoryCommand, CreateCategoryCommandResponse>, CreateCategoryHandler>();            
+            services.AddScoped<IRequestHandler<CreateCategoryCommand, CreateCategoryCommandResponse>, CreateCategoryHandler>();
+            services.AddScoped<IRequestHandler<UpdateCategoryCommand, UpdateCategoryCommandResponse>, UpdateCategoryHandler>();
             services.AddScoped<IRequestHandler<GetCategoriesCommand, GetCategoriesCommandResponse>, GetCategoriesCommandHandler>();
+            services.AddScoped<IRequestHandler<DeleteCategoryCommand, bool>, DeleteCategoryHandler>();
 
             return services;
         }

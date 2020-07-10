@@ -8,25 +8,25 @@ namespace Mubbi.Marketplace.Register.Usecases.DeleteUser
 {
     public class DeleteUserCommand : Command<bool>
     {
-        public DeleteUserCommand(Guid id)
+        public DeleteUserCommand(Guid userId)
         {
-            Id = id;
+            UserId = userId;
         }
 
-        public Guid Id { get; private set; }
+        public Guid UserId { get; private set; }
 
         public override bool IsValid()
         {
-            throw new NotImplementedException();
+            ValidationResult = new DeleteUserCommandValidator().Validate(this);
+            return ValidationResult.IsValid;
         }       
-
     }
 
     public class DeleteUserCommandValidator : AbstractValidator<DeleteUserCommand>
     {
         public DeleteUserCommandValidator()
         {
-            RuleFor(x => x.Id).NotEqual(Guid.Empty);
+            RuleFor(x => x.UserId).NotEqual(Guid.Empty);
         }
     }
 }

@@ -28,11 +28,11 @@ namespace Mubbi.Marketplace.Register.Usecases.DeleteUser
         {
             var userQueryRepository = _unitOfWork.QueryRepository<User>();
 
-            var user = await userQueryRepository.GetByIdAsync(request.Id);
+            var user = await userQueryRepository.GetByIdAsync(request.UserId);
             
             if (user == null)
             {
-                await _mediatorHandler.PublishNotification(new DomainNotification(request.MessageType, $"The user with Id=[{request.Id}] was not found"));
+                await _mediatorHandler.PublishNotification(new DomainNotification(request.MessageType, $"The user with Id=[{request.UserId}] was not found"));
                 return false;
             }
 

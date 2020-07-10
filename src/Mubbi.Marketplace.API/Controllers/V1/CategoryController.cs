@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Mubbi.Marketplace.API.Controllers.V1.Attributes;
 using Mubbi.Marketplace.API.Models;
 using Mubbi.Marketplace.Catalog.Usecases.CreateCategory;
+using Mubbi.Marketplace.Catalog.Usecases.DeleteCategory;
 using Mubbi.Marketplace.Catalog.Usecases.GetCategories;
 using Mubbi.Marketplace.Catalog.Usecases.UpdateCategory;
 using Mubbi.Marketplace.Catalog.ViewModels;
@@ -67,6 +68,20 @@ namespace Mubbi.Marketplace.API.Controllers.V1
             var command = _mapper.Map<UpdateCategoryCommand>(viewModel);
             var response = await _mediatorHandler.SendCommand<UpdateCategoryCommand, UpdateCategoryCommandResponse>(command);
             return PutResponse(response);
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        [SwaggerOperation(Summary = "Delete a category", Description = "Delete a existing category and all it's sub categories. You need to inform the category Id.")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task<ActionResult> Delete([FromRoute] Guid id)
+        {
+            await _mediatorHandler.SendCommand<DeleteCategoryCommand, bool>(new DeleteCategoryCommand(id));
+            return DeleteResponse();
         }
     }
 }
