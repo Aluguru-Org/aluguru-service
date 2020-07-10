@@ -1,10 +1,10 @@
-﻿using Mubbi.Marketplace.Catalog.Application.ViewModels;
+﻿using Mubbi.Marketplace.Catalog.ViewModels;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mubbi.Marketplace.Catalog.Application.Usecases.GetCategories
+namespace Mubbi.Marketplace.Catalog.Usecases.GetCategories
 {
     public class GetCategoriesCommand : Command<GetCategoriesCommandResponse>
     {

@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
 using MediatR;
-using Mubbi.Marketplace.Catalog.Application.ViewModels;
+using Mubbi.Marketplace.Catalog.Data.Repositories;
 using Mubbi.Marketplace.Catalog.Domain;
-using Mubbi.Marketplace.Catalog.Repositories;
+using Mubbi.Marketplace.Catalog.ViewModels;
 using Mubbi.Marketplace.Domain;
 using Mubbi.Marketplace.Infrastructure.Bus.Communication;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Mubbi.Marketplace.Catalog.Application.Usecases.CreateCategory
+namespace Mubbi.Marketplace.Catalog.Usecases.CreateCategory
 {
     public class CreateCategoryHandler : IRequestHandler<CreateCategoryCommand, CreateCategoryCommandResponse>
     {

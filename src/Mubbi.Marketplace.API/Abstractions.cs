@@ -1,13 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using Mubbi.Marketplace.Infrastructure.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 
 namespace Mubbi.Marketplace.API
 {
@@ -26,7 +21,7 @@ namespace Mubbi.Marketplace.API
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mubbi API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mubbi API V1");                
                 c.RoutePrefix = string.Empty;
             });
 
@@ -54,6 +49,8 @@ namespace Mubbi.Marketplace.API
             });
 
             options.EnableAnnotations();
+
+            options.SchemaFilter<SwaggerExcludeFilter>();
         }
     }
 }

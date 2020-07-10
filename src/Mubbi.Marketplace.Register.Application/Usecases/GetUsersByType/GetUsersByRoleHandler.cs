@@ -2,7 +2,7 @@
 using MediatR;
 using Mubbi.Marketplace.Domain;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages;
-using Mubbi.Marketplace.Register.Application.ViewModels;
+using Mubbi.Marketplace.Register.ViewModels;
 using Mubbi.Marketplace.Register.Domain.Models;
 using Mubbi.Marketplace.Register.Domain.Repositories;
 using System;
@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Mubbi.Marketplace.Register.Application.Usecases.GetUsersByRole
+namespace Mubbi.Marketplace.Register.Usecases.GetUsersByRole
 {
     public class GetUsersByRoleHandler : IRequestHandler<GetUsersByRoleCommand, GetUsersByRoleCommandResponse>
     {

@@ -9,8 +9,8 @@ using Mubbi.Marketplace.API.Controllers.V1.Attributes;
 using Mubbi.Marketplace.API.Models;
 using Mubbi.Marketplace.Infrastructure.Bus.Communication;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
-using Mubbi.Marketplace.Register.Application.Usecases.LogInUser;
-using Mubbi.Marketplace.Register.Application.ViewModels;
+using Mubbi.Marketplace.Register.Usecases.LogInUser;
+using Mubbi.Marketplace.Register.ViewModels;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Mubbi.Marketplace.API.Controllers.V1

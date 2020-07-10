@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mubbi.Marketplace.Register.Application.ViewModels
+namespace Mubbi.Marketplace.Register.ViewModels
 {
     public class UserRegistrationViewModel
     {

@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages;
-using Mubbi.Marketplace.Register.Application.ViewModels;
+using Mubbi.Marketplace.Register.ViewModels;
 using System;
 
-namespace Mubbi.Marketplace.Register.Application.Usecases.GetUserById
+namespace Mubbi.Marketplace.Register.Usecases.GetUserById
 {
     public class GetUserByIdCommand : Command<GetUserByIdCommandResponse>
     {

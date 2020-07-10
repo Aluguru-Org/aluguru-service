@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages;
-using Mubbi.Marketplace.Register.Application.ViewModels;
+using Mubbi.Marketplace.Register.ViewModels;
 using System.Text.RegularExpressions;
 
-namespace Mubbi.Marketplace.Register.Application.Usecases.CreateUser
+namespace Mubbi.Marketplace.Register.Usecases.CreateUser
 {
     public class CreateUserCommand : Command<CreateUserCommandResponse>
     {

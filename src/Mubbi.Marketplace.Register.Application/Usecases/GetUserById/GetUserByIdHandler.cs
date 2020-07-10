@@ -2,13 +2,13 @@
 using MediatR;
 using Mubbi.Marketplace.Domain;
 using Mubbi.Marketplace.Infrastructure.Data;
-using Mubbi.Marketplace.Register.Application.ViewModels;
+using Mubbi.Marketplace.Register.ViewModels;
 using Mubbi.Marketplace.Register.Domain.Models;
 using Mubbi.Marketplace.Register.Domain.Repositories;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Mubbi.Marketplace.Register.Application.Usecases.GetUserById
+namespace Mubbi.Marketplace.Register.Usecases.GetUserById
 {
     public class GetUserByIdHandler : IRequestHandler<GetUserByIdCommand, GetUserByIdCommandResponse>
     {

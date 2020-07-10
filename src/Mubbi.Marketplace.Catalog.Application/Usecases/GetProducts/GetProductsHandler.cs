@@ -6,7 +6,7 @@ using Mubbi.Marketplace.Infrastructure.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Mubbi.Marketplace.Catalog.Application.Usecases.GetProducts
+namespace Mubbi.Marketplace.Catalog.Usecases.GetProducts
 {
     public class GetProductsHandler : IRequestHandler<GetProductsCommand, GetProductsCommandResponse>
     {

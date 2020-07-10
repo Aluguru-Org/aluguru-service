@@ -3,7 +3,7 @@ using Mubbi.Marketplace.Infrastructure.Bus.Communication;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Mubbi.Marketplace.Register.Application.Usecases.LogInUser
+namespace Mubbi.Marketplace.Register.Usecases.LogInUser
 {
     public class LogInUserHandler : IRequestHandler<LogInUserCommand, LogInUserCommandResponse>
     {

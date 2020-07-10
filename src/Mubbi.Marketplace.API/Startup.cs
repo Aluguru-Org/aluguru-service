@@ -1,17 +1,10 @@
-using AutoMapper;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Mubbi.Marketplace.API.Middleware;
 using Mubbi.Marketplace.Crosscutting.IoC;
-using Mubbi.Marketplace.Data;
-using Mubbi.Marketplace.Infrastructure.Bus.Communication;
-using Mubbi.Marketplace.Register.Application.AutoMapper;
-using System.Reflection;
 
 namespace Mubbi.Marketplace.API
 {

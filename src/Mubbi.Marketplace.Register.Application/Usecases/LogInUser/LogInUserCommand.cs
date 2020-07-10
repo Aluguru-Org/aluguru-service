@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages;
 
-namespace Mubbi.Marketplace.Register.Application.Usecases.LogInUser
+namespace Mubbi.Marketplace.Register.Usecases.LogInUser
 {
     public class LogInUserCommand : Command<LogInUserCommandResponse>
     {

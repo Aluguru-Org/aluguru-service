@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
-using Mubbi.Marketplace.Catalog.Application.ViewModels;
+using Mubbi.Marketplace.Catalog.ViewModels;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mubbi.Marketplace.Catalog.Application.Usecases.GetProduct
+namespace Mubbi.Marketplace.Catalog.Usecases.GetProduct
 {
     public class GetProductCommand : Command<GetProductCommandResponse>
     {

@@ -19,5 +19,12 @@ namespace Mubbi.Marketplace.Catalog.Repositories
 
             return product;
         }
+
+        public static async Task<Product> GetProductByCategoryAsync(this IQueryRepository<Product> repository, Guid categoryId, bool disableTracking = true)
+        {
+            var product = await repository.FindOneAsync(x => x.CategoryId == categoryId);
+
+            return product;
+        }
     }
 }

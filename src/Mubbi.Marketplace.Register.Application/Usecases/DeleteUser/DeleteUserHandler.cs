@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Mubbi.Marketplace.Register.Application.Usecases.DeleteUser
+namespace Mubbi.Marketplace.Register.Usecases.DeleteUser
 {
     public class DeleteUserHandler : IRequestHandler<DeleteUserCommand, bool>
     {

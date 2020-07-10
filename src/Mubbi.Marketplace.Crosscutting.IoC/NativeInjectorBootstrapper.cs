@@ -3,12 +3,14 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Mubbi.Marketplace.Catalog.Application.AutoMapper;
-using Mubbi.Marketplace.Catalog.Application.Usecases.CreateCategory;
-using Mubbi.Marketplace.Catalog.Application.Usecases.CreateProduct;
-using Mubbi.Marketplace.Catalog.Application.Usecases.GetCategories;
-using Mubbi.Marketplace.Catalog.Application.Usecases.GetProduct;
-using Mubbi.Marketplace.Catalog.Application.Usecases.GetProducts;
+using Mubbi.Marketplace.Catalog.Application.Usecases.GetProductsByCategory;
+using Mubbi.Marketplace.Catalog.AutoMapper;
+using Mubbi.Marketplace.Catalog.Usecases.CreateCategory;
+using Mubbi.Marketplace.Catalog.Usecases.CreateProduct;
+using Mubbi.Marketplace.Catalog.Usecases.GetCategories;
+using Mubbi.Marketplace.Catalog.Usecases.GetProduct;
+using Mubbi.Marketplace.Catalog.Usecases.GetProducts;
+using Mubbi.Marketplace.Catalog.Usecases.GetProductsByCategory;
 using Mubbi.Marketplace.Data;
 using Mubbi.Marketplace.Domain;
 using Mubbi.Marketplace.Infrastructure.Bus.Communication;
@@ -16,10 +18,10 @@ using Mubbi.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages.Handlers;
 using Mubbi.Marketplace.Infrastructure.Data;
 using Mubbi.Marketplace.Infrastructure.UnitOfWork;
-using Mubbi.Marketplace.Register.Application.AutoMapper;
-using Mubbi.Marketplace.Register.Application.Usecases.CreateUser;
-using Mubbi.Marketplace.Register.Application.Usecases.DeleteUser;
-using Mubbi.Marketplace.Register.Application.Usecases.LogInUser;
+using Mubbi.Marketplace.Register.AutoMapper;
+using Mubbi.Marketplace.Register.Usecases.CreateUser;
+using Mubbi.Marketplace.Register.Usecases.DeleteUser;
+using Mubbi.Marketplace.Register.Usecases.LogInUser;
 using System.Reflection;
 
 namespace Mubbi.Marketplace.Crosscutting.IoC
@@ -50,6 +52,7 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
             // Product Command Handlers
             services.AddScoped<IRequestHandler<CreateProductCommand, CreateProductCommandResponse>, CreateProductHandler>();
             services.AddScoped<IRequestHandler<GetProductCommand, GetProductCommandResponse>, GetProductHandler>();
+            services.AddScoped<IRequestHandler<GetProductsByCategoryCommand, GetProductsByCategoryCommandResponse>, GetProductsByCategoryHandler>();
             services.AddScoped<IRequestHandler<GetProductsCommand, GetProductsCommandResponse>, GetProductsHandler>();
 
             // Category Command Handlers

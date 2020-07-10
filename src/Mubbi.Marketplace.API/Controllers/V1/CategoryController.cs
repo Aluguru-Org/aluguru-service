@@ -4,18 +4,15 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Mubbi.Marketplace.API.Controllers.V1.Attributes;
 using Mubbi.Marketplace.API.Models;
-using Mubbi.Marketplace.Catalog.Application.Usecases.CreateCategory;
-using Mubbi.Marketplace.Catalog.Application.Usecases.CreateProduct;
-using Mubbi.Marketplace.Catalog.Application.Usecases.GetCategories;
-using Mubbi.Marketplace.Catalog.Application.Usecases.GetProducts;
-using Mubbi.Marketplace.Catalog.Application.ViewModels;
-using Mubbi.Marketplace.Domain;
+using Mubbi.Marketplace.Catalog.Usecases.CreateCategory;
+using Mubbi.Marketplace.Catalog.Usecases.GetCategories;
+using Mubbi.Marketplace.Catalog.Usecases.UpdateCategory;
+using Mubbi.Marketplace.Catalog.ViewModels;
 using Mubbi.Marketplace.Infrastructure.Bus.Communication;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Mubbi.Marketplace.API.Controllers.V1
@@ -44,7 +41,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpPost]
         [Route("")]
-        [SwaggerOperation(Summary = "Create a new category", Description = "Used to create a new main category")]
+        [SwaggerOperation(Summary = "Create a new category", Description = "Used to create a new category")]
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CreateCategoryCommandResponse))]
@@ -55,6 +52,21 @@ namespace Mubbi.Marketplace.API.Controllers.V1
             var command = _mapper.Map<CreateCategoryCommand>(viewModel);
             var response = await _mediatorHandler.SendCommand<CreateCategoryCommand, CreateCategoryCommandResponse>(command);
             return PostResponse(nameof(CreateCategory), response);
+        }
+
+        [HttpPut]
+        [Route("")]
+        [SwaggerOperation(Summary = "Update a category", Description = "Used to update a existing category")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateCategoryCommandResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task<ActionResult> UpdateCategory([FromBody] UpdateCategoryViewModel viewModel)
+        {
+            var command = _mapper.Map<UpdateCategoryCommand>(viewModel);
+            var response = await _mediatorHandler.SendCommand<UpdateCategoryCommand, UpdateCategoryCommandResponse>(command);
+            return PutResponse(response);
         }
     }
 }

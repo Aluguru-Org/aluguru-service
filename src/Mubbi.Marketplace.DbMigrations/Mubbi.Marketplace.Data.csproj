@@ -20,9 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Mubbi.Marketplace.Catalog.Domain\Mubbi.Marketplace.Catalog.Domain.csproj" />
+    <ProjectReference Include="..\Mubbi.Marketplace.Catalog.Application\Mubbi.Marketplace.Catalog.csproj" />
     <ProjectReference Include="..\Mubbi.Marketplace.Infrastructure.Data\Mubbi.Marketplace.Infrastructure.Data.csproj" />
-    <ProjectReference Include="..\Mubbi.Marketplace.Register.Domain\Mubbi.Marketplace.Register.Domain.csproj" />
+    <ProjectReference Include="..\Mubbi.Marketplace.Register.Application\Mubbi.Marketplace.Register.csproj" />
   </ItemGroup>
 
 </Project>

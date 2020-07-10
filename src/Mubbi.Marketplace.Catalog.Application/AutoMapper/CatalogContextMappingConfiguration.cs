@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using Mubbi.Marketplace.Catalog.Application.Usecases.CreateCategory;
-using Mubbi.Marketplace.Catalog.Application.Usecases.CreateProduct;
-using Mubbi.Marketplace.Catalog.Application.ViewModels;
 using Mubbi.Marketplace.Catalog.Domain;
+using Mubbi.Marketplace.Catalog.Usecases.CreateCategory;
+using Mubbi.Marketplace.Catalog.Usecases.CreateProduct;
+using Mubbi.Marketplace.Catalog.ViewModels;
 using System;
 using System.Collections.Generic;
 
-namespace Mubbi.Marketplace.Catalog.Application.AutoMapper
+namespace Mubbi.Marketplace.Catalog.AutoMapper
 {
     public class CatalogContextMappingConfiguration : Profile
     {
@@ -21,7 +21,12 @@ namespace Mubbi.Marketplace.Catalog.Application.AutoMapper
             CreateMap<CreateCategoryViewModel, CreateCategoryCommand>()
                 .ConstructUsing(x => new CreateCategoryCommand(x.Name, x.Code, x.MainCategoryId))
                 .ForMember(x => x.Timestamp, c => c.Ignore())
-                .ForMember(x => x.AggregateId, c => c.Ignore())
+                .ForMember(x => x.MessageType, c => c.Ignore())
+                .ForMember(x => x.ValidationResult, c => c.Ignore());
+
+            CreateMap<UpdateCategoryViewModel, CreateCategoryCommand>()
+                .ConstructUsing(x => new CreateCategoryCommand(x.Name, x.Code, x.MainCategoryId))
+                .ForMember(x => x.Timestamp, c => c.Ignore())
                 .ForMember(x => x.MessageType, c => c.Ignore())
                 .ForMember(x => x.ValidationResult, c => c.Ignore());
 
@@ -65,7 +70,6 @@ namespace Mubbi.Marketplace.Catalog.Application.AutoMapper
                         customFields);
                 })
                 .ForMember(x => x.Timestamp, c => c.Ignore())
-                .ForMember(x => x.AggregateId, c => c.Ignore())
                 .ForMember(x => x.MessageType, c => c.Ignore())
                 .ForMember(x => x.ValidationResult, c => c.Ignore());
 

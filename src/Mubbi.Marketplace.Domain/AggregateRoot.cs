@@ -27,7 +27,6 @@ namespace Mubbi.Marketplace.Domain
 
         protected AggregateRoot(Guid id) : base(id)
         {
-            DateCreated = NewDateTime();
         }
 
         public IAggregateRoot AddEvent(Event uncommittedEvent)

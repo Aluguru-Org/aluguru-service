@@ -4,7 +4,7 @@ using Mubbi.Marketplace.Domain;
 using Mubbi.Marketplace.Infrastructure.Bus.Communication;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using Mubbi.Marketplace.Infrastructure.Data;
-using Mubbi.Marketplace.Register.Application.ViewModels;
+using Mubbi.Marketplace.Register.ViewModels;
 using Mubbi.Marketplace.Register.Domain;
 using Mubbi.Marketplace.Register.Domain.Models;
 using Mubbi.Marketplace.Register.Domain.Repositories;
@@ -12,7 +12,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Mubbi.Marketplace.Register.Application.Usecases.CreateUser
+namespace Mubbi.Marketplace.Register.Usecases.CreateUser
 {
     public class CreateUserHandler : IRequestHandler<CreateUserCommand, CreateUserCommandResponse>
     {

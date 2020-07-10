@@ -1,10 +1,11 @@
 ﻿using Mubbi.Marketplace.Catalog.Domain;
 using Mubbi.Marketplace.Domain;
+using Mubbi.Marketplace.Infrastructure.Swagger;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
 
-namespace Mubbi.Marketplace.Catalog.Application.ViewModels
+namespace Mubbi.Marketplace.Catalog.ViewModels
 {
     [SwaggerSchema(Required = new[] { "FieldType" })]
     public class CustomFieldViewModel : IDto
@@ -20,6 +21,7 @@ namespace Mubbi.Marketplace.Catalog.Application.ViewModels
         public bool Active { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
+        [SwaggerExclude]
         public Product Product { get; set; }
     }
 }

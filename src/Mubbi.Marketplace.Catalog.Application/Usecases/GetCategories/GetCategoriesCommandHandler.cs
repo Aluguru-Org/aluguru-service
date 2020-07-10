@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Mubbi.Marketplace.Catalog.Application.ViewModels;
+using Mubbi.Marketplace.Catalog.ViewModels;
 using Mubbi.Marketplace.Catalog.Domain;
-using Mubbi.Marketplace.Catalog.Repositories;
 using Mubbi.Marketplace.Domain;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Mubbi.Marketplace.Catalog.Data.Repositories;
 
-namespace Mubbi.Marketplace.Catalog.Application.Usecases.GetCategories
+namespace Mubbi.Marketplace.Catalog.Usecases.GetCategories
 {
     public class GetCategoriesCommandHandler : IRequestHandler<GetCategoriesCommand, GetCategoriesCommandResponse>
     {

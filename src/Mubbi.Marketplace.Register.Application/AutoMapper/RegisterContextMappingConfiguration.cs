@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using Mubbi.Marketplace.Register.Application.Usecases.CreateUser;
-using Mubbi.Marketplace.Register.Application.Usecases.LogInUser;
-using Mubbi.Marketplace.Register.Application.ViewModels;
+using Mubbi.Marketplace.Register.Usecases.CreateUser;
+using Mubbi.Marketplace.Register.Usecases.LogInUser;
+using Mubbi.Marketplace.Register.ViewModels;
 using Mubbi.Marketplace.Register.Domain;
 using Mubbi.Marketplace.Register.Domain.Models;
 using System;
 
-namespace Mubbi.Marketplace.Register.Application.AutoMapper
+namespace Mubbi.Marketplace.Register.AutoMapper
 {
     public class RegisterContextMappingConfiguration : Profile
     {
@@ -58,7 +58,6 @@ namespace Mubbi.Marketplace.Register.Application.AutoMapper
             CreateMap<UserLoginViewModel, LogInUserCommand>()
                 .ConstructUsing(x => new LogInUserCommand(x.UserName, x.Password))
                 .ForMember(x => x.Timestamp, c => c.Ignore())
-                .ForMember(x => x.AggregateId, c => c.Ignore())
                 .ForMember(x => x.MessageType, c => c.Ignore())
                 .ForMember(x => x.ValidationResult, c => c.Ignore());
 
@@ -81,7 +80,6 @@ namespace Mubbi.Marketplace.Register.Application.AutoMapper
                         x.Address.ZipCode);
                 })
                 .ForMember(x => x.Timestamp, c => c.Ignore())
-                .ForMember(x => x.AggregateId, c => c.Ignore())
                 .ForMember(x => x.MessageType, c => c.Ignore())
                 .ForMember(x => x.ValidationResult, c => c.Ignore());
         }

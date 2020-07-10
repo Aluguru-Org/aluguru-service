@@ -4,13 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mubbi.Marketplace.Register.Application.Usecases.DeleteUser
+namespace Mubbi.Marketplace.Register.Usecases.DeleteUser
 {
     public class DeleteUserCommand : Command<bool>
     {
         public DeleteUserCommand(Guid id)
         {
-            AggregateId = id;
             Id = id;
         }
 

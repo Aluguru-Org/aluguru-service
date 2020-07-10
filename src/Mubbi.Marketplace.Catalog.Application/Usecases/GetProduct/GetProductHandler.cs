@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
-using Mubbi.Marketplace.Catalog.Application.ViewModels;
+using Mubbi.Marketplace.Catalog.ViewModels;
 using Mubbi.Marketplace.Catalog.Domain;
-using Mubbi.Marketplace.Catalog.Repositories;
 using Mubbi.Marketplace.Domain;
 using System.Threading;
 using System.Threading.Tasks;
+using Mubbi.Marketplace.Catalog.Data.Repositories;
 
-namespace Mubbi.Marketplace.Catalog.Application.Usecases.GetProduct
+namespace Mubbi.Marketplace.Catalog.Usecases.GetProduct
 {
     public class GetProductHandler : IRequestHandler<GetProductCommand, GetProductCommandResponse>
     {

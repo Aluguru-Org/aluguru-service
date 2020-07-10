@@ -1,9 +1,10 @@
 ﻿using Mubbi.Marketplace.Domain;
+using Mubbi.Marketplace.Infrastructure.Swagger;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Mubbi.Marketplace.Catalog.Application.ViewModels
+namespace Mubbi.Marketplace.Catalog.ViewModels
 {
     public class CategoryViewModel : IDto
     {
@@ -15,8 +16,10 @@ namespace Mubbi.Marketplace.Catalog.Application.ViewModels
         public int Code { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
+        [SwaggerExclude]
         public CategoryViewModel MainCategory { get; set; }
         public List<CategoryViewModel> SubCategories { get; set; }
+        [SwaggerExclude]
         public List<ProductViewModel> Products { get; set; }
     }
 }

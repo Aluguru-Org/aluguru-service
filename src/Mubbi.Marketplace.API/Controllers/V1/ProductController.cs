@@ -4,10 +4,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Mubbi.Marketplace.API.Controllers.V1.Attributes;
 using Mubbi.Marketplace.API.Models;
-using Mubbi.Marketplace.Catalog.Application.Usecases.CreateProduct;
-using Mubbi.Marketplace.Catalog.Application.Usecases.GetProduct;
-using Mubbi.Marketplace.Catalog.Application.Usecases.GetProducts;
-using Mubbi.Marketplace.Catalog.Application.ViewModels;
+using Mubbi.Marketplace.Catalog.Usecases.CreateProduct;
+using Mubbi.Marketplace.Catalog.Usecases.GetProduct;
+using Mubbi.Marketplace.Catalog.Usecases.GetProducts;
+using Mubbi.Marketplace.Catalog.Usecases.GetProductsByCategory;
+using Mubbi.Marketplace.Catalog.ViewModels;
 using Mubbi.Marketplace.Domain;
 using Mubbi.Marketplace.Infrastructure.Bus.Communication;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
@@ -56,6 +57,23 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         }
 
         [HttpPost]
+        [Route("category/{categoryId}/paginate")]
+        [SwaggerOperation(Summary = "Get products by category", Description = "Return a list of paginated products by pagination creteria and category id")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetProductsByCategoryCommandResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task<ActionResult> GetProducts(
+            [SwaggerParameter("The category Id", Required = true)][FromRoute] Guid categoryId,
+            [SwaggerParameter("The pagination criteria", Required = true)][FromBody] PaginateCriteria paginateCriteria)
+        {
+            var response = await _mediatorHandler.SendCommand<GetProductsByCategoryCommand, GetProductsByCategoryCommandResponse>(
+                new GetProductsByCategoryCommand(categoryId, paginateCriteria));
+            return GetResponse(response);
+        }
+
+        [HttpPost]
         [Route("")]
         [SwaggerOperation(Summary = "Create Product", Description = "Create a new product in the catalog")]
         [Consumes("application/json")]
@@ -63,7 +81,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CreateProductCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> Post([FromBody] CreateProductViewModel viewModel)
+        public async Task<ActionResult> CreateProduct([FromBody] CreateProductViewModel viewModel)
         {
             var command = _mapper.Map<CreateProductCommand>(viewModel);
             var response = await _mediatorHandler.SendCommand<CreateProductCommand, CreateProductCommandResponse>(command);

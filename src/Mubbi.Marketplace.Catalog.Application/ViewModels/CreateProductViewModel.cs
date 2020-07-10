@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Mubbi.Marketplace.Catalog.Application.ViewModels
+namespace Mubbi.Marketplace.Catalog.ViewModels
 {
     public class CreateProductViewModel : IDto
     {
