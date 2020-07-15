@@ -10,10 +10,3 @@ EXPOSE 5000/tcp
 WORKDIR /app/src/Mubbi.Marketplace.API
 RUN chmod +x ./entrypoint.sh
 CMD /bin/bash ./entrypoint.sh
-#ENTRYPOINT ["dotnet", "Mubbi.Marketplace.API.dll", "--urls http://*:5000"]
-
-# FROM base AS final
-# WORKDIR /app
-# COPY --from=publish /app .
-
-#dotnet Mubbi.Marketplace.API.dll --urls http://*:5000
