@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿ using AutoMapper;
 using MediatR;
 using Mubbi.Marketplace.Catalog.ViewModels;
 using Mubbi.Marketplace.Catalog.Domain;

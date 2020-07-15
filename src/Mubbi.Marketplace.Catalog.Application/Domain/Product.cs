@@ -1,4 +1,6 @@
-﻿using Mubbi.Marketplace.Domain;
+﻿using Mubbi.Marketplace.Catalog.Usecases.UpdateProduct;
+using Mubbi.Marketplace.Catalog.ViewModels;
+using Mubbi.Marketplace.Domain;
 using PampaDevs.Utils;
 using System;
 using System.Collections.Generic;
@@ -11,6 +13,7 @@ namespace Mubbi.Marketplace.Catalog.Domain
     {
         private readonly List<string> _imageUrls;
         private readonly List<CustomField> _customFields;
+
         private Product()
         {
             _customFields = new List<CustomField>();
@@ -25,8 +28,8 @@ namespace Mubbi.Marketplace.Catalog.Domain
             Price = price;
             IsActive = isActive;
             StockQuantity = stockQuantity;
-            MinRentTime = minRentTime;
-            MaxRentTime = maxRentTime;
+            MinRentDays = minRentTime;
+            MaxRentDays = maxRentTime;
 
             _imageUrls = imageUrls;
             _customFields = customFields;
@@ -41,8 +44,8 @@ namespace Mubbi.Marketplace.Catalog.Domain
         public decimal Price { get; private set; }
         public bool IsActive { get; private set; }
         public int StockQuantity { get; private set; }
-        public int MinRentTime { get; private set; }
-        public int? MaxRentTime { get; private set; }
+        public int MinRentDays { get; private set; }
+        public int? MaxRentDays { get; private set; }
         public IReadOnlyCollection<string> ImageUrls { get { return _imageUrls; } }
         public IReadOnlyCollection<CustomField> CustomFields { get { return _customFields; } }
 
@@ -52,6 +55,26 @@ namespace Mubbi.Marketplace.Catalog.Domain
 
         public void Active() => IsActive = true;
         public void Deactivate() => IsActive = false;
+
+        public Product UpdateProduct(UpdateProductCommand command)
+        {
+            Ensure.Argument.NotNull(command.CategoryId, "The field category cannot be null");
+            Ensure.That<DomainException>(!string.IsNullOrEmpty(command.Name), "The field Name from product cannot be empty");
+            Ensure.That<DomainException>(!string.IsNullOrEmpty(command.Description), "The field Description from Product cannot be empty");
+            Ensure.That<DomainException>(command.CategoryId != Guid.Empty, "The field CategoryId from Product cannot be empty");
+            Ensure.That<DomainException>(command.Price > 0, "The field Price from Product cannot be smaller or equal than zero");
+            Ensure.That<DomainException>(command.StockQuantity > 0, "The field StockQuantity from Product cannot be smaller than zero");
+            Ensure.That<DomainException>(command.MinRentDays <= command.MaxRentDays, "The field MinRentTime from Product cannot be greater than MaxRentTime");
+            Ensure.That<DomainException>(command.ImageUrls != null && command.ImageUrls.Count >= 1, "The field ImageUrls from Product cannot be empty");
+
+            if (command.SubCategoryId.HasValue)
+            {
+                Ensure.That<DomainException>(SubCategoryId != Guid.Empty, "The field SubCategoryId from Product cannot be empty");
+
+            }
+
+            return this;
+        }
 
         public void UpdateCategory(Category category)
         {
@@ -95,7 +118,7 @@ namespace Mubbi.Marketplace.Catalog.Domain
             Ensure.That<DomainException>(CategoryId != Guid.Empty, "The field CategoryId from Product cannot be empty");
             Ensure.That<DomainException>(Price > 0, "The field Price from Product cannot be smaller or equal than zero");
             Ensure.That<DomainException>(StockQuantity > 0, "The field StockQuantity from Product cannot be smaller than zero");
-            Ensure.That<DomainException>(MinRentTime <= MaxRentTime, "The field MinRentTime from Product cannot be greater than MaxRentTime");
+            Ensure.That<DomainException>(MinRentDays <= MaxRentDays, "The field MinRentTime from Product cannot be greater than MaxRentTime");
             Ensure.That<DomainException>(ImageUrls != null && ImageUrls.Count >= 1, "The field ImageUrls from Product cannot be empty");
 
             if (SubCategoryId.HasValue)

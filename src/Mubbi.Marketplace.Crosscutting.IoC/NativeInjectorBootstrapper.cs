@@ -13,6 +13,7 @@ using Mubbi.Marketplace.Catalog.Usecases.GetProduct;
 using Mubbi.Marketplace.Catalog.Usecases.GetProducts;
 using Mubbi.Marketplace.Catalog.Usecases.GetProductsByCategory;
 using Mubbi.Marketplace.Catalog.Usecases.UpdateCategory;
+using Mubbi.Marketplace.Catalog.Usecases.UpdateProduct;
 using Mubbi.Marketplace.Data;
 using Mubbi.Marketplace.Domain;
 using Mubbi.Marketplace.Infrastructure.Bus.Communication;
@@ -53,6 +54,7 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
 
             // Product Command Handlers
             services.AddScoped<IRequestHandler<CreateProductCommand, CreateProductCommandResponse>, CreateProductHandler>();
+            services.AddScoped<IRequestHandler<UpdateProductCommand, UpdateProductCommandResponse>, UpdateProductHandler>();
             services.AddScoped<IRequestHandler<GetProductCommand, GetProductCommandResponse>, GetProductHandler>();
             services.AddScoped<IRequestHandler<GetProductsByCategoryCommand, GetProductsByCategoryCommandResponse>, GetProductsByCategoryHandler>();
             services.AddScoped<IRequestHandler<GetProductsCommand, GetProductsCommandResponse>, GetProductsHandler>();

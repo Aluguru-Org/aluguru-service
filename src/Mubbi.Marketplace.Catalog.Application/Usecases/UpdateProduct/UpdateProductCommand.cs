@@ -1,17 +1,17 @@
 ﻿using FluentValidation;
-using Mubbi.Marketplace.Catalog.ViewModels;
 using Mubbi.Marketplace.Catalog.Domain;
+using Mubbi.Marketplace.Catalog.ViewModels;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages;
 using System;
 using System.Collections.Generic;
 
-namespace Mubbi.Marketplace.Catalog.Usecases.CreateProduct
+namespace Mubbi.Marketplace.Catalog.Usecases.UpdateProduct
 {
-    public class CreateProductCommand : Command<CreateProductCommandResponse>
+    public class UpdateProductCommand : Command<UpdateProductCommandResponse>
     {
-        public CreateProductCommand(Guid categoryId, Guid? subCategoryId, string name, string description, decimal price, bool isActive, int stockQuantity, 
-            int minRentDays, int? maxRentDays, List<string> imageUrls, List<CustomField> customFields)
+        public UpdateProductCommand(Guid productId, Guid categoryId, Guid? subCategoryId, string name, string description, decimal price, bool isActive, int stockQuantity, int minRentDays, int? maxRentDays, List<string> imageUrls, List<CustomField> customFields)
         {
+            ProductId = productId;
             CategoryId = categoryId;
             SubCategoryId = subCategoryId;
             Name = name;
@@ -25,6 +25,7 @@ namespace Mubbi.Marketplace.Catalog.Usecases.CreateProduct
             CustomFields = customFields;
         }
 
+        public Guid ProductId { get; private set; }
         public Guid CategoryId { get; private set; }
         public Guid? SubCategoryId { get; private set; }
         public string Name { get; private set; }
@@ -36,22 +37,15 @@ namespace Mubbi.Marketplace.Catalog.Usecases.CreateProduct
         public int? MaxRentDays { get; private set; }
         public List<string> ImageUrls { get; private set; }
         public List<CustomField> CustomFields { get; private set; }
-
-        public override bool IsValid()
-        {
-            ValidationResult = new CreateProductCommandValidator().Validate(this);
-            return ValidationResult.IsValid;
-        }
     }
 
-    public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
+    public class UpdateProductCommandValidator : AbstractValidator<UpdateProductCommand>
     {
-        public CreateProductCommandValidator()
+        public UpdateProductCommandValidator()
         {
             RuleFor(x => x.Name).NotEmpty();
             RuleFor(x => x.Description).NotEmpty();
             RuleFor(x => x.ImageUrls).NotEmpty();
-            RuleFor(x => x.Price).GreaterThan(0);
 
             When(x => x.MaxRentDays.HasValue, () =>
             {
@@ -60,7 +54,7 @@ namespace Mubbi.Marketplace.Catalog.Usecases.CreateProduct
         }
     }
 
-    public class CreateProductCommandResponse
+    public class UpdateProductCommandResponse 
     {
         public ProductViewModel Product { get; set; }
     }

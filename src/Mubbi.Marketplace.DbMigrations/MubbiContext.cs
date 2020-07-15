@@ -26,6 +26,7 @@ namespace Mubbi.Marketplace.Data
                 relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(MubbiContext).Assembly);
+
             base.OnModelCreating(modelBuilder);
         }      
     }
