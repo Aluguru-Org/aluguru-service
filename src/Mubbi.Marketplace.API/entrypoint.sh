@@ -1,7 +1,5 @@
 #!/bin/bash
 
-ls
-
 set -e
 run_cmd="dotnet run --urls http://*:5000"
 
@@ -10,5 +8,5 @@ until dotnet tool run dotnet-ef database update; do
 sleep 1
 done
 
-# >&2 echo "SQL Server is up - executing command"
+>&2 echo "SQL Server is up - executing command"
 exec $run_cmd
