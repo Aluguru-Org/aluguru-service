@@ -68,6 +68,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Catalog.U
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Register.UnitTests", "tests\Mubbi.Marketplace.Register.UnitTests\Mubbi.Marketplace.Register.UnitTests.csproj", "{8F02F78F-B2A1-4747-9A3A-4C96CDBE5F6E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mubbi.Marketplace.AccessControl", "src\Mubbi.Marketplace.AccessControl\Mubbi.Marketplace.AccessControl.csproj", "{1BB7F26C-D309-48D6-8BC9-3B4EDABE0189}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -130,6 +132,10 @@ Global
 		{8F02F78F-B2A1-4747-9A3A-4C96CDBE5F6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F02F78F-B2A1-4747-9A3A-4C96CDBE5F6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F02F78F-B2A1-4747-9A3A-4C96CDBE5F6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BB7F26C-D309-48D6-8BC9-3B4EDABE0189}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BB7F26C-D309-48D6-8BC9-3B4EDABE0189}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BB7F26C-D309-48D6-8BC9-3B4EDABE0189}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BB7F26C-D309-48D6-8BC9-3B4EDABE0189}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -162,6 +168,7 @@ Global
 		{8AF9545F-8F3A-459C-8609-045496CD068A} = {4583262A-C887-40E3-8D5E-2A0C67406B1F}
 		{35C180DC-B262-4E11-804C-8D25B89ADCD2} = {9541875E-66D8-4878-9FC1-A4024413DF43}
 		{8F02F78F-B2A1-4747-9A3A-4C96CDBE5F6E} = {A8EE8DE1-8777-4A6D-976F-D835DBC92DA9}
+		{1BB7F26C-D309-48D6-8BC9-3B4EDABE0189} = {EEDC09EE-E501-4644-9BD6-4FB6927A4E38}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7D3D5A09-667D-49DA-B8AA-6194FE3C3F51}

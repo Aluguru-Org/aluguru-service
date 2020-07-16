@@ -10,7 +10,7 @@ namespace Mubbi.Marketplace.Security
     {
         public static void Configure(AuthorizationOptions options)
         {
-            options.AddPolicy(Policies.NotAnonymous, policy =>
+            options.AddPolicy(PolicyDefaults.NotAnonymous, policy =>
             {
                 policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
                 policy.RequireAuthenticatedUser();

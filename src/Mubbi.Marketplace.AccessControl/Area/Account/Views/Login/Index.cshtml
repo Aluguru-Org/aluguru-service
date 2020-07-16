@@ -1,0 +1,38 @@
+﻿@model Hub.IdentityServer.Areas.Account.Controllers.Login.LoginViewModel
+
+<style type="text/css">
+    .login-container {
+        margin: 0 auto;
+        width: 350px;
+        text-align: center;
+    }
+
+    .icon {
+        width: 22px;
+        height: 22px;
+        margin-right: 10px;
+    }
+
+    .office-login {
+        color: #000;
+    }
+
+        .office-login:active, .office-login:link, .office-login:hover {
+            color: #000;
+            text-decoration: none;
+        }
+</style>
+
+<div class="login-container">
+    <h2>@Model.Error</h2>
+    <div class="login-container__logo">
+        <img class="img-fluid logo-poatek" src="~/images/poatek_logo.png" />
+    </div>
+    <div class="login-container__link">
+        <a asp-controller="Login" asp-action="Challenge" asp-route-provider="@Model.ProviderScheme" asp-route-returnUrl="@Model.ReturnUrl" class="office-login">
+            <img src="~/images/office_icon.png" class="icon" />
+            Signin with @Model.ProviderDisplayName
+        </a>
+    </div>
+</div>
+
