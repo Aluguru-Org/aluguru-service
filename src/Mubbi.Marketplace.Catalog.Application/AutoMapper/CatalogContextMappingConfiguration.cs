@@ -46,8 +46,8 @@ namespace Mubbi.Marketplace.Catalog.AutoMapper
                         x.Price,
                         x.IsActive,
                         x.StockQuantity,
-                        x.MinRentTime,
-                        x.MaxRentTime,
+                        x.MinRentDays,
+                        x.MaxRentDays,
                         x.ImageUrls,
                         customFields);
                 });

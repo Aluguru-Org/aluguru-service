@@ -11,7 +11,7 @@ namespace Mubbi.Marketplace.Register.UnitTests
         [InlineData("Belgraf", "400", "aVENIDA BLA", "Eldorado do sul", "Rio Grande do Sul", "Brasil", "6546548947")]
         public void CreateAddress_WhenValidData_ShouldNotThrowDomainException(string street, string number, string neighborhood, string city, string state, string country, string zipcode)
         {
-            new Address(street, number, neighborhood, city, state, country, zipcode);
+            new Address(Guid.NewGuid(), street, number, neighborhood, city, state, country, zipcode);
         }
 
         [Theory]
@@ -24,7 +24,7 @@ namespace Mubbi.Marketplace.Register.UnitTests
         [InlineData("General Lima e Silva", "480", "Cidade Baixa", "Porto Alegre", "Rio Grande do Sul", "Brasil", "")]
         public void CreateAddress_WhenInvalidData_ShouldThrowDomainException(string street, string number, string neighborhood, string city, string state, string country, string zipcode)
         {
-            Assert.Throws<Exception>(() => new Address(street, number, neighborhood, city, state, country, zipcode));
+            Assert.Throws<Exception>(() => new Address(Guid.NewGuid(), street, number, neighborhood, city, state, country, zipcode));
 
         }
     }

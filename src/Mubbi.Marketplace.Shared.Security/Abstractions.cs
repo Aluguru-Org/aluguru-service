@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Mubbi.Marketplace.Security.User;
 using PampaDevs.Utils;
 using System;
 using System.Text;
@@ -44,6 +46,9 @@ namespace Mubbi.Marketplace.Security
             });
 
             services.AddAuthorization(PoliciesConfiguration.Configure);
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IAspNetUser, AspNetUser>();
 
             return services;
         }

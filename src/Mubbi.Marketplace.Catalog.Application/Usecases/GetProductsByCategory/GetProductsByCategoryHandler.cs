@@ -8,7 +8,7 @@ using Mubbi.Marketplace.Infrastructure.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Mubbi.Marketplace.Catalog.Application.Usecases.GetProductsByCategory
+namespace Mubbi.Marketplace.Catalog.Usecases.GetProductsByCategory
 {
     public class GetProductsByCategoryHandler : IRequestHandler<GetProductsByCategoryCommand, GetProductsByCategoryCommandResponse>
     {

@@ -1,13 +1,9 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Mubbi.Marketplace.Domain;
 using Mubbi.Marketplace.Infrastructure.Bus.Communication;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using Mubbi.Marketplace.Infrastructure.Data;
-using Mubbi.Marketplace.Register.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Mubbi.Marketplace.Register.Domain;
 using System.Threading;
 using System.Threading.Tasks;
 

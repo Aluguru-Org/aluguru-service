@@ -3,7 +3,6 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Mubbi.Marketplace.Catalog.Application.Usecases.GetProductsByCategory;
 using Mubbi.Marketplace.Catalog.AutoMapper;
 using Mubbi.Marketplace.Catalog.Usecases.CreateCategory;
 using Mubbi.Marketplace.Catalog.Usecases.CreateProduct;
@@ -22,6 +21,7 @@ using Mubbi.Marketplace.Infrastructure.Bus.Messages.Handlers;
 using Mubbi.Marketplace.Infrastructure.Data;
 using Mubbi.Marketplace.Infrastructure.UnitOfWork;
 using Mubbi.Marketplace.Register.AutoMapper;
+using Mubbi.Marketplace.Register.Usecases.CreateRole;
 using Mubbi.Marketplace.Register.Usecases.CreateUser;
 using Mubbi.Marketplace.Register.Usecases.DeleteUser;
 using Mubbi.Marketplace.Register.Usecases.LogInUser;
@@ -35,8 +35,6 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
         {
             services.AddDbContext<MubbiContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddAutoMapper(typeof(RegisterContextMappingConfiguration), typeof(CatalogContextMappingConfiguration));
-
             services.AddScoped<IUnitOfWork, EfUnitOfWork<MubbiContext>>();
 
             services.AddMediatR(assemblies);
@@ -47,7 +45,10 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
             services.AddScoped<IMediatorHandler, MediatorHandler>();
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
 
+            services.AddAutoMapper(typeof(RegisterContextMappingConfiguration), typeof(CatalogContextMappingConfiguration));
+
             // User Command Handlers
+            services.AddScoped<IRequestHandler<CreateRoleCommand, CreateRoleCommandResponse>, CreateRoleHandler>();
             services.AddScoped<IRequestHandler<LogInUserCommand, LogInUserCommandResponse>, LogInUserHandler>();
             services.AddScoped<IRequestHandler<CreateUserCommand, CreateUserCommandResponse>, CreateUserHandler>();
             services.AddScoped<IRequestHandler<DeleteUserCommand, bool>, DeleteUserHandler>();

@@ -19,7 +19,7 @@ namespace Mubbi.Marketplace.Catalog.Domain
             _customFields = new List<CustomField>();
         }
 
-        public Product(Guid categoryId, Guid? subCategoryId, string name, string description, decimal price, bool isActive, int stockQuantity, int minRentTime, int? maxRentTime, List<string> imageUrls, List<CustomField> customFields)
+        public Product(Guid categoryId, Guid? subCategoryId, string name, string description, decimal price, bool isActive, int stockQuantity, int minRentDays, int? maxRentDays, List<string> imageUrls, List<CustomField> customFields)
         {
             CategoryId = categoryId;
             SubCategoryId = subCategoryId;
@@ -28,8 +28,8 @@ namespace Mubbi.Marketplace.Catalog.Domain
             Price = price;
             IsActive = isActive;
             StockQuantity = stockQuantity;
-            MinRentDays = minRentTime;
-            MaxRentDays = maxRentTime;
+            MinRentDays = minRentDays;
+            MaxRentDays = maxRentDays;
 
             _imageUrls = imageUrls;
             _customFields = customFields;

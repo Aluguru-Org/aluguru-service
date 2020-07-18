@@ -23,7 +23,7 @@ namespace Mubbi.Marketplace.API
             services.AddMubbiSwagger();
 
             services.AddServiceComponents(Configuration, typeof(Startup).Assembly);
-                        
+
             services.AddRouting(options => options.LowercaseUrls = true);
             services.AddControllers().AddNewtonsoftJson(options =>
             {
@@ -50,7 +50,6 @@ namespace Mubbi.Marketplace.API
 
             app.UseRouting();
 
-            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

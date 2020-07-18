@@ -6,11 +6,10 @@ using Mubbi.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using Mubbi.Marketplace.Infrastructure.Data;
 using Mubbi.Marketplace.Register.ViewModels;
 using Mubbi.Marketplace.Register.Domain;
-using Mubbi.Marketplace.Register.Domain.Models;
 using Mubbi.Marketplace.Register.Domain.Repositories;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Mubbi.Marketplace.Security;
 
 namespace Mubbi.Marketplace.Register.Usecases.CreateUser
 {
@@ -37,24 +36,18 @@ namespace Mubbi.Marketplace.Register.Usecases.CreateUser
                 return new CreateUserCommandResponse();
             }
 
+            var roleQueryRepository = _unitOfWork.QueryRepository<UserRole>();
             var userRepository = _unitOfWork.Repository<User>();
 
-            var role = (ERoles)Enum.Parse(typeof(ERoles), request.Role);
+            var role = await roleQueryRepository.FindOneAsync(x => x.Name == request.Role);
 
-            var email = new Email(request.Email);
+            if (role == null)
+            {
+                await _mediatorHandler.PublishNotification(new DomainNotification(request.MessageType, $"The role {request.Role} does not exist"));
+                return new CreateUserCommandResponse();
+            }
 
-            var address = new Address(
-                request.AddressStreet, 
-                request.AddressNumber, 
-                request.AddressNeighborhood, 
-                request.AddressCity, 
-                request.AddressState, 
-                request.AddressCountry, 
-                request.AddressZipCode);
-
-            var document = new Document(request.DocumentNumber, (EDocumentType)Enum.Parse(typeof(EDocumentType), request.DocumentType));
-            
-            var user = new User(email, request.Password, role, request.FullName, address, document);
+            var user = new User(request.Email, Cryptography.Encrypt(request.Password), request.FullName, role.Id);
 
             user = await userRepository.AddAsync(user);
 

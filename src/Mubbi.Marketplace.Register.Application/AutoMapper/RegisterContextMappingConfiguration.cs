@@ -3,8 +3,8 @@ using Mubbi.Marketplace.Register.Usecases.CreateUser;
 using Mubbi.Marketplace.Register.Usecases.LogInUser;
 using Mubbi.Marketplace.Register.ViewModels;
 using Mubbi.Marketplace.Register.Domain;
-using Mubbi.Marketplace.Register.Domain.Models;
 using System;
+using System.Collections.Generic;
 
 namespace Mubbi.Marketplace.Register.AutoMapper
 {
@@ -18,22 +18,24 @@ namespace Mubbi.Marketplace.Register.AutoMapper
 
         private void DomainToViewModelConfiguration()
         {
+            CreateMap<UserClaim, UserClaimViewModel>();
+            CreateMap<UserRole, UserRoleViewModel>();
+
             CreateMap<Address, AddressViewModel>();
             CreateMap<Document, DocumentViewModel>()
                 .ForMember(x => x.Type, opt => opt.MapFrom(c => c.DocumentType.ToString()));
             CreateMap<User, UserViewModel>()
                 .ConstructUsing((x, rc) =>
                 {
-                    var address = rc.Mapper.Map<AddressViewModel>(x.Address);
                     var document = rc.Mapper.Map<DocumentViewModel>(x.Document);
+                    var addresses = rc.Mapper.Map<List<AddressViewModel>>(x.Addresses);
 
                     return new UserViewModel()
                     {
                         Id = x.Id,
-                        Role = x.Role.ToString(),
                         FullName = x.FullName,
-                        Email = x.Email.Address,
-                        Address = address,
+                        Email = x.Email,
+                        Addresses = addresses,
                         Document = document
                     };
                 });
@@ -41,20 +43,6 @@ namespace Mubbi.Marketplace.Register.AutoMapper
 
         private void ViewModelToDomainConfiguration()
         {
-            CreateMap<AddressViewModel, Address>()
-                .ConstructUsing(x => new Address(
-                    x.Street,
-                    x.Number,
-                    x.Neighborhood,
-                    x.City,
-                    x.State,
-                    x.Country,
-                    x.ZipCode));
-
-            CreateMap<DocumentViewModel, Document>()
-                .ConstructUsing(x => new Document(x.Number, (EDocumentType)Enum.Parse(typeof(EDocumentType), x.Type)))
-                .ForMember(x => x.DocumentType, c => c.Ignore());
-
             CreateMap<UserLoginViewModel, LogInUserCommand>()
                 .ConstructUsing(x => new LogInUserCommand(x.UserName, x.Password))
                 .ForMember(x => x.Timestamp, c => c.Ignore())
@@ -68,16 +56,7 @@ namespace Mubbi.Marketplace.Register.AutoMapper
                         x.FullName,
                         x.Password,
                         x.Email,
-                        x.Role, 
-                        x.Document.Type,
-                        x.Document.Number,
-                        x.Address.Number,
-                        x.Address.Street,
-                        x.Address.Neighborhood,
-                        x.Address.City,
-                        x.Address.State,
-                        x.Address.Country,
-                        x.Address.ZipCode);
+                        x.Role);
                 })
                 .ForMember(x => x.Timestamp, c => c.Ignore())
                 .ForMember(x => x.MessageType, c => c.Ignore())

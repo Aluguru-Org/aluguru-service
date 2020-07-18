@@ -1,12 +1,16 @@
 ﻿using Mubbi.Marketplace.Domain;
 using PampaDevs.Utils;
+using System;
 using System.Collections.Generic;
+using static PampaDevs.Utils.Helpers.IdHelper;
 
 namespace Mubbi.Marketplace.Register.Domain
 {
-    public class Address : ValueObject
+    public class Address : Entity
     {
-        public Address(string street, string number, string neighborhood, string city, string state, string country, string zipCode)
+        private Address() : base(NewId()) { }
+        public Address(Guid userId, string street, string number, string neighborhood, string city, string state, string country, string zipCode)
+            : base(NewId())
         {
             Street = street;
             Number = number;
@@ -17,8 +21,9 @@ namespace Mubbi.Marketplace.Register.Domain
             ZipCode = zipCode;
 
             ValidateCreation();
+            UserId = userId;
         }
-
+        public Guid UserId { get; private set; }
         public string Street { get; private set; }
         public string Number { get; private set; }
         public string Neighborhood { get; private set; }
@@ -27,17 +32,8 @@ namespace Mubbi.Marketplace.Register.Domain
         public string Country { get; private set; }
         public string ZipCode { get; private set; }
 
-
-        protected override IEnumerable<object> GetEqualityComponents()
-        {
-            yield return Street;
-            yield return Number;
-            yield return Neighborhood;
-            yield return City;
-            yield return State;
-            yield return Country;
-            yield return ZipCode;
-        }
+        // Ef Relational
+        public User User { get; set; }
 
         protected override void ValidateCreation()
         {

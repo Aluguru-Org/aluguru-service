@@ -30,9 +30,15 @@ namespace Mubbi.Marketplace.API.Controllers.V1
             return BadRequest(new ApiResponse<List<string>>(false, "The server was not able to process the request", _notifications.GetNotificationErrors()));
         }
 
-        protected ActionResult PostResponse<T>(string actionName, T data = null) where T : class
+        protected ActionResult PostResponse<T>(string actionName, T data = null, bool isCreation = true) where T : class
         {
-            if (IsValidOperation()) return CreatedAtAction(actionName, new ApiResponse<T>(true, "The resource was successfully created.", data));
+            if (IsValidOperation())
+            {
+                if (isCreation)
+                    return CreatedAtAction(actionName, new ApiResponse<T>(true, "The resource was successfully created.", data));
+                else
+                    return Ok(new ApiResponse<T>(true, "The resource has been fetched successfully", data));
+            }
 
             return BadRequest(new ApiResponse<List<string>>(false, "The server was not able to process the request", _notifications.GetNotificationErrors()));
         }

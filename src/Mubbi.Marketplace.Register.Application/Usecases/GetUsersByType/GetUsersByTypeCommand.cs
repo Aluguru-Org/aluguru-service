@@ -9,12 +9,12 @@ namespace Mubbi.Marketplace.Register.Usecases.GetUsersByRole
 {
     public class GetUsersByRoleCommand : Command<GetUsersByRoleCommandResponse>
     {
-        public GetUsersByRoleCommand(ERoles role)
+        public GetUsersByRoleCommand(string role)
         {
             Role = role;
         }
 
-        public ERoles Role { get; private set; }
+        public string Role { get; private set; }
 
         public override bool IsValid()
         {
@@ -27,7 +27,7 @@ namespace Mubbi.Marketplace.Register.Usecases.GetUsersByRole
     {
         public GetUsersByTypeCommandValidator()
         {
-            RuleFor(x => x.Role).NotEqual(ERoles.Admin).WithMessage("You do not have access to get admin users");
+            RuleFor(x => x.Role).Must(x => MubbiRoles.Contains(x)).WithMessage("The informed role does not exist");
         }
     }
 

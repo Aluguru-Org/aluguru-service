@@ -1,15 +1,12 @@
 ﻿using AutoMapper;
 using MediatR;
 using Mubbi.Marketplace.Domain;
-using Mubbi.Marketplace.Infrastructure.Bus.Messages;
 using Mubbi.Marketplace.Register.ViewModels;
-using Mubbi.Marketplace.Register.Domain.Models;
 using Mubbi.Marketplace.Register.Domain.Repositories;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Mubbi.Marketplace.Register.Domain;
 
 namespace Mubbi.Marketplace.Register.Usecases.GetUsersByRole
 {

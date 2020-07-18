@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Text;
-using static PampaDevs.Utils.Helpers.DateTimeHelper;
 
 namespace Mubbi.Marketplace.Domain
 {
