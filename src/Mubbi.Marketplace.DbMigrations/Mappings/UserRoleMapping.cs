@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.DataProtection.XmlEncryption;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Mubbi.Marketplace.Register.Domain;
 
@@ -10,8 +11,9 @@ namespace Mubbi.Marketplace.Data.Mappings
         {
             builder.HasKey(x => x.Id);
 
-            builder.HasOne(x => x.User)
-                .WithOne(x => x.UserRole);
+            builder.HasMany(x => x.Users)
+                .WithOne(x => x.UserRole)
+                .HasForeignKey(x => x.UserRoleId);
 
             builder.HasMany(x => x.UserClaims)
                 .WithOne(x => x.UserRole)

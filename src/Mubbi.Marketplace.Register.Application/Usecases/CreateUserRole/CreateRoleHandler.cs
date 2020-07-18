@@ -6,15 +6,12 @@ using Mubbi.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using Mubbi.Marketplace.Infrastructure.Data;
 using Mubbi.Marketplace.Register.Domain;
 using Mubbi.Marketplace.Register.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Mubbi.Marketplace.Register.Usecases.CreateRole
+namespace Mubbi.Marketplace.Register.Usecases.CreateUserRole
 {
-    public class CreateRoleHandler : IRequestHandler<CreateRoleCommand, CreateRoleCommandResponse>
+    public class CreateRoleHandler : IRequestHandler<CreateUserRoleCommand, CreateUserRoleCommandResponse>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -27,14 +24,14 @@ namespace Mubbi.Marketplace.Register.Usecases.CreateRole
             _mediatorHandler = mediatorHandler;
         }
 
-        public async Task<CreateRoleCommandResponse> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
+        public async Task<CreateUserRoleCommandResponse> Handle(CreateUserRoleCommand request, CancellationToken cancellationToken)
         {
             var queryRepository = _unitOfWork.QueryRepository<UserRole>();
 
             if (await queryRepository.FindOneAsync(x => x.Name == request.Name) != null)
             {
                 await _mediatorHandler.PublishNotification(new DomainNotification(request.MessageType, $"The Role {request.Name} already exists"));
-                return new CreateRoleCommandResponse();
+                return new CreateUserRoleCommandResponse();
             }
 
             var repository = _unitOfWork.Repository<UserRole>();
@@ -43,7 +40,7 @@ namespace Mubbi.Marketplace.Register.Usecases.CreateRole
 
             userRole = await repository.AddAsync(userRole);
 
-            return new CreateRoleCommandResponse()
+            return new CreateUserRoleCommandResponse()
             {
                 Role = _mapper.Map<UserRoleViewModel>(userRole)
             };

@@ -4,11 +4,11 @@ using Mubbi.Marketplace.Register.Domain;
 using Mubbi.Marketplace.Register.ViewModels;
 using System.Collections.Generic;
 
-namespace Mubbi.Marketplace.Register.Usecases.CreateRole
+namespace Mubbi.Marketplace.Register.Usecases.CreateUserRole
 {
-    public class CreateRoleCommand : Command<CreateRoleCommandResponse>
+    public class CreateUserRoleCommand : Command<CreateUserRoleCommandResponse>
     {
-        public CreateRoleCommand(string name)
+        public CreateUserRoleCommand(string name)
         {
             Name = name;
         }
@@ -21,7 +21,7 @@ namespace Mubbi.Marketplace.Register.Usecases.CreateRole
         }
     }
 
-    public class CreateRoleCommandValidator : AbstractValidator<CreateRoleCommand>
+    public class CreateRoleCommandValidator : AbstractValidator<CreateUserRoleCommand>
     {
         public CreateRoleCommandValidator()
         {
@@ -29,7 +29,7 @@ namespace Mubbi.Marketplace.Register.Usecases.CreateRole
         }
     }
 
-    public class CreateRoleCommandResponse
+    public class CreateUserRoleCommandResponse
     {
         public UserRoleViewModel Role { get; set; }
     }

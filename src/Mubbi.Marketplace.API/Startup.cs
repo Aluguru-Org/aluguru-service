@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Mubbi.Marketplace.API.Middleware;
 using Mubbi.Marketplace.Crosscutting.IoC;
+using Mubbi.Marketplace.Register.Data.Seed;
 
 namespace Mubbi.Marketplace.API
 {
@@ -34,7 +35,7 @@ namespace Mubbi.Marketplace.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            if (env.IsEnvironment("Local") || env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -51,6 +52,8 @@ namespace Mubbi.Marketplace.API
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.SeedRegisterContext();
 
             app.UseEndpoints(endpoints =>
             {

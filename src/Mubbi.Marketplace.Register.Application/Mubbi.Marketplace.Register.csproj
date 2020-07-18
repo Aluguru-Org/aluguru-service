@@ -14,4 +14,8 @@
     <ProjectReference Include="..\Mubbi.Marketplace.Shared.Security\Mubbi.Marketplace.Security.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Usecases\GetUserRole\" />
+  </ItemGroup>
+
 </Project>

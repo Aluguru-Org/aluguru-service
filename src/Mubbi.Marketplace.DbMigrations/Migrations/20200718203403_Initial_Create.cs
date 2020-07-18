@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Mubbi.Marketplace.Data.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Initial_Create : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -30,22 +30,17 @@ namespace Mubbi.Marketplace.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "User",
+                name: "UserRole",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     DateCreated = table.Column<DateTime>(nullable: false),
                     DateUpdated = table.Column<DateTime>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true),
-                    FullName = table.Column<string>(nullable: true),
-                    UserRoleId = table.Column<Guid>(nullable: false),
-                    Document_Number = table.Column<string>(nullable: true),
-                    Document_DocumentType = table.Column<int>(nullable: true)
+                    Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.Id);
+                    table.PrimaryKey("PK_UserRole", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -53,8 +48,8 @@ namespace Mubbi.Marketplace.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    DateCreated = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2020, 7, 18, 13, 37, 29, 283, DateTimeKind.Utc).AddTicks(6118)),
-                    DateUpdated = table.Column<DateTime>(nullable: true, defaultValue: new DateTime(2020, 7, 18, 13, 37, 29, 284, DateTimeKind.Utc).AddTicks(432)),
+                    DateCreated = table.Column<DateTime>(nullable: false),
+                    DateUpdated = table.Column<DateTime>(nullable: true),
                     CategoryId = table.Column<Guid>(nullable: false),
                     SubCategoryId = table.Column<Guid>(nullable: true),
                     Name = table.Column<string>(nullable: false),
@@ -84,74 +79,26 @@ namespace Mubbi.Marketplace.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Address",
+                name: "User",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     DateCreated = table.Column<DateTime>(nullable: false),
                     DateUpdated = table.Column<DateTime>(nullable: true),
-                    UserId = table.Column<Guid>(nullable: false),
-                    Street = table.Column<string>(nullable: true),
-                    Number = table.Column<string>(nullable: true),
-                    Neighborhood = table.Column<string>(nullable: true),
-                    City = table.Column<string>(nullable: true),
-                    State = table.Column<string>(nullable: true),
-                    Country = table.Column<string>(nullable: true),
-                    ZipCode = table.Column<string>(nullable: true)
+                    Email = table.Column<string>(nullable: true),
+                    Password = table.Column<string>(nullable: true),
+                    FullName = table.Column<string>(nullable: true),
+                    UserRoleId = table.Column<Guid>(nullable: false),
+                    Document_Number = table.Column<string>(nullable: true),
+                    Document_DocumentType = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Address", x => x.Id);
+                    table.PrimaryKey("PK_User", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Address_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserRole",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    DateCreated = table.Column<DateTime>(nullable: false),
-                    DateUpdated = table.Column<DateTime>(nullable: true),
-                    UserId = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserRole", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserRole_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CustomField",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    DateCreated = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2020, 7, 18, 13, 37, 29, 246, DateTimeKind.Utc).AddTicks(9216)),
-                    DateUpdated = table.Column<DateTime>(nullable: true, defaultValue: new DateTime(2020, 7, 18, 13, 37, 29, 263, DateTimeKind.Utc).AddTicks(5603)),
-                    FieldType = table.Column<int>(nullable: false),
-                    ValueAsString = table.Column<string>(nullable: true),
-                    ValueAsInt = table.Column<int>(nullable: true),
-                    ValueAsOptions = table.Column<string>(nullable: true),
-                    Active = table.Column<bool>(nullable: false),
-                    ProductId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CustomField", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CustomField_Product_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Product",
+                        name: "FK_User_UserRole_UserRoleId",
+                        column: x => x.UserRoleId,
+                        principalTable: "UserRole",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -174,6 +121,58 @@ namespace Mubbi.Marketplace.Data.Migrations
                         name: "FK_UserClaim_UserRole_UserRoleId",
                         column: x => x.UserRoleId,
                         principalTable: "UserRole",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CustomField",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    DateCreated = table.Column<DateTime>(nullable: false),
+                    DateUpdated = table.Column<DateTime>(nullable: true),
+                    FieldType = table.Column<int>(nullable: false),
+                    ValueAsString = table.Column<string>(nullable: true),
+                    ValueAsInt = table.Column<int>(nullable: true),
+                    ValueAsOptions = table.Column<string>(nullable: true),
+                    Active = table.Column<bool>(nullable: false),
+                    ProductId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CustomField", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CustomField_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Address",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    DateCreated = table.Column<DateTime>(nullable: false),
+                    DateUpdated = table.Column<DateTime>(nullable: true),
+                    UserId = table.Column<Guid>(nullable: false),
+                    Street = table.Column<string>(nullable: true),
+                    Number = table.Column<string>(nullable: true),
+                    Neighborhood = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true),
+                    State = table.Column<string>(nullable: true),
+                    Country = table.Column<string>(nullable: true),
+                    ZipCode = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Address", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Address_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -204,15 +203,14 @@ namespace Mubbi.Marketplace.Data.Migrations
                 column: "SubCategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserClaim_UserRoleId",
-                table: "UserClaim",
+                name: "IX_User_UserRoleId",
+                table: "User",
                 column: "UserRoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRole_UserId",
-                table: "UserRole",
-                column: "UserId",
-                unique: true);
+                name: "IX_UserClaim_UserRoleId",
+                table: "UserClaim",
+                column: "UserRoleId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -227,6 +225,9 @@ namespace Mubbi.Marketplace.Data.Migrations
                 name: "UserClaim");
 
             migrationBuilder.DropTable(
+                name: "User");
+
+            migrationBuilder.DropTable(
                 name: "Product");
 
             migrationBuilder.DropTable(
@@ -234,9 +235,6 @@ namespace Mubbi.Marketplace.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Category");
-
-            migrationBuilder.DropTable(
-                name: "User");
         }
     }
 }

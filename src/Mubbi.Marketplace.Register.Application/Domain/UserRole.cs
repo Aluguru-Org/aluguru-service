@@ -1,6 +1,5 @@
 ﻿using Mubbi.Marketplace.Domain;
 using PampaDevs.Utils;
-using System;
 using System.Collections.Generic;
 using static PampaDevs.Utils.Helpers.IdHelper;
 
@@ -8,9 +7,11 @@ namespace Mubbi.Marketplace.Register.Domain
 {
     public class UserRole : AggregateRoot
     {
+        private readonly List<User> _users;
         private readonly List<UserClaim> _userClaims;
         private UserRole() : base(NewId()) 
         {
+            _users = new List<User>();
             _userClaims = new List<UserClaim>();
         }
 
@@ -18,15 +19,13 @@ namespace Mubbi.Marketplace.Register.Domain
             : base(NewId())
         {
             Name = roleName;
+            _users = new List<User>();
             _userClaims = new List<UserClaim>();
         }
 
-        public Guid UserId { get; private set; }
         public string Name { get; private set; }
-        public IReadOnlyCollection<UserClaim> UserClaims { get { return _userClaims; } }
-
-        // EF Relational
-        public User User { get; set; }
+        public IReadOnlyCollection<User> Users { get; set; }
+        public IReadOnlyCollection<UserClaim> UserClaims { get { return _userClaims; } }        
 
         protected override void ValidateCreation()
         {

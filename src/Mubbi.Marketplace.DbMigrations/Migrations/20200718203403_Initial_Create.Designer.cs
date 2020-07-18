@@ -10,8 +10,8 @@ using Mubbi.Marketplace.Data;
 namespace Mubbi.Marketplace.Data.Migrations
 {
     [DbContext(typeof(MubbiContext))]
-    [Migration("20200718133729_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20200718203403_Initial_Create")]
+    partial class Initial_Create
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -60,14 +60,10 @@ namespace Mubbi.Marketplace.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("DateCreated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2020, 7, 18, 13, 37, 29, 246, DateTimeKind.Utc).AddTicks(9216));
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DateUpdated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2020, 7, 18, 13, 37, 29, 263, DateTimeKind.Utc).AddTicks(5603));
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("FieldType")
                         .HasColumnType("int");
@@ -101,14 +97,10 @@ namespace Mubbi.Marketplace.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateCreated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2020, 7, 18, 13, 37, 29, 283, DateTimeKind.Utc).AddTicks(6118));
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DateUpdated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2020, 7, 18, 13, 37, 29, 284, DateTimeKind.Utc).AddTicks(432));
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -218,6 +210,8 @@ namespace Mubbi.Marketplace.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserRoleId");
+
                     b.ToTable("User");
                 });
 
@@ -264,13 +258,7 @@ namespace Mubbi.Marketplace.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("UserRole");
                 });
@@ -315,6 +303,12 @@ namespace Mubbi.Marketplace.Data.Migrations
 
             modelBuilder.Entity("Mubbi.Marketplace.Register.Domain.User", b =>
                 {
+                    b.HasOne("Mubbi.Marketplace.Register.Domain.UserRole", "UserRole")
+                        .WithMany("Users")
+                        .HasForeignKey("UserRoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.OwnsOne("Mubbi.Marketplace.Register.Domain.Document", "Document", b1 =>
                         {
                             b1.Property<Guid>("UserId")
@@ -340,15 +334,6 @@ namespace Mubbi.Marketplace.Data.Migrations
                     b.HasOne("Mubbi.Marketplace.Register.Domain.UserRole", "UserRole")
                         .WithMany("UserClaims")
                         .HasForeignKey("UserRoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Mubbi.Marketplace.Register.Domain.UserRole", b =>
-                {
-                    b.HasOne("Mubbi.Marketplace.Register.Domain.User", "User")
-                        .WithOne("UserRole")
-                        .HasForeignKey("Mubbi.Marketplace.Register.Domain.UserRole", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

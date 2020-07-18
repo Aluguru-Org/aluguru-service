@@ -21,7 +21,8 @@ using Mubbi.Marketplace.Infrastructure.Bus.Messages.Handlers;
 using Mubbi.Marketplace.Infrastructure.Data;
 using Mubbi.Marketplace.Infrastructure.UnitOfWork;
 using Mubbi.Marketplace.Register.AutoMapper;
-using Mubbi.Marketplace.Register.Usecases.CreateRole;
+using Mubbi.Marketplace.Register.Usecases.GetUserRoles;
+using Mubbi.Marketplace.Register.Usecases.CreateUserRole;
 using Mubbi.Marketplace.Register.Usecases.CreateUser;
 using Mubbi.Marketplace.Register.Usecases.DeleteUser;
 using Mubbi.Marketplace.Register.Usecases.LogInUser;
@@ -47,8 +48,11 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
 
             services.AddAutoMapper(typeof(RegisterContextMappingConfiguration), typeof(CatalogContextMappingConfiguration));
 
+            // UserRole Command Handlers
+            services.AddScoped<IRequestHandler<CreateUserRoleCommand, CreateUserRoleCommandResponse>, CreateRoleHandler>();
+            services.AddScoped<IRequestHandler<GetUserRolesCommand, GetUserRolesCommandResponse>, GetUserRolesHandler>();
+
             // User Command Handlers
-            services.AddScoped<IRequestHandler<CreateRoleCommand, CreateRoleCommandResponse>, CreateRoleHandler>();
             services.AddScoped<IRequestHandler<LogInUserCommand, LogInUserCommandResponse>, LogInUserHandler>();
             services.AddScoped<IRequestHandler<CreateUserCommand, CreateUserCommandResponse>, CreateUserHandler>();
             services.AddScoped<IRequestHandler<DeleteUserCommand, bool>, DeleteUserHandler>();
