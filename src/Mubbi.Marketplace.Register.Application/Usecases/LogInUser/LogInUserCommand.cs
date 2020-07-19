@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages;
+using Mubbi.Marketplace.Security;
 
 namespace Mubbi.Marketplace.Register.Usecases.LogInUser
 {
@@ -7,11 +8,11 @@ namespace Mubbi.Marketplace.Register.Usecases.LogInUser
     {
         public LogInUserCommand(string username, string password)
         {
-            Username = username;
-            Password = password;
+            Email = username;
+            Password = Cryptography.Encrypt(password);
         }
 
-        public string Username { get; private set; }
+        public string Email { get; private set; }
         public string Password { get; private set; }
 
         public override bool IsValid()
@@ -25,7 +26,7 @@ namespace Mubbi.Marketplace.Register.Usecases.LogInUser
     {
         public LogInUserCommandValidator()
         {
-            RuleFor(x => x.Username).NotEmpty();
+            RuleFor(x => x.Email).NotEmpty();
             RuleFor(x => x.Password).NotEmpty();
         }
     }

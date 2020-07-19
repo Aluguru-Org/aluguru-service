@@ -86,7 +86,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         {
             var command = _mapper.Map<CreateProductCommand>(viewModel);
             var response = await _mediatorHandler.SendCommand<CreateProductCommand, CreateProductCommandResponse>(command);
-            return GetResponse(response);
+            return PostResponse(nameof(CreateProduct), response);
         }
     }
 }

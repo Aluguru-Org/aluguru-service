@@ -7,7 +7,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 namespace Mubbi.Marketplace.API
 {
     public static class Abstractions
-    {        
+    {
         public static IServiceCollection AddMubbiSwagger(this IServiceCollection services)
         {
             return services.AddSwaggerGen(ConfigureSwaggerOptions);
@@ -21,7 +21,7 @@ namespace Mubbi.Marketplace.API
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mubbi API V1");                
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mubbi API V1");
                 c.RoutePrefix = string.Empty;
             });
 
@@ -45,6 +45,31 @@ namespace Mubbi.Marketplace.API
                 License = new OpenApiLicense
                 {
                     Name = "Lincense.."
+                }
+            });
+
+            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+            {
+                Description = "Input the JWT like: Bearer {your token}",
+                Name = "Authorization",
+                Scheme = "Bearer",
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.ApiKey
+            });
+
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme()
+                    {
+                        Reference = new OpenApiReference()
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] {}
                 }
             });
 

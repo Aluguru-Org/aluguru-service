@@ -31,16 +31,18 @@ namespace Mubbi.Marketplace.Security
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
-                options.RequireHttpsMetadata = true;
                 options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
+
                     ValidateIssuer = true,
+                    ValidIssuer = appSettings.Issuer,
+
                     ValidateAudience = true,
                     ValidAudience = appSettings.Audience,
-                    ValidIssuer = appSettings.Issuer,
+
                     ClockSkew = TimeSpan.FromSeconds(1)
                 };
             });

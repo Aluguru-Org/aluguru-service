@@ -7,16 +7,14 @@ namespace Mubbi.Marketplace.Catalog.Usecases.CreateCategory
 {
     public class CreateCategoryCommand : Command<CreateCategoryCommandResponse>
     {
-        public CreateCategoryCommand(string name, int code, Guid? mainCategoryId = null)
+        public CreateCategoryCommand(string name, Guid? mainCategoryId = null)
         {
             Name = name;
-            Code = code;
             MainCategoryId = mainCategoryId;
         }
 
         public Guid? MainCategoryId { get; private set; }
         public string Name { get; private set; }
-        public int Code { get; private set; }
 
         public override bool IsValid()
         {
@@ -30,7 +28,6 @@ namespace Mubbi.Marketplace.Catalog.Usecases.CreateCategory
         public CreateCategoryCommandValidator()
         {
             RuleFor(x => x.Name).NotEmpty();
-            RuleFor(x => x.Code).GreaterThanOrEqualTo(0);
         }
     }
 

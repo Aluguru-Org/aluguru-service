@@ -19,19 +19,19 @@ namespace Mubbi.Marketplace.Catalog.AutoMapper
         private void ViewModelToDomainConfiguration()
         {
             CreateMap<CreateCategoryViewModel, CreateCategoryCommand>()
-                .ConstructUsing(x => new CreateCategoryCommand(x.Name, x.Code, x.MainCategoryId))
+                .ConstructUsing(x => new CreateCategoryCommand(x.Name, x.MainCategoryId))
                 .ForMember(x => x.Timestamp, c => c.Ignore())
                 .ForMember(x => x.MessageType, c => c.Ignore())
                 .ForMember(x => x.ValidationResult, c => c.Ignore());
 
             CreateMap<UpdateCategoryViewModel, CreateCategoryCommand>()
-                .ConstructUsing(x => new CreateCategoryCommand(x.Name, x.Code, x.MainCategoryId))
+                .ConstructUsing(x => new CreateCategoryCommand(x.Name, x.MainCategoryId))
                 .ForMember(x => x.Timestamp, c => c.Ignore())
                 .ForMember(x => x.MessageType, c => c.Ignore())
                 .ForMember(x => x.ValidationResult, c => c.Ignore());
 
             CreateMap<CategoryViewModel, Category>()
-                .ConstructUsing(c => new Category(c.Name, c.Code, c.MainCategoryId));
+                .ConstructUsing(c => new Category(c.Name, c.MainCategoryId));
 
             CreateMap<ProductViewModel, Product>()
                 .ConstructUsing((x, rc) =>
@@ -73,11 +73,11 @@ namespace Mubbi.Marketplace.Catalog.AutoMapper
                 .ForMember(x => x.MessageType, c => c.Ignore())
                 .ForMember(x => x.ValidationResult, c => c.Ignore());
 
-            CreateMap<CustomFieldViewModel, CustomField>()
+            CreateMap<CreateCustomFieldViewModel, CustomField>()
                 .ConstructUsing((x, rc) =>
                 {
                     var fieldType = (EFieldType)Enum.Parse(typeof(EFieldType), x.FieldType);
-                    switch(fieldType)
+                    switch (fieldType)
                     {
                         default:
                         case EFieldType.Text:
@@ -88,7 +88,12 @@ namespace Mubbi.Marketplace.Catalog.AutoMapper
                         case EFieldType.Checkbox:
                             return new CustomField(fieldType, x.ValueAsOptions);
                     }
-                });
+                })
+                .ForMember(x => x.Id, c => c.Ignore())
+                .ForMember(x => x.ProductId, c => c.Ignore())
+                .ForMember(x => x.Product, c => c.Ignore())
+                .ForMember(x => x.DateCreated, c => c.Ignore())
+                .ForMember(x => x.DateUpdated, c => c.Ignore());
         }
 
         private void DomainToViewModelConfiguration()

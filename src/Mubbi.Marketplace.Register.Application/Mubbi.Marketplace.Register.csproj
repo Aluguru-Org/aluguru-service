@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <Folder Include="Usecases\GetUserRole\" />
+    <Folder Include="Usecases\UpadeUser\" />
   </ItemGroup>
 
 </Project>

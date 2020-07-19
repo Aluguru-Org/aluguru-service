@@ -24,20 +24,20 @@ namespace Mubbi.Marketplace.Catalog.Usecases.CreateCategory
             _mediatorHandler = mediatorHandler;
         }
 
-        public async Task<CreateCategoryCommandResponse> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
+        public async Task<CreateCategoryCommandResponse> Handle(CreateCategoryCommand command, CancellationToken cancellationToken)
         {
             var queryRepository = _unitOfWork.QueryRepository<Category>();
-            var category = await queryRepository.GetCategoryByCode(request.Code);
+            var category = await queryRepository.GetCategoryByNameAsync(command.Name);
 
             if (category != null)
             {
-                await _mediatorHandler.PublishNotification(new DomainNotification(request.MessageType, $"The Category {category} is already registered"));
+                await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"The Category {category} is already registered"));
                 return new CreateCategoryCommandResponse();
             }
 
             var repository = _unitOfWork.Repository<Category>();
 
-            category = new Category(request.Name, request.Code, request.MainCategoryId);
+            category = new Category(command.Name, command.MainCategoryId);
 
             category = await repository.AddAsync(category);
 

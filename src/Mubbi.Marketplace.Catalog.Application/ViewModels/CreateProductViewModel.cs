@@ -26,6 +26,6 @@ namespace Mubbi.Marketplace.Catalog.ViewModels
         [Required]
         public int StockQuantity { get; set; }
         public List<string> ImageUrls { get; set; }
-        public List<CustomFieldViewModel> CustomFields { get; set; }
+        public List<CreateCustomFieldViewModel> CustomFields { get; set; }
     }
 }

@@ -8,12 +8,15 @@ namespace Mubbi.Marketplace.Register.Usecases.CreateUserRole
 {
     public class CreateUserRoleCommand : Command<CreateUserRoleCommandResponse>
     {
-        public CreateUserRoleCommand(string name)
+        public CreateUserRoleCommand(string name, List<UserClaim> userClaims)
         {
             Name = name;
+            UserClaims = userClaims;
         }
 
         public string Name { get; private set; }
+        public List<UserClaim> UserClaims { get; private set; }
+
         public override bool IsValid()
         {
             ValidationResult = new CreateRoleCommandValidator().Validate(this);

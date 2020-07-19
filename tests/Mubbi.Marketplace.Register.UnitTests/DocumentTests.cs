@@ -1,19 +1,33 @@
 ﻿using Mubbi.Marketplace.Register.Domain;
 using System;
 using Xunit;
+using Bogus.Extensions.Brazil;
+using Bogus;
+using System.Collections.Generic;
+using Bogus.DataSets;
 
 namespace Mubbi.Marketplace.Register.UnitTests
-{ 
+{
+
     public class DocumentTests
     {
+        public static IEnumerable<object[]> formattedCpfs => Populator.Populate(10, () => new Person().Cpf());
+        public static IEnumerable<object[]> notFormattedCpfs => Populator.Populate(10, () => new Person().Cpf(false));
+        public static IEnumerable<object[]> formattedCnpj => Populator.Populate(10, () => new Company().Cnpj());
+        public static IEnumerable<object[]> notFormattedCnpj => Populator.Populate(10, () => new Company().Cnpj(false));
+
         [Theory]
-        [InlineData("886.280.870-44")]
-        [InlineData("923.159.870-83")]
-        [InlineData("54003064038")]
-        [InlineData("47279336086")]
-        public void CreateDocument_WhenCPF_AndValidNumber_ShouldNotThrowDomainException(string number)
+        [MemberData(nameof(formattedCpfs))]
+        public void CreateDocument_WhenCPF_ShouldPass(string cpf)
         {
-            new Document(number, EDocumentType.CPF);
+            new Document(cpf, EDocumentType.CPF);            
+        }
+
+        [Theory]
+        [MemberData(nameof(notFormattedCpfs))]
+        public void CreateDocument_WhenCPF_WhithoutFormatting_ShouldPass(string cpf)
+        {
+            new Document(cpf, EDocumentType.CPF);
         }
 
         [Theory]
@@ -27,13 +41,17 @@ namespace Mubbi.Marketplace.Register.UnitTests
         }
 
         [Theory]
-        [InlineData("74.765.845/0001-04")]
-        [InlineData("25.222.744/0001-81")]
-        [InlineData("92621944000102")]
-        [InlineData("41846246000166")]
-        public void CreateDocument_WhenCNPJ_AndValidNumber_ShouldNotThrowDomainException(string number)
+        [MemberData(nameof(formattedCnpj))]
+        public void CreateDocument_WhenCNPJ_ShouldPass(string cnpj)
         {
-            new Document(number, EDocumentType.CNPJ);
+            new Document(cnpj, EDocumentType.CNPJ);
+        }
+
+        [Theory]
+        [MemberData(nameof(notFormattedCnpj))]
+        public void CreateDocument_WhenCNPJ_WhithoutFormatting_ShouldPass(string cnpj)
+        {
+            new Document(cnpj, EDocumentType.CNPJ);
         }
 
         [Theory]

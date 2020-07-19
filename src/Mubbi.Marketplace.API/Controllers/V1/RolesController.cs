@@ -11,9 +11,7 @@ using Mubbi.Marketplace.Register.Usecases.CreateUserRole;
 using Mubbi.Marketplace.Register.Usecases.GetUserRoles;
 using Mubbi.Marketplace.Register.ViewModels;
 using Swashbuckle.AspNetCore.Annotations;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Mubbi.Marketplace.API.Controllers.V1
@@ -42,6 +40,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpPost]
         [Route("")]
+        [Authorize]
         [SwaggerOperation(Summary = "Create a UserRole")]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -50,7 +49,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> CreateRole([FromBody] UserRoleViewModel viewModel)
         {
-            var command = new CreateUserRoleCommand(viewModel.Name);
+            var command = _mapper.Map<CreateUserRoleCommand>(viewModel);
             var response = await _mediatorHandler.SendCommand<CreateUserRoleCommand, CreateUserRoleCommandResponse>(command);
             return PostResponse(nameof(CreateRole), response);
         }

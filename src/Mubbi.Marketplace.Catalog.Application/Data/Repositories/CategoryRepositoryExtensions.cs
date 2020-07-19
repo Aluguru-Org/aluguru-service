@@ -12,6 +12,26 @@ namespace Mubbi.Marketplace.Catalog.Data.Repositories
 {
     public static class CategoryRepositoryExtensions
     {
+        public static async Task<Category> GetCategoryAsync(this IQueryRepository<Category> repository, Guid categoryId, bool disableTracking = true)
+        {
+            var category = await repository.GetByIdAsync(
+                categoryId,
+                productQueryable => productQueryable.Include(x => x.Products),
+                !disableTracking);
+
+            return category;
+        }
+
+        public static async Task<Category> GetCategoryByNameAsync(this IQueryRepository<Category> repository, string name, bool disableTracking = true)
+        {
+            var category = await repository.FindOneAsync(
+                x => x.Name == name,
+                productQueryable => productQueryable.Include(x => x.Products),
+                !disableTracking);
+
+            return category;
+        }
+
         public static async Task<List<Category>> GetCategories(this IQueryRepository<Category> repository, bool disableTracking = true)
         {
             var queryable = repository.Queryable();
@@ -24,15 +44,6 @@ namespace Mubbi.Marketplace.Catalog.Data.Repositories
                 .ToListAsync();
 
             return categories;
-        }
-
-        public static async Task<Category> GetCategoryByCode(this IQueryRepository<Category> repository, int categoryCode, bool disableTracking = true)
-        {
-            var category = await repository.FindOneAsync(x => x.Code == categoryCode, 
-                productQueryable => productQueryable.Include(x => x.Products),
-                !disableTracking);
-
-            return category;
         }
     }
 }

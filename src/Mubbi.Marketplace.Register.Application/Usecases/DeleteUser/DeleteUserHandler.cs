@@ -22,9 +22,9 @@ namespace Mubbi.Marketplace.Register.Usecases.DeleteUser
 
         public async Task<bool> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
-            var userQueryRepository = _unitOfWork.QueryRepository<User>();
+            var queryRepository = _unitOfWork.QueryRepository<User>();
 
-            var user = await userQueryRepository.GetByIdAsync(request.UserId);
+            var user = await queryRepository.GetByIdAsync(request.UserId);
             
             if (user == null)
             {

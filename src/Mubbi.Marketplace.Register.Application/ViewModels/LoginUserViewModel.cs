@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Mubbi.Marketplace.Register.ViewModels
 {
-    public class UserLoginViewModel : IDto
+    public class LoginUserViewModel : IDto
     {
         [Required]
-        public string UserName { get; set; }
+        public string Email { get; set; }
         [Required]
         public string Password { get; set; }
     }

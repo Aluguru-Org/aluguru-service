@@ -5,6 +5,7 @@ using Mubbi.Marketplace.Register.ViewModels;
 using Mubbi.Marketplace.Register.Domain;
 using System;
 using System.Collections.Generic;
+using Mubbi.Marketplace.Register.Usecases.CreateUserRole;
 
 namespace Mubbi.Marketplace.Register.AutoMapper
 {
@@ -12,8 +13,41 @@ namespace Mubbi.Marketplace.Register.AutoMapper
     {
         public RegisterContextMappingConfiguration()
         {
-            DomainToViewModelConfiguration();
             ViewModelToDomainConfiguration();
+            DomainToViewModelConfiguration();
+        }
+
+        private void ViewModelToDomainConfiguration()
+        {
+            CreateMap<CreateUserRoleViewModel, CreateUserRoleCommand>()
+                .ConstructUsing((request, context) =>
+                {
+                    var userClaims = context.Mapper.Map<List<UserClaim>>(request.UserClaims);
+                    return new CreateUserRoleCommand(request.Name, userClaims);
+                })
+                .ForMember(x => x.Timestamp, c => c.Ignore())
+                .ForMember(x => x.MessageType, c => c.Ignore())
+                .ForMember(x => x.ValidationResult, c => c.Ignore());
+
+            CreateMap<CreateUserClaimViewModel, UserClaim>()
+                .ForMember(x => x.UserRole, c => c.Ignore())
+                .ForMember(x => x.DateCreated, c => c.Ignore())
+                .ForMember(x => x.DateUpdated, c => c.Ignore());
+
+            CreateMap<LoginUserViewModel, LogInUserCommand>()
+                .ConstructUsing(x => new LogInUserCommand(x.Email, x.Password))
+                .ForMember(x => x.Timestamp, c => c.Ignore())
+                .ForMember(x => x.MessageType, c => c.Ignore())
+                .ForMember(x => x.ValidationResult, c => c.Ignore());
+
+            CreateMap<UserRegistrationViewModel, CreateUserCommand>()
+                .ConstructUsing((x, rc) =>
+                {
+                    return new CreateUserCommand(x.FullName, x.Password, x.Email, x.Role);
+                })
+                .ForMember(x => x.Timestamp, c => c.Ignore())
+                .ForMember(x => x.MessageType, c => c.Ignore())
+                .ForMember(x => x.ValidationResult, c => c.Ignore());            
         }
 
         private void DomainToViewModelConfiguration()
@@ -41,26 +75,5 @@ namespace Mubbi.Marketplace.Register.AutoMapper
                 });
         }
 
-        private void ViewModelToDomainConfiguration()
-        {
-            CreateMap<UserLoginViewModel, LogInUserCommand>()
-                .ConstructUsing(x => new LogInUserCommand(x.UserName, x.Password))
-                .ForMember(x => x.Timestamp, c => c.Ignore())
-                .ForMember(x => x.MessageType, c => c.Ignore())
-                .ForMember(x => x.ValidationResult, c => c.Ignore());
-
-            CreateMap<UserRegistrationViewModel, CreateUserCommand>()
-                .ConstructUsing((x, rc) =>
-                {
-                    return new CreateUserCommand(
-                        x.FullName,
-                        x.Password,
-                        x.Email,
-                        x.Role);
-                })
-                .ForMember(x => x.Timestamp, c => c.Ignore())
-                .ForMember(x => x.MessageType, c => c.Ignore())
-                .ForMember(x => x.ValidationResult, c => c.Ignore());
-        }
     }
 }

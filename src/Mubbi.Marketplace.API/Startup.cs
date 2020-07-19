@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Mubbi.Marketplace.API.Middleware;
 using Mubbi.Marketplace.Crosscutting.IoC;
 using Mubbi.Marketplace.Register.Data.Seed;
+using Mubbi.Marketplace.Security;
 
 namespace Mubbi.Marketplace.API
 {
@@ -22,6 +23,7 @@ namespace Mubbi.Marketplace.API
         public void ConfigureServices(IServiceCollection services)
         {           
             services.AddMubbiSwagger();
+            services.AddJwtAuthentication(Configuration);
 
             services.AddServiceComponents(Configuration, typeof(Startup).Assembly);
 
@@ -51,6 +53,7 @@ namespace Mubbi.Marketplace.API
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.SeedRegisterContext();

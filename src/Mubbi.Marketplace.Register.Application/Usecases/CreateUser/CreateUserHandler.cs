@@ -26,28 +26,28 @@ namespace Mubbi.Marketplace.Register.Usecases.CreateUser
             _mediatorHandler = mediatorHandler;
         }
 
-        public async Task<CreateUserCommandResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<CreateUserCommandResponse> Handle(CreateUserCommand command, CancellationToken cancellationToken)
         {
-            var userQueryRepository = _unitOfWork.QueryRepository<User>();
+            var queryRepository = _unitOfWork.QueryRepository<User>();
 
-            if (await userQueryRepository.GetUserByEmailAsync(request.Email) != null)
+            if (await queryRepository.GetUserByEmailAsync(command.Email) != null)
             {
-                await _mediatorHandler.PublishNotification(new DomainNotification(request.MessageType, $"The E-mail {request.Email} is already registered"));
+                await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"The E-mail {command.Email} is already registered"));
                 return new CreateUserCommandResponse();
             }
 
             var roleQueryRepository = _unitOfWork.QueryRepository<UserRole>();
             var userRepository = _unitOfWork.Repository<User>();
 
-            var role = await roleQueryRepository.FindOneAsync(x => x.Name == request.Role);
+            var role = await roleQueryRepository.FindOneAsync(x => x.Name == command.Role);
 
             if (role == null)
             {
-                await _mediatorHandler.PublishNotification(new DomainNotification(request.MessageType, $"The role {request.Role} does not exist"));
+                await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"The role {command.Role} does not exist"));
                 return new CreateUserCommandResponse();
             }
 
-            var user = new User(request.Email, Cryptography.Encrypt(request.Password), request.FullName, role.Id);
+            var user = new User(command.Email, Cryptography.Encrypt(command.Password), command.FullName, role.Id);
 
             user = await userRepository.AddAsync(user);
 

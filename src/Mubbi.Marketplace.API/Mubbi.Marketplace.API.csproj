@@ -6,16 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="entrypoint.sh" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="entrypoint.sh">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.6">
@@ -36,10 +26,6 @@
     <ProjectReference Include="..\Mubbi.Marketplace.Crosscutting.IoC\Mubbi.Marketplace.Crosscutting.IoC.csproj" />
     <ProjectReference Include="..\Mubbi.Marketplace.DbMigrations\Mubbi.Marketplace.Data.csproj" />
     <ProjectReference Include="..\Mubbi.Marketplace.Register.Application\Mubbi.Marketplace.Register.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\V1\Admin\" />
   </ItemGroup>
 
 

@@ -3,6 +3,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Mubbi.Marketplace.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,7 +26,7 @@ namespace Mubbi.Marketplace.Data
                 }
                 catch (Exception ex)
                 {
-                    throw new DbUpdateException("An error occurred while migrating the database.");
+                    throw new Exception(ex.GetErrorMsg() + " | " + ex.GetErrorList());
                 }
             }
             return webHost;

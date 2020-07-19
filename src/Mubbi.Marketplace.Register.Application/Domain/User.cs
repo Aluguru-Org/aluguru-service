@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Mubbi.Marketplace.Domain;
+using Mubbi.Marketplace.Infrastructure;
 using PampaDevs.Utils;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,8 @@ namespace Mubbi.Marketplace.Register.Domain
 
             _addresses = new List<Address>();
 
+            ValidateCreation();
+
         }
         public string Email { get; private set; }
         public string Password { get; private set; }
@@ -38,7 +41,9 @@ namespace Mubbi.Marketplace.Register.Domain
         protected override void ValidateCreation()
         {
             Ensure.That<DomainException>(new Regex(@"^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-z]+(?:\.[a-zA-Z]+)?").IsMatch(Email), "The field Address from E-mail is not a valid E-mail Address");
-            Ensure.That<DomainException>(!string.IsNullOrEmpty(Password), "The field Password from User cannot be created null or empty");
+            Ensure.That<DomainException>(Password.IsBase64(), "The field Password from User is not in Base64 format");
+            Ensure.That<DomainException>(!string.IsNullOrEmpty(FullName), "The field FullName from User cannot be created null or empty");
+            Ensure.That<DomainException>(UserRoleId != Guid.Empty, "The field UserRoleId from User cannot be empty");
         }
     }
 }

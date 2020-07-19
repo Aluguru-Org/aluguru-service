@@ -75,7 +75,7 @@ namespace Mubbi.Marketplace.Catalog.UnitTests
         {
             var product = CreateProduct();
 
-            var category = new Category("test", 1000, null);
+            var category = new Category("test", null);
             product.UpdateCategory(category);
 
             Assert.Equal(category.Id, product.CategoryId);

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Mubbi.Marketplace.Register.Domain;
+using Mubbi.Marketplace.Register.Data.Repositories;
 
 namespace Mubbi.Marketplace.Register.Usecases.GetUsersByRole
 {
@@ -23,7 +24,7 @@ namespace Mubbi.Marketplace.Register.Usecases.GetUsersByRole
 
         public async Task<GetUsersByRoleCommandResponse> Handle(GetUsersByRoleCommand request, CancellationToken cancellationToken)
         {
-            var userQueryRepository = _unitOfWork.QueryRepository<User>();
+            var userQueryRepository = _unitOfWork.QueryRepository<UserRole>();
 
             var users = await userQueryRepository.GetUsersByRoleAsync(request.Role);
 

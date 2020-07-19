@@ -9,7 +9,5 @@ namespace Mubbi.Marketplace.Catalog.ViewModels
         public Guid? MainCategoryId { get; set; }
         [Required]
         public string Name { get; set; }
-        [Required]
-        public int Code { get; set; }
     }
 }

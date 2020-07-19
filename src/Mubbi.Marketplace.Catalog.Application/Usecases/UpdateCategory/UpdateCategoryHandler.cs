@@ -29,7 +29,7 @@ namespace Mubbi.Marketplace.Catalog.Usecases.UpdateCategory
         {
             var queryRepository = _unitOfWork.QueryRepository<Category>();
 
-            var existed = await queryRepository.GetCategoryByCode(command.Code);
+            var existed = await queryRepository.GetCategoryAsync(command.CategoryId);
 
             if (existed == null)
             {

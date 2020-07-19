@@ -27,6 +27,7 @@ using Mubbi.Marketplace.Register.Usecases.CreateUser;
 using Mubbi.Marketplace.Register.Usecases.DeleteUser;
 using Mubbi.Marketplace.Register.Usecases.LogInUser;
 using System.Reflection;
+using Mubbi.Marketplace.Register.Services;
 
 namespace Mubbi.Marketplace.Crosscutting.IoC
 {
@@ -47,6 +48,10 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
 
             services.AddAutoMapper(typeof(RegisterContextMappingConfiguration), typeof(CatalogContextMappingConfiguration));
+
+            // AuthUser
+            services.AddScoped<IRequestHandler<LogInUserCommand, LogInUserCommandResponse>, LogInUserHandler>();
+            services.AddScoped<ITokenBuilderService, TokenBuilderService>();
 
             // UserRole Command Handlers
             services.AddScoped<IRequestHandler<CreateUserRoleCommand, CreateUserRoleCommandResponse>, CreateRoleHandler>();

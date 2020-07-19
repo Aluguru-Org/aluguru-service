@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Mubbi.Marketplace.Domain;
 using Mubbi.Marketplace.Infrastructure.Data;
 using Mubbi.Marketplace.Register.Domain;
+using Mubbi.Marketplace.Security;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,7 +18,7 @@ namespace Mubbi.Marketplace.Register.Data.Seed
 
             using (var serviceScope = serviceScopeFactory.CreateScope())
             {
-                var unitOfWork = app.ApplicationServices.GetRequiredService<IUnitOfWork>();
+                var unitOfWork = serviceScope.ServiceProvider.GetRequiredService<IUnitOfWork>();
 
                 var userRoleQueryRepository = unitOfWork.QueryRepository<UserRole>();
                 var userQueryRepository = unitOfWork.QueryRepository<User>();
@@ -61,7 +62,7 @@ namespace Mubbi.Marketplace.Register.Data.Seed
                 {
                     var userRepository = unitOfWork.Repository<User>();
 
-                    admin = new User("admin@mubbi.com", "cUm2fs+A", "Mubbi Admin", adminRole.Id);
+                    admin = new User("admin@mubbi.com", "24/74c0ZcIuP++wd2rtW88mWx3EOc1JFX66v634WEQE=", "Mubbi Admin", adminRole.Id);
 
                     userRepository.Add(admin);
                 }

@@ -10,21 +10,13 @@ namespace Mubbi.Marketplace.Catalog.UnitTests
         [Fact]
         public void CreateCategory_WhenEmptyName_ShouldThrowException()
         {
-            Assert.Throws<DomainException>(() => new Category("", 1000, null));
-        }
-
-        [Theory]
-        [InlineData(0)]
-        [InlineData(-1)]
-        public void CreateCategory_WhenCodeSmallerOrEqualThanZero_ShouldThrowException(int category)
-        {
-            Assert.Throws<DomainException>(() => new Category("Toys", category, null));
+            Assert.Throws<DomainException>(() => new Category("", null));
         }
 
         [Fact]
         public void CreateCategory_WhenEmptyMainCategoryId_ShouldThrowException()
         {
-            Assert.Throws<DomainException>(() => new Category("Toys", 1000, Guid.Empty));
+            Assert.Throws<DomainException>(() => new Category("Toys", Guid.Empty));
         }
     }
 }
