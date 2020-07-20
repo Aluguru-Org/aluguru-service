@@ -25,17 +25,7 @@ namespace Mubbi.Marketplace.Security
             var appSettings = section.Get<JwtSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.SecretKey);
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowSpecificOrigin",
-                        builder =>
-                        {
-                            builder
-                                .WithOrigins(appSettings.Audiences.ToArray())
-                                .AllowAnyHeader()
-                                .AllowAnyMethod();
-                        });
-            });
+            services.AddCors(options => PoliciesConfiguration.ConfigureCors(options, appSettings.Audiences.ToArray()));
 
             services.AddAuthentication(options =>
             {
@@ -59,7 +49,7 @@ namespace Mubbi.Marketplace.Security
                 };
             });
 
-            services.AddAuthorization(PoliciesConfiguration.Configure);
+            services.AddAuthorization(PoliciesConfiguration.ConfigureAuthorization);
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IAspNetUser, AspNetUser>();

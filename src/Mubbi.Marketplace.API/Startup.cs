@@ -53,7 +53,7 @@ namespace Mubbi.Marketplace.API
 
             app.UseRouting();
 
-            app.UseCors();
+            app.UseCors(Policies.AllowSpecificOrigins);
 
             app.UseAuthentication();
             app.UseAuthorization();
