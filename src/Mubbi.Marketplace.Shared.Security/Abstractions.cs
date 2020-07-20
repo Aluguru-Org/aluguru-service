@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Mubbi.Marketplace.Security.User;
 using PampaDevs.Utils;
@@ -23,9 +25,16 @@ namespace Mubbi.Marketplace.Security
             var appSettings = section.Get<JwtSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.SecretKey);
 
-            services.AddCors(setup =>
+            services.AddCors(options =>
             {
-
+                options.AddPolicy("AllowSpecificOrigin",
+                        builder =>
+                        {
+                            builder
+                                .WithOrigins(appSettings.Audiences.ToArray())
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+                        });
             });
 
             services.AddAuthentication(options =>
