@@ -6,6 +6,7 @@ using Mubbi.Marketplace.Security;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Text;
 
 namespace Mubbi.Marketplace.Register.Services
@@ -36,7 +37,7 @@ namespace Mubbi.Marketplace.Register.Services
             var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
             {
                 Issuer = _settings.Issuer,
-                Audience = _settings.Audience,
+                Audience = _settings.Audiences.Aggregate((i, j) => $"{i}, {j}"),
                 Subject = tokenBuilder.IdentityClaims,
                 Expires = DateTime.UtcNow.AddHours(_settings.Expiration),
                 SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature)

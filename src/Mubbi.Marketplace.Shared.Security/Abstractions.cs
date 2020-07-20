@@ -23,7 +23,10 @@ namespace Mubbi.Marketplace.Security
             var appSettings = section.Get<JwtSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.SecretKey);
 
-            services.AddCors();
+            services.AddCors(setup =>
+            {
+
+            });
 
             services.AddAuthentication(options =>
             {
@@ -41,7 +44,7 @@ namespace Mubbi.Marketplace.Security
                     ValidIssuer = appSettings.Issuer,
 
                     ValidateAudience = true,
-                    ValidAudience = appSettings.Audience,
+                    ValidAudiences = appSettings.Audiences,
 
                     ClockSkew = TimeSpan.FromSeconds(1)
                 };
