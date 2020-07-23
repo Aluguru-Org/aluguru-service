@@ -29,6 +29,7 @@ using Mubbi.Marketplace.Register.Usecases.LogInUser;
 using System.Reflection;
 using Mubbi.Marketplace.Register.Services;
 using Mubbi.Marketplace.Register.Usecases.GetUsersByRole;
+using Mubbi.Marketplace.Register.Usecases.UpadeUser;
 
 namespace Mubbi.Marketplace.Crosscutting.IoC
 {
@@ -62,6 +63,7 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
             // User Command Handlers
             services.AddScoped<IRequestHandler<LogInUserCommand, LogInUserCommandResponse>, LogInUserHandler>();
             services.AddScoped<IRequestHandler<CreateUserCommand, CreateUserCommandResponse>, CreateUserHandler>();
+            services.AddScoped<IRequestHandler<UpdateUserCommand, UpdateUserCommandResponse>, UpdateUserHandler>();
             services.AddScoped<IRequestHandler<DeleteUserCommand, bool>, DeleteUserHandler>();
 
             // Product Command Handlers

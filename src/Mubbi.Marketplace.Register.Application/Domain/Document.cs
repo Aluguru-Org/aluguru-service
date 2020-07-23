@@ -36,5 +36,10 @@ namespace Mubbi.Marketplace.Register.Domain
                     break;
             }
         }
+
+        public override string ToString()
+        {
+            return Number;
+        }
     }
 }

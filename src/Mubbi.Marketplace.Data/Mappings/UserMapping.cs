@@ -8,12 +8,12 @@ namespace Mubbi.Marketplace.Data.Mappings
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.HasKey(x => x.Id);
-            builder.OwnsOne(x => x.Document);
+            builder.HasKey(user => user.Id);
+            builder.OwnsOne(user => user.Document);
 
-            builder.HasMany(x => x.Addresses)
-                .WithOne(x => x.User)
-                .HasForeignKey(x => x.UserId);
+            builder.HasOne(user => user.Address)
+                .WithOne(address => address.User)
+                .HasForeignKey<Address>(address => address.UserId);
 
             builder.ToTable("User");
         }

@@ -2,9 +2,6 @@
 using Mubbi.Marketplace.Infrastructure.Data;
 using System;
 using System.Threading.Tasks;
-using PampaDevs.Utils;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mubbi.Marketplace.Register.Domain.Repositories
@@ -15,7 +12,7 @@ namespace Mubbi.Marketplace.Register.Domain.Repositories
         {
             var user = await repository.GetByIdAsync(
                 userId,
-                x => x.Include(x => x.UserRole).Include(x => x.Addresses),
+                x => x.Include(x => x.UserRole).Include(x => x.Address).Include(x => x.Document),
                 !disableTracking);
 
             return user;
@@ -25,7 +22,7 @@ namespace Mubbi.Marketplace.Register.Domain.Repositories
         {
             var user = await repository.FindOneAsync(
                 x => x.Email == email,
-                x => x.Include(x => x.UserRole).Include(x => x.Addresses),
+                x => x.Include(x => x.UserRole).Include(x => x.Address),
                 !disableTracking);
 
             return user;

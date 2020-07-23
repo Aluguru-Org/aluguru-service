@@ -6,6 +6,7 @@ using Mubbi.Marketplace.Register.Domain;
 using System;
 using System.Collections.Generic;
 using Mubbi.Marketplace.Register.Usecases.CreateUserRole;
+using Mubbi.Marketplace.Register.Usecases.UpadeUser;
 
 namespace Mubbi.Marketplace.Register.AutoMapper
 {
@@ -47,7 +48,19 @@ namespace Mubbi.Marketplace.Register.AutoMapper
                 })
                 .ForMember(x => x.Timestamp, c => c.Ignore())
                 .ForMember(x => x.MessageType, c => c.Ignore())
-                .ForMember(x => x.ValidationResult, c => c.Ignore());            
+                .ForMember(x => x.ValidationResult, c => c.Ignore());
+
+            CreateMap<UpdateUserViewModel, UpdateUserCommand>()
+                .ConstructUsing((x, rc) =>
+                {
+                    var document = rc.Mapper.Map<Document>(x.Document);
+                    var addresses = rc.Mapper.Map<Address>(x.Address);
+
+                    return new UpdateUserCommand(x.Id, x.FullName, document, addresses);
+                })
+                .ForMember(x => x.Timestamp, c => c.Ignore())
+                .ForMember(x => x.MessageType, c => c.Ignore())
+                .ForMember(x => x.ValidationResult, c => c.Ignore());
         }
 
         private void DomainToViewModelConfiguration()
@@ -62,14 +75,14 @@ namespace Mubbi.Marketplace.Register.AutoMapper
                 .ConstructUsing((x, rc) =>
                 {
                     var document = rc.Mapper.Map<DocumentViewModel>(x.Document);
-                    var addresses = rc.Mapper.Map<List<AddressViewModel>>(x.Addresses);
+                    var address = rc.Mapper.Map<AddressViewModel>(x.Address);
 
                     return new UserViewModel()
                     {
                         Id = x.Id,
                         FullName = x.FullName,
                         Email = x.Email,
-                        Addresses = addresses,
+                        Address = address,
                         Document = document
                     };
                 });

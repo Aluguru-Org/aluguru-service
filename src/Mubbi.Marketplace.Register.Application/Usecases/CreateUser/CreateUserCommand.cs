@@ -15,10 +15,10 @@ namespace Mubbi.Marketplace.Register.Usecases.CreateUser
             Role = role;
         }
 
-        public string FullName { get; private set; }
-        public string Password { get; private set; }
-        public string Email { get; private set; }
-        public string Role { get; private set; }
+        public string FullName { get; }
+        public string Password { get; }
+        public string Email { get; }
+        public string Role { get; }
 
         public override bool IsValid()
         {
@@ -32,7 +32,7 @@ namespace Mubbi.Marketplace.Register.Usecases.CreateUser
         public CreateUserCommandValidator()
         {
             RuleFor(x => x.Email).EmailAddress();
-            RuleFor(x => x.FullName).NotEmpty().MinimumLength(1);
+            RuleFor(x => x.FullName).NotEmpty().MinimumLength(2);
             RuleFor(x => x.Password).NotEmpty().WithMessage("The password field cannot be empty");
             RuleFor(x => x.Role).Matches(@"company|user", RegexOptions.IgnoreCase).WithMessage("The user role must be Company or User");
         }

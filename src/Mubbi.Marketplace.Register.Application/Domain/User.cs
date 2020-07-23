@@ -1,21 +1,19 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Mubbi.Marketplace.Domain;
+﻿using Mubbi.Marketplace.Domain;
 using Mubbi.Marketplace.Infrastructure;
+using Mubbi.Marketplace.Register.Usecases.UpadeUser;
 using PampaDevs.Utils;
 using System;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using static PampaDevs.Utils.Helpers.IdHelper;
+using static PampaDevs.Utils.Helpers.DateTimeHelper;
+using Mubbi.Marketplace.Register.Events;
 
 namespace Mubbi.Marketplace.Register.Domain
 {
     public class User : AggregateRoot
     {
-        private readonly List<Address> _addresses;
-        private User() 
-        {
-            _addresses = new List<Address>();
-        }
+        private User() { }
+
         public User(string email, string password, string fullName, Guid role)
             : base(NewId())
         {
@@ -23,8 +21,6 @@ namespace Mubbi.Marketplace.Register.Domain
             FullName = fullName;
             Email = email;
             UserRoleId = role;
-
-            _addresses = new List<Address>();
 
             ValidateCreation();
 
@@ -34,9 +30,30 @@ namespace Mubbi.Marketplace.Register.Domain
         public string FullName { get; private set; }
         public Guid UserRoleId { get; private set; }
         public Document Document { get; private set; }
-        public IReadOnlyCollection<Address> Addresses { get { return _addresses; } }
+        public Address Address { get; private set; }
         // EF Relational
-        public UserRole UserRole { get; set; }        
+        public UserRole UserRole { get; set; }
+
+        public User UpdateUser(UpdateUserCommand command)
+        {
+            if (FullName != command.FullName)
+            {
+                FullName = command.FullName;
+            }
+
+            if (Document.Number != command.Document.Number)
+            {
+                Document = command.Document;
+            }
+
+            Address = command.Address;
+            
+            DateUpdated = NewDateTime();
+
+            AddEvent(new UserUpdatedEvent(Id, this));
+
+            return this;
+        }
 
         protected override void ValidateCreation()
         {

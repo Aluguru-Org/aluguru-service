@@ -10,6 +10,7 @@ using Mubbi.Marketplace.Register.Usecases.CreateUser;
 using Mubbi.Marketplace.Register.Usecases.DeleteUser;
 using Mubbi.Marketplace.Register.Usecases.GetUserById;
 using Mubbi.Marketplace.Register.Usecases.GetUsersByRole;
+using Mubbi.Marketplace.Register.Usecases.UpadeUser;
 using Mubbi.Marketplace.Register.ViewModels;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
@@ -48,13 +49,29 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CreateUserCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> Post([FromBody] UserRegistrationViewModel viewModel)
+        public async Task<ActionResult> Post([FromRoute][FromBody] UserRegistrationViewModel viewModel)
         {
             var command = _mapper.Map<CreateUserCommand>(viewModel);
-
             var response = await _mediatorHandler.SendCommand<CreateUserCommand, CreateUserCommandResponse>(command);
-
             return PostResponse(nameof(Post), response);
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        [SwaggerOperation(Summary = "Update a user", Description = "Update a existing user. You need to inform may update the name, document and address")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateUserCommandResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task<ActionResult> Put(
+            [FromRoute] Guid id,
+            [FromBody] UpdateUserViewModel viewModel)
+        {
+            // what to do when userId is different from the view model?
+            var command = _mapper.Map<UpdateUserCommand>(viewModel);
+            var response = await _mediatorHandler.SendCommand<UpdateUserCommand, UpdateUserCommandResponse>(command);
+            return PutResponse(response);
         }
 
         [HttpDelete]
