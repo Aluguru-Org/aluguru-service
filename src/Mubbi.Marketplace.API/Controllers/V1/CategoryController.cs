@@ -7,8 +7,10 @@ using Mubbi.Marketplace.API.Models;
 using Mubbi.Marketplace.Catalog.Usecases.CreateCategory;
 using Mubbi.Marketplace.Catalog.Usecases.DeleteCategory;
 using Mubbi.Marketplace.Catalog.Usecases.GetCategories;
+using Mubbi.Marketplace.Catalog.Usecases.GetProductsByCategory;
 using Mubbi.Marketplace.Catalog.Usecases.UpdateCategory;
 using Mubbi.Marketplace.Catalog.ViewModels;
+using Mubbi.Marketplace.Domain;
 using Mubbi.Marketplace.Infrastructure.Bus.Communication;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using Swashbuckle.AspNetCore.Annotations;
@@ -37,6 +39,28 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         public async Task<ActionResult> GetAll()
         {
             var response = await _mediatorHandler.SendCommand<GetCategoriesCommand, GetCategoriesCommandResponse>(new GetCategoriesCommand());
+            return GetResponse(response);
+        }
+
+        [HttpGet]
+        [Route("{id}/products")]
+        [SwaggerOperation(Summary = "Get products by category", Description = "Return a list of paginated products by pagination creteria and category id")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetProductsByCategoryCommandResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task<ActionResult> GetProductsByCategory(
+            [SwaggerParameter("The category Id", Required = true)][FromRoute] Guid id,
+            [SwaggerParameter("The page to be displayed", Required = false)][FromQuery] int? currentPage,
+            [SwaggerParameter("The max number of pages that should be returned, the default value is 50", Required = false)][FromQuery] int? pageSize,
+            [SwaggerParameter("If the product should be sorted by property, the default value is sort property is 'Id'", Required = false)][FromQuery] string sortBy,
+            [SwaggerParameter("If the sort order should be ascendant or descendant, the default value is descendant", Required = false)][FromQuery] string sortOrder)
+        {
+            var paginateCriteria = new PaginateCriteria(currentPage, pageSize, sortBy, sortOrder);
+            var command = new GetProductsByCategoryCommand(id, paginateCriteria);
+
+            var response = await _mediatorHandler.SendCommand<GetProductsByCategoryCommand, GetProductsByCategoryCommandResponse>(command);
             return GetResponse(response);
         }
 

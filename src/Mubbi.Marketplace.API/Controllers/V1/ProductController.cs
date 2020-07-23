@@ -30,6 +30,27 @@ namespace Mubbi.Marketplace.API.Controllers.V1
             : base(notifications, mediatorHandler, mapper) { }
 
         [HttpGet]
+        [Route("")]
+        [SwaggerOperation(Summary = "Get products", Description = "Return a list of products")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetProductsCommandResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task<ActionResult> GetProducts(
+            [SwaggerParameter("The Id of a user", Required = false)][FromQuery] Guid? userId,
+            [SwaggerParameter("The page to be displayed", Required = false)][FromQuery] int? currentPage,
+            [SwaggerParameter("The max number of pages that should be returned, the default value is 50", Required = false)][FromQuery] int? pageSize,
+            [SwaggerParameter("If the product should be sorted by property, the default value is sort property is 'Id'", Required = false)][FromQuery] string sortBy,
+            [SwaggerParameter("If the sort order should be ascendant or descendant, the default value is descendant", Required = false)][FromQuery] string sortOrder)
+        {
+            var paginateCriteria = new PaginateCriteria(currentPage, pageSize, sortBy, sortOrder);
+            var command = new GetProductsCommand(userId, paginateCriteria);
+            var response = await _mediatorHandler.SendCommand<GetProductsCommand, GetProductsCommandResponse>(command);
+            return GetResponse(response);
+        }
+
+        [HttpGet]
         [Route("{id}")]
         [SwaggerOperation(Summary = "Get product by id", Description = "Return the target product")]
         [Consumes("application/json")]
@@ -41,38 +62,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         {
             var response = await _mediatorHandler.SendCommand<GetProductCommand, GetProductCommandResponse>(new GetProductCommand(id));
             return GetResponse(response);
-        }
-
-        [HttpPost]
-        [Route("paginate")]
-        [SwaggerOperation(Summary = "Get products", Description = "Return a list of paginated products by pagination creteria")]
-        [Consumes("application/json")]
-        [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetProductsCommandResponse))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> GetProducts([SwaggerParameter("The pagination criteria", Required = true)][FromBody] PaginateCriteria paginateCriteria)
-        {
-            var response = await _mediatorHandler.SendCommand<GetProductsCommand, GetProductsCommandResponse> (new GetProductsCommand(paginateCriteria));
-            return GetResponse(response);
-        }
-
-        [HttpPost]
-        [Route("category/{categoryId}/paginate")]
-        [SwaggerOperation(Summary = "Get products by category", Description = "Return a list of paginated products by pagination creteria and category id")]
-        [Consumes("application/json")]
-        [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetProductsByCategoryCommandResponse))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]        
-        public async Task<ActionResult> GetProducts(
-            [SwaggerParameter("The category Id", Required = true)][FromRoute] Guid categoryId,
-            [SwaggerParameter("The pagination criteria", Required = true)][FromBody] PaginateCriteria paginateCriteria)
-        {
-            var response = await _mediatorHandler.SendCommand<GetProductsByCategoryCommand, GetProductsByCategoryCommandResponse>(
-                new GetProductsByCategoryCommand(categoryId, paginateCriteria));
-            return GetResponse(response);
-        }
+        }    
 
         [HttpPost]
         [Route("")]

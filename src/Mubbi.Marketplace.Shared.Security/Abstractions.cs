@@ -25,7 +25,7 @@ namespace Mubbi.Marketplace.Security
             var appSettings = section.Get<JwtSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.SecretKey);
 
-            services.AddCors(options => PoliciesConfiguration.ConfigureCors(options, appSettings.Audiences.ToArray()));
+            services.AddCors(options => PoliciesConfiguration.ConfigureCors(options, appSettings.Audiences));
 
             services.AddAuthentication(options =>
             {

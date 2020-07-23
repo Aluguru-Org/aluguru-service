@@ -12,7 +12,6 @@ namespace Mubbi.Marketplace.Domain
     public class PaginateCriteria : IDto
     {
         private const int MaxPageSize = 50;
-        private const int ConfigurablePageSize = 10;
         private const string DefaultSortBy = "Id";
         private const string DefaultSortOrder = "desc";
 
@@ -20,10 +19,12 @@ namespace Mubbi.Marketplace.Domain
         private string _sortBy = DefaultSortBy;
         private string _sortOrder = DefaultSortOrder;
 
-        public PaginateCriteria()
+        public PaginateCriteria(int? currentPage, int? pageSize, string sortBy, string sortOrder)
         {
-            CurrentPage = 1;
-            PageSize = ConfigurablePageSize;
+            CurrentPage = currentPage ?? 1;
+            PageSize = pageSize ?? MaxPageSize;
+            SortBy = sortBy;
+            SortOrder = sortOrder;
         }
 
         public int CurrentPage { get; set; }

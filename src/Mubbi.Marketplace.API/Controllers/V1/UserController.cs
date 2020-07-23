@@ -9,6 +9,7 @@ using Mubbi.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using Mubbi.Marketplace.Register.Usecases.CreateUser;
 using Mubbi.Marketplace.Register.Usecases.DeleteUser;
 using Mubbi.Marketplace.Register.Usecases.GetUserById;
+using Mubbi.Marketplace.Register.Usecases.GetUsersByRole;
 using Mubbi.Marketplace.Register.ViewModels;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
@@ -37,22 +38,6 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         {
             var response = await _mediatorHandler.SendCommand<GetUserByIdCommand, GetUserByIdCommandResponse>(new GetUserByIdCommand(id));
             return GetResponse(response);
-        }
-
-        [HttpGet]
-        [Route("role/{role}")]
-        [SwaggerOperation(Summary = "Get users by role", Description = "Get a users by role")]
-        [Consumes("application/json")]
-        [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetUserByIdCommandResponse))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> GetUsersByRole([FromRoute] string role)
-        {
-            //var role = Enum.Parse(typeof(ERoles))
-            //var response = await _mediatorHandler.SendCommand<GetUsersByRoleCommand, GetUsersByRoleCommandResponse>(new GetUsersByRoleCommand());
-            //return GetResponse(response);
-            return null;
         }
 
         [HttpPost]

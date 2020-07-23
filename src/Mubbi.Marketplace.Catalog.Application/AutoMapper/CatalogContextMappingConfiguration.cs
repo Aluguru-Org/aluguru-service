@@ -39,6 +39,7 @@ namespace Mubbi.Marketplace.Catalog.AutoMapper
                     var customFields = rc.Mapper.Map<List<CustomField>>(x.CustomFields);
 
                     return new Product(
+                        x.UserId,
                         x.CategoryId,
                         x.SubCategoryId,
                         x.Name,
@@ -57,6 +58,7 @@ namespace Mubbi.Marketplace.Catalog.AutoMapper
                 {
                     var customFields = rc.Mapper.Map<List<CustomField>>(x.CustomFields);
                     return new CreateProductCommand(
+                        x.UserId,
                         x.CategoryId,
                         x.SubCategoryId,
                         x.Name,

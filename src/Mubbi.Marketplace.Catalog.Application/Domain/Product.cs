@@ -19,8 +19,9 @@ namespace Mubbi.Marketplace.Catalog.Domain
             _customFields = new List<CustomField>();
         }
 
-        public Product(Guid categoryId, Guid? subCategoryId, string name, string description, decimal price, bool isActive, int stockQuantity, int minRentDays, int? maxRentDays, List<string> imageUrls, List<CustomField> customFields)
+        public Product(Guid userId, Guid categoryId, Guid? subCategoryId, string name, string description, decimal price, bool isActive, int stockQuantity, int minRentDays, int? maxRentDays, List<string> imageUrls, List<CustomField> customFields)
         {
+            UserId = userId;
             CategoryId = categoryId;
             SubCategoryId = subCategoryId;
             Name = name;
@@ -36,7 +37,7 @@ namespace Mubbi.Marketplace.Catalog.Domain
 
             ValidateCreation();
         }
-
+        public Guid UserId { get; private set; }
         public Guid CategoryId { get; private set; }
         public Guid? SubCategoryId { get; private set; }
         public string Name { get; private set; }
@@ -113,6 +114,7 @@ namespace Mubbi.Marketplace.Catalog.Domain
 
         protected override void ValidateCreation()
         {
+            Ensure.That<DomainException>(UserId != Guid.Empty, "The field UserId from Product cannot be empty");
             Ensure.That<DomainException>(!string.IsNullOrEmpty(Name), "The field Name from product cannot be empty");
             Ensure.That<DomainException>(!string.IsNullOrEmpty(Description), "The field Description from Product cannot be empty");
             Ensure.That<DomainException>(CategoryId != Guid.Empty, "The field CategoryId from Product cannot be empty");

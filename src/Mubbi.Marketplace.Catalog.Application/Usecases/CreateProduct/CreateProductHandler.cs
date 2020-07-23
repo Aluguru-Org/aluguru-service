@@ -20,12 +20,12 @@ namespace Mubbi.Marketplace.Catalog.Usecases.CreateProduct
             _mapper = mapper;
         }
 
-        public async Task<CreateProductCommandResponse> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+        public async Task<CreateProductCommandResponse> Handle(CreateProductCommand command, CancellationToken cancellationToken)
         {
             var productRepository = _unitOfWork.Repository<Product>();
 
-            var product = new Product(request.CategoryId, request.SubCategoryId, request.Name, request.Description, request.Price, request.IsActive,
-                request.StockQuantity, request.MinRentDays, request.MaxRentDays, request.ImageUrls, request.CustomFields);
+            var product = new Product(command.UserId, command.CategoryId, command.SubCategoryId, command.Name, command.Description, command.Price, command.IsActive,
+                command.StockQuantity, command.MinRentDays, command.MaxRentDays, command.ImageUrls, command.CustomFields);
 
             product = await productRepository.AddAsync(product);
 

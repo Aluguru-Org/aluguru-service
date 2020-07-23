@@ -9,6 +9,8 @@ namespace Mubbi.Marketplace.Catalog.ViewModels
     public class CreateProductViewModel : IDto
     {
         [Required]
+        public Guid UserId { get; set; }
+        [Required]
         public Guid CategoryId { get; set; }
         public Guid? SubCategoryId { get; set; }
         [Required]

@@ -1,20 +1,19 @@
-﻿using Mubbi.Marketplace.Catalog.ViewModels;
-using Mubbi.Marketplace.Catalog.Domain;
+﻿using Mubbi.Marketplace.Catalog.Domain;
 using Mubbi.Marketplace.Domain;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Mubbi.Marketplace.Catalog.Usecases.GetProducts
 {
     public class GetProductsCommand : Command<GetProductsCommandResponse>
     {
-        public GetProductsCommand(PaginateCriteria paginateCriteria)
+        public GetProductsCommand(Guid? userId, PaginateCriteria paginateCriteria)
         {
+            UserId = userId;
             PaginateCriteria = paginateCriteria;
         }
 
+        public Guid? UserId { get; private set; }
         public PaginateCriteria PaginateCriteria { get; private set; }
     }
 

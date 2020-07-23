@@ -56,13 +56,13 @@ namespace Mubbi.Marketplace.Register.Data.Seed
                     userRoleRepository.Add(userRole);
                 }
 
-                var admin = userQueryRepository.FindOneAsync(x => x.Email == "admin@mubbi.com").Result;
+                var admin = userQueryRepository.FindOneAsync(x => x.Email == "contato@mubbi.com.br").Result;
 
                 if (admin == null)
                 {
                     var userRepository = unitOfWork.Repository<User>();
 
-                    admin = new User("admin@mubbi.com", "24/74c0ZcIuP++wd2rtW88mWx3EOc1JFX66v634WEQE=", "Mubbi Admin", adminRole.Id);
+                    admin = new User("contato@mubbi.com.br", "24/74c0ZcIuP++wd2rtW88mWx3EOc1JFX66v634WEQE=", "Mubbi Admin", adminRole.Id);
 
                     userRepository.Add(admin);
                 }

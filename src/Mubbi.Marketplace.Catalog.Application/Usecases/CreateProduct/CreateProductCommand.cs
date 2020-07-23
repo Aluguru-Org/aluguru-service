@@ -9,9 +9,10 @@ namespace Mubbi.Marketplace.Catalog.Usecases.CreateProduct
 {
     public class CreateProductCommand : Command<CreateProductCommandResponse>
     {
-        public CreateProductCommand(Guid categoryId, Guid? subCategoryId, string name, string description, decimal price, bool isActive, int stockQuantity, 
+        public CreateProductCommand(Guid userId, Guid categoryId, Guid? subCategoryId, string name, string description, decimal price, bool isActive, int stockQuantity, 
             int minRentDays, int? maxRentDays, List<string> imageUrls, List<CustomField> customFields)
         {
+            UserId = userId;
             CategoryId = categoryId;
             SubCategoryId = subCategoryId;
             Name = name;
@@ -25,6 +26,7 @@ namespace Mubbi.Marketplace.Catalog.Usecases.CreateProduct
             CustomFields = customFields;
         }
 
+        public Guid UserId { get; private set; }
         public Guid CategoryId { get; private set; }
         public Guid? SubCategoryId { get; private set; }
         public string Name { get; private set; }
@@ -48,6 +50,8 @@ namespace Mubbi.Marketplace.Catalog.Usecases.CreateProduct
     {
         public CreateProductCommandValidator()
         {
+            RuleFor(x => x.UserId).NotEqual(Guid.Empty);
+            RuleFor(x => x.CategoryId).NotEqual(Guid.Empty);
             RuleFor(x => x.Name).NotEmpty();
             RuleFor(x => x.Description).NotEmpty();
             RuleFor(x => x.ImageUrls).NotEmpty();

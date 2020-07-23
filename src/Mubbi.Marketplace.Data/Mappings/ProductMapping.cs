@@ -12,6 +12,9 @@ namespace Mubbi.Marketplace.Data.Mappings
         {
             base.Configure(builder);
 
+            builder.Property(p => p.UserId)
+                   .IsRequired();
+
             builder.Property(p => p.Name)
                    .IsRequired();            
 

@@ -37,7 +37,7 @@ namespace Mubbi.Marketplace.Register.Services
             var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
             {
                 Issuer = _settings.Issuer,
-                Audience = _settings.Audiences.Aggregate((i, j) => $"{i}{(string.IsNullOrEmpty(j) ? "" : $",{j}")}"),
+                Audience = "http://localhost:4200",
                 Subject = tokenBuilder.IdentityClaims,
                 Expires = DateTime.UtcNow.AddHours(_settings.Expiration),
                 SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature)
