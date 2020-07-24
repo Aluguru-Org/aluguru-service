@@ -21,7 +21,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Mubbi.Marketplace.Catalog.Application\Mubbi.Marketplace.Catalog.csproj" />
+    <ProjectReference Include="..\..\src\Mubbi.Marketplace.Catalog\Mubbi.Marketplace.Catalog.csproj" />
   </ItemGroup>
 
 </Project>

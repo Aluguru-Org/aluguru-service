@@ -13,9 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Mubbi.Marketplace.Catalog.Application\Mubbi.Marketplace.Catalog.csproj" />
+    <ProjectReference Include="..\Mubbi.Marketplace.Catalog\Mubbi.Marketplace.Catalog.csproj" />
     <ProjectReference Include="..\Mubbi.Marketplace.Data\Mubbi.Marketplace.Data.csproj" />
-    <ProjectReference Include="..\Mubbi.Marketplace.Register.Application\Mubbi.Marketplace.Register.csproj" />
+    <ProjectReference Include="..\Mubbi.Marketplace.Register\Mubbi.Marketplace.Register.csproj" />
   </ItemGroup>
 
 </Project>
