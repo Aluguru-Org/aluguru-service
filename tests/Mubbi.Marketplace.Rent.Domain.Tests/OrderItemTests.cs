@@ -1,4 +1,3 @@
-using Mubbi.Marketplace.Shared.DomainObjects;
 using System;
 using Xunit;
 
@@ -9,13 +8,13 @@ namespace Mubbi.Marketplace.Rent.Domain.Tests
         [Fact]
         public void CreateOrderItem_WhenEmptyProductId_ShouldThrowDomainException()
         {
-            Assert.Throws<DomainException>(() => new OrderItem(Guid.Empty, "test", 1, 100));
+            Assert.Throws<Exception>(() => new OrderItem(Guid.Empty, "test", 1, 100));
         }
 
         [Fact]
         public void CreateOrderItem_WhenEmptyProductName_ShouldThrowDomainException()
         {
-            Assert.Throws<DomainException>(() => new OrderItem(Guid.NewGuid(), "", 1, 100));
+            Assert.Throws<Exception>(() => new OrderItem(Guid.NewGuid(), "", 1, 100));
         }
 
         [Theory]
@@ -23,7 +22,7 @@ namespace Mubbi.Marketplace.Rent.Domain.Tests
         [InlineData(-1)]
         public void CreateOrderItem_WhenAmountSmallerOrEqualThanZero_ShouldThrowDomainException(int amount)
         {
-            Assert.Throws<DomainException>(() => new OrderItem(Guid.NewGuid(), "test", amount, 100));
+            Assert.Throws<Exception>(() => new OrderItem(Guid.NewGuid(), "test", amount, 100));
         }
 
         [Theory]
@@ -31,7 +30,7 @@ namespace Mubbi.Marketplace.Rent.Domain.Tests
         [InlineData(-1)]
         public void CreateOrderItem_WhenProductPriceSmallerOrEqualThanZero_ShouldThrowDomainException(decimal price)
         {
-            Assert.Throws<DomainException>(() => new OrderItem(Guid.NewGuid(), "test", 1, price));
+            Assert.Throws<Exception>(() => new OrderItem(Guid.NewGuid(), "test", 1, price));
         }
 
         [Theory]

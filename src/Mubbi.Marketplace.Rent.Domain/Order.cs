@@ -1,13 +1,13 @@
 ﻿using FluentValidation.Results;
-using Mubbi.Marketplace.Shared.DomainObjects;
+using Mubbi.Marketplace.Domain;
+using PampaDevs.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata;
 
 namespace Mubbi.Marketplace.Rent.Domain
 {
-    public class Order : Entity, IAggregateRoot
+    public class Order : AggregateRoot
     {
         private readonly List<OrderItem> _orderItems;
 
@@ -61,7 +61,7 @@ namespace Mubbi.Marketplace.Rent.Domain
         {
             var existingItem = _orderItems.FirstOrDefault(x => x.ProductId == orderItem.ProductId);
 
-            EntityConcerns.IsNull(existingItem, "The item does not belong to the order");
+            Ensure.NotNull(existingItem, "The item does not belong to the order");
 
             _orderItems.Remove(existingItem);
 
@@ -122,9 +122,9 @@ namespace Mubbi.Marketplace.Rent.Domain
             Discount = discount;
         }
 
-        public override void ValidateCreation()
+        protected override void ValidateCreation()
         {
-            EntityConcerns.IsEqual(ClientId, Guid.Empty, "The field ClientId from Order cannot be empty");
+            Ensure.NotEqual(ClientId, Guid.Empty, "The field ClientId from Order cannot be empty");
         }
     }
 }
