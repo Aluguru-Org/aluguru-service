@@ -37,7 +37,8 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
     {
         public static IServiceCollection AddServiceComponents(this IServiceCollection services, IConfiguration configuration, params Assembly[] assemblies)
         {
-            services.AddDbContext<MubbiContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            var serviceConnection = configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<MubbiContext>(options => options.UseSqlServer(serviceConnection));
 
             services.AddScoped<IUnitOfWork, EfUnitOfWork<MubbiContext>>();
 
