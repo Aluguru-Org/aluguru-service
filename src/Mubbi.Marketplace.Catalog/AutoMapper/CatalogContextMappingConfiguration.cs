@@ -2,6 +2,7 @@
 using Mubbi.Marketplace.Catalog.Domain;
 using Mubbi.Marketplace.Catalog.Usecases.CreateCategory;
 using Mubbi.Marketplace.Catalog.Usecases.CreateProduct;
+using Mubbi.Marketplace.Catalog.Usecases.UpdateCategory;
 using Mubbi.Marketplace.Catalog.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -19,12 +20,6 @@ namespace Mubbi.Marketplace.Catalog.AutoMapper
         private void ViewModelToDomainConfiguration()
         {
             CreateMap<CreateCategoryViewModel, CreateCategoryCommand>()
-                .ConstructUsing(x => new CreateCategoryCommand(x.Name, x.MainCategoryId))
-                .ForMember(x => x.Timestamp, c => c.Ignore())
-                .ForMember(x => x.MessageType, c => c.Ignore())
-                .ForMember(x => x.ValidationResult, c => c.Ignore());
-
-            CreateMap<UpdateCategoryViewModel, CreateCategoryCommand>()
                 .ConstructUsing(x => new CreateCategoryCommand(x.Name, x.MainCategoryId))
                 .ForMember(x => x.Timestamp, c => c.Ignore())
                 .ForMember(x => x.MessageType, c => c.Ignore())

@@ -16,7 +16,7 @@ namespace Mubbi.Marketplace.Catalog.Data.Repositories
         {
             var category = await repository.GetByIdAsync(
                 categoryId,
-                productQueryable => productQueryable.Include(x => x.Products),
+                null,
                 !disableTracking);
 
             return category;
@@ -26,7 +26,7 @@ namespace Mubbi.Marketplace.Catalog.Data.Repositories
         {
             var category = await repository.FindOneAsync(
                 x => x.Name == name,
-                productQueryable => productQueryable.Include(x => x.Products),
+                null,
                 !disableTracking);
 
             return category;

@@ -25,7 +25,7 @@ namespace Mubbi.Marketplace.Catalog.Domain
 
             _childrenCategories = new List<Category>();
 
-            ValidateCreation();
+            ValidateEntity();
         }
 
         public string Name { get; private set; }
@@ -38,8 +38,8 @@ namespace Mubbi.Marketplace.Catalog.Domain
 
         public Category UpdateCategory(UpdateCategoryCommand command)
         {
-            MainCategoryId = command.MainCategoryId;
-            Name = command.Name;
+            MainCategoryId = command.Category.MainCategoryId;
+            Name = command.Category.Name;
 
             DateUpdated = NewDateTime();
 
@@ -48,7 +48,7 @@ namespace Mubbi.Marketplace.Catalog.Domain
             return this;
         }
 
-        protected override void ValidateCreation()
+        protected override void ValidateEntity()
         {
             Ensure.That<DomainException>(!string.IsNullOrEmpty(Name), "The field Name cannot be empty");
             if (MainCategoryId != null)

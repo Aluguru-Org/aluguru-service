@@ -87,9 +87,9 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateCategoryCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> UpdateCategory([FromBody] UpdateCategoryViewModel viewModel)
+        public async Task<ActionResult> UpdateCategory([FromRoute] Guid id, [FromBody] UpdateCategoryViewModel viewModel)
         {
-            var command = _mapper.Map<UpdateCategoryCommand>(viewModel);
+            var command = new UpdateCategoryCommand(id, viewModel);
             var response = await _mediatorHandler.SendCommand<UpdateCategoryCommand, UpdateCategoryCommandResponse>(command);
             return PutResponse(response);
         }

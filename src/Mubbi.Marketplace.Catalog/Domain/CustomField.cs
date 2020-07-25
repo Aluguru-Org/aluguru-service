@@ -18,19 +18,19 @@ namespace Mubbi.Marketplace.Catalog.Domain
         public CustomField(string value) : this(EFieldType.Text)
         {
             ValueAsString = value;
-            ValidateCreation();
+            ValidateEntity();
         }
 
         public CustomField(int value) : this(EFieldType.Number)
         {
             ValueAsInt = value;
-            ValidateCreation();
+            ValidateEntity();
         }
 
         public CustomField(EFieldType fieldType, List<string> values) : this(fieldType)
         {
             _valueAsOptions = values;
-            ValidateCreation();
+            ValidateEntity();
         }
 
         private CustomField(EFieldType fieldType) : base(NewId())
@@ -49,7 +49,7 @@ namespace Mubbi.Marketplace.Catalog.Domain
         public virtual Product Product { get; set; }
 
 
-        protected override void ValidateCreation()
+        protected override void ValidateEntity()
         {
             switch(FieldType)
             {

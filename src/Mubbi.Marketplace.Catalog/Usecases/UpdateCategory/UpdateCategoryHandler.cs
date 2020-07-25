@@ -27,9 +27,15 @@ namespace Mubbi.Marketplace.Catalog.Usecases.UpdateCategory
 
         public async Task<UpdateCategoryCommandResponse> Handle(UpdateCategoryCommand command, CancellationToken cancellationToken)
         {
+            if (command.CategoryId != command.Category.Id)
+            {
+                await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"The provided Category Id [{command.CategoryId}] does not match with the Category passed to be updated [{command.Category.Id}]"));
+                return new UpdateCategoryCommandResponse();
+            }
+
             var queryRepository = _unitOfWork.QueryRepository<Category>();
 
-            var existed = await queryRepository.GetCategoryAsync(command.CategoryId);
+            var existed = await queryRepository.GetCategoryAsync(command.CategoryId, false);
 
             if (existed == null)
             {

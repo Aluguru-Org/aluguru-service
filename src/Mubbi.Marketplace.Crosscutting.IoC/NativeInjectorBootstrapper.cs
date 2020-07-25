@@ -30,6 +30,9 @@ using System.Reflection;
 using Mubbi.Marketplace.Register.Services;
 using Mubbi.Marketplace.Register.Usecases.GetUsersByRole;
 using Mubbi.Marketplace.Register.Usecases.UpadeUser;
+using Mubbi.Marketplace.Register.Usecases.UpdateUserRole;
+using Mubbi.Marketplace.Register.Usecases.DeleteUserRole;
+using Mubbi.Marketplace.Catalog.Usecases.DeleteProduct;
 
 namespace Mubbi.Marketplace.Crosscutting.IoC
 {
@@ -57,9 +60,11 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
             services.AddScoped<ITokenBuilderService, TokenBuilderService>();
 
             // User Role Command Handlers
-            services.AddScoped<IRequestHandler<CreateUserRoleCommand, CreateUserRoleCommandResponse>, CreateRoleHandler>();
+            services.AddScoped<IRequestHandler<CreateUserRoleCommand, CreateUserRoleCommandResponse>, CreateUserRoleHandler>();
             services.AddScoped<IRequestHandler<GetUserRolesCommand, GetUserRolesCommandResponse>, GetUserRolesHandler>();
             services.AddScoped<IRequestHandler<GetUsersByRoleCommand, GetUsersByRoleCommandResponse>, GetUsersByRoleHandler>();
+            services.AddScoped<IRequestHandler<UpdateUserRoleCommand, UpdateUserRoleCommandResponse>, UpdateUserRoleHandler>();
+            services.AddScoped<IRequestHandler<DeleteUserRoleCommand, bool>, DeleteUserRoleHandler>();
 
             // User Command Handlers
             services.AddScoped<IRequestHandler<LogInUserCommand, LogInUserCommandResponse>, LogInUserHandler>();
@@ -72,6 +77,7 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
             services.AddScoped<IRequestHandler<UpdateProductCommand, UpdateProductCommandResponse>, UpdateProductHandler>();
             services.AddScoped<IRequestHandler<GetProductCommand, GetProductCommandResponse>, GetProductHandler>();
             services.AddScoped<IRequestHandler<GetProductsCommand, GetProductsCommandResponse>, GetProductsHandler>();
+            services.AddScoped<IRequestHandler<DeleteProductCommand, bool>, DeleteProductHandler>();
 
             // Category Command Handlers
             services.AddScoped<IRequestHandler<CreateCategoryCommand, CreateCategoryCommandResponse>, CreateCategoryHandler>();

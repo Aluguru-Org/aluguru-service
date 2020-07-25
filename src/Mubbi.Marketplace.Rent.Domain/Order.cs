@@ -19,7 +19,7 @@ namespace Mubbi.Marketplace.Rent.Domain
 
             _orderItems = new List<OrderItem>();
 
-            ValidateCreation();
+            ValidateEntity();
         }
 
         protected Order()
@@ -122,7 +122,7 @@ namespace Mubbi.Marketplace.Rent.Domain
             Discount = discount;
         }
 
-        protected override void ValidateCreation()
+        protected override void ValidateEntity()
         {
             Ensure.NotEqual(ClientId, Guid.Empty, "The field ClientId from Order cannot be empty");
         }
