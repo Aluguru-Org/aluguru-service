@@ -3,7 +3,7 @@ param (
     [Parameter(Mandatory=$true)]
     [ValidateNotNull()]
     [ValidateNotNullOrEmpty()]
-    [ValidateSet("start", "stop", "bootstrap")]
+    [ValidateSet("start", "stop", "delete", "bootstrap", "sonar")]
     [String]
     $Operation
 )
@@ -17,36 +17,35 @@ process {
     Write-Host "======================> Mubbi.ps1 processing" -ForegroundColor Green
 
     if ($Operation -eq "start") {
+        Write-Host "      ___           ___           ___           ___                 " -ForegroundColor DarkRed
+        Write-Host "     /\__\         /\__\         /\  \         /\  \          ___   " -ForegroundColor DarkRed
+        Write-Host "    /::|  |       /:/  /        /::\  \       /::\  \        /\  \  " -ForegroundColor DarkRed
+        Write-Host "   /:|:|  |      /:/  /        /:/\:\  \     /:/\:\  \       \:\  \ " -ForegroundColor DarkRed
+        Write-Host "  /:/|:|__|__   /:/  /  ___   /::\~\:\__\   /::\~\:\__\      /::\__\" -ForegroundColor DarkRed
+        Write-Host " /:/ |::::\__\ /:/__/  /\__\ /:/\:\ \:|__| /:/\:\ \:|__|  __/:/\/__/" -ForegroundColor DarkRed
+        Write-Host " \/__/~~/:/  / \:\  \ /:/  / \:\~\:\/:/  / \:\~\:\/:/  / /\/:/  /   " -ForegroundColor DarkRed
+        Write-Host "       /:/  /   \:\  /:/  /   \:\ \::/  /   \:\ \::/  /  \::/__/    " -ForegroundColor DarkRed
+        Write-Host "      /:/  /     \:\/:/  /     \:\/:/  /     \:\/:/  /    \:\__\    " -ForegroundColor DarkRed
+        Write-Host "     /:/  /       \::/  /       \::/__/       \::/__/      \/__/    " -ForegroundColor DarkRed
+        Write-Host "     \/__/         \/__/         ~~            ~~                   " -ForegroundColor DarkRed
+
         docker-compose up -d
     } elseif ($Operation -eq "stop") {
-        docker-compose down
+        docker-compose stop    
+    } elseif ($Operation -eq "delete") {
+        docker-compose down -v
+    } elseif($Operation -eq "sonar") {
+        dotnet dotnet-sonarscanner begin /k:"mubbi" /d:sonar.login="b94109ff1992f3b29d2db57ebf84d32bad408de8" /d:sonar.host.url="http://localhost:9999" /d:sonar.language="cs" /d:sonar.cs.opencover.reportsPaths="**/coverageResults/coverage.opencover.xml"
+        dotnet build
+        dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat='opencover' /p:CoverletOutput='coverageResults/'        
+        dotnet dotnet-sonarscanner end /d:sonar.login="b94109ff1992f3b29d2db57ebf84d32bad408de8"        
     } elseif ($Operation -eq "bootstrap") {
-        Write-Host "           _____                    _____                    _____                    _____                    _____          " -ForegroundColor DarkRed
-        Write-Host "          /\    \                  /\    \                  /\    \                  /\    \                  /\    \         " -ForegroundColor DarkRed
-        Write-Host "         /::\____\                /::\____\                /::\    \                /::\    \                /::\    \        " -ForegroundColor DarkRed
-        Write-Host "        /::::|   |               /:::/    /               /::::\    \              /::::\    \               \:::\    \       " -ForegroundColor DarkRed
-        Write-Host "       /:::::|   |              /:::/    /               /::::::\    \            /::::::\    \               \:::\    \      " -ForegroundColor DarkRed
-        Write-Host "      /::::::|   |             /:::/    /               /:::/\:::\    \          /:::/\:::\    \               \:::\    \     " -ForegroundColor DarkRed
-        Write-Host "     /:::/|::|   |            /:::/    /               /:::/__\:::\    \        /:::/__\:::\    \               \:::\    \    " -ForegroundColor DarkRed
-        Write-Host "    /:::/ |::|   |           /:::/    /               /::::\   \:::\    \      /::::\   \:::\    \              /::::\    \   " -ForegroundColor DarkRed
-        Write-Host "   /:::/  |::|___|______    /:::/    /      _____    /::::::\   \:::\    \    /::::::\   \:::\    \    ____    /::::::\    \  " -ForegroundColor DarkRed
-        Write-Host "  /:::/   |::::::::\    \  /:::/____/      /\    \  /:::/\:::\   \:::\ ___\  /:::/\:::\   \:::\ ___\  /\   \  /:::/\:::\    \ " -ForegroundColor DarkRed
-        Write-Host " /:::/    |:::::::::\____\|:::|    /      /::\____\/:::/__\:::\   \:::|    |/:::/__\:::\   \:::|    |/::\   \/:::/  \:::\____\" -ForegroundColor DarkRed
-        Write-Host " \::/    / ~~~~~/:::/    /|:::|____\     /:::/    /\:::\   \:::\  /:::|____|\:::\   \:::\  /:::|____|\:::\  /:::/    \::/    /" -ForegroundColor DarkRed
-        Write-Host "  \/____/      /:::/    /  \:::\    \   /:::/    /  \:::\   \:::\/:::/    /  \:::\   \:::\/:::/    /  \:::\/:::/    / \/____/ " -ForegroundColor DarkRed
-        Write-Host "              /:::/    /    \:::\    \ /:::/    /    \:::\   \::::::/    /    \:::\   \::::::/    /    \::::::/    /          " -ForegroundColor DarkRed
-        Write-Host "             /:::/    /      \:::\    /:::/    /      \:::\   \::::/    /      \:::\   \::::/    /      \::::/____/           " -ForegroundColor DarkRed
-        Write-Host "            /:::/    /        \:::\__/:::/    /        \:::\  /:::/    /        \:::\  /:::/    /        \:::\    \           " -ForegroundColor DarkRed
-        Write-Host "           /:::/    /          \::::::::/    /          \:::\/:::/    /          \:::\/:::/    /          \:::\    \          " -ForegroundColor DarkRed
-        Write-Host "          /:::/    /            \::::::/    /            \::::::/    /            \::::::/    /            \:::\    \         " -ForegroundColor DarkRed
-        Write-Host "         /:::/    /              \::::/    /              \::::/    /              \::::/    /              \:::\____\        " -ForegroundColor DarkRed
-        Write-Host "         \::/    /                \::/____/                \::/____/                \::/____/                \::/    /        " -ForegroundColor DarkRed
-        Write-Host "          \/____/                  ~~                       ~~                       ~~                       \/____/         " -ForegroundColor DarkRed
-        Write-Host "                                                                                                                              " -ForegroundColor DarkRed
-               
-        docker-compose build --no-cache
-        docker-compose up -d
-    }
+        # Installing necessary dotnet tools
+        dotnet tool install dotnet-sonarscanner
+
+        # Building container images
+        docker-compose build
+    }    
 }
 
 end {

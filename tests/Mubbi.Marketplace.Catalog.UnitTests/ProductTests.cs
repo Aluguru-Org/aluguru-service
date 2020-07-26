@@ -11,49 +11,55 @@ namespace Mubbi.Marketplace.Catalog.UnitTests
         [Fact]
         public void CreateProduct_WhenEmptyUserId_ShouldThrowDomainException()
         {
-            Assert.Throws<DomainException>(() => new Product(Guid.Empty, Guid.NewGuid(), null, "name", "description", 50000, true, 1, 2, 30, new List<string> { "fake url" }, new List<CustomField>() { new CustomField("fake") }));
+            Assert.Throws<DomainException>(() => new Product(Guid.Empty, Guid.NewGuid(), null, "name", "description", ERentType.Indefinite, 50000, true, 1, 2, 30, 1, new List<string> { "fake url" }, new List<CustomField>() { new CustomField("fake") }));
         }
 
         [Fact]
         public void CreateProduct_WhenEmptyCategoryId_ShouldThrowDomainException()
         {
-            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), Guid.Empty, null, "name", "description", 50000, true, 1, 2, 30, new List<string> { "fake url" }, new List<CustomField>() { new CustomField("fake")}));
+            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), Guid.Empty, null, "name", "description", ERentType.Indefinite, 50000, true, 1, 2, 30, 1, new List<string> { "fake url" }, new List<CustomField>() { new CustomField("fake")}));
         }
 
         [Fact]
         public void CreateProduct_WhenEmptyName_ShouldThrowDomainException()
         {            
-            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), Guid.NewGuid(), null, "", "description", 50000, true, 1, 2, 30, new List<string> { "fake url" }, new List<CustomField>() { new CustomField("fake") }));
+            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), Guid.NewGuid(), null, "", "description", ERentType.Indefinite, 50000, true, 1, 2, 30, 1, new List<string> { "fake url" }, new List<CustomField>() { new CustomField("fake") }));
         }
 
         [Fact]
         public void CreateProduct_WhenEmptyDescription_ShouldThrowDomainException()
         {
-            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), Guid.NewGuid(), null, "name", "", 50000, true, 1, 2, 30, new List<string> { "fake url" }, new List<CustomField>() { new CustomField("fake") }));
+            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), Guid.NewGuid(), null, "name", "", ERentType.Indefinite, 50000, true, 1, 2, 30, 1, new List<string> { "fake url" }, new List<CustomField>() { new CustomField("fake") }));
         }
 
         [Fact]
         public void CreateProduct_WhenEmptyImage_ShouldThrowDomainException()
         {
-            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), Guid.NewGuid(), null, "name", "description", 50000, true, 1, 2, 30, new List<string>(), new List<CustomField>() { new CustomField("fake") }));
+            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), Guid.NewGuid(), null, "name", "description", ERentType.Indefinite, 50000, true, 1, 2, 30, 1, new List<string>(), new List<CustomField>() { new CustomField("fake") }));
         }
 
         [Fact]
         public void CreateProduct_WhenPriceIsZero_ShouldThrowDomainException()
         {
-            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), Guid.NewGuid(), null, "name", "description", 0, true, 1, 2, 30, new List<string> { "fake url" }, new List<CustomField>() { new CustomField("fake") }));
+            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), Guid.NewGuid(), null, "name", "description", ERentType.Indefinite, 0, true, 1, 2, 30, 1, new List<string> { "fake url" }, new List<CustomField>() { new CustomField("fake") }));
         }
 
         [Fact]
         public void CreateProduct_WhenStockQuantityIsNegative_ShouldThrowDomainException()
         {
-            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), Guid.NewGuid(), null, "name", "description", 50000, true, -1, 2, 30, new List<string> { "fake url" }, new List<CustomField>() { new CustomField("fake") }));
+            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), Guid.NewGuid(), null, "name", "description", ERentType.Indefinite, 50000, true, -1, 2, 30, 1, new List<string> { "fake url" }, new List<CustomField>() { new CustomField("fake") }));
         }
 
         [Fact]
         public void CreateProduct_WhenMinLocationTimeIsGreaterThanMaxLocationTime_ShouldThrowDomainException()
         {
-            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), Guid.NewGuid(), null, "name", "description", 50000, true, -1, 30, 15, new List<string> { "fake url" }, new List<CustomField>() { new CustomField("fake") }));
+            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), Guid.NewGuid(), null, "name", "description", ERentType.Indefinite, 50000, true, -1, 30, 15, 1, new List<string> { "fake url" }, new List<CustomField>() { new CustomField("fake") }));
+        }
+
+        [Fact]
+        public void CreateProduct_WhenMinNoticeRentDaysIsLessThanOne_ShouldThrowDomainException()
+        {
+            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), Guid.NewGuid(), null, "name", "description", ERentType.Indefinite, 50000, true, -1, 2, 30, 0, new List<string> { "fake url" }, new List<CustomField>() { new CustomField("fake") }));
         }
 
         [Fact]
@@ -151,7 +157,7 @@ namespace Mubbi.Marketplace.Catalog.UnitTests
 
         private Product CreateProduct()
         {
-            return new Product(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), "TestProduct", "description", 50000, true, 1, 2, 30, new List<string>() { "image.png" }, new List<CustomField> { new CustomField("Size") });
+            return new Product(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), "TestProduct", "description", ERentType.Indefinite, 50000, true, 1, 2, 30, 1, new List<string>() { "image.png" }, new List<CustomField> { new CustomField("Size") });
         }
     }
 
