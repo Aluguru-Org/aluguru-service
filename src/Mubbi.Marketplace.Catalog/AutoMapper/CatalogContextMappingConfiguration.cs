@@ -32,6 +32,7 @@ namespace Mubbi.Marketplace.Catalog.AutoMapper
                 .ConstructUsing((x, rc) =>
                 {
                     var customFields = rc.Mapper.Map<List<CustomField>>(x.CustomFields);
+                    var rentType = (ERentType)Enum.Parse(typeof(ERentType), x.RentType);
 
                     return new Product(
                         x.UserId,
@@ -39,11 +40,13 @@ namespace Mubbi.Marketplace.Catalog.AutoMapper
                         x.SubCategoryId,
                         x.Name,
                         x.Description,
+                        rentType,
                         x.Price,
                         x.IsActive,
                         x.StockQuantity,
                         x.MinRentDays,
                         x.MaxRentDays,
+                        x.MinNoticeRentDays,
                         x.ImageUrls,
                         customFields);
                 });
@@ -52,17 +55,21 @@ namespace Mubbi.Marketplace.Catalog.AutoMapper
                 .ConstructUsing((x, rc) =>
                 {
                     var customFields = rc.Mapper.Map<List<CustomField>>(x.CustomFields);
+                    var rentType = (ERentType)Enum.Parse(typeof(ERentType), x.RentType);
+
                     return new CreateProductCommand(
                         x.UserId,
                         x.CategoryId,
                         x.SubCategoryId,
                         x.Name,
                         x.Description,
+                        rentType,
                         x.Price,
                         x.IsActive,
                         x.StockQuantity,
                         x.MinRentDays,
                         x.MaxRentDays,
+                        x.MinNoticeRentDays,
                         x.ImageUrls,
                         customFields);
                 })

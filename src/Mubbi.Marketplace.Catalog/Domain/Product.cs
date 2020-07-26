@@ -22,18 +22,20 @@ namespace Mubbi.Marketplace.Catalog.Domain
             _customFields = new List<CustomField>();
         }
 
-        public Product(Guid userId, Guid categoryId, Guid? subCategoryId, string name, string description, decimal price, bool isActive, int stockQuantity, int minRentDays, int? maxRentDays, List<string> imageUrls, List<CustomField> customFields)
+        public Product(Guid userId, Guid categoryId, Guid? subCategoryId, string name, string description, ERentType rentType, decimal price, bool isActive, int stockQuantity, int minRentDays, int? maxRentDays, int? minNoticeRentDays, List<string> imageUrls, List<CustomField> customFields)
         {
             UserId = userId;
             CategoryId = categoryId;
             SubCategoryId = subCategoryId;
             Name = name;
             Description = description;
+            RentType = rentType;
             Price = price;
             IsActive = isActive;
             StockQuantity = stockQuantity;
             MinRentDays = minRentDays;
             MaxRentDays = maxRentDays;
+            MinNoticeRentDays = minNoticeRentDays;
 
             _imageUrls = imageUrls;
             _customFields = customFields;
@@ -45,11 +47,13 @@ namespace Mubbi.Marketplace.Catalog.Domain
         public Guid? SubCategoryId { get; private set; }
         public string Name { get; private set; }
         public string Description { get; private set; }
+        public ERentType RentType { get; private set; }
         public decimal Price { get; private set; }
         public bool IsActive { get; private set; }
         public int StockQuantity { get; private set; }
         public int MinRentDays { get; private set; }
         public int? MaxRentDays { get; private set; }
+        public int? MinNoticeRentDays { get; private set; }
         public IReadOnlyCollection<string> ImageUrls { get { return _imageUrls; } }
         public IReadOnlyCollection<CustomField> CustomFields { get { return _customFields; } }
 
@@ -67,7 +71,17 @@ namespace Mubbi.Marketplace.Catalog.Domain
             Ensure.That<DomainException>(command.Product.CategoryId != Guid.Empty, "The field CategoryId from Product cannot be empty");
             Ensure.That<DomainException>(command.Product.Price > 0, "The field Price from Product cannot be smaller or equal than zero");
             Ensure.That<DomainException>(command.Product.StockQuantity > 0, "The field StockQuantity from Product cannot be smaller than zero");
-            Ensure.That<DomainException>(command.Product.MinRentDays <= command.Product.MaxRentDays, "The field MinRentTime from Product cannot be greater than MaxRentTime");
+            
+            if (command.Product.MaxRentDays.HasValue)
+            {
+                Ensure.That<DomainException>(command.Product.MinRentDays <= command.Product.MaxRentDays, "The field MinRentTime from Product cannot be greater than MaxRentTime");
+            }
+
+            if (command.Product.MinNoticeRentDays.HasValue)
+            {
+                Ensure.That<DomainException>(command.Product.MinNoticeRentDays.Value > 0, "The field MinNoticeRentDays from Product cannot be less than one");
+            }
+
             Ensure.That<DomainException>(command.Product.ImageUrls != null && command.Product.ImageUrls.Count >= 1, "The field ImageUrls from Product cannot be empty");
 
             if (command.Product.SubCategoryId.HasValue)
@@ -138,7 +152,17 @@ namespace Mubbi.Marketplace.Catalog.Domain
             Ensure.That<DomainException>(CategoryId != Guid.Empty, "The field CategoryId from Product cannot be empty");
             Ensure.That<DomainException>(Price > 0, "The field Price from Product cannot be smaller or equal than zero");
             Ensure.That<DomainException>(StockQuantity > 0, "The field StockQuantity from Product cannot be smaller than zero");
-            Ensure.That<DomainException>(MinRentDays <= MaxRentDays, "The field MinRentTime from Product cannot be greater than MaxRentTime");
+
+            if (MaxRentDays.HasValue)
+            {
+                Ensure.That<DomainException>(MinRentDays <= MaxRentDays.Value, "The field MinRentTime from Product cannot be greater than MaxRentTime");
+            }
+
+            if (MinNoticeRentDays.HasValue)
+            {
+                Ensure.That<DomainException>(MinNoticeRentDays.Value > 0, "The field MinNoticeRentDays from Product cannot be less than one");
+            }
+
             Ensure.That<DomainException>(ImageUrls != null && ImageUrls.Count >= 1, "The field ImageUrls from Product cannot be empty");
 
             if (SubCategoryId.HasValue)

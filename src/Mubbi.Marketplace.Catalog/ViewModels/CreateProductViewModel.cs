@@ -17,11 +17,16 @@ namespace Mubbi.Marketplace.Catalog.ViewModels
         public string Name { get; set; }
         [Required]
         public string Description { get; set; }
+        [Required]
+        [SwaggerSchema("The rent type. It can be 'Indefinite' or 'Fixed'")]
+        public string RentType { get; set; }
         [Required]        
         public decimal Price { get; set; }
         [Required]
         [SwaggerSchema("If the Product will appear on the catalog")]
         public bool IsActive { get; set; }
+        [Required]
+        public int MinNoticeRentDays { get; set; }
         [Required]
         public int MinRentDays { get; set; }
         public int? MaxRentDays { get; set; }

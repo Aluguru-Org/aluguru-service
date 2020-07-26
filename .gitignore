@@ -35,6 +35,7 @@ msbuild.wrn
 
 # Test results
 [Tt]estResults/
+[Cc]overageResults/
 
 # Visual Studio 2015
 .vs/
