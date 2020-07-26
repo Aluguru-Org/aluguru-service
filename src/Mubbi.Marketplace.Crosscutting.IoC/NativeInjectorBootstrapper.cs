@@ -33,6 +33,7 @@ using Mubbi.Marketplace.Register.Usecases.UpadeUser;
 using Mubbi.Marketplace.Register.Usecases.UpdateUserRole;
 using Mubbi.Marketplace.Register.Usecases.DeleteUserRole;
 using Mubbi.Marketplace.Catalog.Usecases.DeleteProduct;
+using Mubbi.Marketplace.Register.Usecases.GetUserById;
 
 namespace Mubbi.Marketplace.Crosscutting.IoC
 {
@@ -67,7 +68,7 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
             services.AddScoped<IRequestHandler<DeleteUserRoleCommand, bool>, DeleteUserRoleHandler>();
 
             // User Command Handlers
-            services.AddScoped<IRequestHandler<LogInUserCommand, LogInUserCommandResponse>, LogInUserHandler>();
+            services.AddScoped<IRequestHandler<GetUserByIdCommand, GetUserByIdCommandResponse>, GetUserByIdHandler>();
             services.AddScoped<IRequestHandler<CreateUserCommand, CreateUserCommandResponse>, CreateUserHandler>();
             services.AddScoped<IRequestHandler<UpdateUserCommand, UpdateUserCommandResponse>, UpdateUserHandler>();
             services.AddScoped<IRequestHandler<DeleteUserCommand, bool>, DeleteUserHandler>();
