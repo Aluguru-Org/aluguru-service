@@ -39,13 +39,27 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
 {
     public static class NativeInjectorBootstrapper
     {
-        public static IServiceCollection AddServiceComponents(this IServiceCollection services, IConfiguration configuration, params Assembly[] assemblies)
+        public static IServiceCollection AddDataComponents(this IServiceCollection services, IConfiguration configuration)
         {
             var serviceConnection = configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<MubbiContext>(options => options.UseSqlServer(serviceConnection));
 
             services.AddScoped<IUnitOfWork, EfUnitOfWork<MubbiContext>>();
 
+            return services;
+        }
+
+        public static IServiceCollection AddInMemoryDataComponents(this IServiceCollection services)
+        {
+            services.AddDbContext<MubbiContext>(opt => opt.UseInMemoryDatabase(databaseName: "InMemoryDb"));
+
+            services.AddScoped<IUnitOfWork, EfUnitOfWork<MubbiContext>>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddServiceComponents(this IServiceCollection services, params Assembly[] assemblies)
+        {
             services.AddMediatR(assemblies);
 
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(CommandValidationHandler<,>));

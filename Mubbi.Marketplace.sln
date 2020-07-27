@@ -70,6 +70,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Data", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Rent.Domain.UnitTests", "tests\Mubbi.Marketplace.Rent.Domain.Tests\Mubbi.Marketplace.Rent.Domain.UnitTests.csproj", "{73E5C133-E208-4F85-AF4C-2C81199A47FB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3D396D44-606B-4731-8DBB-992F46659465}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mubbi.Marketplace.API.IntegrationTests", "tests\Mubbi.Marketplace.API.IntegrationTests\Mubbi.Marketplace.API.IntegrationTests.csproj", "{CC210668-6E18-4169-B09E-E1E1B90E06D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -132,6 +136,10 @@ Global
 		{73E5C133-E208-4F85-AF4C-2C81199A47FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73E5C133-E208-4F85-AF4C-2C81199A47FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73E5C133-E208-4F85-AF4C-2C81199A47FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC210668-6E18-4169-B09E-E1E1B90E06D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC210668-6E18-4169-B09E-E1E1B90E06D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC210668-6E18-4169-B09E-E1E1B90E06D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC210668-6E18-4169-B09E-E1E1B90E06D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -164,6 +172,8 @@ Global
 		{8F02F78F-B2A1-4747-9A3A-4C96CDBE5F6E} = {A8EE8DE1-8777-4A6D-976F-D835DBC92DA9}
 		{BFF3963E-61FB-48A2-AD72-2720A55F41C9} = {B70520C1-48AF-44B0-B8D7-9A1190B66ED3}
 		{73E5C133-E208-4F85-AF4C-2C81199A47FB} = {5536BAD7-59AC-4934-BCFF-C41A6F57914E}
+		{3D396D44-606B-4731-8DBB-992F46659465} = {EEDC09EE-E501-4644-9BD6-4FB6927A4E38}
+		{CC210668-6E18-4169-B09E-E1E1B90E06D0} = {3D396D44-606B-4731-8DBB-992F46659465}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7D3D5A09-667D-49DA-B8AA-6194FE3C3F51}

@@ -37,5 +37,8 @@ msbuild.wrn
 [Tt]estResults/
 [Cc]overageResults/
 
+#Sonarqube
+.sonarqube
+
 # Visual Studio 2015
 .vs/

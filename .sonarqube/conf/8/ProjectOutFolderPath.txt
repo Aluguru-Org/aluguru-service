@@ -1,1 +1,1 @@
-D:\Projects\Mubbi\Mubbi.Marketplace\.sonarqube\out\8
+D:\projects\Mubbi\Mubbi.Marketplace\.sonarqube\out\8

@@ -80,7 +80,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         }
 
         [HttpPut]
-        [Route("")]
+        [Route("{id}")]
         [SwaggerOperation(Summary = "Update a category", Description = "Used to update a existing category")]
         [Consumes("application/json")]
         [Produces("application/json")]
