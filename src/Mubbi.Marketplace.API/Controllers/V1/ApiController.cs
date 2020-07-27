@@ -14,7 +14,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         protected readonly IMediatorHandler _mediatorHandler;
         protected readonly IMapper _mapper;
 
-        public ApiController(INotificationHandler<DomainNotification> notifications, IMediatorHandler mediator, IMapper mapper)
+        protected ApiController(INotificationHandler<DomainNotification> notifications, IMediatorHandler mediator, IMapper mapper)
         {
             _notifications = notifications as DomainNotificationHandler;
             _mediatorHandler = mediator;
