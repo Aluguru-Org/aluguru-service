@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages;
 using Mubbi.Marketplace.Security;
+using System;
 
 namespace Mubbi.Marketplace.Register.Usecases.LogInUser
 {

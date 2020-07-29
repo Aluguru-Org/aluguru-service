@@ -1,12 +1,9 @@
 ﻿using Mubbi.Marketplace.API.IntegrationTests.Extensions;
 using Mubbi.Marketplace.API.Models;
 using Mubbi.Marketplace.Catalog.Usecases.CreateCategory;
-using Mubbi.Marketplace.Catalog.Usecases.GetCategories;
 using Mubbi.Marketplace.Catalog.Usecases.UpdateCategory;
 using Mubbi.Marketplace.Catalog.ViewModels;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;

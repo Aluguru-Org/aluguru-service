@@ -15,6 +15,7 @@ using Mubbi.Marketplace.Catalog.ViewModels;
 using Mubbi.Marketplace.Domain;
 using Mubbi.Marketplace.Infrastructure.Bus.Communication;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
+using Mubbi.Marketplace.Security.User;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
@@ -28,8 +29,13 @@ namespace Mubbi.Marketplace.API.Controllers.V1
     [ApiController]
     public class ProductController : ApiController
     {
-        public ProductController(INotificationHandler<DomainNotification> notifications, IMediatorHandler mediatorHandler, IMapper mapper)
-            : base(notifications, mediatorHandler, mapper) { }
+        private readonly IAspNetUser aspNetUser;
+
+        public ProductController(INotificationHandler<DomainNotification> notifications, IMediatorHandler mediatorHandler, IMapper mapper, IAspNetUser aspNetUser)
+            : base(notifications, mediatorHandler, mapper)
+        {
+            this.aspNetUser = aspNetUser;
+        }
 
         [HttpGet]
         [Route("")]
@@ -76,6 +82,8 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]        
         public async Task<ActionResult> CreateProduct([FromBody] CreateProductViewModel viewModel)
         {
+            var userId = aspNetUser.GetUserId();
+            var userEmail = aspNetUser.GetUserEmail();
             var command = _mapper.Map<CreateProductCommand>(viewModel);
             var response = await _mediatorHandler.SendCommand<CreateProductCommand, CreateProductCommandResponse>(command);
             return PostResponse(nameof(CreateProduct), response);
@@ -89,11 +97,11 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateProductCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> CreateProduct([FromRoute] Guid id, [FromBody] UpdateProductViewModel viewModel)
+        public async Task<ActionResult> UpdateProduct([FromRoute] Guid id, [FromBody] UpdateProductViewModel viewModel)
         {
             var command = new UpdateProductCommand(id, viewModel);
             var response = await _mediatorHandler.SendCommand<UpdateProductCommand, UpdateProductCommandResponse>(command);
-            return PostResponse(nameof(CreateProduct), response);
+            return PostResponse(nameof(UpdateProduct), response);
         }
 
         [HttpDelete]
