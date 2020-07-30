@@ -14,6 +14,17 @@ namespace Mubbi.Marketplace.Register.Domain
     {
         private User() { }
 
+        public User(Guid id, string email, string password, string fullName, Guid role) 
+            : base(id)
+        {
+            Password = password;
+            FullName = fullName;
+            Email = email;
+            UserRoleId = role;
+
+            ValidateEntity();
+        }
+
         public User(string email, string password, string fullName, Guid role)
             : base(NewId())
         {
@@ -23,8 +34,9 @@ namespace Mubbi.Marketplace.Register.Domain
             UserRoleId = role;
 
             ValidateEntity();
-
         }
+
+        
         public string Email { get; private set; }
         public string Password { get; private set; }
         public string FullName { get; private set; }

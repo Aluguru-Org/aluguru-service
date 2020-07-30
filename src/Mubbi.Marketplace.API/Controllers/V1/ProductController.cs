@@ -82,8 +82,6 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]        
         public async Task<ActionResult> CreateProduct([FromBody] CreateProductViewModel viewModel)
         {
-            var userId = aspNetUser.GetUserId();
-            var userEmail = aspNetUser.GetUserEmail();
             var command = _mapper.Map<CreateProductCommand>(viewModel);
             var response = await _mediatorHandler.SendCommand<CreateProductCommand, CreateProductCommandResponse>(command);
             return PostResponse(nameof(CreateProduct), response);

@@ -35,10 +35,10 @@ process {
     } elseif ($Operation -eq "delete") {
         docker-compose down -v
     } elseif($Operation -eq "sonar") {
-        dotnet dotnet-sonarscanner begin /k:"mubbi" /d:sonar.login="b94109ff1992f3b29d2db57ebf84d32bad408de8" /d:sonar.host.url="http://localhost:9999" /d:sonar.language="cs" /d:sonar.cs.opencover.reportsPaths="**/coverageResults/coverage.opencover.xml"
+        dotnet dotnet-sonarscanner begin /k:"mubbi" /d:sonar.login="684360a5c37971ef20f1e835bb7c1e3281a6a77d" /d:sonar.host.url="http://localhost:9999" /d:sonar.language="cs" /d:sonar.cs.opencover.reportsPaths="**/coverageResults/coverage.opencover.xml"
         dotnet build
         dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat='opencover' /p:CoverletOutput='coverageResults/'
-        dotnet dotnet-sonarscanner end /d:sonar.login="b94109ff1992f3b29d2db57ebf84d32bad408de8"        
+        dotnet dotnet-sonarscanner end /d:sonar.login="684360a5c37971ef20f1e835bb7c1e3281a6a77d"        
     } elseif ($Operation -eq "bootstrap") {
         # Installing necessary dotnet tools
         dotnet tool install dotnet-sonarscanner

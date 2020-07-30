@@ -62,7 +62,7 @@ namespace Mubbi.Marketplace.Register.Data.Seed
                 {
                     var userRepository = unitOfWork.Repository<User>();
 
-                    admin = new User("contato@mubbi.com.br", "24/74c0ZcIuP++wd2rtW88mWx3EOc1JFX66v634WEQE=", "Mubbi Admin", adminRole.Id);
+                    admin = new User(Guid.Parse("96d1fb97-47e9-4ad5-b07e-448f88defd9c"), "contato@mubbi.com.br", "24/74c0ZcIuP++wd2rtW88mWx3EOc1JFX66v634WEQE=", "Mubbi Admin", adminRole.Id);
 
                     userRepository.Add(admin);
                 }
