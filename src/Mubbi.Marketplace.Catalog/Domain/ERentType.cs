@@ -2,7 +2,7 @@
 {
     public enum ERentType
     {
-        Daily,
-        Monthly
+        Indefinite,
+        Fixed
     }
 }

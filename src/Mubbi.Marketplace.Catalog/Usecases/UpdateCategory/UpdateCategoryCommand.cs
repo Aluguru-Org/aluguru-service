@@ -7,16 +7,13 @@ namespace Mubbi.Marketplace.Catalog.Usecases.UpdateCategory
 {
     public class UpdateCategoryCommand : Command<UpdateCategoryCommandResponse>
     {
-        public UpdateCategoryCommand(Guid categoryId, Guid? mainCategoryId, string name)
+        public UpdateCategoryCommand(Guid categoryId, UpdateCategoryViewModel category)
         {
             CategoryId = categoryId;
-            MainCategoryId = mainCategoryId;
-            Name = name;
+            Category = category;
         }
-
         public Guid CategoryId { get; private set; }
-        public Guid? MainCategoryId { get; private set; }
-        public string Name { get; private set; }
+        public UpdateCategoryViewModel Category { get; private set; }
 
         public override bool IsValid()
         {
@@ -29,8 +26,8 @@ namespace Mubbi.Marketplace.Catalog.Usecases.UpdateCategory
     {
         public UpdateCategoryCommandValidator()
         {
-            RuleFor(x => x.CategoryId).NotEqual(Guid.Empty);
-            RuleFor(x => x.Name).NotEmpty();
+            RuleFor(x => x.Category.Id).NotEqual(Guid.Empty);
+            RuleFor(x => x.Category.Name).NotEmpty();
         }
     }
 

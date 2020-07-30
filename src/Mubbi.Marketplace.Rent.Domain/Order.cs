@@ -19,7 +19,7 @@ namespace Mubbi.Marketplace.Rent.Domain
 
             _orderItems = new List<OrderItem>();
 
-            ValidateCreation();
+            ValidateEntity();
         }
 
         protected Order()
@@ -33,7 +33,6 @@ namespace Mubbi.Marketplace.Rent.Domain
         public bool VoucherUsed { get; private set; }
         public decimal Discount { get; private set; }
         public decimal TotalPrice { get; private set; }
-        public DateTime CreationDate { get; private set; }
         public EOrderStatus OrderStatus { get; private set; }
         public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;
 
@@ -122,7 +121,7 @@ namespace Mubbi.Marketplace.Rent.Domain
             Discount = discount;
         }
 
-        protected override void ValidateCreation()
+        protected override void ValidateEntity()
         {
             Ensure.NotEqual(ClientId, Guid.Empty, "The field ClientId from Order cannot be empty");
         }

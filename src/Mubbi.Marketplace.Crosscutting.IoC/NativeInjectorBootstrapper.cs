@@ -30,18 +30,36 @@ using System.Reflection;
 using Mubbi.Marketplace.Register.Services;
 using Mubbi.Marketplace.Register.Usecases.GetUsersByRole;
 using Mubbi.Marketplace.Register.Usecases.UpadeUser;
+using Mubbi.Marketplace.Register.Usecases.UpdateUserRole;
+using Mubbi.Marketplace.Register.Usecases.DeleteUserRole;
+using Mubbi.Marketplace.Catalog.Usecases.DeleteProduct;
+using Mubbi.Marketplace.Register.Usecases.GetUserById;
 
 namespace Mubbi.Marketplace.Crosscutting.IoC
 {
     public static class NativeInjectorBootstrapper
     {
-        public static IServiceCollection AddServiceComponents(this IServiceCollection services, IConfiguration configuration, params Assembly[] assemblies)
+        public static IServiceCollection AddDataComponents(this IServiceCollection services, IConfiguration configuration)
         {
             var serviceConnection = configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<MubbiContext>(options => options.UseSqlServer(serviceConnection));
 
             services.AddScoped<IUnitOfWork, EfUnitOfWork<MubbiContext>>();
 
+            return services;
+        }
+
+        public static IServiceCollection AddInMemoryDataComponents(this IServiceCollection services)
+        {
+            services.AddDbContext<MubbiContext>(opt => opt.UseInMemoryDatabase(databaseName: "InMemoryDb"));
+
+            services.AddScoped<IUnitOfWork, EfUnitOfWork<MubbiContext>>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddServiceComponents(this IServiceCollection services, params Assembly[] assemblies)
+        {
             services.AddMediatR(assemblies);
 
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(CommandValidationHandler<,>));
@@ -57,12 +75,14 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
             services.AddScoped<ITokenBuilderService, TokenBuilderService>();
 
             // User Role Command Handlers
-            services.AddScoped<IRequestHandler<CreateUserRoleCommand, CreateUserRoleCommandResponse>, CreateRoleHandler>();
+            services.AddScoped<IRequestHandler<CreateUserRoleCommand, CreateUserRoleCommandResponse>, CreateUserRoleHandler>();
             services.AddScoped<IRequestHandler<GetUserRolesCommand, GetUserRolesCommandResponse>, GetUserRolesHandler>();
             services.AddScoped<IRequestHandler<GetUsersByRoleCommand, GetUsersByRoleCommandResponse>, GetUsersByRoleHandler>();
+            services.AddScoped<IRequestHandler<UpdateUserRoleCommand, UpdateUserRoleCommandResponse>, UpdateUserRoleHandler>();
+            services.AddScoped<IRequestHandler<DeleteUserRoleCommand, bool>, DeleteUserRoleHandler>();
 
             // User Command Handlers
-            services.AddScoped<IRequestHandler<LogInUserCommand, LogInUserCommandResponse>, LogInUserHandler>();
+            services.AddScoped<IRequestHandler<GetUserByIdCommand, GetUserByIdCommandResponse>, GetUserByIdHandler>();
             services.AddScoped<IRequestHandler<CreateUserCommand, CreateUserCommandResponse>, CreateUserHandler>();
             services.AddScoped<IRequestHandler<UpdateUserCommand, UpdateUserCommandResponse>, UpdateUserHandler>();
             services.AddScoped<IRequestHandler<DeleteUserCommand, bool>, DeleteUserHandler>();
@@ -72,6 +92,7 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
             services.AddScoped<IRequestHandler<UpdateProductCommand, UpdateProductCommandResponse>, UpdateProductHandler>();
             services.AddScoped<IRequestHandler<GetProductCommand, GetProductCommandResponse>, GetProductHandler>();
             services.AddScoped<IRequestHandler<GetProductsCommand, GetProductsCommandResponse>, GetProductsHandler>();
+            services.AddScoped<IRequestHandler<DeleteProductCommand, bool>, DeleteProductHandler>();
 
             // Category Command Handlers
             services.AddScoped<IRequestHandler<CreateCategoryCommand, CreateCategoryCommandResponse>, CreateCategoryHandler>();

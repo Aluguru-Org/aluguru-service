@@ -19,14 +19,14 @@ namespace Mubbi.Marketplace.Register.Usecases.CreateUserRole
 
         public override bool IsValid()
         {
-            ValidationResult = new CreateRoleCommandValidator().Validate(this);
+            ValidationResult = new CreateUserRoleCommandValidator().Validate(this);
             return ValidationResult.IsValid;
         }
     }
 
-    public class CreateRoleCommandValidator : AbstractValidator<CreateUserRoleCommand>
+    public class CreateUserRoleCommandValidator : AbstractValidator<CreateUserRoleCommand>
     {
-        public CreateRoleCommandValidator()
+        public CreateUserRoleCommandValidator()
         {
             RuleFor(x => x.Name).NotEmpty().MinimumLength(3).MaximumLength(10);
         }

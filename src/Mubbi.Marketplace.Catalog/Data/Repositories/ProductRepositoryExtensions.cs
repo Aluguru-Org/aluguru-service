@@ -14,7 +14,7 @@ namespace Mubbi.Marketplace.Catalog.Data.Repositories
         {
             var product = await repository.GetByIdAsync(
                 productId,
-                null,
+                product => product.Include(x => x.CustomFields),
                 !disableTracking);
 
             return product;

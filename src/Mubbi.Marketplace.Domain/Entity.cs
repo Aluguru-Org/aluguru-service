@@ -18,6 +18,6 @@ namespace Mubbi.Marketplace.Domain
         public DateTime DateCreated { get; protected set; }
         public DateTime? DateUpdated { get; protected set; }
 
-        protected abstract void ValidateCreation();
+        protected abstract void ValidateEntity();
     }
 }

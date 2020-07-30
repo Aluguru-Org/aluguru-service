@@ -20,7 +20,7 @@ namespace Mubbi.Marketplace.Register.Domain
             Country = country;
             ZipCode = zipCode;
 
-            ValidateCreation();
+            ValidateEntity();
             UserId = userId;
         }
         public Guid UserId { get; private set; }
@@ -35,7 +35,7 @@ namespace Mubbi.Marketplace.Register.Domain
         // Ef Relational
         public User User { get; set; }
 
-        protected override void ValidateCreation()
+        protected override void ValidateEntity()
         {
             Ensure.NotNullOrEmpty(Street, "The field Street from Address cannot be empty");
             Ensure.NotNullOrEmpty(Number, "The field Street from Number cannot be empty");

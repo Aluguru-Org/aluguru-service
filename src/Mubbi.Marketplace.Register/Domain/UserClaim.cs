@@ -24,7 +24,7 @@ namespace Mubbi.Marketplace.Register.Domain
         // EF Relational
         public UserRole UserRole { get; set; }
 
-        protected override void ValidateCreation()
+        protected override void ValidateEntity()
         {
             Ensure.That<DomainException>(!string.IsNullOrEmpty(Type), "The claim type cannot be null or empty");
             Ensure.That<DomainException>(!string.IsNullOrEmpty(Value), "The claim value cannot be null or empty");

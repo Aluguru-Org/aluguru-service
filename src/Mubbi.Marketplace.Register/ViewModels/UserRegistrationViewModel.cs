@@ -10,7 +10,5 @@ namespace Mubbi.Marketplace.Register.ViewModels
         public string Password { get; set; }
         public string Email { get; set; }
         public string Role { get; set; }
-        public AddressViewModel Address { get; set; }
-        public DocumentViewModel Document { get; set; }
     }
 }

@@ -15,7 +15,7 @@ namespace Mubbi.Marketplace.Rent.Domain
             Amount = amount;
             ProductPrice = productPrice;
 
-            ValidateCreation();
+            ValidateEntity();
         }
 
         public Guid OrderId { get; private set; }
@@ -50,7 +50,7 @@ namespace Mubbi.Marketplace.Rent.Domain
             Amount = amount;
         }
 
-        protected override void ValidateCreation()
+        protected override void ValidateEntity()
         {
             Ensure.NotEqual(Guid.Empty, ProductId, "The field ProductId be empty");
             Ensure.NotNullOrEmpty(ProductName, "The field ProductName cannot be empty");

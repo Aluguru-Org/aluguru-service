@@ -2,6 +2,7 @@
 using Mubbi.Marketplace.Catalog.Domain;
 using Mubbi.Marketplace.Catalog.Usecases.CreateCategory;
 using Mubbi.Marketplace.Catalog.Usecases.CreateProduct;
+using Mubbi.Marketplace.Catalog.Usecases.UpdateCategory;
 using Mubbi.Marketplace.Catalog.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -24,12 +25,6 @@ namespace Mubbi.Marketplace.Catalog.AutoMapper
                 .ForMember(x => x.MessageType, c => c.Ignore())
                 .ForMember(x => x.ValidationResult, c => c.Ignore());
 
-            CreateMap<UpdateCategoryViewModel, CreateCategoryCommand>()
-                .ConstructUsing(x => new CreateCategoryCommand(x.Name, x.MainCategoryId))
-                .ForMember(x => x.Timestamp, c => c.Ignore())
-                .ForMember(x => x.MessageType, c => c.Ignore())
-                .ForMember(x => x.ValidationResult, c => c.Ignore());
-
             CreateMap<CategoryViewModel, Category>()
                 .ConstructUsing(c => new Category(c.Name, c.MainCategoryId));
 
@@ -37,6 +32,7 @@ namespace Mubbi.Marketplace.Catalog.AutoMapper
                 .ConstructUsing((x, rc) =>
                 {
                     var customFields = rc.Mapper.Map<List<CustomField>>(x.CustomFields);
+                    var rentType = (ERentType)Enum.Parse(typeof(ERentType), x.RentType);
 
                     return new Product(
                         x.UserId,
@@ -44,11 +40,13 @@ namespace Mubbi.Marketplace.Catalog.AutoMapper
                         x.SubCategoryId,
                         x.Name,
                         x.Description,
+                        rentType,
                         x.Price,
                         x.IsActive,
                         x.StockQuantity,
                         x.MinRentDays,
                         x.MaxRentDays,
+                        x.MinNoticeRentDays,
                         x.ImageUrls,
                         customFields);
                 });
@@ -57,17 +55,21 @@ namespace Mubbi.Marketplace.Catalog.AutoMapper
                 .ConstructUsing((x, rc) =>
                 {
                     var customFields = rc.Mapper.Map<List<CustomField>>(x.CustomFields);
+                    var rentType = (ERentType)Enum.Parse(typeof(ERentType), x.RentType);
+
                     return new CreateProductCommand(
                         x.UserId,
                         x.CategoryId,
                         x.SubCategoryId,
                         x.Name,
                         x.Description,
+                        rentType,
                         x.Price,
                         x.IsActive,
                         x.StockQuantity,
                         x.MinRentDays,
                         x.MaxRentDays,
+                        x.MinNoticeRentDays,
                         x.ImageUrls,
                         customFields);
                 })

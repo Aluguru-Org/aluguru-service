@@ -1,7 +1,10 @@
 ﻿using Mubbi.Marketplace.Domain;
+using Mubbi.Marketplace.Register.Usecases.UpdateUserRole;
 using PampaDevs.Utils;
 using System.Collections.Generic;
 using static PampaDevs.Utils.Helpers.IdHelper;
+using static PampaDevs.Utils.Helpers.DateTimeHelper;
+using Mubbi.Marketplace.Register.Events;
 
 namespace Mubbi.Marketplace.Register.Domain
 {
@@ -27,7 +30,20 @@ namespace Mubbi.Marketplace.Register.Domain
         public IReadOnlyCollection<User> Users { get; set; }
         public IReadOnlyCollection<UserClaim> UserClaims { get { return _userClaims; } }        
 
-        protected override void ValidateCreation()
+        public UserRole UpdateUserRole(UpdateUserRoleCommand command)
+        {
+            Name = command.UserRole.Name;
+
+            ValidateEntity();
+
+            DateUpdated = NewDateTime();
+
+            AddEvent(new UserRoleUpdatedEvent(Id, this));
+
+            return this;
+        }
+
+        protected override void ValidateEntity()
         {
             Ensure.That<DomainException>(!string.IsNullOrEmpty(Name), "The role name cannot be null");
             Ensure.That<DomainException>(Name.Length >= 3 && Name.Length <= 10, "The role name must have between 3 and 10 characters");

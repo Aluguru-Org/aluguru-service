@@ -32,7 +32,7 @@ namespace Mubbi.Marketplace.Rent.Domain
 
             ExpirationDate = expirationDate;
 
-            ValidateCreation();
+            ValidateEntity();
         }
 
         public string Code { get; private set; }
@@ -50,7 +50,7 @@ namespace Mubbi.Marketplace.Rent.Domain
         {            
             return new VoucherApplicableValidation().Validate(this);
         }
-        protected override void ValidateCreation()
+        protected override void ValidateEntity()
         {
             Ensure.NotNullOrEmpty(Code, "The field Code cannot be empty");
             if (ValueDiscount != null) Ensure.That(ValueDiscount.Value > 0, "The field ValueDiscount cannot be smaller or equal to 0");

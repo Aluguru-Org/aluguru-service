@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 
 namespace Mubbi.Marketplace.Register.Usecases.CreateUserRole
 {
-    public class CreateRoleHandler : IRequestHandler<CreateUserRoleCommand, CreateUserRoleCommandResponse>
+    public class CreateUserRoleHandler : IRequestHandler<CreateUserRoleCommand, CreateUserRoleCommandResponse>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IMediatorHandler _mediatorHandler;
 
-        public CreateRoleHandler(IUnitOfWork unitOfWork, IMapper mapper, IMediatorHandler mediatorHandler)
+        public CreateUserRoleHandler(IUnitOfWork unitOfWork, IMapper mapper, IMediatorHandler mediatorHandler)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;

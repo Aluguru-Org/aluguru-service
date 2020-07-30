@@ -26,9 +26,15 @@ namespace Mubbi.Marketplace.Catalog.Usecases.UpdateProduct
 
         public async Task<UpdateProductCommandResponse> Handle(UpdateProductCommand command, CancellationToken cancellationToken)
         {
+            if (command.ProductId != command.Product.Id)
+            {
+                await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"The provided Product Id [{command.ProductId}] does not match with the Product passed to be updated [{command.Product.Id}]"));
+                return new UpdateProductCommandResponse();
+            }
+
             var queryRepository = _unitOfWork.QueryRepository<Product>();
 
-            var existed = await queryRepository.GetProductAsync(command.ProductId);
+            var existed = await queryRepository.GetProductAsync(command.ProductId, false);
 
             if (existed == null)
             {

@@ -8,10 +8,13 @@ using Mubbi.Marketplace.API.Models;
 using Mubbi.Marketplace.Infrastructure.Bus.Communication;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using Mubbi.Marketplace.Register.Usecases.CreateUserRole;
+using Mubbi.Marketplace.Register.Usecases.DeleteUserRole;
 using Mubbi.Marketplace.Register.Usecases.GetUserRoles;
 using Mubbi.Marketplace.Register.Usecases.GetUsersByRole;
+using Mubbi.Marketplace.Register.Usecases.UpdateUserRole;
 using Mubbi.Marketplace.Register.ViewModels;
 using Swashbuckle.AspNetCore.Annotations;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -63,11 +66,45 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> CreateRole([FromBody] UserRoleViewModel viewModel)
+        public async Task<ActionResult> CreateRole([FromBody] CreateUserRoleViewModel viewModel)
         {
             var command = _mapper.Map<CreateUserRoleCommand>(viewModel);
             var response = await _mediatorHandler.SendCommand<CreateUserRoleCommand, CreateUserRoleCommandResponse>(command);
             return PostResponse(nameof(CreateRole), response);
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        [Authorize]
+        [SwaggerOperation(Summary = "Update a user role")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateUserRoleCommandResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task<ActionResult> CreateRole([FromRoute] Guid id, [FromBody] UpdateUserRoleViewModel viewModel)
+        {
+            var command = new UpdateUserRoleCommand(id, viewModel);
+            var response = await _mediatorHandler.SendCommand<UpdateUserRoleCommand, UpdateUserRoleCommandResponse>(command);
+            return PostResponse(nameof(CreateRole), response);
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        [Authorize]
+        [SwaggerOperation(Summary = "Delete a user role")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task<ActionResult> CreateRole([FromRoute] Guid id)
+        {
+            var command = new DeleteUserRoleCommand(id);
+            await _mediatorHandler.SendCommand<DeleteUserRoleCommand, bool>(command);
+            return DeleteResponse();
         }
     }
 }

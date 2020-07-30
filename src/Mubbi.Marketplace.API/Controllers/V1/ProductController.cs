@@ -6,13 +6,16 @@ using Microsoft.AspNetCore.Mvc;
 using Mubbi.Marketplace.API.Controllers.V1.Attributes;
 using Mubbi.Marketplace.API.Models;
 using Mubbi.Marketplace.Catalog.Usecases.CreateProduct;
+using Mubbi.Marketplace.Catalog.Usecases.DeleteProduct;
 using Mubbi.Marketplace.Catalog.Usecases.GetProduct;
 using Mubbi.Marketplace.Catalog.Usecases.GetProducts;
 using Mubbi.Marketplace.Catalog.Usecases.GetProductsByCategory;
+using Mubbi.Marketplace.Catalog.Usecases.UpdateProduct;
 using Mubbi.Marketplace.Catalog.ViewModels;
 using Mubbi.Marketplace.Domain;
 using Mubbi.Marketplace.Infrastructure.Bus.Communication;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
+using Mubbi.Marketplace.Security.User;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
@@ -26,8 +29,13 @@ namespace Mubbi.Marketplace.API.Controllers.V1
     [ApiController]
     public class ProductController : ApiController
     {
-        public ProductController(INotificationHandler<DomainNotification> notifications, IMediatorHandler mediatorHandler, IMapper mapper)
-            : base(notifications, mediatorHandler, mapper) { }
+        private readonly IAspNetUser aspNetUser;
+
+        public ProductController(INotificationHandler<DomainNotification> notifications, IMediatorHandler mediatorHandler, IMapper mapper, IAspNetUser aspNetUser)
+            : base(notifications, mediatorHandler, mapper)
+        {
+            this.aspNetUser = aspNetUser;
+        }
 
         [HttpGet]
         [Route("")]
@@ -77,6 +85,35 @@ namespace Mubbi.Marketplace.API.Controllers.V1
             var command = _mapper.Map<CreateProductCommand>(viewModel);
             var response = await _mediatorHandler.SendCommand<CreateProductCommand, CreateProductCommandResponse>(command);
             return PostResponse(nameof(CreateProduct), response);
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        [SwaggerOperation(Summary = "Update Product", Description = "Update a existing product in the catalog")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateProductCommandResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task<ActionResult> UpdateProduct([FromRoute] Guid id, [FromBody] UpdateProductViewModel viewModel)
+        {
+            var command = new UpdateProductCommand(id, viewModel);
+            var response = await _mediatorHandler.SendCommand<UpdateProductCommand, UpdateProductCommandResponse>(command);
+            return PostResponse(nameof(UpdateProduct), response);
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        [SwaggerOperation(Summary = "Delete a product", Description = "Delete a existing product.")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task<ActionResult> Delete([FromRoute] Guid id)
+        {
+            await _mediatorHandler.SendCommand<DeleteProductCommand, bool>(new DeleteProductCommand(id));
+            return DeleteResponse();
         }
     }
 }
