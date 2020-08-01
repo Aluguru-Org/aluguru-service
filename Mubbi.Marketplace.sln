@@ -27,7 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A8EE8DE1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Catalog", "src\Mubbi.Marketplace.Catalog\Mubbi.Marketplace.Catalog.csproj", "{42C067A4-EE82-484E-BF53-AFD05A2F74FA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Rent.Domain", "src\Mubbi.Marketplace.Rent.Domain\Mubbi.Marketplace.Rent.Domain.csproj", "{20CD8EB5-8DDE-4938-B0DC-C4A577CD4D25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Rent", "src\Mubbi.Marketplace.Rent\Mubbi.Marketplace.Rent.csproj", "{20CD8EB5-8DDE-4938-B0DC-C4A577CD4D25}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5536BAD7-59AC-4934-BCFF-C41A6F57914E}"
 EndProject
@@ -68,7 +68,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Register.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Data", "src\Mubbi.Marketplace.Data\Mubbi.Marketplace.Data.csproj", "{BFF3963E-61FB-48A2-AD72-2720A55F41C9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Rent.Domain.UnitTests", "tests\Mubbi.Marketplace.Rent.Domain.Tests\Mubbi.Marketplace.Rent.Domain.UnitTests.csproj", "{73E5C133-E208-4F85-AF4C-2C81199A47FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Rent.UnitTests", "tests\Mubbi.Marketplace.Rent.UnitTests\Mubbi.Marketplace.Rent.UnitTests.csproj", "{73E5C133-E208-4F85-AF4C-2C81199A47FB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3D396D44-606B-4731-8DBB-992F46659465}"
 EndProject
