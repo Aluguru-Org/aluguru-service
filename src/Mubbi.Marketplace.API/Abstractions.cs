@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Mubbi.Marketplace.Infrastructure.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System;
 
 namespace Mubbi.Marketplace.API
 {
@@ -37,10 +38,12 @@ namespace Mubbi.Marketplace.API
             {
                 Version = "v1",
                 Title = "Mubbi API",
-                Description = "Mubbi API",
+                Description = "This ",
                 Contact = new OpenApiContact
                 {
-                    Name = "Mubbi"
+                    Name = "Felipe Rodrigues de Almeida",
+                    Email = "felipe.allmeida.dev@gmail.com",
+                    Url = new Uri("https://github.com/felipe-allmeida")
                 },
                 License = new OpenApiLicense
                 {

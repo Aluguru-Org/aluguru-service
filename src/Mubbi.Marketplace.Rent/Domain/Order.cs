@@ -13,7 +13,7 @@ namespace Mubbi.Marketplace.Rent.Domain
 
         public Order(Guid clientId, decimal discount, decimal totalPrice)
         {
-            ClientId = clientId;
+            UserId = clientId;
             Discount = discount;
             TotalPrice = totalPrice;
 
@@ -27,8 +27,7 @@ namespace Mubbi.Marketplace.Rent.Domain
             _orderItems = new List<OrderItem>();
         }
 
-        public int Code { get; private set; }
-        public Guid ClientId { get; private set; }
+        public Guid UserId { get; private set; }
         public Guid? VoucherId { get; private set; }
         public bool VoucherUsed { get; private set; }
         public decimal Discount { get; private set; }
@@ -123,7 +122,7 @@ namespace Mubbi.Marketplace.Rent.Domain
 
         protected override void ValidateEntity()
         {
-            Ensure.NotEqual(ClientId, Guid.Empty, "The field ClientId from Order cannot be empty");
+            Ensure.NotEqual(UserId, Guid.Empty, "The field ClientId from Order cannot be empty");
         }
     }
 }

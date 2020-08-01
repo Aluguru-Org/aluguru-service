@@ -19,8 +19,8 @@ namespace Mubbi.Marketplace.Catalog.ViewModels
         public decimal Price { get; set; }
         [SwaggerSchema("If the Product will appear on the catalog")]
         public bool IsActive { get; set; }
-        public int MinNoticeRentDays { get; set; }
         public int MinRentDays { get; set; }
+        public int? MinNoticeRentDays { get; set; }
         public int? MaxRentDays { get; set; }
         public int StockQuantity { get; set; }
         public List<string> ImageUrls { get; set; }
