@@ -9,6 +9,10 @@ namespace Mubbi.Marketplace.Rent.Domain
 {
     public class Voucher : Entity
     {
+        private Voucher() : base(NewId())
+        {
+
+        }
         public Voucher(string code, EVoucherType voucherType, decimal discount, int amount, DateTime expirationDate)
             : base(NewId())
         {

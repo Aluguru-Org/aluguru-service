@@ -41,7 +41,7 @@ namespace Mubbi.Marketplace.Catalog.Domain
         public EFieldType FieldType { get; private set; }
         public string ValueAsString { get; private set; }
         public int? ValueAsInt { get; private set; }
-        public IReadOnlyCollection<string> ValueAsOptions { get; private set; }
+        public IReadOnlyCollection<string> ValueAsOptions { get { return _valueAsOptions; } }
         public bool Active { get; private set; }
         public Guid ProductId { get; private set; }
 

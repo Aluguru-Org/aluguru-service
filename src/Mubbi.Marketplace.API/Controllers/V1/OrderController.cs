@@ -7,6 +7,7 @@ using Mubbi.Marketplace.API.Models;
 using Mubbi.Marketplace.Domain;
 using Mubbi.Marketplace.Infrastructure.Bus.Communication;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
+using Mubbi.Marketplace.Rent.Usecases.GetOrder;
 using Mubbi.Marketplace.Rent.Usecases.GetOrders;
 using Mubbi.Marketplace.Rent.ViewModels;
 using Swashbuckle.AspNetCore.Annotations;
@@ -29,7 +30,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         [SwaggerOperation(Summary = "Get all orders", Description = "Get a list of all orders")]
         [Consumes("application/json")]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetOrdersCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> GetALl(
@@ -43,6 +44,20 @@ namespace Mubbi.Marketplace.API.Controllers.V1
             var paginateCriteria = new PaginateCriteria(currentPage, pageSize, sortBy, sortOrder);
             var command = new GetOrdersCommand(userId, paginateCriteria);
             var response = await _mediatorHandler.SendCommand<GetOrdersCommand, GetOrdersCommandResponse>(command);
+            return GetResponse(response);
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        [SwaggerOperation(Summary = "Get order by id", Description = "Return the target order")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetOrderCommandResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task<ActionResult> GetOrderById([SwaggerParameter("The order Id", Required = true)][FromRoute] Guid id)
+        {
+            var response = await _mediatorHandler.SendCommand<GetOrderCommand, GetOrderCommandResponse>(new GetOrderCommand(id));
             return GetResponse(response);
         }
 
