@@ -53,7 +53,7 @@ namespace Mubbi.Marketplace.Register.Domain
                 FullName = command.FullName;
             }
 
-            if (Document.Number != command.Document.Number)
+            if (Document == null || Document.Number != command.Document.Number)
             {
                 Document = command.Document;
             }

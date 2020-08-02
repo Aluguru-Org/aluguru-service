@@ -47,8 +47,6 @@ namespace Mubbi.Marketplace.Catalog.Domain
 
         // EF Relational
         public virtual Product Product { get; set; }
-
-
         protected override void ValidateEntity()
         {
             switch(FieldType)

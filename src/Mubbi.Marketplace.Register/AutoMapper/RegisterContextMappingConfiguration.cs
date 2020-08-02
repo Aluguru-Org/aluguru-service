@@ -27,6 +27,15 @@ namespace Mubbi.Marketplace.Register.AutoMapper
                     return new Document(request.Number, documentType);
                 });
 
+            CreateMap<AddressViewModel, Address>()
+                .ConstructUsing((request, context) =>
+                {
+                    return new Address(request.UserId, request.Street, request.Number, request.Neighborhood, request.City, request.State, request.Country, request.ZipCode);
+                })
+                .ForMember(x => x.User, c => c.Ignore())
+                .ForMember(x => x.DateCreated, c => c.Ignore())
+                .ForMember(x => x.DateUpdated, c => c.Ignore());
+
             CreateMap<CreateUserRoleViewModel, CreateUserRoleCommand>()
                 .ConstructUsing((request, context) =>
                 {
