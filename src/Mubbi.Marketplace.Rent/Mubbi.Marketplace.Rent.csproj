@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Mubbi.Marketplace.Domain\Mubbi.Marketplace.Domain.csproj" />
     <ProjectReference Include="..\Mubbi.Marketplace.Infrastructure.Data\Mubbi.Marketplace.Infrastructure.Data.csproj" />
+    <ProjectReference Include="..\Mubbi.Marketplace.Infrastructure.Bus\Mubbi.Marketplace.Infrastructure.Bus.csproj" />
   </ItemGroup>
 
 </Project>
