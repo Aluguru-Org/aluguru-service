@@ -11,11 +11,9 @@ namespace Mubbi.Marketplace.Rent.Domain
     {
         private readonly List<OrderItem> _orderItems;
 
-        public Order(Guid clientId, decimal discount, decimal totalPrice)
+        public Order(Guid clientId)
         {
             UserId = clientId;
-            Discount = discount;
-            TotalPrice = totalPrice;
 
             _orderItems = new List<OrderItem>();
 

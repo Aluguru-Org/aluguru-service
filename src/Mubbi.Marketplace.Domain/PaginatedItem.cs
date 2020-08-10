@@ -25,7 +25,7 @@ namespace Mubbi.Marketplace.Domain
             yield return Items;
         }
 
-        protected override void ValidateCreation()
+        protected override void ValidateValueObject()
         {
             Ensure.That(TotalItems >= 0);
             Ensure.That(TotalPages >= 0);

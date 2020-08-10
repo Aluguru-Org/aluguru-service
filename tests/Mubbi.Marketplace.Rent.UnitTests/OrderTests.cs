@@ -11,7 +11,7 @@ namespace Mubbi.Marketplace.Rent.Domain.Tests
         public void AddItem_WhenNew_ShouldAddNewItem()
         {
             var item = new OrderItem(Guid.NewGuid(), "test", 1, 100);
-            var order = new Order(Guid.NewGuid(), 0, 0);
+            var order = new Order(Guid.NewGuid());
 
             order.AddItem(item);
 
@@ -23,7 +23,7 @@ namespace Mubbi.Marketplace.Rent.Domain.Tests
         public void RemoveItem_WhenExisting_ShouldRemoveItem()
         {
             var item = new OrderItem(Guid.NewGuid(), "test", 1, 100);
-            var order = new Order(Guid.NewGuid(), 0, 0);
+            var order = new Order(Guid.NewGuid());
 
             order.AddItem(item);
 
@@ -38,7 +38,7 @@ namespace Mubbi.Marketplace.Rent.Domain.Tests
         public void AddItem_WhenExisting_ShouldUpdateItem()
         {
             var item = new OrderItem(Guid.NewGuid(), "test", 1, 100);
-            var order = new Order(Guid.NewGuid(), 0, 0);
+            var order = new Order(Guid.NewGuid());
 
             order.AddItem(item);
             order.AddItem(item);

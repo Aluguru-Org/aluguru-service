@@ -6,6 +6,7 @@ using Mubbi.Marketplace.Catalog.Usecases.UpdateCategory;
 using Mubbi.Marketplace.Catalog.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Mubbi.Marketplace.Catalog.AutoMapper
 {
@@ -31,6 +32,7 @@ namespace Mubbi.Marketplace.Catalog.AutoMapper
             CreateMap<ProductViewModel, Product>()
                 .ConstructUsing((x, rc) =>
                 {
+                    var price = rc.Mapper.Map<Price>(x.Price);
                     var customFields = rc.Mapper.Map<List<CustomField>>(x.CustomFields);
                     var rentType = (ERentType)Enum.Parse(typeof(ERentType), x.RentType);
 
@@ -41,7 +43,7 @@ namespace Mubbi.Marketplace.Catalog.AutoMapper
                         x.Name,
                         x.Description,
                         rentType,
-                        x.Price,
+                        price,
                         x.IsActive,
                         x.StockQuantity,
                         x.MinRentDays,
@@ -54,6 +56,7 @@ namespace Mubbi.Marketplace.Catalog.AutoMapper
             CreateMap<CreateProductViewModel, CreateProductCommand>()
                 .ConstructUsing((x, rc) =>
                 {
+                    var price = rc.Mapper.Map<Price>(x.Price);
                     var customFields = rc.Mapper.Map<List<CustomField>>(x.CustomFields);
                     var rentType = (ERentType)Enum.Parse(typeof(ERentType), x.RentType);
 
@@ -64,7 +67,7 @@ namespace Mubbi.Marketplace.Catalog.AutoMapper
                         x.Name,
                         x.Description,
                         rentType,
-                        x.Price,
+                        price,
                         x.IsActive,
                         x.StockQuantity,
                         x.MinRentDays,
@@ -76,6 +79,16 @@ namespace Mubbi.Marketplace.Catalog.AutoMapper
                 .ForMember(x => x.Timestamp, c => c.Ignore())
                 .ForMember(x => x.MessageType, c => c.Ignore())
                 .ForMember(x => x.ValidationResult, c => c.Ignore());
+
+            CreateMap<PriceViewModel, Price>()
+                .ConstructUsing((x, rc) =>
+                {
+                    var periodPrices = rc.Mapper.Map<List<PeriodPrice>>(x.PeriodRentPrices);
+                    return new Price(x.SellPrice, x.DailyRentPrice, periodPrices);
+                });
+
+            CreateMap<PeriodPriceViewModel, PeriodPrice>()
+                .ConstructUsing((x, rc) => new PeriodPrice(x.RentPeriodId, x.Price));
 
             CreateMap<CreateCustomFieldViewModel, CustomField>()
                 .ConstructUsing((x, rc) =>
@@ -102,9 +115,11 @@ namespace Mubbi.Marketplace.Catalog.AutoMapper
 
         private void DomainToViewModelConfiguration()
         {
+            CreateMap<PeriodPrice, PeriodPriceViewModel>();
+            CreateMap<Price, PriceViewModel>();
             CreateMap<Category, CategoryViewModel>();
-            CreateMap<Product, ProductViewModel>();
             CreateMap<CustomField, CustomFieldViewModel>();
+            CreateMap<Product, ProductViewModel>();
         }
     }
 }

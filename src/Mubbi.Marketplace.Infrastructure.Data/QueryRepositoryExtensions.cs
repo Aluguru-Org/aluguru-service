@@ -45,6 +45,7 @@ namespace Mubbi.Marketplace.Infrastructure.Data
 
         public static async Task<IReadOnlyList<TEntity>> ListAsync<TEntity>(
             this IQueryRepository<TEntity> repo,
+            Expression<Func<TEntity, bool>> filter,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
             bool disableTracking = true)
             where TEntity : class, IAggregateRoot
@@ -55,7 +56,7 @@ namespace Mubbi.Marketplace.Infrastructure.Data
 
             if (disableTracking) queryable = queryable.AsNoTracking();
 
-            return await queryable.ToListAsync();
+            return await queryable.Where(filter).ToListAsync();
         }
 
         public static async Task<PaginatedItem<TResponse>> QueryAsync<TEntity, TResponse>(

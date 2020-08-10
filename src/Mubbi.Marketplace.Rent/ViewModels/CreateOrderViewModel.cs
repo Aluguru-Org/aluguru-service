@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace Mubbi.Marketplace.Rent.ViewModels
 {
     public class CreateOrderViewModel
     {
+        [Required]
         public Guid UserId { get ;set; }
-        public decimal Discount { get; set; }
-        public decimal TotalPrice { get; set; }
-        public string OrderStatus { get; set; }
+        [Required]
         public List<CreateOrderItemViewModel> OrderItems { get; set; }
     }
 }

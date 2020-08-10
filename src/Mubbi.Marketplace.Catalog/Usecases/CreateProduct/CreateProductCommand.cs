@@ -9,7 +9,7 @@ namespace Mubbi.Marketplace.Catalog.Usecases.CreateProduct
 {
     public class CreateProductCommand : Command<CreateProductCommandResponse>
     {
-        public CreateProductCommand(Guid userId, Guid categoryId, Guid? subCategoryId, string name, string description, ERentType rentType, decimal price, bool isActive, int stockQuantity, 
+        public CreateProductCommand(Guid userId, Guid categoryId, Guid? subCategoryId, string name, string description, ERentType rentType, Price price, bool isActive, int stockQuantity, 
             int minRentDays, int? maxRentDays, int? minNoticeRentDays, List<string> imageUrls, List<CustomField> customFields)
         {
             UserId = userId;
@@ -34,7 +34,7 @@ namespace Mubbi.Marketplace.Catalog.Usecases.CreateProduct
         public string Name { get; private set; }
         public string Description { get; private set; }
         public ERentType RentType { get; private set; }
-        public decimal Price { get; private set; }
+        public Price Price { get; private set; }
         public bool IsActive { get; private set; }
         public int StockQuantity { get; private set; }
         public int MinRentDays { get; private set; }
@@ -58,8 +58,7 @@ namespace Mubbi.Marketplace.Catalog.Usecases.CreateProduct
             RuleFor(x => x.CategoryId).NotEqual(Guid.Empty);
             RuleFor(x => x.Name).NotEmpty();
             RuleFor(x => x.Description).NotEmpty();
-            RuleFor(x => x.ImageUrls).NotEmpty();
-            RuleFor(x => x.Price).GreaterThan(0);
+            RuleFor(x => x.ImageUrls).NotEmpty();            
 
             When(x => x.MaxRentDays.HasValue, () =>
             {

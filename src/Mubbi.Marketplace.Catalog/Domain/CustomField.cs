@@ -37,7 +37,7 @@ namespace Mubbi.Marketplace.Catalog.Domain
         {
             FieldType = fieldType;
         }
-
+        public string FieldName { get; set; }
         public EFieldType FieldType { get; private set; }
         public string ValueAsString { get; private set; }
         public int? ValueAsInt { get; private set; }

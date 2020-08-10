@@ -4,6 +4,8 @@ using Mubbi.Marketplace.Domain;
 using Mubbi.Marketplace.Infrastructure.Data;
 using PampaDevs.Utils;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Mubbi.Marketplace.Catalog.Data.Repositories
@@ -18,6 +20,16 @@ namespace Mubbi.Marketplace.Catalog.Data.Repositories
                 !disableTracking);
 
             return product;
+        }
+
+        public static async Task<IReadOnlyList<Product>> GetProductsAsync(this IQueryRepository<Product> repository, List<Guid> productIds)
+        {
+            var products = await repository.ListAsync(
+                x => productIds.Contains(x.Id),
+                product => product.Include(x => x.CustomFields),
+                true);
+
+            return products;
         }
 
         public static async Task<Product> GetProductByCategoryAsync(this IQueryRepository<Product> repository, Guid categoryId, bool disableTracking = true)

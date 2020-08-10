@@ -12,7 +12,7 @@ namespace Mubbi.Marketplace.Register.Domain
             LastName = lastName;
             FullName = FullName;
 
-            ValidateCreation();
+            ValidateValueObject();
         }
 
         public string FirstName { get; private set; }
@@ -26,7 +26,7 @@ namespace Mubbi.Marketplace.Register.Domain
             yield return FullName;
         }
 
-        protected override void ValidateCreation()
+        protected override void ValidateValueObject()
         {
             Ensure.NotNullOrEmpty(FirstName, "The field FirstName cannot be empty");
             Ensure.NotNullOrEmpty(LastName, "The field LastName cannot be empty");

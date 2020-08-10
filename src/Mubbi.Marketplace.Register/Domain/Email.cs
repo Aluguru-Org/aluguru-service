@@ -11,7 +11,7 @@ namespace Mubbi.Marketplace.Register.Domain
         {
             Address = address;
 
-            ValidateCreation();
+            ValidateValueObject();
         }
 
         public string Address { get; private set; }
@@ -21,7 +21,7 @@ namespace Mubbi.Marketplace.Register.Domain
             yield return Address;
         }
 
-        protected override void ValidateCreation()
+        protected override void ValidateValueObject()
         {
             Ensure.That(new Regex(@"^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-z]+(?:\.[a-zA-Z]+)?").IsMatch(Address), "The field Address from E-mail is not a valid E-mail Address");
         }

@@ -36,6 +36,7 @@ using Mubbi.Marketplace.Catalog.Usecases.DeleteProduct;
 using Mubbi.Marketplace.Register.Usecases.GetUserById;
 using Mubbi.Marketplace.Rent.Usecases.GetOrders;
 using Mubbi.Marketplace.Rent.Usecases.GetOrder;
+using Stripe;
 
 namespace Mubbi.Marketplace.Crosscutting.IoC
 {
@@ -106,6 +107,9 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
             // Order Command Handlers
             services.AddScoped<IRequestHandler<GetOrdersCommand, GetOrdersCommandResponse>, GetOrdersHandler>();
             services.AddScoped<IRequestHandler<GetOrderCommand, GetOrderCommandResponse>, GetOrderHandler>();
+
+            // Payment Services
+            services.AddScoped<PaymentIntentService>();
 
             return services;
         }
