@@ -34,6 +34,12 @@ using Mubbi.Marketplace.Register.Usecases.UpdateUserRole;
 using Mubbi.Marketplace.Register.Usecases.DeleteUserRole;
 using Mubbi.Marketplace.Catalog.Usecases.DeleteProduct;
 using Mubbi.Marketplace.Register.Usecases.GetUserById;
+using Mubbi.Marketplace.Rent.Usecases.GetOrders;
+using Mubbi.Marketplace.Rent.Usecases.GetOrder;
+using Stripe;
+using Mubbi.Marketplace.Catalog.Usecases.CreateRentPeriod;
+using Mubbi.Marketplace.Catalog.Usecases.GetRentPeriods;
+using Mubbi.Marketplace.Catalog.Usecases.DeleteRentPeriod;
 
 namespace Mubbi.Marketplace.Crosscutting.IoC
 {
@@ -100,6 +106,18 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
             services.AddScoped<IRequestHandler<GetCategoriesCommand, GetCategoriesCommandResponse>, GetCategoriesCommandHandler>();
             services.AddScoped<IRequestHandler<GetProductsByCategoryCommand, GetProductsByCategoryCommandResponse>, GetProductsByCategoryHandler>();
             services.AddScoped<IRequestHandler<DeleteCategoryCommand, bool>, DeleteCategoryHandler>();
+
+            // Rent Period Command Handlers
+            services.AddScoped<IRequestHandler<CreateRentPeriodCommand, CreateRentPeriodCommandResponse>, CreateRentPeriodHandler>();
+            services.AddScoped<IRequestHandler<GetRentPeriodsCommand, GetRentPeriodsCommandResponse>, GetRentPeriodsCommandHandler>();
+            services.AddScoped<IRequestHandler<DeleteRentPeriodCommand, bool>, DeleteRentPeriodHandler>();
+
+            // Order Command Handlers
+            services.AddScoped<IRequestHandler<GetOrdersCommand, GetOrdersCommandResponse>, GetOrdersHandler>();
+            services.AddScoped<IRequestHandler<GetOrderCommand, GetOrderCommandResponse>, GetOrderHandler>();
+
+            // Payment Services
+            services.AddScoped<PaymentIntentService>();
 
             return services;
         }

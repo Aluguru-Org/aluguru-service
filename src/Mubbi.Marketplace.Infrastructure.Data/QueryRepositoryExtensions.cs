@@ -45,12 +45,14 @@ namespace Mubbi.Marketplace.Infrastructure.Data
 
         public static async Task<IReadOnlyList<TEntity>> ListAsync<TEntity>(
             this IQueryRepository<TEntity> repo,
+            Expression<Func<TEntity, bool>> filter,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
             bool disableTracking = true)
             where TEntity : class, IAggregateRoot
         {
             var queryable = repo.Queryable();
 
+            if (filter != null) queryable = queryable.Where(filter);
             if (include != null) queryable = include.Invoke(queryable);
 
             if (disableTracking) queryable = queryable.AsNoTracking();

@@ -32,5 +32,29 @@ namespace Mubbi.Marketplace.Catalog.UnitTests
         {
             Assert.Throws<DomainException>(() => new CustomField(EFieldType.Radio, new List<string>()));
         }
+
+        [Fact]
+        public void CreateCustomField_WhenText_ShouldPass()
+        {
+            new CustomField("text");
+        }
+
+        [Fact]
+        public void CreateCustomField_WhenNumber_ShouldPass()
+        {
+            new CustomField(50);
+        }
+
+        [Fact]
+        public void CreateCustomField_WhenCheckbox_ShouldPass()
+        {
+            new CustomField(EFieldType.Checkbox, new List<string> { "test", "test" });
+        }
+
+        [Fact]
+        public void CreateCustomField_WhenRadio_ShouldPass()
+        {
+            new CustomField(EFieldType.Radio, new List<string> { "test", "test" });
+        }
     }
 }

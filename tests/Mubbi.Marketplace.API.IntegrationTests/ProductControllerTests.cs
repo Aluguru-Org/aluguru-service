@@ -3,6 +3,7 @@ using Mubbi.Marketplace.API.Models;
 using Mubbi.Marketplace.Catalog.Domain;
 using Mubbi.Marketplace.Catalog.Usecases.CreateCategory;
 using Mubbi.Marketplace.Catalog.Usecases.CreateProduct;
+using Mubbi.Marketplace.Catalog.Usecases.CreateRentPeriod;
 using Mubbi.Marketplace.Catalog.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -27,13 +28,14 @@ namespace Mubbi.Marketplace.API.IntegrationTests
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
-        [Fact]
+        [Fact()]
         public async Task CreateProduct_ShouldPass()
         {
             var client = Server.Instance.CreateClient();
 
             var user = await client.LogInUser();
 
+            var rentPeriod = await CreateRentPeriod(client);
             var category = await CreateCategory(client);
 
             var viewModel = new CreateProductViewModel()
@@ -43,7 +45,18 @@ namespace Mubbi.Marketplace.API.IntegrationTests
                 Name = "Test Product",
                 Description = "Test description",
                 RentType = "Indefinite",
-                Price = 50000,
+                Price = new PriceViewModel()
+                {
+                    SellPrice = 500000,
+                    PeriodRentPrices = new List<PeriodPriceViewModel>()
+                    {
+                        new PeriodPriceViewModel()
+                        {
+                            RentPeriodId = rentPeriod.Id,
+                            Price = 50000
+                        }
+                    }
+                },
                 IsActive = true,
                 MinNoticeRentDays = 2,
                 MinRentDays = 7,
@@ -59,6 +72,15 @@ namespace Mubbi.Marketplace.API.IntegrationTests
             var response = await client.PostAsync("/api/v1/product", viewModel.ToStringContent());
 
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        }
+
+        private async Task<RentPeriodViewModel> CreateRentPeriod(HttpClient client)
+        {
+            var viewModel = new CreateRentPeriodViewModel() { Name = "1 week", Days = 7 };
+
+            var response = await client.PostAsync("/api/v1/rent-period", viewModel.ToStringContent());
+
+            return response.Deserialize<ApiResponse<CreateRentPeriodCommandResponse>>().Data.RentPeriod;
         }
 
         private async Task<CategoryViewModel> CreateCategory(HttpClient client)

@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Mubbi.Marketplace.Catalog.Domain;
 using Mubbi.Marketplace.Domain;
 using Mubbi.Marketplace.Infrastructure.Data;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 

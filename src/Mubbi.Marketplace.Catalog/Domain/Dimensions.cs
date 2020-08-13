@@ -12,13 +12,13 @@ namespace Mubbi.Marketplace.Catalog.Domain
             Width = width;
             Depth = depth;
 
-            ValidateCreation();
+            ValidateValueObject();
         }
 
         public decimal Height { get; private set; }
         public decimal Width { get; private set; }
         public decimal Depth { get; private set; }
-        protected override void ValidateCreation()
+        protected override void ValidateValueObject()
         {
             Ensure.That(Height > 0, "The field Height cannot be smaller than 0");
             Ensure.That(Width > 0, "The field Width cannot be smaller than 0");

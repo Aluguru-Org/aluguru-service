@@ -7,6 +7,7 @@ using Mubbi.Marketplace.API.Middleware;
 using Mubbi.Marketplace.Crosscutting.IoC;
 using Mubbi.Marketplace.Register.Data.Seed;
 using Mubbi.Marketplace.Security;
+using Stripe;
 
 namespace Mubbi.Marketplace.API
 {
@@ -16,6 +17,8 @@ namespace Mubbi.Marketplace.API
         {
             Configuration = configuration;
             Env = env;
+
+            StripeConfiguration.ApiKey = Configuration.GetSection("Stripe")["SecretKey"];
         }
 
         public IConfiguration Configuration { get; }
@@ -23,7 +26,7 @@ namespace Mubbi.Marketplace.API
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {           
+        {               
             services.AddMubbiSwagger();
             services.AddJwtAuthentication(Configuration);
 
@@ -51,6 +54,7 @@ namespace Mubbi.Marketplace.API
             if (Env.IsEnvironment("Local") || Env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                
             }
             else
             {

@@ -12,7 +12,7 @@ namespace Mubbi.Marketplace.Register.Domain
             Number = number;
             DocumentType = documentType;
 
-            ValidateCreation();
+            ValidateValueObject();
         }
 
         public string Number { get; private set; }
@@ -24,7 +24,7 @@ namespace Mubbi.Marketplace.Register.Domain
             yield return DocumentType;
         }
 
-        protected override void ValidateCreation()
+        protected override void ValidateValueObject()
         {
             switch(DocumentType)
             {

@@ -8,7 +8,7 @@ namespace Mubbi.Marketplace.Domain
 {
     public abstract class ValueObject
     {
-        protected abstract void ValidateCreation();
+        protected abstract void ValidateValueObject();
         protected abstract IEnumerable<object> GetEqualityComponents();
         public override bool Equals(object obj)
         {

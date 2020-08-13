@@ -60,6 +60,9 @@ namespace Mubbi.Marketplace.Data.Migrations
                     b.Property<DateTime?>("DateUpdated")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("FieldName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("FieldType")
                         .HasColumnType("int");
 
@@ -111,6 +114,9 @@ namespace Mubbi.Marketplace.Data.Migrations
                     b.Property<int?>("MaxRentDays")
                         .HasColumnType("int");
 
+                    b.Property<int?>("MinNoticeRentDays")
+                        .HasColumnType("int");
+
                     b.Property<int>("MinRentDays")
                         .HasColumnType("int");
 
@@ -118,8 +124,8 @@ namespace Mubbi.Marketplace.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("RentType")
+                        .HasColumnType("int");
 
                     b.Property<int>("StockQuantity")
                         .HasColumnType("int");
@@ -137,6 +143,30 @@ namespace Mubbi.Marketplace.Data.Migrations
                     b.HasIndex("SubCategoryId");
 
                     b.ToTable("Product");
+                });
+
+            modelBuilder.Entity("Mubbi.Marketplace.Catalog.Domain.RentPeriod", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Days")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(250)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RentPeriod");
                 });
 
             modelBuilder.Entity("Mubbi.Marketplace.Register.Domain.Address", b =>
@@ -262,6 +292,125 @@ namespace Mubbi.Marketplace.Data.Migrations
                     b.ToTable("UserRole");
                 });
 
+            modelBuilder.Entity("Mubbi.Marketplace.Rent.Domain.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("Discount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("OrderStatus")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("VoucherId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("VoucherUsed")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VoucherId");
+
+                    b.ToTable("Order");
+                });
+
+            modelBuilder.Entity("Mubbi.Marketplace.Rent.Domain.OrderItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProductName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("ProductPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderItem");
+                });
+
+            modelBuilder.Entity("Mubbi.Marketplace.Rent.Domain.Voucher", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ExpirationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal?>("PercentualDiscount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Used")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal?>("ValueDiscount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("VoucherType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Voucher");
+                });
+
             modelBuilder.Entity("Mubbi.Marketplace.Catalog.Domain.Category", b =>
                 {
                     b.HasOne("Mubbi.Marketplace.Catalog.Domain.Category", "MainCategory")
@@ -289,6 +438,31 @@ namespace Mubbi.Marketplace.Data.Migrations
                     b.HasOne("Mubbi.Marketplace.Catalog.Domain.Category", "SubCategory")
                         .WithMany()
                         .HasForeignKey("SubCategoryId");
+
+                    b.OwnsOne("Mubbi.Marketplace.Catalog.Domain.Price", "Price", b1 =>
+                        {
+                            b1.Property<Guid>("ProductId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<decimal?>("DailyRentPrice")
+                                .HasColumnName("DailyRentPrice")
+                                .HasColumnType("decimal");
+
+                            b1.Property<string>("PeriodRentPrices")
+                                .HasColumnName("PeriodRentPrices")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<decimal?>("SellPrice")
+                                .HasColumnName("SellPrice")
+                                .HasColumnType("decimal");
+
+                            b1.HasKey("ProductId");
+
+                            b1.ToTable("Product");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ProductId");
+                        });
                 });
 
             modelBuilder.Entity("Mubbi.Marketplace.Register.Domain.Address", b =>
@@ -333,6 +507,22 @@ namespace Mubbi.Marketplace.Data.Migrations
                     b.HasOne("Mubbi.Marketplace.Register.Domain.UserRole", "UserRole")
                         .WithMany("UserClaims")
                         .HasForeignKey("UserRoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Mubbi.Marketplace.Rent.Domain.Order", b =>
+                {
+                    b.HasOne("Mubbi.Marketplace.Rent.Domain.Voucher", "Voucher")
+                        .WithMany()
+                        .HasForeignKey("VoucherId");
+                });
+
+            modelBuilder.Entity("Mubbi.Marketplace.Rent.Domain.OrderItem", b =>
+                {
+                    b.HasOne("Mubbi.Marketplace.Rent.Domain.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

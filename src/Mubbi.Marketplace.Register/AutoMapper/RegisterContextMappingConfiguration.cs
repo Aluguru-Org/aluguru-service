@@ -20,6 +20,22 @@ namespace Mubbi.Marketplace.Register.AutoMapper
 
         private void ViewModelToDomainConfiguration()
         {
+            CreateMap<DocumentViewModel, Document>()
+                .ConstructUsing((request, context) =>
+                {
+                    var documentType = (EDocumentType)Enum.Parse(typeof(EDocumentType), request.DocumentType);
+                    return new Document(request.Number, documentType);
+                });
+
+            CreateMap<AddressViewModel, Address>()
+                .ConstructUsing((request, context) =>
+                {
+                    return new Address(request.UserId, request.Street, request.Number, request.Neighborhood, request.City, request.State, request.Country, request.ZipCode);
+                })
+                .ForMember(x => x.User, c => c.Ignore())
+                .ForMember(x => x.DateCreated, c => c.Ignore())
+                .ForMember(x => x.DateUpdated, c => c.Ignore());
+
             CreateMap<CreateUserRoleViewModel, CreateUserRoleCommand>()
                 .ConstructUsing((request, context) =>
                 {
@@ -56,7 +72,7 @@ namespace Mubbi.Marketplace.Register.AutoMapper
                     var document = rc.Mapper.Map<Document>(x.Document);
                     var addresses = rc.Mapper.Map<Address>(x.Address);
 
-                    return new UpdateUserCommand(x.Id, x.FullName, document, addresses);
+                    return new UpdateUserCommand(x.UserId, x.FullName, document, addresses);
                 })
                 .ForMember(x => x.Timestamp, c => c.Ignore())
                 .ForMember(x => x.MessageType, c => c.Ignore())
@@ -70,7 +86,7 @@ namespace Mubbi.Marketplace.Register.AutoMapper
 
             CreateMap<Address, AddressViewModel>();
             CreateMap<Document, DocumentViewModel>()
-                .ForMember(x => x.Type, opt => opt.MapFrom(c => c.DocumentType.ToString()));
+                .ForMember(x => x.DocumentType, opt => opt.MapFrom(c => c.DocumentType.ToString()));
             CreateMap<User, UserViewModel>()
                 .ConstructUsing((x, rc) =>
                 {
