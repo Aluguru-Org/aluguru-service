@@ -39,7 +39,7 @@ namespace Mubbi.Marketplace.Data.Mappings
                     .HasColumnType("decimal");
 
                 onb.Property(prc => prc.PeriodRentPrices)
-                    .HasColumnName("DailyRentPrice")
+                    .HasColumnName("PeriodRentPrices")
                     .HasConversion(
                         v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
                         v => JsonConvert.DeserializeObject<List<PeriodPrice>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })

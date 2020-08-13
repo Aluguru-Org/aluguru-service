@@ -3,6 +3,7 @@ using Mubbi.Marketplace.API.Models;
 using Mubbi.Marketplace.Catalog.Domain;
 using Mubbi.Marketplace.Catalog.Usecases.CreateCategory;
 using Mubbi.Marketplace.Catalog.Usecases.CreateProduct;
+using Mubbi.Marketplace.Catalog.Usecases.CreateRentPeriod;
 using Mubbi.Marketplace.Catalog.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ namespace Mubbi.Marketplace.API.IntegrationTests
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
-        [Fact(Skip = "Under implementation")]
+        [Fact()]
         public async Task CreateProduct_ShouldPass()
         {
             var client = Server.Instance.CreateClient();
@@ -73,10 +74,13 @@ namespace Mubbi.Marketplace.API.IntegrationTests
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
 
-        private async Task<RentPeriod> CreateRentPeriod(HttpClient client)
+        private async Task<RentPeriodViewModel> CreateRentPeriod(HttpClient client)
         {
-            // demo
-            return new RentPeriod("1 Month", 30);
+            var viewModel = new CreateRentPeriodViewModel() { Name = "1 week", Days = 7 };
+
+            var response = await client.PostAsync("/api/v1/rent-period", viewModel.ToStringContent());
+
+            return response.Deserialize<ApiResponse<CreateRentPeriodCommandResponse>>().Data.RentPeriod;
         }
 
         private async Task<CategoryViewModel> CreateCategory(HttpClient client)

@@ -52,11 +52,12 @@ namespace Mubbi.Marketplace.Infrastructure.Data
         {
             var queryable = repo.Queryable();
 
+            if (filter != null) queryable = queryable.Where(filter);
             if (include != null) queryable = include.Invoke(queryable);
 
             if (disableTracking) queryable = queryable.AsNoTracking();
 
-            return await queryable.Where(filter).ToListAsync();
+            return await queryable.ToListAsync();
         }
 
         public static async Task<PaginatedItem<TResponse>> QueryAsync<TEntity, TResponse>(

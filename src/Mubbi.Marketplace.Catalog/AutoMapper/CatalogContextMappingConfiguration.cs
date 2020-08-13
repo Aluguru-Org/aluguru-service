@@ -2,6 +2,7 @@
 using Mubbi.Marketplace.Catalog.Domain;
 using Mubbi.Marketplace.Catalog.Usecases.CreateCategory;
 using Mubbi.Marketplace.Catalog.Usecases.CreateProduct;
+using Mubbi.Marketplace.Catalog.Usecases.CreateRentPeriod;
 using Mubbi.Marketplace.Catalog.Usecases.UpdateCategory;
 using Mubbi.Marketplace.Catalog.ViewModels;
 using System;
@@ -20,6 +21,12 @@ namespace Mubbi.Marketplace.Catalog.AutoMapper
 
         private void ViewModelToDomainConfiguration()
         {
+            CreateMap<CreateRentPeriodViewModel, CreateRentPeriodCommand>()
+                .ConstructUsing(x => new CreateRentPeriodCommand(x.Name, x.Days))
+                .ForMember(x => x.Timestamp, c => c.Ignore())
+                .ForMember(x => x.MessageType, c => c.Ignore())
+                .ForMember(x => x.ValidationResult, c => c.Ignore());
+
             CreateMap<CreateCategoryViewModel, CreateCategoryCommand>()
                 .ConstructUsing(x => new CreateCategoryCommand(x.Name, x.MainCategoryId))
                 .ForMember(x => x.Timestamp, c => c.Ignore())
@@ -117,6 +124,7 @@ namespace Mubbi.Marketplace.Catalog.AutoMapper
         {
             CreateMap<PeriodPrice, PeriodPriceViewModel>();
             CreateMap<Price, PriceViewModel>();
+            CreateMap<RentPeriod, RentPeriodViewModel>();
             CreateMap<Category, CategoryViewModel>();
             CreateMap<CustomField, CustomFieldViewModel>();
             CreateMap<Product, ProductViewModel>();

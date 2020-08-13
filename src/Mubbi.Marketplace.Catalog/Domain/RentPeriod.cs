@@ -9,6 +9,8 @@ namespace Mubbi.Marketplace.Catalog.Domain
         {
             Name = name;
             Days = days;
+
+            ValidateEntity();
         }
 
         public string Name { get; set; }
@@ -17,7 +19,7 @@ namespace Mubbi.Marketplace.Catalog.Domain
         protected override void ValidateEntity()
         {
             Ensure.That<DomainException>(!string.IsNullOrEmpty(Name), "The field Name cannot be empty");
-            Ensure.That<DomainException>(Days > 0, ("The field Days cannot be less than one"));
+            Ensure.That<DomainException>(Days > 0, "The field Days cannot be less than one");
         }
     }
 }

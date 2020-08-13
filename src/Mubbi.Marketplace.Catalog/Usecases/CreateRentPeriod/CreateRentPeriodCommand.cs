@@ -15,6 +15,12 @@ namespace Mubbi.Marketplace.Catalog.Usecases.CreateRentPeriod
 
         public string Name { get; set; }
         public int Days { get; set; }
+
+        public override bool IsValid()
+        {
+            ValidationResult = new CreateRentPeriodCommandValidator().Validate(this);
+            return ValidationResult.IsValid;
+        }
     }
 
     public class CreateRentPeriodCommandValidator : AbstractValidator<CreateRentPeriodCommand>
