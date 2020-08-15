@@ -1,7 +1,6 @@
 ﻿using Mubbi.Marketplace.Domain;
 using PampaDevs.Utils;
 using System;
-using System.Collections.Generic;
 using static PampaDevs.Utils.Helpers.IdHelper;
 
 namespace Mubbi.Marketplace.Register.Domain

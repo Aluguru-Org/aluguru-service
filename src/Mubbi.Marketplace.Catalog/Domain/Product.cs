@@ -49,7 +49,7 @@ namespace Mubbi.Marketplace.Catalog.Domain
         public string Name { get; private set; }
         public string Description { get; private set; }
         public ERentType RentType { get; private set; }
-        public Price Price { get; private set; }  
+        public Price Price { get; set; }  
         public bool IsActive { get; private set; }
         public int StockQuantity { get; private set; }
         public int MinRentDays { get; private set; }

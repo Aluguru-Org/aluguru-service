@@ -8,6 +8,7 @@ namespace Mubbi.Marketplace.Register.Domain
 {
     public class Document : ValueObject
     {
+        private Document() {}
         public Document(string number, EDocumentType documentType)
         {
             Number = number;

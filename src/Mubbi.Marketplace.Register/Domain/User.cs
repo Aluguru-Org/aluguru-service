@@ -41,8 +41,8 @@ namespace Mubbi.Marketplace.Register.Domain
         public string Password { get; private set; }
         public string FullName { get; private set; }
         public Guid UserRoleId { get; private set; }
-        public Document Document { get; private set; }
-        public Address Address { get; private set; }
+        public Document Document { get; set; }
+        public Address Address { get; set; }
         // EF Relational
         public UserRole UserRole { get; set; }
 
