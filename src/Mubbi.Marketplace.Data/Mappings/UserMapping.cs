@@ -15,6 +15,15 @@ namespace Mubbi.Marketplace.Data.Mappings
                 .WithOne(address => address.User)
                 .HasForeignKey<Address>(address => address.UserId);
 
+            builder.OwnsOne(user => user.Document, onb =>
+            {
+                onb.Property(prc => prc.Number)
+                    .HasColumnName("DocumentNumber");
+
+                onb.Property(prc => prc.DocumentType)
+                    .HasColumnName("DocumentType");
+            });
+
             builder.ToTable("User");
         }
     }

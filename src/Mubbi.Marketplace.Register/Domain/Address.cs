@@ -34,6 +34,11 @@ namespace Mubbi.Marketplace.Register.Domain
 
         // Ef Relational
         public User User { get; set; }
+        
+        internal void AssignUser(Guid userId)
+        {
+            UserId = UserId;
+        }
 
         protected override void ValidateEntity()
         {

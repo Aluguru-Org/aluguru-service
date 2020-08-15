@@ -53,12 +53,20 @@ namespace Mubbi.Marketplace.Register.Domain
                 FullName = command.FullName;
             }
 
-            if (Document == null || Document.Number != command.Document.Number)
+            if (Document == null && command.Document != null)
             {
-                Document = command.Document;
+                Document = new Document(command.Document.Number, command.Document.DocumentType);
+            } 
+            else if(Document != null && command.Document != null)
+            {
+                Document.UpdateDocument(command.Document.DocumentType, command.Document.Number);
             }
 
-            Address = command.Address;
+            if (Address != null)
+            {
+                command.Address.AssignUser(Id);
+                Address = command.Address;
+            }
             
             ValidateEntity();
 

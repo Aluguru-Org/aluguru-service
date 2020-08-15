@@ -1,5 +1,6 @@
 ﻿using Mubbi.Marketplace.Domain;
 using PampaDevs.Utils;
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -17,6 +18,12 @@ namespace Mubbi.Marketplace.Register.Domain
 
         public string Number { get; private set; }
         public EDocumentType DocumentType { get; private set; }
+
+        public void UpdateDocument(EDocumentType documentType, string number)
+        {
+            Number = number;
+            DocumentType = documentType;
+        }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
