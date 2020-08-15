@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Mubbi.Marketplace.Catalog.Domain;
+using Mubbi.Marketplace.Register.Domain;
 
 namespace Mubbi.Marketplace.Data.Mappings
 {
@@ -10,7 +10,7 @@ namespace Mubbi.Marketplace.Data.Mappings
         {
             base.Configure(builder);
 
-            builder.
+            builder.ToTable("Address");
         }      
     }
 }

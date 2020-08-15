@@ -11,6 +11,7 @@ namespace Mubbi.Marketplace.Register.Domain
         public Address(Guid userId, string street, string number, string neighborhood, string city, string state, string country, string zipCode)
             : base(NewId())
         {
+            UserId = userId;
             Street = street;
             Number = number;
             Neighborhood = neighborhood;
@@ -20,7 +21,6 @@ namespace Mubbi.Marketplace.Register.Domain
             ZipCode = zipCode;
 
             ValidateEntity();
-            UserId = userId;
         }
         public Guid UserId { get; private set; }
         public string Street { get; private set; }

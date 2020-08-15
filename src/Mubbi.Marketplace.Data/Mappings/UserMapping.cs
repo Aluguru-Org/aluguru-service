@@ -9,7 +9,6 @@ namespace Mubbi.Marketplace.Data.Mappings
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.HasKey(user => user.Id);
-            builder.OwnsOne(user => user.Document);
 
             builder.HasOne(user => user.Address)
                 .WithOne(address => address.User)

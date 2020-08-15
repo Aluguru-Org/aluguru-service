@@ -48,19 +48,7 @@ namespace Mubbi.Marketplace.Register.Domain
 
         public User UpdateUser(UpdateUserCommand command)
         {
-            if (FullName != command.FullName)
-            {
-                FullName = command.FullName;
-            }
-
-            if (Document == null && command.Document != null)
-            {
-                Document = new Document(command.Document.Number, command.Document.DocumentType);
-            } 
-            else if(Document != null && command.Document != null)
-            {
-                Document.UpdateDocument(command.Document.DocumentType, command.Document.Number);
-            }
+            FullName = command.FullName;
 
             if (Address != null)
             {
