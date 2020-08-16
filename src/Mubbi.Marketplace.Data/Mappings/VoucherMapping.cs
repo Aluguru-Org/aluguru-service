@@ -16,8 +16,6 @@ namespace Mubbi.Marketplace.Data.Mappings
             builder.Property(x => x.Code)
                 .IsRequired();
 
-
-
             builder.ToTable("Voucher");
         }
     }

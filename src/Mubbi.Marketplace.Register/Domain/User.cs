@@ -7,11 +7,14 @@ using System.Text.RegularExpressions;
 using Mubbi.Marketplace.Register.Events;
 using static PampaDevs.Utils.Helpers.IdHelper;
 using static PampaDevs.Utils.Helpers.DateTimeHelper;
+using System.Collections.Generic;
+using Mubbi.Marketplace.Register.ViewModels;
 
 namespace Mubbi.Marketplace.Register.Domain
 {
     public class User : AggregateRoot
     {
+        private readonly List<Contact> _contacts;
         private User() { }
 
         public User(Guid id, string email, string password, string fullName, Guid role) 
@@ -35,27 +38,25 @@ namespace Mubbi.Marketplace.Register.Domain
 
             ValidateEntity();
         }
-
         
         public string Email { get; private set; }
         public string Password { get; private set; }
         public string FullName { get; private set; }
         public Guid UserRoleId { get; private set; }
+        public IReadOnlyCollection<Contact> Contacts { get { return _contacts; } }
         public Document Document { get; set; }
         public Address Address { get; set; }
         // EF Relational
-        public UserRole UserRole { get; set; }
+        public virtual UserRole UserRole { get; set; }
 
         public User UpdateUser(UpdateUserCommand command)
         {
-            FullName = command.FullName;
+            FullName = command.FullName;            
 
-            if (Address != null)
-            {
-                command.Address.AssignUser(Id);
-                Address = command.Address;
-            }
-            
+            UpdateDocument(command.Document);
+
+            UpdateAddress(command.Address);
+
             ValidateEntity();
 
             DateUpdated = NewDateTime();
@@ -63,6 +64,35 @@ namespace Mubbi.Marketplace.Register.Domain
             AddEvent(new UserUpdatedEvent(Id, this));
 
             return this;
+        }
+
+        private void UpdateDocument(DocumentViewModel document)
+        {
+            if (document == null) return;
+
+            if (Document == null)
+            {
+                var newDocument = new Document(document.Number, (EDocumentType)Enum.Parse(typeof(EDocumentType), document.DocumentType));
+                newDocument.AssignUser(Id);
+                Document = newDocument;
+            }
+            else
+            {
+                Document.UpdateDocument((EDocumentType)Enum.Parse(typeof(EDocumentType), document.DocumentType), document.Number);
+            }
+        }
+
+        private void UpdateAddress(AddressViewModel address)
+        {
+            if (Address == null)
+            {
+                var newAddress = new Address(Id, address.Street, address.Number, address.Neighborhood, address.City, address.State, address.Country, address.ZipCode);                
+                Address = newAddress;
+            }
+            else
+            {
+                Address.UpdateAddress(address);
+            }
         }
 
         protected override void ValidateEntity()

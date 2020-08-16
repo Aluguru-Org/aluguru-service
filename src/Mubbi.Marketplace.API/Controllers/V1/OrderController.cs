@@ -7,6 +7,7 @@ using Mubbi.Marketplace.API.Models;
 using Mubbi.Marketplace.Domain;
 using Mubbi.Marketplace.Infrastructure.Bus.Communication;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
+using Mubbi.Marketplace.Rent.Usecases.CreateOrder;
 using Mubbi.Marketplace.Rent.Usecases.GetOrder;
 using Mubbi.Marketplace.Rent.Usecases.GetOrders;
 using Mubbi.Marketplace.Rent.ViewModels;
@@ -66,12 +67,14 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         [SwaggerOperation(Summary = "Create Order", Description = "Create a new user order")]
         [Consumes("application/json")]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CreateOrderCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]        
         public async Task<ActionResult> CreateProduct([FromBody] CreateOrderViewModel viewModel)
         {
-            throw new NotImplementedException();
+            var command = _mapper.Map<CreateOrderCommand>(viewModel);
+            var response = await _mediatorHandler.SendCommand<CreateOrderCommand, CreateOrderCommandResponse>(command);
+            return PostResponse(nameof(CreateProduct), response);
         }
 
         [HttpPut]
@@ -84,7 +87,9 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> UpdateOrder([FromRoute] Guid id, [FromBody] UpdateOrderViewModel viewModel)
         {
-            throw new NotImplementedException();
+            var command = _mapper.Map<CreateOrderCommand>(viewModel);
+            var response = await _mediatorHandler.SendCommand<CreateOrderCommand, CreateOrderCommandResponse>(command);
+            return PostResponse(nameof(CreateProduct), response);
         }
 
         [HttpPut]

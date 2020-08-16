@@ -13,7 +13,7 @@ namespace Mubbi.Marketplace.Register.Domain.Repositories
             var user = await repository.GetByIdAsync(
                 userId,
                 x => x.Include(x => x.Document).Include(x => x.UserRole).Include(x => x.Address),
-                !disableTracking);
+                disableTracking);
 
             return user;
         }
@@ -23,7 +23,7 @@ namespace Mubbi.Marketplace.Register.Domain.Repositories
             var user = await repository.FindOneAsync(
                 x => x.Email == email,
                 x => x.Include(x => x.UserRole).Include(x => x.Address),
-                !disableTracking);
+                disableTracking);
 
             return user;
         }

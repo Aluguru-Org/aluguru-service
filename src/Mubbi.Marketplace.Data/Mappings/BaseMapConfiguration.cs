@@ -9,6 +9,7 @@ namespace Mubbi.Marketplace.Data.Mappings
         public virtual void Configure(EntityTypeBuilder<TEntity> builder)
         {
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).ValueGeneratedNever();
         }
     }
 }

@@ -1,13 +1,12 @@
 ﻿using Mubbi.Marketplace.Catalog.Events;
 using Mubbi.Marketplace.Catalog.Usecases.UpdateProduct;
-using Mubbi.Marketplace.Catalog.ViewModels;
 using Mubbi.Marketplace.Domain;
 using PampaDevs.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Security.Cryptography.X509Certificates;
 using static PampaDevs.Utils.Helpers.DateTimeHelper;
+using static PampaDevs.Utils.Helpers.IdHelper;
 
 
 namespace Mubbi.Marketplace.Catalog.Domain
@@ -24,6 +23,7 @@ namespace Mubbi.Marketplace.Catalog.Domain
         }
 
         public Product(Guid userId, Guid categoryId, Guid? subCategoryId, string name, string description, ERentType rentType, Price price, bool isActive, int stockQuantity, int minRentDays, int? maxRentDays, int? minNoticeRentDays, List<string> imageUrls, List<CustomField> customFields)
+            : base(NewId())
         {
             UserId = userId;
             CategoryId = categoryId;

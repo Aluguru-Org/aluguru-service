@@ -1,4 +1,5 @@
 ﻿using Mubbi.Marketplace.Domain;
+using Mubbi.Marketplace.Register.ViewModels;
 using PampaDevs.Utils;
 using System;
 using static PampaDevs.Utils.Helpers.IdHelper;
@@ -32,11 +33,17 @@ namespace Mubbi.Marketplace.Register.Domain
         public string ZipCode { get; private set; }
 
         // Ef Relational
-        public User User { get; set; }
-        
-        internal void AssignUser(Guid userId)
+        public virtual User User { get; set; }
+
+        internal void UpdateAddress(AddressViewModel address)
         {
-            UserId = UserId;
+            Street = address.Street;
+            Number = address.Number;
+            Neighborhood = address.Neighborhood;
+            City = address.City;
+            State = address.State;
+            Country = address.Country;
+            ZipCode = address.ZipCode;
         }
 
         protected override void ValidateEntity()
@@ -49,5 +56,7 @@ namespace Mubbi.Marketplace.Register.Domain
             Ensure.NotNullOrEmpty(Country, "The field Country from Address cannot be empty");
             Ensure.NotNullOrEmpty(ZipCode, "The field ZipCode from Address cannot be empty");
         }
+
+
     }
 }

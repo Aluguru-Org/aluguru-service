@@ -1,11 +1,13 @@
 ﻿using Mubbi.Marketplace.Domain;
 using PampaDevs.Utils;
+using static PampaDevs.Utils.Helpers.IdHelper;
 
 namespace Mubbi.Marketplace.Catalog.Domain
 {
     public class RentPeriod : AggregateRoot
     {
         public RentPeriod(string name, int days)
+            : base(NewId())
         {
             Name = name;
             Days = days;
