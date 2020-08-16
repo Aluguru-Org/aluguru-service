@@ -8,13 +8,17 @@ using Mubbi.Marketplace.Domain;
 using Mubbi.Marketplace.Infrastructure.Bus.Communication;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using Mubbi.Marketplace.Rent.Usecases.CreateOrder;
+using Mubbi.Marketplace.Rent.Usecases.DeleteOrder;
+using Mubbi.Marketplace.Rent.Usecases.RemoveVoucher;
 using Mubbi.Marketplace.Rent.Usecases.GetOrder;
 using Mubbi.Marketplace.Rent.Usecases.GetOrders;
+using Mubbi.Marketplace.Rent.Usecases.UpdateOrder;
 using Mubbi.Marketplace.Rent.ViewModels;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Mubbi.Marketplace.Rent.Usecases.ApplyVoucher;
 
 namespace Mubbi.Marketplace.API.Controllers.V1
 {
@@ -82,13 +86,13 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         [SwaggerOperation(Summary = "Update Order", Description = "Update a existing order")]
         [Consumes("application/json")]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateOrderCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> UpdateOrder([FromRoute] Guid id, [FromBody] UpdateOrderViewModel viewModel)
         {
-            var command = _mapper.Map<CreateOrderCommand>(viewModel);
-            var response = await _mediatorHandler.SendCommand<CreateOrderCommand, CreateOrderCommandResponse>(command);
+            var command = _mapper.Map<UpdateOrderCommand>(viewModel);
+            var response = await _mediatorHandler.SendCommand<UpdateOrderCommand, UpdateOrderCommandResponse>(command);
             return PostResponse(nameof(CreateProduct), response);
         }
 
@@ -97,12 +101,14 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         [SwaggerOperation(Summary = "Apply voucher", Description = "Apply a voucher to the order")]
         [Consumes("application/json")]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(object))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApplyVoucherCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> ApplyVoucher([FromRoute] Guid id, [FromBody] ApplyVoucherViewModel viewModel)
         {
-            throw new NotImplementedException();
+            var command = new ApplyVoucherCommand(id, viewModel.Code);
+            var response = await _mediatorHandler.SendCommand<ApplyVoucherCommand, ApplyVoucherCommandResponse>(command);
+            return PostResponse(nameof(CreateProduct), response);
         }
 
         [HttpDelete]
@@ -115,7 +121,8 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> Delete([FromRoute] Guid id)
         {
-            throw new NotImplementedException();
+            await _mediatorHandler.SendCommand<DeleteOrderCommand, bool>(new DeleteOrderCommand(id));
+            return DeleteResponse();
         }
 
         [HttpDelete]
@@ -123,12 +130,13 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         [SwaggerOperation(Summary = "Delete a voucher ", Description = "Delete a existing voucher applyied to a order.")]
         [Consumes("application/json")]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeleteVoucherCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> DeleteVoucher([FromRoute] Guid id)
         {
-            throw new NotImplementedException();
+            var response = await _mediatorHandler.SendCommand<RemoveVoucherCommand, DeleteVoucherCommandResponse>(new RemoveVoucherCommand(id));
+            return DeleteResponse(response);
         }
     }
 }

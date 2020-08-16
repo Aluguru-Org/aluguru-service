@@ -1,15 +1,12 @@
 ﻿using Mubbi.Marketplace.API.IntegrationTests.Extensions;
 using Mubbi.Marketplace.API.Models;
-using Mubbi.Marketplace.Catalog.Domain;
 using Mubbi.Marketplace.Catalog.Usecases.CreateCategory;
-using Mubbi.Marketplace.Catalog.Usecases.CreateProduct;
 using Mubbi.Marketplace.Catalog.Usecases.CreateRentPeriod;
 using Mubbi.Marketplace.Catalog.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 

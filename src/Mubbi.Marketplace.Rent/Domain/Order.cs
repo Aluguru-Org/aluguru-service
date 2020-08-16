@@ -68,13 +68,24 @@ namespace Mubbi.Marketplace.Rent.Domain
         {
             var validationResult = voucher.IsValid();
             if (!validationResult.IsValid) return validationResult;
-
+            
+            VoucherId = voucher.Id;
             Voucher = voucher;
             VoucherUsed = true;
 
             CalculateOrderPrice();
 
             return validationResult;
+        }
+
+        public void RemoveVoucher()
+        {
+            if (Voucher == null) return;
+
+            Voucher = null;
+            VoucherUsed = false;
+
+            CalculateOrderPrice();
         }
 
         public bool ItemExists(OrderItem orderItem)

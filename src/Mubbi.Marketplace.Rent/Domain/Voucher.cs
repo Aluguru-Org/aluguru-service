@@ -5,15 +5,13 @@ using PampaDevs.Utils;
 using System;
 using static PampaDevs.Utils.Helpers.IdHelper;
 using static PampaDevs.Utils.Helpers.DateTimeHelper;
+using System.Collections.Generic;
 
 namespace Mubbi.Marketplace.Rent.Domain
 {
-    public class Voucher : Entity
+    public class Voucher : AggregateRoot
     {
-        private Voucher() : base(NewId())
-        {
-
-        }
+        private Voucher() : base(NewId()) { }
         public Voucher(string code, EVoucherType voucherType, decimal discount, int amount, DateTime expirationDate)
             : base(NewId())
         {
@@ -50,6 +48,9 @@ namespace Mubbi.Marketplace.Rent.Domain
         public DateTime ExpirationDate { get; private set; }
         public bool Active { get; private set; }
         public bool Used { get; private set; }
+
+        //Ef Relational
+        public List<Order> Orders { get; set; }
 
         public void Activate() => Active = true;
         public void Deactivate() => Active = false;

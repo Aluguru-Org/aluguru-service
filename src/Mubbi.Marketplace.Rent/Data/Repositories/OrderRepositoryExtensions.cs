@@ -15,8 +15,8 @@ namespace Mubbi.Marketplace.Rent.Data.Repositories
         {
             var order = await repository.GetByIdAsync(
                 orderId,
-                order => order.Include(x => x.OrderItems),
-                !disableTracking);
+                order => order.Include(x => x.OrderItems).Include(x => x.Voucher),
+                disableTracking);
 
             return order;
         }

@@ -17,7 +17,7 @@ namespace Mubbi.Marketplace.Catalog.Data.Repositories
             var rentPeriod = await repository.GetByIdAsync(
                 rentPeriodId,
                 null,
-                !disableTracking);
+                disableTracking);
 
             return rentPeriod;
         }
@@ -27,7 +27,7 @@ namespace Mubbi.Marketplace.Catalog.Data.Repositories
             var rentPeriod = await repository.FindOneAsync(
                 x => x.Name == name,
                 null,
-                !disableTracking);
+                disableTracking);
 
             return rentPeriod;
         }

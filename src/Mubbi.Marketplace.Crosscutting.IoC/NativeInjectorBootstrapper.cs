@@ -40,6 +40,14 @@ using Stripe;
 using Mubbi.Marketplace.Catalog.Usecases.CreateRentPeriod;
 using Mubbi.Marketplace.Catalog.Usecases.GetRentPeriods;
 using Mubbi.Marketplace.Catalog.Usecases.DeleteRentPeriod;
+using Mubbi.Marketplace.Rent.Usecases.CreateOrder;
+using Mubbi.Marketplace.Rent.Usecases.DeleteOrder;
+using Mubbi.Marketplace.Rent.Usecases.RemoveVoucher;
+using Mubbi.Marketplace.Rent.Usecases.UpdateOrder;
+using Mubbi.Marketplace.Rent.Usecases.ApplyVoucher;
+using Mubbi.Marketplace.Rent.Usecases.CreateVoucher;
+using Mubbi.Marketplace.Rent.Usecases.DeleteVoucher;
+using Mubbi.Marketplace.Rent.Usecases.GetVouchers;
 
 namespace Mubbi.Marketplace.Crosscutting.IoC
 {
@@ -115,6 +123,16 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
             // Order Command Handlers
             services.AddScoped<IRequestHandler<GetOrdersCommand, GetOrdersCommandResponse>, GetOrdersHandler>();
             services.AddScoped<IRequestHandler<GetOrderCommand, GetOrderCommandResponse>, GetOrderHandler>();
+            services.AddScoped<IRequestHandler<CreateOrderCommand, CreateOrderCommandResponse>, CreateOrderHandler>();
+            services.AddScoped<IRequestHandler<UpdateOrderCommand, UpdateOrderCommandResponse>, UpdateOrderHandler>();
+            services.AddScoped<IRequestHandler<ApplyVoucherCommand, ApplyVoucherCommandResponse>, ApplyVoucherHandler>();
+            services.AddScoped<IRequestHandler<RemoveVoucherCommand, DeleteVoucherCommandResponse>, RemoveVoucherHandler>();
+            services.AddScoped<IRequestHandler<DeleteOrderCommand, bool>, DeleteOrderHandler>();
+
+            // Voucher Command Handlers
+            services.AddScoped<IRequestHandler<GetVouchersCommand, GetVouchersCommandResponse>, GetVouchersHandler>();
+            services.AddScoped<IRequestHandler<CreateVoucherCommand, CreateVoucherCommandResponse>, CreateVoucherHandler>();
+            services.AddScoped<IRequestHandler<DeleteVoucherCommand, bool>, DeleteVoucherHandler>();
 
             // Payment Services
             services.AddScoped<PaymentIntentService>();

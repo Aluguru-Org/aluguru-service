@@ -17,7 +17,7 @@ namespace Mubbi.Marketplace.Catalog.Data.Repositories
             var category = await repository.GetByIdAsync(
                 categoryId,
                 null,
-                !disableTracking);
+                disableTracking);
 
             return category;
         }
@@ -27,12 +27,12 @@ namespace Mubbi.Marketplace.Catalog.Data.Repositories
             var category = await repository.FindOneAsync(
                 x => x.Name == name,
                 null,
-                !disableTracking);
+                disableTracking);
 
             return category;
         }
 
-        public static async Task<List<Category>> GetCategories(this IQueryRepository<Category> repository, bool disableTracking = true)
+        public static async Task<List<Category>> GetCategoriesAsync(this IQueryRepository<Category> repository, bool disableTracking = true)
         {
             var queryable = repository.Queryable();
 

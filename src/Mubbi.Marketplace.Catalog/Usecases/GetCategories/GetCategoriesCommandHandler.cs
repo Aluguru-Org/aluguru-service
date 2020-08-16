@@ -25,7 +25,7 @@ namespace Mubbi.Marketplace.Catalog.Usecases.GetCategories
         {
             var categoryQueryRepository = _unitOfWork.QueryRepository<Category>();
 
-            var categories = await categoryQueryRepository.GetCategories();
+            var categories = await categoryQueryRepository.GetCategoriesAsync();
 
             return new GetCategoriesCommandResponse()
             {

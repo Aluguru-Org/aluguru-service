@@ -16,16 +16,17 @@ namespace Mubbi.Marketplace.Register.Data.Repositories
             var userRole = await repository.GetByIdAsync(
                 userRoleId,
                 x => x.Include(x => x.UserClaims),
-                !disableTracking);
+                disableTracking);
 
             return userRole;
         }
+
         public static async Task<List<User>> GetUsersByRoleAsync(this IQueryRepository<UserRole> repository, string roleName, bool disableTracking = true)
         {
             var userRole = await repository.FindOneAsync(
                 x => x.Name == roleName,
                 x => x.Include(x => x.Users),
-                !disableTracking);
+                disableTracking);
 
             return userRole.Users.ToList();
         }
