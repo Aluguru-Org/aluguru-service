@@ -1,8 +1,8 @@
-﻿using Mubbi.Marketplace.Domain;
+﻿using Mubbi.Marketplace.Catalog.Domain;
+using Mubbi.Marketplace.Domain;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace Mubbi.Marketplace.Catalog.ViewModels
 {
@@ -15,7 +15,7 @@ namespace Mubbi.Marketplace.Catalog.ViewModels
         public string Description { get; set; }
         [SwaggerSchema("The rent type. It can be 'Indefinite' or 'Fixed'")]
         public string RentType { get; set; }
-        public decimal Price { get; set; }
+        public PriceViewModel Price { get; set; }
         public bool IsActive { get; set; }
         public int StockQuantity { get; set; }
         public int MinRentDays { get; set; }

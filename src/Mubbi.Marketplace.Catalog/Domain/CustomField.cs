@@ -37,18 +37,16 @@ namespace Mubbi.Marketplace.Catalog.Domain
         {
             FieldType = fieldType;
         }
-
+        public string FieldName { get; set; }
         public EFieldType FieldType { get; private set; }
         public string ValueAsString { get; private set; }
         public int? ValueAsInt { get; private set; }
-        public IReadOnlyCollection<string> ValueAsOptions { get; private set; }
+        public IReadOnlyCollection<string> ValueAsOptions { get { return _valueAsOptions; } }
         public bool Active { get; private set; }
         public Guid ProductId { get; private set; }
 
         // EF Relational
         public virtual Product Product { get; set; }
-
-
         protected override void ValidateEntity()
         {
             switch(FieldType)

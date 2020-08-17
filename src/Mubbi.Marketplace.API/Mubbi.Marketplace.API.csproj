@@ -24,7 +24,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Mubbi.Marketplace.Crosscutting.IoC\Mubbi.Marketplace.Crosscutting.IoC.csproj" />
+    <ProjectReference Include="..\Mubbi.Marketplace.Payment\Mubbi.Marketplace.Payment.csproj" />
     <ProjectReference Include="..\Mubbi.Marketplace.Register\Mubbi.Marketplace.Register.csproj" />
+    <ProjectReference Include="..\Mubbi.Marketplace.Rent\Mubbi.Marketplace.Rent.csproj" />
   </ItemGroup>
 
 

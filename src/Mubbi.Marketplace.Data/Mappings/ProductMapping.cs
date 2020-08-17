@@ -28,6 +28,24 @@ namespace Mubbi.Marketplace.Data.Mappings
                         v => JsonConvert.DeserializeObject<List<string>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
                     );
 
+            builder.OwnsOne(p => p.Price, onb =>
+            {
+                onb.Property(prc => prc.SellPrice)
+                    .HasColumnName("SellPrice")
+                    .HasColumnType("decimal");
+
+                onb.Property(prc => prc.DailyRentPrice)
+                    .HasColumnName("DailyRentPrice")
+                    .HasColumnType("decimal");
+
+                onb.Property(prc => prc.PeriodRentPrices)
+                    .HasColumnName("PeriodRentPrices")
+                    .HasConversion(
+                        v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
+                        v => JsonConvert.DeserializeObject<List<PeriodPrice>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
+                    );
+            });
+
             builder.HasMany(x => x.CustomFields)
                 .WithOne(x => x.Product)
                 .HasForeignKey(x => x.ProductId);

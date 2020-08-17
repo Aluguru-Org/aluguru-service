@@ -1,12 +1,12 @@
 ﻿using Mubbi.Marketplace.Catalog.Events;
 using Mubbi.Marketplace.Catalog.Usecases.UpdateProduct;
-using Mubbi.Marketplace.Catalog.ViewModels;
 using Mubbi.Marketplace.Domain;
 using PampaDevs.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using static PampaDevs.Utils.Helpers.DateTimeHelper;
+using static PampaDevs.Utils.Helpers.IdHelper;
 
 
 namespace Mubbi.Marketplace.Catalog.Domain
@@ -22,7 +22,8 @@ namespace Mubbi.Marketplace.Catalog.Domain
             _customFields = new List<CustomField>();
         }
 
-        public Product(Guid userId, Guid categoryId, Guid? subCategoryId, string name, string description, ERentType rentType, decimal price, bool isActive, int stockQuantity, int minRentDays, int? maxRentDays, int? minNoticeRentDays, List<string> imageUrls, List<CustomField> customFields)
+        public Product(Guid userId, Guid categoryId, Guid? subCategoryId, string name, string description, ERentType rentType, Price price, bool isActive, int stockQuantity, int minRentDays, int? maxRentDays, int? minNoticeRentDays, List<string> imageUrls, List<CustomField> customFields)
+            : base(NewId())
         {
             UserId = userId;
             CategoryId = categoryId;
@@ -48,7 +49,7 @@ namespace Mubbi.Marketplace.Catalog.Domain
         public string Name { get; private set; }
         public string Description { get; private set; }
         public ERentType RentType { get; private set; }
-        public decimal Price { get; private set; }
+        public Price Price { get; set; }  
         public bool IsActive { get; private set; }
         public int StockQuantity { get; private set; }
         public int MinRentDays { get; private set; }
@@ -68,8 +69,7 @@ namespace Mubbi.Marketplace.Catalog.Domain
         {
             Ensure.That<DomainException>(!string.IsNullOrEmpty(command.Product.Name), "The field Name from product cannot be empty");
             Ensure.That<DomainException>(!string.IsNullOrEmpty(command.Product.Description), "The field Description from Product cannot be empty");
-            Ensure.That<DomainException>(command.Product.CategoryId != Guid.Empty, "The field CategoryId from Product cannot be empty");
-            Ensure.That<DomainException>(command.Product.Price > 0, "The field Price from Product cannot be smaller or equal than zero");
+            Ensure.That<DomainException>(command.Product.CategoryId != Guid.Empty, "The field CategoryId from Product cannot be empty");            
             Ensure.That<DomainException>(command.Product.StockQuantity > 0, "The field StockQuantity from Product cannot be smaller than zero");
             
             if (command.Product.MaxRentDays.HasValue)
@@ -92,12 +92,15 @@ namespace Mubbi.Marketplace.Catalog.Domain
             CategoryId = command.Product.CategoryId;
             SubCategoryId = command.Product.SubCategoryId;
             Name = command.Product.Name;
-            Description = command.Product.Description;
-            Price = command.Product.Price;
+            Description = command.Product.Description;            
             StockQuantity = command.Product.StockQuantity;
             MinRentDays = command.Product.MinRentDays;
             MaxRentDays = command.Product.MaxRentDays;
             IsActive = command.Product.IsActive;
+
+            Price.UpdateSellPrice(command.Product.Price.SellPrice);
+            Price.UpdateDailyRentPrice(command.Product.Price.DailyRentPrice);
+            Price.UpdatePeriodRentPrices(command.Product.Price.PeriodRentPrices);
 
             _imageUrls.Clear();
             _imageUrls.AddRange(command.Product.ImageUrls);
@@ -150,7 +153,7 @@ namespace Mubbi.Marketplace.Catalog.Domain
             Ensure.That<DomainException>(!string.IsNullOrEmpty(Name), "The field Name from product cannot be empty");
             Ensure.That<DomainException>(!string.IsNullOrEmpty(Description), "The field Description from Product cannot be empty");
             Ensure.That<DomainException>(CategoryId != Guid.Empty, "The field CategoryId from Product cannot be empty");
-            Ensure.That<DomainException>(Price > 0, "The field Price from Product cannot be smaller or equal than zero");
+            Ensure.That<DomainException>(Price != null, "The field Price from Product cannot cannot be null");
             Ensure.That<DomainException>(StockQuantity > 0, "The field StockQuantity from Product cannot be smaller than zero");
 
             if (MaxRentDays.HasValue)

@@ -25,7 +25,19 @@ namespace Mubbi.Marketplace.Register.AutoMapper
                 {
                     var documentType = (EDocumentType)Enum.Parse(typeof(EDocumentType), request.DocumentType);
                     return new Document(request.Number, documentType);
-                });
+                })
+                .ForMember(x => x.User, c => c.Ignore())
+                .ForMember(x => x.DateCreated, c => c.Ignore())
+                .ForMember(x => x.DateUpdated, c => c.Ignore());
+
+            CreateMap<AddressViewModel, Address>()
+                .ConstructUsing((request, context) =>
+                {
+                    return new Address(request.UserId, request.Street, request.Number, request.Neighborhood, request.City, request.State, request.Country, request.ZipCode);
+                })
+                .ForMember(x => x.User, c => c.Ignore())
+                .ForMember(x => x.DateCreated, c => c.Ignore())
+                .ForMember(x => x.DateUpdated, c => c.Ignore());
 
             CreateMap<CreateUserRoleViewModel, CreateUserRoleCommand>()
                 .ConstructUsing((request, context) =>
@@ -60,10 +72,7 @@ namespace Mubbi.Marketplace.Register.AutoMapper
             CreateMap<UpdateUserViewModel, UpdateUserCommand>()
                 .ConstructUsing((x, rc) =>
                 {
-                    var document = rc.Mapper.Map<Document>(x.Document);
-                    var addresses = rc.Mapper.Map<Address>(x.Address);
-
-                    return new UpdateUserCommand(x.UserId, x.FullName, document, addresses);
+                    return new UpdateUserCommand(x.UserId, x.FullName, x.Document, x.Address);
                 })
                 .ForMember(x => x.Timestamp, c => c.Ignore())
                 .ForMember(x => x.MessageType, c => c.Ignore())

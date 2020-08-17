@@ -9,6 +9,7 @@ namespace Mubbi.Marketplace.Catalog.ViewModels
     [SwaggerSchema(Required = new[] { "FieldType" })]
     public class CreateCustomFieldViewModel : IDto
     {
+        public string FieldName { get; set; }
         [SwaggerSchema("The Custom Field type, it can be: 'Text', 'Number', 'Radio' or 'Checkbox'")]
         public string FieldType { get; set; }
         public string ValueAsString { get; set; }

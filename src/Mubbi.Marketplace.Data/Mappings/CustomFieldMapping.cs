@@ -16,7 +16,7 @@ namespace Mubbi.Marketplace.Data.Mappings
 
             builder.Property(e => e.ValueAsOptions).HasConversion(
                 v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
-                v => JsonConvert.DeserializeObject<IReadOnlyCollection<string>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
+                v => JsonConvert.DeserializeObject<List<string>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
         }
     }
 }

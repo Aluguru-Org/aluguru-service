@@ -34,6 +34,21 @@ using Mubbi.Marketplace.Register.Usecases.UpdateUserRole;
 using Mubbi.Marketplace.Register.Usecases.DeleteUserRole;
 using Mubbi.Marketplace.Catalog.Usecases.DeleteProduct;
 using Mubbi.Marketplace.Register.Usecases.GetUserById;
+using Mubbi.Marketplace.Rent.Usecases.GetOrders;
+using Mubbi.Marketplace.Rent.Usecases.GetOrder;
+using Stripe;
+using Mubbi.Marketplace.Catalog.Usecases.CreateRentPeriod;
+using Mubbi.Marketplace.Catalog.Usecases.GetRentPeriods;
+using Mubbi.Marketplace.Catalog.Usecases.DeleteRentPeriod;
+using Mubbi.Marketplace.Rent.Usecases.CreateOrder;
+using Mubbi.Marketplace.Rent.Usecases.DeleteOrder;
+using Mubbi.Marketplace.Rent.Usecases.RemoveVoucher;
+using Mubbi.Marketplace.Rent.Usecases.UpdateOrder;
+using Mubbi.Marketplace.Rent.Usecases.ApplyVoucher;
+using Mubbi.Marketplace.Rent.Usecases.CreateVoucher;
+using Mubbi.Marketplace.Rent.Usecases.DeleteVoucher;
+using Mubbi.Marketplace.Rent.Usecases.GetVouchers;
+using Mubbi.Marketplace.Rent.AutoMapper;
 
 namespace Mubbi.Marketplace.Crosscutting.IoC
 {
@@ -68,7 +83,10 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
             services.AddScoped<IMediatorHandler, MediatorHandler>();
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
 
-            services.AddAutoMapper(typeof(RegisterContextMappingConfiguration), typeof(CatalogContextMappingConfiguration));
+            services.AddAutoMapper(
+                typeof(RegisterContextMappingConfiguration), 
+                typeof(CatalogContextMappingConfiguration),
+                typeof(RentContextMappingConfiguration));
 
             // AuthUser
             services.AddScoped<IRequestHandler<LogInUserCommand, LogInUserCommandResponse>, LogInUserHandler>();
@@ -100,6 +118,28 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
             services.AddScoped<IRequestHandler<GetCategoriesCommand, GetCategoriesCommandResponse>, GetCategoriesCommandHandler>();
             services.AddScoped<IRequestHandler<GetProductsByCategoryCommand, GetProductsByCategoryCommandResponse>, GetProductsByCategoryHandler>();
             services.AddScoped<IRequestHandler<DeleteCategoryCommand, bool>, DeleteCategoryHandler>();
+
+            // Rent Period Command Handlers
+            services.AddScoped<IRequestHandler<CreateRentPeriodCommand, CreateRentPeriodCommandResponse>, CreateRentPeriodHandler>();
+            services.AddScoped<IRequestHandler<GetRentPeriodsCommand, GetRentPeriodsCommandResponse>, GetRentPeriodsCommandHandler>();
+            services.AddScoped<IRequestHandler<DeleteRentPeriodCommand, bool>, DeleteRentPeriodHandler>();
+
+            // Order Command Handlers
+            services.AddScoped<IRequestHandler<GetOrdersCommand, GetOrdersCommandResponse>, GetOrdersHandler>();
+            services.AddScoped<IRequestHandler<GetOrderCommand, GetOrderCommandResponse>, GetOrderHandler>();
+            services.AddScoped<IRequestHandler<CreateOrderCommand, CreateOrderCommandResponse>, CreateOrderHandler>();
+            services.AddScoped<IRequestHandler<UpdateOrderCommand, UpdateOrderCommandResponse>, UpdateOrderHandler>();
+            services.AddScoped<IRequestHandler<ApplyVoucherCommand, ApplyVoucherCommandResponse>, ApplyVoucherHandler>();
+            services.AddScoped<IRequestHandler<RemoveVoucherCommand, DeleteVoucherCommandResponse>, RemoveVoucherHandler>();
+            services.AddScoped<IRequestHandler<DeleteOrderCommand, bool>, DeleteOrderHandler>();
+
+            // Voucher Command Handlers
+            services.AddScoped<IRequestHandler<GetVouchersCommand, GetVouchersCommandResponse>, GetVouchersHandler>();
+            services.AddScoped<IRequestHandler<CreateVoucherCommand, CreateVoucherCommandResponse>, CreateVoucherHandler>();
+            services.AddScoped<IRequestHandler<DeleteVoucherCommand, bool>, DeleteVoucherHandler>();
+
+            // Payment Services
+            services.AddScoped<PaymentIntentService>();
 
             return services;
         }

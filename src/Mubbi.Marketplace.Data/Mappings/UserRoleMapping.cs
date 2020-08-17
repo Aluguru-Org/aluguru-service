@@ -5,11 +5,11 @@ using Mubbi.Marketplace.Register.Domain;
 
 namespace Mubbi.Marketplace.Data.Mappings
 {
-    public class UserRoleMapping : IEntityTypeConfiguration<UserRole>
+    public class UserRoleMapping : BaseMapConfiguration<UserRole>
     {
-        public void Configure(EntityTypeBuilder<UserRole> builder)
+        public override void Configure(EntityTypeBuilder<UserRole> builder)
         {
-            builder.HasKey(x => x.Id);
+            base.Configure(builder);
 
             builder.HasMany(x => x.Users)
                 .WithOne(x => x.UserRole)

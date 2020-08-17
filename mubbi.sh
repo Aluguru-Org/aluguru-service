@@ -19,4 +19,6 @@ dotnet dotnet-sonarscanner begin /k:"mubbi" /d:sonar.login="b94109ff1992f3b29d2d
 dotnet build
 dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat='opencover' /p:CoverletOutput='coverageResults/'
 dotnet dotnet-sonarscanner end /d:sonar.login="b94109ff1992f3b29d2db57ebf84d32bad408de8" 
+elif [ "add-migration" = "$Operation" ]; then
+dotnet ef migrations add "$2" --project src/Mubbi.Marketplace.Data/Mubbi.Marketplace.Data.csproj --startup-project src/Mubbi.Marketplace.API/Mubbi.Marketplace.API.csproj -v
 fi

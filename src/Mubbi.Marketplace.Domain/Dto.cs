@@ -6,7 +6,7 @@ using System.Text;
 namespace Mubbi.Marketplace.Domain
 {
     public interface IDto
-    {
+    {        
     }
 
     public class PaginateCriteria : IDto
@@ -21,7 +21,7 @@ namespace Mubbi.Marketplace.Domain
 
         public PaginateCriteria(int? currentPage, int? pageSize, string sortBy, string sortOrder)
         {
-            CurrentPage = currentPage ?? 1;
+            CurrentPage = currentPage ?? 0;
             PageSize = pageSize ?? MaxPageSize;
             SortBy = sortBy;
             SortOrder = sortOrder;

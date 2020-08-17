@@ -52,7 +52,16 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         protected ActionResult DeleteResponse()
         {
-            if (IsValidOperation()) return Ok(new ApiResponse(true, "The resource was deleted successfully"));
+            if (IsValidOperation())
+                return Ok(new ApiResponse(true, "The resource was deleted successfully"));
+
+            return BadRequest(new ApiResponse<List<string>>(false, "The server was not able to process the request", _notifications.GetNotificationErrors()));
+        }
+
+        protected ActionResult DeleteResponse<T>(T data = null) where T : class
+        {
+            if (IsValidOperation())
+                return Ok(new ApiResponse<T>(true, "The resource was deleted successfully", data));
 
             return BadRequest(new ApiResponse<List<string>>(false, "The server was not able to process the request", _notifications.GetNotificationErrors()));
         }

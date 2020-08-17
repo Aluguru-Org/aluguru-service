@@ -4,17 +4,20 @@ using Mubbi.Marketplace.Domain;
 using PampaDevs.Utils;
 using System;
 using static PampaDevs.Utils.Helpers.IdHelper;
+using static PampaDevs.Utils.Helpers.DateTimeHelper;
+using System.Collections.Generic;
 
 namespace Mubbi.Marketplace.Rent.Domain
 {
-    public class Voucher : Entity
+    public class Voucher : AggregateRoot
     {
+        private Voucher() : base(NewId()) { }
         public Voucher(string code, EVoucherType voucherType, decimal discount, int amount, DateTime expirationDate)
             : base(NewId())
         {
             Active = true;
             Used = false;
-            CreationDate = DateTime.UtcNow;
+            CreationDate = NewDateTime();
 
             VoucherType = voucherType;
 
@@ -46,7 +49,20 @@ namespace Mubbi.Marketplace.Rent.Domain
         public bool Active { get; private set; }
         public bool Used { get; private set; }
 
-        internal ValidationResult IsValid()
+        //Ef Relational
+        public List<Order> Orders { get; set; }
+
+        public void Activate() => Active = true;
+        public void Deactivate() => Active = false;
+
+        public void MarkAsUsed()
+        {
+            Used = true;
+            Amount -= 1;
+            UpdatedDate = NewDateTime();
+        }
+
+        public ValidationResult IsValid()
         {            
             return new VoucherApplicableValidation().Validate(this);
         }
@@ -60,7 +76,7 @@ namespace Mubbi.Marketplace.Rent.Domain
                 Ensure.That(PercentualDiscount.Value <= 100, "The field PercentualDiscount cannot be greater than 100");
             }
             Ensure.That(Amount > 0, "The field Amount cannot be smaller or equal to 0");
-            Ensure.That(ExpirationDate > DateTime.UtcNow, "The field ExpirationDate cannot be smaller than the current day");
+            Ensure.That(ExpirationDate > NewDateTime(), "The field ExpirationDate cannot be smaller than the current day");
         }
     }
 
