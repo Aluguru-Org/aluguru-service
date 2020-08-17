@@ -1,32 +1,47 @@
 ﻿using Mubbi.Marketplace.Domain;
 using PampaDevs.Utils;
-using System.Collections.Generic;
+using System;
 using System.Text.RegularExpressions;
+using static PampaDevs.Utils.Helpers.IdHelper;
+
 
 namespace Mubbi.Marketplace.Register.Domain
 {
-    public class Document : ValueObject
+    public class Document : Entity
     {
+        private Document() : base(NewId()) { }
         public Document(string number, EDocumentType documentType)
+            : base(NewId())
         {
             Number = number;
             DocumentType = documentType;
 
-            ValidateValueObject();
+            ValidateEntity();
         }
-
+        public Guid UserId { get; private set; }
         public string Number { get; private set; }
         public EDocumentType DocumentType { get; private set; }
-
-        protected override IEnumerable<object> GetEqualityComponents()
+        public virtual User User { get; set; }
+        
+        public void AssignUser(Guid userId)
         {
-            yield return Number;
-            yield return DocumentType;
+            UserId = userId;
         }
 
-        protected override void ValidateValueObject()
+        internal void UpdateDocument(EDocumentType documentType, string number)
         {
-            switch(DocumentType)
+            Number = number;
+            DocumentType = documentType;
+        }
+
+        public override string ToString()
+        {
+            return Number;
+        }
+
+        protected override void ValidateEntity()
+        {
+            switch (DocumentType)
             {
                 case EDocumentType.CPF:
                     Ensure.That(new Regex(@"^\d{3}\.\d{3}\.\d{3}-\d{2}$|^\d{11}$").IsMatch(Number), "The field Number is not a CPF");
@@ -35,11 +50,6 @@ namespace Mubbi.Marketplace.Register.Domain
                     Ensure.That(new Regex(@"^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$|^\d{14}$").IsMatch(Number), "The field Number is not a CNPJ");
                     break;
             }
-        }
-
-        public override string ToString()
-        {
-            return Number;
         }
     }
 }

@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Mubbi.Marketplace.Rent.Domain;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Mubbi.Marketplace.Data.Mappings
 {
@@ -16,7 +13,9 @@ namespace Mubbi.Marketplace.Data.Mappings
             builder.Property(x => x.Code)
                 .IsRequired();
 
-
+            builder.HasMany(x => x.Orders)
+                .WithOne(x => x.Voucher)
+                .HasForeignKey(x => x.VoucherId);
 
             builder.ToTable("Voucher");
         }

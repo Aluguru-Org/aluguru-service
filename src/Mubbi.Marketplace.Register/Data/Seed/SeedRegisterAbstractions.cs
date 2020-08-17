@@ -64,6 +64,9 @@ namespace Mubbi.Marketplace.Register.Data.Seed
 
                     admin = new User(Guid.Parse("96d1fb97-47e9-4ad5-b07e-448f88defd9c"), "contato@mubbi.com.br", "24/74c0ZcIuP++wd2rtW88mWx3EOc1JFX66v634WEQE=", "Mubbi Admin", adminRole.Id);
 
+                    admin.Document = new Document("11111111111111", EDocumentType.CNPJ);
+                    admin.Address = new Address(Guid.Parse("96d1fb97-47e9-4ad5-b07e-448f88defd9c"), "some-street", "some-number", "some-neighborhood", "some-city", "some-state", "some-country", "some-zipcode");
+
                     userRepository.Add(admin);
                 }
 

@@ -1,16 +1,13 @@
 ﻿using FluentValidation;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages;
-using Mubbi.Marketplace.Register.Domain;
 using Mubbi.Marketplace.Register.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Mubbi.Marketplace.Register.Usecases.UpadeUser
 {
     public class UpdateUserCommand : Command<UpdateUserCommandResponse>
     {
-        public UpdateUserCommand(Guid userId, string fullName, Document document, Address address)
+        public UpdateUserCommand(Guid userId, string fullName, DocumentViewModel document, AddressViewModel address)
         {
             UserId = userId;
             FullName = fullName;
@@ -19,8 +16,8 @@ namespace Mubbi.Marketplace.Register.Usecases.UpadeUser
         }
         public Guid UserId { get; }
         public string FullName { get; }
-        public Document Document { get; }
-        public Address Address { get; }
+        public DocumentViewModel Document { get; }
+        public AddressViewModel Address { get; }
 
         public override bool IsValid()
         {

@@ -8,6 +8,8 @@ namespace Mubbi.Marketplace.Data.Mappings
     {
         public override void Configure(EntityTypeBuilder<RentPeriod> builder)
         {
+            base.Configure(builder);
+
             builder.Property(c => c.Name)
                    .IsRequired()
                    .HasColumnType("varchar(250)");

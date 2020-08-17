@@ -1,6 +1,5 @@
 ﻿using Mubbi.Marketplace.API.IntegrationTests.Extensions;
 using Mubbi.Marketplace.API.Models;
-using Mubbi.Marketplace.Catalog.Domain;
 using Mubbi.Marketplace.Catalog.Usecases.CreateCategory;
 using Mubbi.Marketplace.Catalog.Usecases.CreateProduct;
 using Mubbi.Marketplace.Catalog.Usecases.CreateRentPeriod;
@@ -9,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -35,6 +33,63 @@ namespace Mubbi.Marketplace.API.IntegrationTests
 
             var user = await client.LogInUser();
 
+            var response = await RequestCreateProduct(client);
+
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task UpdateProduct_ShouldPass()
+        {
+            var client = Server.Instance.CreateClient();
+
+            var user = await client.LogInUser();
+
+            var response = await RequestCreateProduct(client);
+
+            var product = response.Deserialize<ApiResponse<CreateProductCommandResponse>>().Data.Product;
+
+            var viewModel = new UpdateProductViewModel()
+            {                
+                Id = product.Id,
+                CategoryId = product.CategoryId,
+                Name = "Test Update Product",
+                Description = "Test description",
+                RentType = "Indefinite",
+                Price = product.Price,
+                IsActive = false,
+                MinNoticeRentDays = 2,
+                MinRentDays = 7,
+                MaxRentDays = 30,
+                StockQuantity = 1,
+                ImageUrls = new List<string> { "image.png" },
+                CustomFields = new List<UpdateCustomFieldViewModel>
+                {
+                    new UpdateCustomFieldViewModel() {  FieldType = "Text", ValueAsString = "Observação?", Active = true }
+                }
+            };
+
+            response = await client.PutAsync($"/api/v1/product/{product.Id}", viewModel.ToStringContent());
+
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task DeleteProduct_ShouldPass()
+        {
+            var client = Server.Instance.CreateClient();
+
+            var response = await RequestCreateProduct(client);
+
+            var product = response.Deserialize<ApiResponse<CreateProductCommandResponse>>().Data.Product;
+
+            response = await client.DeleteAsync($"/api/v1/product/{product.Id}");
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        private async Task<HttpResponseMessage> RequestCreateProduct(HttpClient client)
+        {
             var rentPeriod = await CreateRentPeriod(client);
             var category = await CreateCategory(client);
 
@@ -63,15 +118,15 @@ namespace Mubbi.Marketplace.API.IntegrationTests
                 MaxRentDays = 30,
                 StockQuantity = 1,
                 ImageUrls = new List<string> { "image.png" },
-                CustomFields = new List<CreateCustomFieldViewModel> 
-                { 
-                    new CreateCustomFieldViewModel() {  FieldType = "Text", ValueAsString = "Observação?", Active = true } 
+                CustomFields = new List<CreateCustomFieldViewModel>
+                {
+                    new CreateCustomFieldViewModel() {  FieldType = "Text", ValueAsString = "Observação?", Active = true }
                 }
             };
 
             var response = await client.PostAsync("/api/v1/product", viewModel.ToStringContent());
 
-            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            return response;
         }
 
         private async Task<RentPeriodViewModel> CreateRentPeriod(HttpClient client)

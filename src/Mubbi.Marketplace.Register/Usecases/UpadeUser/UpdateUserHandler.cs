@@ -31,9 +31,9 @@ namespace Mubbi.Marketplace.Register.Usecases.UpadeUser
         {
             var queryRepository = _unitOfWork.QueryRepository<User>();
 
-            var existed = await queryRepository.GetUserAsync(command.UserId, false);
+            var user = await queryRepository.GetUserAsync(command.UserId, false);
             
-            if (existed == null)
+            if (user == null)
             {
                 await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"The User with Id [{command.UserId}] does not exist"));
                 return new UpdateUserCommandResponse();
@@ -41,8 +41,8 @@ namespace Mubbi.Marketplace.Register.Usecases.UpadeUser
 
             var repository = _unitOfWork.Repository<User>();
 
-            var updated = existed.UpdateUser(command);
-            var user = repository.Update(updated);
+            user.UpdateUser(command);
+            repository.Update(user);
 
             return new UpdateUserCommandResponse()
             {

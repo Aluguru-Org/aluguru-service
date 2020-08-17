@@ -3,14 +3,17 @@ param (
     [Parameter(Mandatory=$true)]
     [ValidateNotNull()]
     [ValidateNotNullOrEmpty()]
-    [ValidateSet("start", "stop", "delete", "bootstrap", "sonar")]
+    [ValidateSet("start", "stop", "delete", "bootstrap", "sonar", "add-migration")]
     [String]
-    $Operation
+    $Operation,
+    [Parameter(Mandatory=$false)]
+    [String]
+    $OperationArg1
 )
 begin {
     Write-Host "======================> Mubbi.ps1 started" -ForegroundColor Green
     Write-Host "Operation:" -NoNewline
-    Write-Host "$Operation" -ForegroundColor Yellow
+    Write-Host "$Operation" -ForegroundColor Yellow    
 }
 
 process {
@@ -45,7 +48,9 @@ process {
 
         # Building container images
         docker-compose build
-    }    
+    } elseif($Operation -eq "add-migration") {
+        dotnet ef migrations add "$OperationArg1" --project src/Mubbi.Marketplace.Data/Mubbi.Marketplace.Data.csproj --startup-project src/Mubbi.Marketplace.API/Mubbi.Marketplace.API.csproj -v
+	}
 }
 
 end {
