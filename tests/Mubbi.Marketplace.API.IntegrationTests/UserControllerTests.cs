@@ -1,5 +1,6 @@
 ﻿using Mubbi.Marketplace.API.IntegrationTests.Extensions;
 using Mubbi.Marketplace.API.Models;
+using Mubbi.Marketplace.Register.Usecases.CreateUser;
 using Mubbi.Marketplace.Register.Usecases.GetUserById;
 using Mubbi.Marketplace.Register.ViewModels;
 using System;
@@ -26,6 +27,24 @@ namespace Mubbi.Marketplace.API.IntegrationTests
             var user = response.Deserialize<ApiResponse<GetUserByIdCommandResponse>>().Data.User;
 
             Assert.Equal(Guid.Parse(userId), user.Id);
+        }
+
+        [Fact]
+        public async Task CreateUser_ShouldPass()
+        {
+            var client = Server.Instance.CreateClient();
+
+            var viewModel = new UserRegistrationViewModel()
+            {
+                Email = "someemail@test.com",
+                Password = "someAwesomePa$$word1",
+                FullName = "Mubbi Admin Account",
+                Role = "User"
+            };
+
+            var response = await client.PostAsync($"/api/v1/user", viewModel.ToStringContent());
+
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
 
         [Fact]
@@ -57,6 +76,30 @@ namespace Mubbi.Marketplace.API.IntegrationTests
             };
 
             var response = await client.PutAsync($"/api/v1/user/{userId}", viewModel.ToStringContent());
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task DeleteUser_ShouldPass()
+        {
+            var client = Server.Instance.CreateClient();
+
+            var viewModel = new UserRegistrationViewModel()
+            {
+                Email = "someemail@test.com",
+                Password = "someAwesomePa$$word1",
+                FullName = "Mubbi Admin Account",
+                Role = "User"
+            };
+
+            var response = await client.PostAsync($"/api/v1/user", viewModel.ToStringContent());
+
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+
+            var user = response.Deserialize<ApiResponse<CreateUserCommandResponse>>().Data.User;
+
+            response = await client.DeleteAsync($"/api/v1/user/{user.Id}");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }

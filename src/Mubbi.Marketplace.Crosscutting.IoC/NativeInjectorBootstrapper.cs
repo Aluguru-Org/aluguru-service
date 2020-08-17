@@ -48,6 +48,7 @@ using Mubbi.Marketplace.Rent.Usecases.ApplyVoucher;
 using Mubbi.Marketplace.Rent.Usecases.CreateVoucher;
 using Mubbi.Marketplace.Rent.Usecases.DeleteVoucher;
 using Mubbi.Marketplace.Rent.Usecases.GetVouchers;
+using Mubbi.Marketplace.Rent.AutoMapper;
 
 namespace Mubbi.Marketplace.Crosscutting.IoC
 {
@@ -82,7 +83,10 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
             services.AddScoped<IMediatorHandler, MediatorHandler>();
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
 
-            services.AddAutoMapper(typeof(RegisterContextMappingConfiguration), typeof(CatalogContextMappingConfiguration));
+            services.AddAutoMapper(
+                typeof(RegisterContextMappingConfiguration), 
+                typeof(CatalogContextMappingConfiguration),
+                typeof(RentContextMappingConfiguration));
 
             // AuthUser
             services.AddScoped<IRequestHandler<LogInUserCommand, LogInUserCommandResponse>, LogInUserHandler>();

@@ -4,6 +4,7 @@ using PampaDevs.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static PampaDevs.Utils.Helpers.IdHelper;
 
 namespace Mubbi.Marketplace.Rent.Domain
 {
@@ -12,6 +13,7 @@ namespace Mubbi.Marketplace.Rent.Domain
         private readonly List<OrderItem> _orderItems;
 
         public Order(Guid clientId)
+            : base(NewId())
         {
             UserId = clientId;
 
@@ -21,6 +23,7 @@ namespace Mubbi.Marketplace.Rent.Domain
         }
 
         protected Order()
+            : base(NewId())
         {
             _orderItems = new List<OrderItem>();
         }

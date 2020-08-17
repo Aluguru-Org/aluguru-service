@@ -4,91 +4,67 @@ using Mubbi.Marketplace.Catalog.Usecases.CreateCategory;
 using Mubbi.Marketplace.Catalog.Usecases.CreateProduct;
 using Mubbi.Marketplace.Catalog.Usecases.CreateRentPeriod;
 using Mubbi.Marketplace.Catalog.ViewModels;
+using Mubbi.Marketplace.Rent.Usecases.GetOrder;
+using Mubbi.Marketplace.Rent.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace Mubbi.Marketplace.API.IntegrationTests
 {
-    public class ProductControllerTests
-    { 
+    public class OrderControllerTests
+    {
         [Fact]
-        public async Task CreateProduct_WhenInvalidProduct_ShouldFail()
+        public async Task GetOrderById_ShouldPass()
         {
             var client = Server.Instance.CreateClient();
 
-            var viewModel = new CreateProductViewModel();
-            var response = await client.PostAsync("/api/v1/product", viewModel.ToStringContent());
-
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        }
-
-        [Fact()]
-        public async Task CreateProduct_ShouldPass()
-        {
-            var client = Server.Instance.CreateClient();
-
-            var user = await client.LogInUser();
-
-            var response = await RequestCreateProduct(client);
-
-            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-        }
-
-        [Fact]
-        public async Task UpdateProduct_ShouldPass()
-        {
-            var client = Server.Instance.CreateClient();
-
-            var user = await client.LogInUser();
-
-            var response = await RequestCreateProduct(client);
-
-            var product = response.Deserialize<ApiResponse<CreateProductCommandResponse>>().Data.Product;
-
-            var viewModel = new UpdateProductViewModel()
-            {                
-                Id = product.Id,
-                CategoryId = product.CategoryId,
-                Name = "Test Update Product",
-                Description = "Test description",
-                RentType = "Indefinite",
-                Price = product.Price,
-                IsActive = false,
-                MinNoticeRentDays = 2,
-                MinRentDays = 7,
-                MaxRentDays = 30,
-                StockQuantity = 1,
-                ImageUrls = new List<string> { "image.png" },
-                CustomFields = new List<UpdateCustomFieldViewModel>
-                {
-                    new UpdateCustomFieldViewModel() {  FieldType = "Text", ValueAsString = "Observação?", Active = true }
-                }
-            };
-
-            response = await client.PutAsync($"/api/v1/product/{product.Id}", viewModel.ToStringContent());
-
-            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-        }
-
-        [Fact]
-        public async Task DeleteProduct_ShouldPass()
-        {
-            var client = Server.Instance.CreateClient();
-
-            var response = await RequestCreateProduct(client);
-
-            var product = response.Deserialize<ApiResponse<CreateProductCommandResponse>>().Data.Product;
-
-            response = await client.DeleteAsync($"/api/v1/product/{product.Id}");
+            var mockGuid = Guid.NewGuid();
+            var response = await client.GetAsync($"/api/v1/order/{mockGuid}");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
-        private async Task<HttpResponseMessage> RequestCreateProduct(HttpClient client)
+        [Fact]
+        public async Task CreateOrder_ShouldPass()
+        {
+            var client = Server.Instance.CreateClient();
+
+            var product = await CreateProduct(client);
+
+            var viewModel = new CreateOrderViewModel()
+            {
+                UserId = Guid.Parse("96d1fb97-47e9-4ad5-b07e-448f88defd9c"),
+                OrderItems = new List<CreateOrderItemViewModel>
+                {
+                    new CreateOrderItemViewModel()
+                    {
+                        ProductId = product.Id,
+                        Amount = 1,
+                        ProductName = product.Name,
+                        Responses = new List<CustomFieldResponseViewModel>()
+                        {
+                            new CustomFieldResponseViewModel()
+                            {
+                                CustomFieldId = product.CustomFields[0].Id,
+                                FieldName = "teste",
+                                FieldResponses = new string[] { "Favor sem tomate" }
+                            }
+                        },
+                        SelectedRentPeriod = product.Price.PeriodRentPrices[0].RentPeriodId
+                    }
+                }
+            };
+            var response = await client.PostAsync($"/api/v1/order", viewModel.ToStringContent());
+
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        }
+
+        private async Task<ProductViewModel> CreateProduct(HttpClient client)
         {
             var rentPeriod = await CreateRentPeriod(client);
             var category = await CreateCategory(client);
@@ -126,7 +102,7 @@ namespace Mubbi.Marketplace.API.IntegrationTests
 
             var response = await client.PostAsync("/api/v1/product", viewModel.ToStringContent());
 
-            return response;
+            return response.Deserialize<ApiResponse<CreateProductCommandResponse>>().Data.Product;
         }
 
         private async Task<RentPeriodViewModel> CreateRentPeriod(HttpClient client)

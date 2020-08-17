@@ -22,7 +22,6 @@ namespace Mubbi.Marketplace.Data.Migrations
             modelBuilder.Entity("Mubbi.Marketplace.Catalog.Domain.Category", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateCreated")
@@ -48,7 +47,6 @@ namespace Mubbi.Marketplace.Data.Migrations
             modelBuilder.Entity("Mubbi.Marketplace.Catalog.Domain.CustomField", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
@@ -88,7 +86,6 @@ namespace Mubbi.Marketplace.Data.Migrations
             modelBuilder.Entity("Mubbi.Marketplace.Catalog.Domain.Product", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CategoryId")
@@ -148,7 +145,6 @@ namespace Mubbi.Marketplace.Data.Migrations
             modelBuilder.Entity("Mubbi.Marketplace.Catalog.Domain.RentPeriod", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateCreated")
@@ -172,7 +168,6 @@ namespace Mubbi.Marketplace.Data.Migrations
             modelBuilder.Entity("Mubbi.Marketplace.Register.Domain.Address", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("City")
@@ -247,7 +242,6 @@ namespace Mubbi.Marketplace.Data.Migrations
             modelBuilder.Entity("Mubbi.Marketplace.Register.Domain.Document", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateCreated")
@@ -276,7 +270,6 @@ namespace Mubbi.Marketplace.Data.Migrations
             modelBuilder.Entity("Mubbi.Marketplace.Register.Domain.User", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateCreated")
@@ -335,7 +328,6 @@ namespace Mubbi.Marketplace.Data.Migrations
             modelBuilder.Entity("Mubbi.Marketplace.Register.Domain.UserRole", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateCreated")
@@ -355,7 +347,6 @@ namespace Mubbi.Marketplace.Data.Migrations
             modelBuilder.Entity("Mubbi.Marketplace.Rent.Domain.Order", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateCreated")
@@ -426,7 +417,6 @@ namespace Mubbi.Marketplace.Data.Migrations
             modelBuilder.Entity("Mubbi.Marketplace.Rent.Domain.Voucher", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
@@ -573,7 +563,7 @@ namespace Mubbi.Marketplace.Data.Migrations
             modelBuilder.Entity("Mubbi.Marketplace.Rent.Domain.Order", b =>
                 {
                     b.HasOne("Mubbi.Marketplace.Rent.Domain.Voucher", "Voucher")
-                        .WithMany()
+                        .WithMany("Orders")
                         .HasForeignKey("VoucherId");
                 });
 
