@@ -52,17 +52,17 @@ namespace Mubbi.Marketplace.API
                 }
             });
 
-            options.AddServer(new OpenApiServer()
-            {
-                Url = "http://localhost:5000",
-                Description = "Local server with docker-compose"
-            });
+            // options.AddServer(new OpenApiServer()
+            // {
+            //     Url = "http://localhost:5000",
+            //     Description = "Local server with docker-compose"
+            // });
 
-            options.AddServer(new OpenApiServer()
-            {
-                Url = "https://localhost:44362",
-                Description = "Local server with SQL Server Express"
-            });
+            // options.AddServer(new OpenApiServer()
+            // {
+            //     Url = "https://localhost:44362",
+            //     Description = "Local server with SQL Server Express"
+            // });
 
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
             {
