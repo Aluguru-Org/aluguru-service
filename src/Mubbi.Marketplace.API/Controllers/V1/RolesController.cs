@@ -13,6 +13,7 @@ using Mubbi.Marketplace.Register.Usecases.GetUserRoles;
 using Mubbi.Marketplace.Register.Usecases.GetUsersByRole;
 using Mubbi.Marketplace.Register.Usecases.UpdateUserRole;
 using Mubbi.Marketplace.Register.ViewModels;
+using Mubbi.Marketplace.Security;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
     [Route("api/v1/[controller]")]
     [ValidateModel]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class RolesController : ApiController
     {
         public RolesController(INotificationHandler<DomainNotification> notifications, IMediatorHandler mediator, IMapper mapper)
@@ -92,7 +94,6 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpDelete]
         [Route("{id}")]
-        [Authorize]
         [SwaggerOperation(Summary = "Delete a user role")]
         [Consumes("application/json")]
         [Produces("application/json")]

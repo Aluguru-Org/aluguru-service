@@ -22,7 +22,7 @@ namespace Mubbi.Marketplace.Register.Domain.Jwt
 
         public JwtTokenBuilder WithUserClaims()
         {
-            _claims.Add(new Claim("Role", _user.UserRole.Name));
+            _claims.Add(new Claim(ClaimTypes.Role, _user.UserRole.Name));
             foreach (var userClaim in _user.UserRole.UserClaims)
             {
                 _claims.Add(new Claim(userClaim.Type, userClaim.Value));

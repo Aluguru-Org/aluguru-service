@@ -10,9 +10,8 @@ namespace Mubbi.Marketplace.Register.Domain
     public class UserClaim : Entity
     {
         private UserClaim() : base(NewId()) { }
-        public UserClaim(Guid userRoleId, string type, string value) : base(NewId())
+        public UserClaim(string type, string value) : base(NewId())
         {
-            UserRoleId = userRoleId;
             Type = type;
             Value = value;
         }
@@ -23,6 +22,10 @@ namespace Mubbi.Marketplace.Register.Domain
 
         // EF Relational
         public UserRole UserRole { get; set; }
+        internal void AssociateUserRole(Guid userRoleId)
+        {
+            UserRoleId = userRoleId;
+        }
 
         protected override void ValidateEntity()
         {

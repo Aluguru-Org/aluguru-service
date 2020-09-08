@@ -22,7 +22,7 @@ namespace Mubbi.Marketplace.Register.Domain.Repositories
         {
             var user = await repository.FindOneAsync(
                 x => x.Email == email,
-                x => x.Include(x => x.UserRole).Include(x => x.Address),
+                x => x.Include(x => x.UserRole).ThenInclude(x => x.UserClaims).Include(x => x.Address),
                 disableTracking);
 
             return user;

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Mubbi.Marketplace.API.Controllers.V1.Attributes;
@@ -13,6 +14,7 @@ using Mubbi.Marketplace.Catalog.ViewModels;
 using Mubbi.Marketplace.Domain;
 using Mubbi.Marketplace.Infrastructure.Bus.Communication;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
+using Mubbi.Marketplace.Security;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
@@ -22,7 +24,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 {
     [Route("api/v1/[controller]")]
     [ValidateModel]
-    [ApiController]
+    [ApiController]    
     public class CategoryController : ApiController
     {
         public CategoryController(INotificationHandler<DomainNotification> notifications, IMediatorHandler mediator, IMapper mapper)
@@ -30,6 +32,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpGet]
         [Route("")]
+        [Authorize(Policy = Policies.NotAnonymous)]
         [SwaggerOperation(Summary = "Get all categories", Description = "Get a list of all categories")]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -44,6 +47,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpGet]
         [Route("{id}/products")]
+        [Authorize(Policy = Policies.NotAnonymous)]
         [SwaggerOperation(Summary = "Get products by category", Description = "Return a list of paginated products by pagination creteria and category id")]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -66,6 +70,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpPost]
         [Route("")]
+        [Authorize()]
         [SwaggerOperation(Summary = "Create a new category", Description = "Used to create a new category")]
         [Consumes("application/json")]
         [Produces("application/json")]

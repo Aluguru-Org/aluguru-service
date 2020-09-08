@@ -19,12 +19,14 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Mubbi.Marketplace.Rent.Usecases.ApplyVoucher;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Mubbi.Marketplace.API.Controllers.V1
 {
     [Route("api/v1/[controller]")]
     [ValidateModel]
     [ApiController]
+    [Authorize]
     public class OrderController : ApiController
     {
         public OrderController(INotificationHandler<DomainNotification> notifications, IMediatorHandler mediator, IMapper mapper)

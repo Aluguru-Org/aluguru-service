@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using static PampaDevs.Utils.Helpers.IdHelper;
 using static PampaDevs.Utils.Helpers.DateTimeHelper;
 using Mubbi.Marketplace.Register.Events;
+using System.Linq;
 
 namespace Mubbi.Marketplace.Register.Domain
 {
@@ -41,6 +42,23 @@ namespace Mubbi.Marketplace.Register.Domain
             AddEvent(new UserRoleUpdatedEvent(Id, this));
 
             return this;
+        }
+
+        public void AddClaims(IEnumerable<UserClaim> userClaims)
+        {
+            foreach(var userClaim in userClaims)
+            {
+                AddClaim(userClaim);
+            }
+        }
+
+        public void AddClaim(UserClaim userClaim)
+        {
+            if (_userClaims.Any(x => x.Type == userClaim.Type && x.Value == userClaim.Value)) return;
+
+            userClaim.AssociateUserRole(Id);
+
+            _userClaims.Add(userClaim);
         }
 
         protected override void ValidateEntity()

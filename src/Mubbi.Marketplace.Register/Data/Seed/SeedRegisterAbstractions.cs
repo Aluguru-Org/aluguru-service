@@ -20,41 +20,54 @@ namespace Mubbi.Marketplace.Register.Data.Seed
             {
                 var unitOfWork = serviceScope.ServiceProvider.GetRequiredService<IUnitOfWork>();
 
-                var userRoleQueryRepository = unitOfWork.QueryRepository<UserRole>();
+                var userRoleQueryRepository = unitOfWork.QueryRepository<UserRole>();                
+
                 var userQueryRepository = unitOfWork.QueryRepository<User>();
 
-                var adminRole = userRoleQueryRepository.FindOneAsync(x => x.Name == "Admin").Result;
-
-                if (adminRole == null)
+                List<UserClaim> adminClaims = new List<UserClaim>()
                 {
-                    var userRoleRepository = unitOfWork.Repository<UserRole>();
+                    new UserClaim(Claims.Product, ClaimValues.Read.ToString()),
+                    new UserClaim(Claims.Product, ClaimValues.Write.ToString()),
+                    new UserClaim(Claims.Category, ClaimValues.Read.ToString()),
+                    new UserClaim(Claims.Category, ClaimValues.Write.ToString()),
+                    new UserClaim(Claims.RentPeriod, ClaimValues.Read.ToString()),
+                    new UserClaim(Claims.RentPeriod, ClaimValues.Write.ToString()),
+                    new UserClaim(Claims.User, ClaimValues.Read.ToString()),
+                    new UserClaim(Claims.User, ClaimValues.Write.ToString()),
+                    new UserClaim(Claims.UserRole, ClaimValues.Read.ToString()),
+                    new UserClaim(Claims.UserRole, ClaimValues.Write.ToString()),
+                    new UserClaim(Claims.Order, ClaimValues.Read.ToString()),
+                    new UserClaim(Claims.Order, ClaimValues.Write.ToString()),
+                    new UserClaim(Claims.Voucher, ClaimValues.Read.ToString()),
+                    new UserClaim(Claims.Voucher, ClaimValues.Write.ToString())
+                };
+                UserRole adminRole = CreateRole("Admin", adminClaims, unitOfWork, userRoleQueryRepository);
 
-                    adminRole = new UserRole("Admin");
-
-                    userRoleRepository.Add(adminRole);
-                }
-
-                var companyRole = userRoleQueryRepository.FindOneAsync(x => x.Name == "Company").Result;
-
-                if (companyRole == null)
+                List<UserClaim> companyClaims = new List<UserClaim>()
                 {
-                    var userRoleRepository = unitOfWork.Repository<UserRole>();
+                    new UserClaim(Claims.Product, ClaimValues.Read.ToString()),
+                    new UserClaim(Claims.Product, ClaimValues.Write.ToString()),
+                    new UserClaim(Claims.Category, ClaimValues.Read.ToString()),
+                    new UserClaim(Claims.RentPeriod, ClaimValues.Read.ToString()),
+                    new UserClaim(Claims.User, ClaimValues.Read.ToString()),
+                    new UserClaim(Claims.User, ClaimValues.Write.ToString()),
+                    new UserClaim(Claims.Order, ClaimValues.Read.ToString()),
+                    new UserClaim(Claims.Voucher, ClaimValues.Read.ToString())
+                };
+                UserRole companyRole = CreateRole("Company", companyClaims, unitOfWork, userRoleQueryRepository);
 
-                    companyRole = new UserRole("Company");
-
-                    userRoleRepository.Add(companyRole);
-                }
-
-                var userRole = userRoleQueryRepository.FindOneAsync(x => x.Name == "User").Result;
-
-                if (userRole == null)
+                List<UserClaim> userClaims = new List<UserClaim>()
                 {
-                    var userRoleRepository = unitOfWork.Repository<UserRole>();
-
-                    userRole = new UserRole("User");
-
-                    userRoleRepository.Add(userRole);
-                }
+                    new UserClaim(Claims.Product, ClaimValues.Read.ToString()),
+                    new UserClaim(Claims.Category, ClaimValues.Read.ToString()),
+                    new UserClaim(Claims.RentPeriod, ClaimValues.Read.ToString()),
+                    new UserClaim(Claims.User, ClaimValues.Read.ToString()),
+                    new UserClaim(Claims.User, ClaimValues.Write.ToString()),
+                    new UserClaim(Claims.Order, ClaimValues.Read.ToString()),
+                    new UserClaim(Claims.Order, ClaimValues.Write.ToString()),
+                    new UserClaim(Claims.Voucher, ClaimValues.Read.ToString())
+                };
+                UserRole userRole = CreateRole("User", userClaims, unitOfWork, userRoleQueryRepository);                
 
                 var admin = userQueryRepository.FindOneAsync(x => x.Email == "contato@mubbi.com.br").Result;
 
@@ -71,11 +84,27 @@ namespace Mubbi.Marketplace.Register.Data.Seed
                 }
 
                 unitOfWork.SaveChanges();
-            }            
+            }
 
             return app;
         }
 
+        private static UserRole CreateRole(string roleName, List<UserClaim> userClaims, IUnitOfWork unitOfWork, IQueryRepository<UserRole> userRoleQueryRepository)
+        {
+            var role = userRoleQueryRepository.FindOneAsync(x => x.Name == roleName).Result;
 
+            if (role == null)
+            {
+                var userRoleRepository = unitOfWork.Repository<UserRole>();
+
+                role = new UserRole(roleName);
+
+                role.AddClaims(userClaims);
+
+                userRoleRepository.Add(role);
+            }
+
+            return role;
+        }
     }
 }
