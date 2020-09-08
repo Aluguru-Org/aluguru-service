@@ -32,7 +32,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpGet]
         [Route("")]
-        [Authorize(Policy = Policies.NotAnonymous)]
+        [AllowAnonymous]
         [SwaggerOperation(Summary = "Get all categories", Description = "Get a list of all categories")]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -47,7 +47,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpGet]
         [Route("{id}/products")]
-        [Authorize(Policy = Policies.NotAnonymous)]
+        [AllowAnonymous]
         [SwaggerOperation(Summary = "Get products by category", Description = "Return a list of paginated products by pagination creteria and category id")]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -70,7 +70,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpPost]
         [Route("")]
-        [Authorize()]
+        [Authorize(Policy = Policies.CategoryWriter)]
         [SwaggerOperation(Summary = "Create a new category", Description = "Used to create a new category")]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -86,6 +86,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpPut]
         [Route("{id}")]
+        [Authorize(Policy = Policies.CategoryWriter)]
         [SwaggerOperation(Summary = "Update a category", Description = "Used to update a existing category")]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -101,6 +102,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Policy = Policies.CategoryWriter)]
         [SwaggerOperation(Summary = "Delete a category", Description = "Delete a existing category and all it's sub categories. You need to inform the category Id.")]
         [Consumes("application/json")]
         [Produces("application/json")]

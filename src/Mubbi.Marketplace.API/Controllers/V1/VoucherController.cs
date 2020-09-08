@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Mubbi.Marketplace.API.Controllers.V1.Attributes;
@@ -10,6 +11,7 @@ using Mubbi.Marketplace.Rent.Usecases.CreateVoucher;
 using Mubbi.Marketplace.Rent.Usecases.DeleteVoucher;
 using Mubbi.Marketplace.Rent.Usecases.GetVouchers;
 using Mubbi.Marketplace.Rent.ViewModels;
+using Mubbi.Marketplace.Security;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -26,6 +28,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpGet]
         [Route("")]
+        [Authorize(Policy = Policies.VoucherReader)]
         [SwaggerOperation(Summary = "Get all vouchers", Description = "Get a list of all vouchers")]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -40,6 +43,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpPost]
         [Route("")]
+        [Authorize(Policy = Policies.VoucherWriter)]
         [SwaggerOperation(Summary = "Create a new voucher")]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -55,6 +59,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Policy = Policies.VoucherWriter)]
         [SwaggerOperation(Summary = "Delete a voucher", Description = "Delete a voucher if is not used by order, otherwise the request will return a error")]
         [Consumes("application/json")]
         [Produces("application/json")]

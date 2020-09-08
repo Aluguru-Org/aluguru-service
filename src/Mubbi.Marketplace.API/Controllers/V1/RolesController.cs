@@ -32,6 +32,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpGet]
         [Route("")]
+        [Authorize(Policy = Policies.UserRoleReader)]
         [SwaggerOperation(Summary = "Get all user roles")]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -46,6 +47,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpGet]
         [Route("{role}/users")]
+        [Authorize(Policy = Policies.UserRoleReader)]
         [SwaggerOperation(Summary = "Get users by role", Description = "Get a users by role")]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -60,7 +62,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpPost]
         [Route("")]
-        [Authorize]
+        [Authorize(Policy = Policies.UserRoleWriter)]
         [SwaggerOperation(Summary = "Create a user role")]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -77,7 +79,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpPut]
         [Route("{id}")]
-        [Authorize]
+        [Authorize(Policy = Policies.UserRoleWriter)]
         [SwaggerOperation(Summary = "Update a user role")]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -94,6 +96,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Policy = Policies.UserRoleWriter)]
         [SwaggerOperation(Summary = "Delete a user role")]
         [Consumes("application/json")]
         [Produces("application/json")]

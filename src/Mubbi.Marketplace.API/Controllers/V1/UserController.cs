@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Mubbi.Marketplace.API.Controllers.V1.Attributes;
@@ -11,6 +12,7 @@ using Mubbi.Marketplace.Register.Usecases.DeleteUser;
 using Mubbi.Marketplace.Register.Usecases.GetUserById;
 using Mubbi.Marketplace.Register.Usecases.UpadeUser;
 using Mubbi.Marketplace.Register.ViewModels;
+using Mubbi.Marketplace.Security;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
@@ -28,6 +30,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpGet]
         [Route("{id}")]
+        [Authorize(Policy = Policies.UserReader)]
         [SwaggerOperation(Summary = "Get user by id", Description = "Get a user by Id")]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -42,6 +45,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpPost]
         [Route("")]
+        [AllowAnonymous]
         [SwaggerOperation(Summary = "Create a user", Description = "Create a new user. You need to inform the name, role, document and address")]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -57,6 +61,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpPut]
         [Route("{id}")]
+        [Authorize(Policy = Policies.UserWriter)]
         [SwaggerOperation(Summary = "Update a user", Description = "Update a existing user. You need to inform may update the name, document and address")]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -74,6 +79,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Policy = Policies.UserWriter)]
         [SwaggerOperation(Summary = "Delete a user", Description = "Delete a existing user. You need to inform the user Id.")]
         [Consumes("application/json")]
         [Produces("application/json")]

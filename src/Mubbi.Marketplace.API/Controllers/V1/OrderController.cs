@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Mubbi.Marketplace.Rent.Usecases.ApplyVoucher;
 using Microsoft.AspNetCore.Authorization;
+using Mubbi.Marketplace.Security;
 
 namespace Mubbi.Marketplace.API.Controllers.V1
 {
@@ -34,6 +35,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         
         [HttpGet]
         [Route("")]
+        [Authorize(Policy = Policies.OrderReader)]
         [SwaggerOperation(Summary = "Get all orders", Description = "Get a list of all orders")]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -56,6 +58,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpGet]
         [Route("{id}")]
+        [Authorize(Policy = Policies.OrderReader)]
         [SwaggerOperation(Summary = "Get order by id", Description = "Return the target order")]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -70,6 +73,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpPost]
         [Route("")]
+        [Authorize(Policy = Policies.OrderWriter)]
         [SwaggerOperation(Summary = "Create Order", Description = "Create a new user order")]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -85,6 +89,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpPut]
         [Route("{id}")]
+        [Authorize(Policy = Policies.OrderWriter)]
         [SwaggerOperation(Summary = "Update Order", Description = "Update a existing order")]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -100,6 +105,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpPut]
         [Route("{id}/voucher")]
+        [Authorize(Policy = Policies.OrderWriter)]
         [SwaggerOperation(Summary = "Apply voucher", Description = "Apply a voucher to the order")]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -115,6 +121,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Policy = Policies.OrderWriter)]
         [SwaggerOperation(Summary = "Delete a order", Description = "Delete a existing order.")]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -129,6 +136,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpDelete]
         [Route("{id}/voucher")]
+        [Authorize(Policy = Policies.VoucherWriter)]
         [SwaggerOperation(Summary = "Delete a voucher ", Description = "Delete a existing voucher applyied to a order.")]
         [Consumes("application/json")]
         [Produces("application/json")]

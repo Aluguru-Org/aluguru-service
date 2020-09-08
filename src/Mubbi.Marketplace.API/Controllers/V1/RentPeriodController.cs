@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Mubbi.Marketplace.API.Controllers.V1.Attributes;
@@ -10,6 +11,7 @@ using Mubbi.Marketplace.Catalog.Usecases.GetRentPeriods;
 using Mubbi.Marketplace.Catalog.ViewModels;
 using Mubbi.Marketplace.Infrastructure.Bus.Communication;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
+using Mubbi.Marketplace.Security;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
@@ -27,6 +29,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpGet]
         [Route("")]
+        [Authorize(Policy = Policies.RentPeriodReader)]
         [SwaggerOperation(Summary = "Get all rent period", Description = "Get a list of all rent periods")]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -41,6 +44,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpPost]
         [Route("")]
+        [Authorize(Policy = Policies.RentPeriodWriter)]
         [SwaggerOperation(Summary = "Create a new rent period", Description = "Used to create a new rent period")]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -56,6 +60,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Policy = Policies.RentPeriodWriter)]
         [SwaggerOperation(Summary = "Delete a rent period", Description = "Delete a existing rent period")]
         [Consumes("application/json")]
         [Produces("application/json")]

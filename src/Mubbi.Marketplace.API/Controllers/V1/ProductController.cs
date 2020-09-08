@@ -9,17 +9,16 @@ using Mubbi.Marketplace.Catalog.Usecases.CreateProduct;
 using Mubbi.Marketplace.Catalog.Usecases.DeleteProduct;
 using Mubbi.Marketplace.Catalog.Usecases.GetProduct;
 using Mubbi.Marketplace.Catalog.Usecases.GetProducts;
-using Mubbi.Marketplace.Catalog.Usecases.GetProductsByCategory;
 using Mubbi.Marketplace.Catalog.Usecases.UpdateProduct;
 using Mubbi.Marketplace.Catalog.ViewModels;
 using Mubbi.Marketplace.Domain;
 using Mubbi.Marketplace.Infrastructure.Bus.Communication;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
+using Mubbi.Marketplace.Security;
 using Mubbi.Marketplace.Security.User;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Mubbi.Marketplace.API.Controllers.V1
@@ -39,6 +38,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpGet]
         [Route("")]
+        [AllowAnonymous]
         [SwaggerOperation(Summary = "Get products", Description = "Return a list of products")]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -60,6 +60,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpGet]
         [Route("{id}")]
+        [AllowAnonymous]
         [SwaggerOperation(Summary = "Get product by id", Description = "Return the target product")]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -74,6 +75,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpPost]
         [Route("")]
+        [Authorize(Policy = Policies.ProductWriter)]
         [SwaggerOperation(Summary = "Create Product", Description = "Create a new product in the catalog")]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -89,6 +91,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpPut]
         [Route("{id}")]
+        [Authorize(Policy = Policies.ProductWriter)]
         [SwaggerOperation(Summary = "Update Product", Description = "Update a existing product in the catalog")]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -104,6 +107,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Policy = Policies.ProductWriter)]
         [SwaggerOperation(Summary = "Delete a product", Description = "Delete a existing product.")]
         [Consumes("application/json")]
         [Produces("application/json")]
