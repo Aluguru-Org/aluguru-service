@@ -5,24 +5,37 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using static PampaDevs.Utils.Helpers.IdHelper;
+using static PampaDevs.Utils.Helpers.DateTimeHelper;
 
 namespace Mubbi.Marketplace.Register.Domain
 {
     public class Contact : Entity
     {
-        public Contact(Guid userId, string name, string phoneNumber, string email)
+        public Contact(string name, string phoneNumber, string email)
             : base(NewId())
         {
-            UserId = userId;
             Name = name;
             PhoneNumber = phoneNumber;
             Email = email;
         }
-        public Guid UserId { get; set; }
+        public Guid UserId { get; private set; }
         public string Name { get; private set; }
         public string PhoneNumber { get; private set; }
         public string Email { get; private set; }        
         public User User { get; set; }
+
+        internal void AssignUser(Guid userId)
+        {
+            UserId = userId;
+        }
+        public void UpdateContact(string name, string phoneNumber, string email)
+        {
+            Name = name;
+            PhoneNumber = phoneNumber;
+            Email = email;
+
+            DateUpdated = NewDateTime();
+        }
         protected override void ValidateEntity()
         {
             Ensure.That<DomainException>(!string.IsNullOrEmpty(Name), "The field Name from Contact cannot be created null or empty");

@@ -10,6 +10,7 @@ namespace Mubbi.Marketplace.Register.ViewModels
         public Guid UserId { get; set; }
         public string FullName { get; set; }
         public DocumentViewModel Document { get; set; }
+        public ContactViewModel Contact { get; set; }
         public AddressViewModel Address { get; set; }
     }
 }

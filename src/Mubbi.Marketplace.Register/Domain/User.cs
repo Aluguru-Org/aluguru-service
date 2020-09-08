@@ -14,7 +14,6 @@ namespace Mubbi.Marketplace.Register.Domain
 {
     public class User : AggregateRoot
     {
-        private readonly List<Contact> _contacts;
         private User() { }
 
         public User(Guid id, string email, string password, string fullName, Guid role) 
@@ -43,7 +42,7 @@ namespace Mubbi.Marketplace.Register.Domain
         public string Password { get; private set; }
         public string FullName { get; private set; }
         public Guid UserRoleId { get; private set; }
-        public IReadOnlyCollection<Contact> Contacts { get { return _contacts; } }
+        public Contact Contact { get; private set; }
         public Document Document { get; set; }
         public Address Address { get; set; }
         // EF Relational
@@ -54,6 +53,8 @@ namespace Mubbi.Marketplace.Register.Domain
             FullName = command.FullName;            
 
             UpdateDocument(command.Document);
+
+            UpdateContact(command.Contact);
 
             UpdateAddress(command.Address);
 
@@ -79,6 +80,22 @@ namespace Mubbi.Marketplace.Register.Domain
             else
             {
                 Document.UpdateDocument((EDocumentType)Enum.Parse(typeof(EDocumentType), document.DocumentType), document.Number);
+            }
+        }
+
+        private void UpdateContact(ContactViewModel contact)
+        {
+            if (contact == null) return;
+
+            if (Contact == null)
+            {
+                var newContact = new Contact(contact.Name, contact.PhoneNumber, contact.Email);
+                newContact.AssignUser(Id);
+                Contact = newContact;
+            }
+            else
+            {
+                Contact.UpdateContact(contact.Name, contact.PhoneNumber, contact.Email);
             }
         }
 

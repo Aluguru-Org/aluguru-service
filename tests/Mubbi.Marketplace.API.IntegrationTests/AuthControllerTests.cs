@@ -38,5 +38,7 @@ namespace Mubbi.Marketplace.API.IntegrationTests
             Assert.False(apiResponse.Success);
             Assert.True(apiResponse.Data[0] == "The E-mail test@test.com does not exist");
         }
+
+
     }
 }

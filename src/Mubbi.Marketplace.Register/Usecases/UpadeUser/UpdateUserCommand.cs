@@ -7,16 +7,18 @@ namespace Mubbi.Marketplace.Register.Usecases.UpadeUser
 {
     public class UpdateUserCommand : Command<UpdateUserCommandResponse>
     {
-        public UpdateUserCommand(Guid userId, string fullName, DocumentViewModel document, AddressViewModel address)
+        public UpdateUserCommand(Guid userId, string fullName, DocumentViewModel document, ContactViewModel contact, AddressViewModel address)
         {
             UserId = userId;
             FullName = fullName;
             Document = document;
+            Contact = contact;
             Address = address;
         }
         public Guid UserId { get; }
         public string FullName { get; }
         public DocumentViewModel Document { get; }
+        public ContactViewModel Contact { get; }
         public AddressViewModel Address { get; }
 
         public override bool IsValid()

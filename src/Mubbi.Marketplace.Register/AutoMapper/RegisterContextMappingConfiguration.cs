@@ -20,6 +20,15 @@ namespace Mubbi.Marketplace.Register.AutoMapper
 
         private void ViewModelToDomainConfiguration()
         {
+            CreateMap<ContactViewModel, Contact>()
+                .ConstructUsing((request, context) =>
+                {
+                    return new Contact(request.Name, request.PhoneNumber, request.Email);
+                })
+                .ForMember(x => x.User, c => c.Ignore())
+                .ForMember(x => x.DateCreated, c => c.Ignore())
+                .ForMember(x => x.DateUpdated, c => c.Ignore());
+
             CreateMap<DocumentViewModel, Document>()
                 .ConstructUsing((request, context) =>
                 {
@@ -72,7 +81,7 @@ namespace Mubbi.Marketplace.Register.AutoMapper
             CreateMap<UpdateUserViewModel, UpdateUserCommand>()
                 .ConstructUsing((x, rc) =>
                 {
-                    return new UpdateUserCommand(x.UserId, x.FullName, x.Document, x.Address);
+                    return new UpdateUserCommand(x.UserId, x.FullName, x.Document, x.Contact, x.Address);
                 })
                 .ForMember(x => x.Timestamp, c => c.Ignore())
                 .ForMember(x => x.MessageType, c => c.Ignore())
@@ -85,6 +94,7 @@ namespace Mubbi.Marketplace.Register.AutoMapper
             CreateMap<UserRole, UserRoleViewModel>();
 
             CreateMap<Address, AddressViewModel>();
+            CreateMap<Contact, ContactViewModel>();
             CreateMap<Document, DocumentViewModel>()
                 .ForMember(x => x.DocumentType, opt => opt.MapFrom(c => c.DocumentType.ToString()));
             CreateMap<User, UserViewModel>()
