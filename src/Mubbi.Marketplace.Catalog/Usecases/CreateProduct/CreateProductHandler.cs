@@ -37,7 +37,6 @@ namespace Mubbi.Marketplace.Catalog.Usecases.CreateProduct
                 command.MinRentDays, 
                 command.MaxRentDays, 
                 command.MinNoticeRentDays,
-                command.ImageUrls, 
                 command.CustomFields);
 
             product = await productRepository.AddAsync(product);

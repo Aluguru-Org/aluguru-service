@@ -19,10 +19,11 @@ namespace Mubbi.Marketplace.Catalog.Domain
 
         private Product()
         {
+            _imageUrls = new List<string>();
             _customFields = new List<CustomField>();
         }
 
-        public Product(Guid userId, Guid categoryId, Guid? subCategoryId, string name, string description, ERentType rentType, Price price, bool isActive, int stockQuantity, int minRentDays, int? maxRentDays, int? minNoticeRentDays, List<string> imageUrls, List<CustomField> customFields)
+        public Product(Guid userId, Guid categoryId, Guid? subCategoryId, string name, string description, ERentType rentType, Price price, bool isActive, int stockQuantity, int minRentDays, int? maxRentDays, int? minNoticeRentDays, List<CustomField> customFields)
             : base(NewId())
         {
             UserId = userId;
@@ -38,7 +39,7 @@ namespace Mubbi.Marketplace.Catalog.Domain
             MaxRentDays = maxRentDays;
             MinNoticeRentDays = minNoticeRentDays;
 
-            _imageUrls = imageUrls;
+            _imageUrls = new List<string>();
             _customFields = customFields;
 
             ValidateEntity();
@@ -64,6 +65,19 @@ namespace Mubbi.Marketplace.Catalog.Domain
 
         public void Active() => IsActive = true;
         public void Deactivate() => IsActive = false;
+
+        public void AddImage(string url)
+        {
+            Ensure.That<DomainException>(!string.IsNullOrEmpty(url), "The image url cannot be empty");
+            _imageUrls.Add(url);
+        }
+
+        public bool Remove(string url)
+        {
+            Ensure.That<DomainException>(!string.IsNullOrEmpty(url), "The image url to be removed cannot be empty");
+
+            return _imageUrls.Remove(url);
+        }
 
         public Product UpdateProduct(UpdateProductCommand command)
         {
@@ -101,9 +115,6 @@ namespace Mubbi.Marketplace.Catalog.Domain
             Price.UpdateSellPrice(command.Product.Price.SellPrice);
             Price.UpdateDailyRentPrice(command.Product.Price.DailyRentPrice);
             Price.UpdatePeriodRentPrices(command.Product.Price.PeriodRentPrices);
-
-            _imageUrls.Clear();
-            _imageUrls.AddRange(command.Product.ImageUrls);
 
             DateUpdated = NewDateTime();
 

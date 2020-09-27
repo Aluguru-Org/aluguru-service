@@ -56,7 +56,6 @@ namespace Mubbi.Marketplace.Catalog.AutoMapper
                         x.MinRentDays,
                         x.MaxRentDays,
                         x.MinNoticeRentDays,
-                        x.ImageUrls,
                         customFields);
                 });
 
@@ -80,7 +79,6 @@ namespace Mubbi.Marketplace.Catalog.AutoMapper
                         x.MinRentDays,
                         x.MaxRentDays,
                         x.MinNoticeRentDays,
-                        x.ImageUrls,
                         customFields);
                 })
                 .ForMember(x => x.Timestamp, c => c.Ignore())

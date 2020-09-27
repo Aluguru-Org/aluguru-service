@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Mubbi.Marketplace.API.Controllers.V1.Attributes;
 using Mubbi.Marketplace.API.Models;
+using Mubbi.Marketplace.Catalog.Usecases.AddProductImage;
 using Mubbi.Marketplace.Catalog.Usecases.CreateProduct;
 using Mubbi.Marketplace.Catalog.Usecases.DeleteProduct;
 using Mubbi.Marketplace.Catalog.Usecases.GetProduct;
@@ -118,6 +119,30 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         {
             await _mediatorHandler.SendCommand<DeleteProductCommand, bool>(new DeleteProductCommand(id));
             return DeleteResponse();
+        }
+
+        [HttpPut]
+        [Route("{id}/image")]
+        [Consumes("multipart/form-data")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task<ActionResult> UploadImage([FromRoute] Guid id, List<IFormFile> files)
+        {
+            var command = new AddProductImageCommand(id, files);
+            var response = await _mediatorHandler.SendCommand<AddProductImageCommand, AddProductImageCommandResponse>(command);
+            return PutResponse(response);
+        }
+
+        [HttpDelete]
+        [Route("{id}/image")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task DeleteImage([FromRoute] Guid id, [FromBody] string image)
+        {
+
         }
     }
 }

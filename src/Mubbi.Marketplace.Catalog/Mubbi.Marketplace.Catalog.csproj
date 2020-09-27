@@ -11,6 +11,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\Mubbi.Marketplace.Crosscutting.AzureStorage\Mubbi.Marketplace.Crosscutting.AzureStorage.csproj" />
     <ProjectReference Include="..\Mubbi.Marketplace.Infrastructure.Data\Mubbi.Marketplace.Infrastructure.Data.csproj" />
   </ItemGroup>
 

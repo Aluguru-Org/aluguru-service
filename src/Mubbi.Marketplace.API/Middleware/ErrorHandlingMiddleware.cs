@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Mubbi.Marketplace.API.Models;
 using Mubbi.Marketplace.Domain;
 using Mubbi.Marketplace.Infrastructure;
@@ -39,6 +40,7 @@ namespace Mubbi.Marketplace.API.Middleware
             };
 
             var result = JsonConvert.SerializeObject(new ApiResponse<List<string>>(false, "The request finished on error.", ex.GetErrorList()));
+
 
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = code;

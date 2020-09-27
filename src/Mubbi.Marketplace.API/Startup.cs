@@ -39,6 +39,7 @@ namespace Mubbi.Marketplace.API
                 services.AddDataComponents(Configuration);
             }
 
+            services.AddConfigurationSettings(Configuration);
             services.AddServiceComponents(typeof(Startup).Assembly);
 
             services.AddRouting(options => options.LowercaseUrls = true);

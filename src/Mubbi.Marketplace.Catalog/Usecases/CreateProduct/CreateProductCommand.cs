@@ -10,7 +10,7 @@ namespace Mubbi.Marketplace.Catalog.Usecases.CreateProduct
     public class CreateProductCommand : Command<CreateProductCommandResponse>
     {
         public CreateProductCommand(Guid userId, Guid categoryId, Guid? subCategoryId, string name, string description, ERentType rentType, Price price, bool isActive, int stockQuantity, 
-            int minRentDays, int? maxRentDays, int? minNoticeRentDays, List<string> imageUrls, List<CustomField> customFields)
+            int minRentDays, int? maxRentDays, int? minNoticeRentDays, List<CustomField> customFields)
         {
             UserId = userId;
             CategoryId = categoryId;
@@ -24,7 +24,6 @@ namespace Mubbi.Marketplace.Catalog.Usecases.CreateProduct
             MinRentDays = minRentDays;
             MaxRentDays = maxRentDays;
             MinNoticeRentDays = minNoticeRentDays;
-            ImageUrls = imageUrls;
             CustomFields = customFields;
         }
 
@@ -40,7 +39,6 @@ namespace Mubbi.Marketplace.Catalog.Usecases.CreateProduct
         public int MinRentDays { get; private set; }
         public int? MaxRentDays { get; private set; }
         public int? MinNoticeRentDays { get; private set; }
-        public List<string> ImageUrls { get; private set; }
         public List<CustomField> CustomFields { get; private set; }
 
         public override bool IsValid()
@@ -58,7 +56,6 @@ namespace Mubbi.Marketplace.Catalog.Usecases.CreateProduct
             RuleFor(x => x.CategoryId).NotEqual(Guid.Empty);
             RuleFor(x => x.Name).NotEmpty();
             RuleFor(x => x.Description).NotEmpty();
-            RuleFor(x => x.ImageUrls).NotEmpty();            
 
             When(x => x.MaxRentDays.HasValue, () =>
             {

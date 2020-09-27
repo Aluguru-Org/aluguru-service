@@ -49,6 +49,8 @@ using Mubbi.Marketplace.Rent.Usecases.CreateVoucher;
 using Mubbi.Marketplace.Rent.Usecases.DeleteVoucher;
 using Mubbi.Marketplace.Rent.Usecases.GetVouchers;
 using Mubbi.Marketplace.Rent.AutoMapper;
+using Mubbi.Marketplace.Crosscutting.AzureStorage;
+using Mubbi.Marketplace.Catalog.Usecases.AddProductImage;
 
 namespace Mubbi.Marketplace.Crosscutting.IoC
 {
@@ -69,6 +71,13 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
             services.AddDbContext<MubbiContext>(opt => opt.UseInMemoryDatabase(databaseName: "InMemoryDb"));
 
             services.AddScoped<IUnitOfWork, EfUnitOfWork<MubbiContext>>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddConfigurationSettings(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<AzureStorageSettings>(configuration.GetSection("AzureStorageSettings"));
 
             return services;
         }
@@ -111,6 +120,7 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
             services.AddScoped<IRequestHandler<GetProductCommand, GetProductCommandResponse>, GetProductHandler>();
             services.AddScoped<IRequestHandler<GetProductsCommand, GetProductsCommandResponse>, GetProductsHandler>();
             services.AddScoped<IRequestHandler<DeleteProductCommand, bool>, DeleteProductHandler>();
+            services.AddScoped<IRequestHandler<AddProductImageCommand, AddProductImageCommandResponse>, AddProductImageHandler>();
 
             // Category Command Handlers
             services.AddScoped<IRequestHandler<CreateCategoryCommand, CreateCategoryCommandResponse>, CreateCategoryHandler>();
@@ -140,6 +150,9 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
 
             // Payment Services
             services.AddScoped<PaymentIntentService>();
+
+            // Azure Storage
+            services.AddScoped<IAzureStorageGateway, AzureStorageGateway>();
 
             return services;
         }

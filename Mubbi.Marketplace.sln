@@ -78,6 +78,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.API.Integ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mubbi.Marketplace.Payment", "src\Mubbi.Marketplace.Payment\Mubbi.Marketplace.Payment.csproj", "{88706DAD-AF25-455F-807B-CC9709C0E8A1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mubbi.Marketplace.Crosscutting.AzureStorage", "src\Mubbi.Marketplace.Crosscutting.AzureStorage\Mubbi.Marketplace.Crosscutting.AzureStorage.csproj", "{8FCD2D54-0082-4E42-BBE1-70649BF8A5C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -148,6 +150,10 @@ Global
 		{88706DAD-AF25-455F-807B-CC9709C0E8A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88706DAD-AF25-455F-807B-CC9709C0E8A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88706DAD-AF25-455F-807B-CC9709C0E8A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FCD2D54-0082-4E42-BBE1-70649BF8A5C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FCD2D54-0082-4E42-BBE1-70649BF8A5C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FCD2D54-0082-4E42-BBE1-70649BF8A5C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FCD2D54-0082-4E42-BBE1-70649BF8A5C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -183,6 +189,7 @@ Global
 		{3D396D44-606B-4731-8DBB-992F46659465} = {EEDC09EE-E501-4644-9BD6-4FB6927A4E38}
 		{CC210668-6E18-4169-B09E-E1E1B90E06D0} = {3D396D44-606B-4731-8DBB-992F46659465}
 		{88706DAD-AF25-455F-807B-CC9709C0E8A1} = {9ED231E2-1754-4488-83A8-4A4C88CAAE8D}
+		{8FCD2D54-0082-4E42-BBE1-70649BF8A5C7} = {4583262A-C887-40E3-8D5E-2A0C67406B1F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7D3D5A09-667D-49DA-B8AA-6194FE3C3F51}
