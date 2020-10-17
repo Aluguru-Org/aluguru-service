@@ -72,7 +72,7 @@ namespace Mubbi.Marketplace.Catalog.Domain
             _imageUrls.Add(url);
         }
 
-        public bool Remove(string url)
+        public bool RemoveImage(string url)
         {
             Ensure.That<DomainException>(!string.IsNullOrEmpty(url), "The image url to be removed cannot be empty");
 

@@ -12,7 +12,8 @@ namespace Mubbi.Marketplace.Crosscutting.AzureStorage
 {
     public interface IAzureStorageGateway
     {
-        public Task<string> UploadFile(string container, string fileName, IFormFile file);
+        public Task<string> UploadBlob(string container, string fileName, IFormFile file);
+        public Task<bool> DeleteBlob(string container, string fileName);
     }
 
     public class AzureStorageGateway : IAzureStorageGateway
@@ -23,7 +24,7 @@ namespace Mubbi.Marketplace.Crosscutting.AzureStorage
             _settings = options.Value;
         }
 
-        public async Task<string> UploadFile(string container, string fileName, IFormFile file)
+        public async Task<string> UploadBlob(string container, string fileName, IFormFile file)
         {
             try
             {
@@ -41,6 +42,22 @@ namespace Mubbi.Marketplace.Crosscutting.AzureStorage
             catch(Exception ex)
             {
                 return null;
+            }
+        }
+        
+        public async Task<bool> DeleteBlob(string container, string fileName)
+        {
+            try
+            {
+                var containerClient = new BlobContainerClient(_settings.ConnectionString, container);
+
+                var response = await containerClient.DeleteBlobIfExistsAsync(fileName);
+
+                return response.Value;
+            }
+            catch (Exception ex)
+            {
+                return false;
             }
         }
     }

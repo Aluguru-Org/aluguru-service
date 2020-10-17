@@ -9,6 +9,7 @@ using Mubbi.Marketplace.Infrastructure.Bus.Communication;
 using Mubbi.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,7 +28,7 @@ namespace Mubbi.Marketplace.Catalog.Usecases.AddProductImage
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _mediatorHandler = mediatorHandler;
-            _azureStorageGateway = azureStorageGateway;
+            _azureStorageGateway = azureStorageGateway;            
         }
 
         public async Task<AddProductImageCommandResponse> Handle(AddProductImageCommand command, CancellationToken cancellationToken)
@@ -44,9 +45,15 @@ namespace Mubbi.Marketplace.Catalog.Usecases.AddProductImage
             }
 
             foreach(var file in command.Files)
-            {
-                var fileName = $"{product.Id}_{file.Name}_{NewDateTime()}";
-                var url = await _azureStorageGateway.UploadFile("img", fileName, file);
+            {                
+                var temp = file.FileName.Split('.');
+
+                var fileName = string.Join("", temp.Take(temp.Length - 1));
+                var fileExtension = temp[temp.Length - 1];
+
+                var blobName = $"{product.Id}_{fileName}_{ToUnixEpochDate(NewDateTime())}.{fileExtension}";
+
+                var url = await _azureStorageGateway.UploadBlob("img", blobName, file);
 
                 if (!string.IsNullOrEmpty(url))
                 {
@@ -61,5 +68,7 @@ namespace Mubbi.Marketplace.Catalog.Usecases.AddProductImage
                 Product = _mapper.Map<ProductViewModel>(product)
             };
         }
+
+        private long ToUnixEpochDate(DateTime date) => (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
     }
 }

@@ -8,6 +8,7 @@ using Mubbi.Marketplace.API.Models;
 using Mubbi.Marketplace.Catalog.Usecases.AddProductImage;
 using Mubbi.Marketplace.Catalog.Usecases.CreateProduct;
 using Mubbi.Marketplace.Catalog.Usecases.DeleteProduct;
+using Mubbi.Marketplace.Catalog.Usecases.DeleteProductImage;
 using Mubbi.Marketplace.Catalog.Usecases.GetProduct;
 using Mubbi.Marketplace.Catalog.Usecases.GetProducts;
 using Mubbi.Marketplace.Catalog.Usecases.UpdateProduct;
@@ -137,12 +138,16 @@ namespace Mubbi.Marketplace.API.Controllers.V1
 
         [HttpDelete]
         [Route("{id}/image")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task DeleteImage([FromRoute] Guid id, [FromBody] string image)
+        public async Task<ActionResult> DeleteImage([FromRoute] Guid id, [FromBody] List<string> imageUrls)
         {
-
+            var command = new DeleteProductImageCommand(id, imageUrls);
+            var response = await _mediatorHandler.SendCommand<DeleteProductImageCommand, DeleteProductImageCommandResponse>(command);
+            return DeleteResponse(response);
         }
     }
 }
