@@ -10,6 +10,8 @@ using Mubbi.Marketplace.Register.Domain.Repositories;
 using System.Threading;
 using System.Threading.Tasks;
 using Mubbi.Marketplace.Security;
+using Mubbi.Marketplace.Crosscutting.Mailing;
+using Mubbi.Marketplace.Register.Templates;
 
 namespace Mubbi.Marketplace.Register.Usecases.CreateUser
 {
@@ -18,12 +20,14 @@ namespace Mubbi.Marketplace.Register.Usecases.CreateUser
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IMediatorHandler _mediatorHandler;
+        private readonly IMailingService _mailingService;
 
-        public CreateUserHandler(IUnitOfWork unitOfWork, IMapper mapper, IMediatorHandler mediatorHandler)
+        public CreateUserHandler(IUnitOfWork unitOfWork, IMapper mapper, IMediatorHandler mediatorHandler, IMailingService mailingService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _mediatorHandler = mediatorHandler;
+            _mailingService = mailingService;
         }
 
         public async Task<CreateUserCommandResponse> Handle(CreateUserCommand command, CancellationToken cancellationToken)
@@ -33,7 +37,7 @@ namespace Mubbi.Marketplace.Register.Usecases.CreateUser
             if (await queryRepository.GetUserByEmailAsync(command.Email) != null)
             {
                 await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"The E-mail {command.Email} is already registered"));
-                return new CreateUserCommandResponse();
+                return default;
             }
 
             var roleQueryRepository = _unitOfWork.QueryRepository<UserRole>();
@@ -44,10 +48,17 @@ namespace Mubbi.Marketplace.Register.Usecases.CreateUser
             if (role == null)
             {
                 await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"The role {command.Role} does not exist"));
-                return new CreateUserCommandResponse();
+                return default;
             }
 
             var user = new User(command.Email, Cryptography.Encrypt(command.Password), command.FullName, role.Id);
+
+            var message = string.Format(EmailTemplates.RegisterUser, user.Email,"www.aluguru.com/login/validacao");
+            if (!await _mailingService.SendMessageHtml("Aluguru", "noreply@aluguru.com", user.FullName, user.Email, "Bem vindo a Aluguru!", message))
+            {
+                await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"Failed to send e-mail to {user.Email}"));
+                return default;
+            }            
 
             user = await userRepository.AddAsync(user);
 

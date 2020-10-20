@@ -7,7 +7,6 @@ using System.Text.RegularExpressions;
 using Mubbi.Marketplace.Register.Events;
 using static PampaDevs.Utils.Helpers.IdHelper;
 using static PampaDevs.Utils.Helpers.DateTimeHelper;
-using System.Collections.Generic;
 using Mubbi.Marketplace.Register.ViewModels;
 
 namespace Mubbi.Marketplace.Register.Domain
@@ -37,7 +36,7 @@ namespace Mubbi.Marketplace.Register.Domain
 
             ValidateEntity();
         }
-        
+        public bool IsActive { get; private set; }
         public string Email { get; private set; }
         public string Password { get; private set; }
         public string FullName { get; private set; }
@@ -47,6 +46,10 @@ namespace Mubbi.Marketplace.Register.Domain
         public Address Address { get; set; }
         // EF Relational
         public virtual UserRole UserRole { get; set; }
+
+        public void Activate() => IsActive = true;
+
+        public void Deactivate() => IsActive = false;
 
         public User UpdateUser(UpdateUserCommand command)
         {
@@ -65,6 +68,13 @@ namespace Mubbi.Marketplace.Register.Domain
             AddEvent(new UserUpdatedEvent(Id, this));
 
             return this;
+        }
+
+        public void UpdatePassword(string newPassword)
+        {
+            Ensure.That<DomainException>(newPassword.IsBase64(), "The field Password from User is not in Base64 format");
+
+            Password = newPassword;
         }
 
         private void UpdateDocument(DocumentViewModel document)

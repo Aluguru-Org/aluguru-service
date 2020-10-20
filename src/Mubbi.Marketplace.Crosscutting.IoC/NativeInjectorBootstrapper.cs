@@ -51,6 +51,8 @@ using Mubbi.Marketplace.Rent.Usecases.GetVouchers;
 using Mubbi.Marketplace.Rent.AutoMapper;
 using Mubbi.Marketplace.Crosscutting.AzureStorage;
 using Mubbi.Marketplace.Catalog.Usecases.AddProductImage;
+using Mubbi.Marketplace.Crosscutting.Mailing;
+using Mubbi.Marketplace.Register.Usecases.UpdateUserPassword;
 
 namespace Mubbi.Marketplace.Crosscutting.IoC
 {
@@ -78,6 +80,7 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
         public static IServiceCollection AddConfigurationSettings(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<AzureStorageSettings>(configuration.GetSection("AzureStorageSettings"));
+            services.Configure<MailingSettings>(configuration.GetSection("MailingSettings"));
 
             return services;
         }
@@ -112,6 +115,7 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
             services.AddScoped<IRequestHandler<GetUserByIdCommand, GetUserByIdCommandResponse>, GetUserByIdHandler>();
             services.AddScoped<IRequestHandler<CreateUserCommand, CreateUserCommandResponse>, CreateUserHandler>();
             services.AddScoped<IRequestHandler<UpdateUserCommand, UpdateUserCommandResponse>, UpdateUserHandler>();
+            services.AddScoped<IRequestHandler<UpdateUserPasswordCommand, bool>, UpdateUserPasswordHandler>();
             services.AddScoped<IRequestHandler<DeleteUserCommand, bool>, DeleteUserHandler>();
 
             // Product Command Handlers
@@ -151,8 +155,9 @@ namespace Mubbi.Marketplace.Crosscutting.IoC
             // Payment Services
             services.AddScoped<PaymentIntentService>();
 
-            // Azure Storage
+            // CrossCutting
             services.AddScoped<IAzureStorageGateway, AzureStorageGateway>();
+            services.AddScoped<IMailingService, MailingService>();
 
             return services;
         }

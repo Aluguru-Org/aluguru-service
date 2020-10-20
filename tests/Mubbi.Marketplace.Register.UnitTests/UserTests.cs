@@ -22,7 +22,7 @@ namespace Mubbi.Marketplace.Register.UnitTests
         public void CreateUser_WhenInvalidEmail_ShouldThrowDomainException()
         {
             Assert.Throws<DomainException>(() => new User(new Randomizer().String(), Cryptography.Encrypt("really"), "Mubbi Admin", Guid.NewGuid()));
-        }
+        }        
 
         [Fact]
         public void CreateUser_WhenInvalidPassword_ShouldThrowDomainException()
@@ -40,6 +40,22 @@ namespace Mubbi.Marketplace.Register.UnitTests
         public void CreateUser_WhenInvalidRoleIdGuid_ShouldThrowDomainException()
         {
             Assert.Throws<DomainException>(() => new User("admin@mubbi.com", Cryptography.Encrypt("really"), "", Guid.Empty));
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("wd2rtW88mWx3EOc1JFX66v634WEQE")]
+        public void UpdatePassword_WhenInvalidPassword_ShouldThrowDomainException(string password)
+        {
+            var user = CreateUser();
+            Assert.Throws<DomainException>(() => user.UpdatePassword(password));
+        }
+
+        [Fact]
+        public void UpdatePassword_WhenValidPassword_ShouldNotThrowDomainException()
+        {
+            var user = CreateUser();
+            user.UpdatePassword("24/74c0ZcIuP++wd2rtW88mWx3EOc1JFX66v634WEQE=");
         }
 
         private static User CreateUser()

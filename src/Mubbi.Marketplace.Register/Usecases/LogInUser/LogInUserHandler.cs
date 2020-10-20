@@ -42,6 +42,12 @@ namespace Mubbi.Marketplace.Register.Usecases.LogInUser
                 return new LogInUserCommandResponse();
             }
 
+            if (!user.IsActive)
+            {
+                await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"The E-mail '{command.Email}' is not active."));
+                return new LogInUserCommandResponse();
+            }
+
             var token = _tokenBuilderService.BuildToken(user, options =>
             {
                 options.WithUserClaims();

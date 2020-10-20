@@ -11,8 +11,10 @@ using Mubbi.Marketplace.Register.Usecases.CreateUser;
 using Mubbi.Marketplace.Register.Usecases.DeleteUser;
 using Mubbi.Marketplace.Register.Usecases.GetUserById;
 using Mubbi.Marketplace.Register.Usecases.UpadeUser;
+using Mubbi.Marketplace.Register.Usecases.UpdateUserPassword;
 using Mubbi.Marketplace.Register.ViewModels;
 using Mubbi.Marketplace.Security;
+using Mubbi.Marketplace.Security.User;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
@@ -25,8 +27,12 @@ namespace Mubbi.Marketplace.API.Controllers.V1
     [ApiController]
     public class UserController : ApiController
     {
-        public UserController(INotificationHandler<DomainNotification> notifications, IMediatorHandler mediatorHandler, IMapper mapper)
-            : base(notifications, mediatorHandler, mapper) { }
+        private readonly IAspNetUser _aspNetUser;
+        public UserController(INotificationHandler<DomainNotification> notifications, IMediatorHandler mediatorHandler, IMapper mapper, IAspNetUser aspNetUser)
+            : base(notifications, mediatorHandler, mapper) 
+        {
+            _aspNetUser = aspNetUser;
+        }
 
         [HttpGet]
         [Route("{id}")]
@@ -76,6 +82,23 @@ namespace Mubbi.Marketplace.API.Controllers.V1
             var response = await _mediatorHandler.SendCommand<UpdateUserCommand, UpdateUserCommandResponse>(command);
             return PutResponse(response);
         }
+
+        [HttpPut]
+        [Route("{id}/password")]
+        [Authorize(Policy = Policies.UserWriter)]
+        [SwaggerOperation(Summary = "Update a user password", Description = "Update a existing user password.")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiResponse<bool>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task<ActionResult> UpdatePassword([FromRoute] Guid id, [FromBody] UpdateUserPasswordViewModel viewModel)
+        {
+            var command = new UpdateUserPasswordCommand(_aspNetUser.GetUserId(), id, viewModel.Password);
+            await _mediatorHandler.SendCommand<UpdateUserPasswordCommand, bool>(command);
+            return PutResponse();
+        }
+
 
         [HttpDelete]
         [Route("{id}")]
