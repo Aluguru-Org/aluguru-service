@@ -9,13 +9,13 @@ namespace Mubbi.Marketplace.Catalog.Usecases.GetProductsByCategory
 {
     public class GetProductsByCategoryCommand : Command<GetProductsByCategoryCommandResponse>
     {
-        public GetProductsByCategoryCommand(Guid categoryid, PaginateCriteria paginateCriteria)
+        public GetProductsByCategoryCommand(string category, PaginateCriteria paginateCriteria)
         {
-            CategoryId = categoryid;
+            Category = category;
             PaginateCriteria = paginateCriteria;
         }
 
-        public Guid CategoryId { get; private set; }
+        public string Category { get; private set; }
         public PaginateCriteria PaginateCriteria { get; private set; }
 
         public override bool IsValid()
@@ -29,7 +29,7 @@ namespace Mubbi.Marketplace.Catalog.Usecases.GetProductsByCategory
     {
         public GetProductByCategoryCommandValidator()
         {
-            RuleFor(x => x.CategoryId).NotEqual(Guid.Empty);
+            RuleFor(x => x.Category).NotEmpty();
         }
     }
 

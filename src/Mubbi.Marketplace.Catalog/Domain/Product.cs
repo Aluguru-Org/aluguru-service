@@ -177,8 +177,6 @@ namespace Mubbi.Marketplace.Catalog.Domain
                 Ensure.That<DomainException>(MinNoticeRentDays.Value > 0, "The field MinNoticeRentDays from Product cannot be less than one");
             }
 
-            Ensure.That<DomainException>(ImageUrls != null && ImageUrls.Count >= 1, "The field ImageUrls from Product cannot be empty");
-
             if (SubCategoryId.HasValue)
             {
                 Ensure.That<DomainException>(SubCategoryId != Guid.Empty, "The field SubCategoryId from Product cannot be empty");

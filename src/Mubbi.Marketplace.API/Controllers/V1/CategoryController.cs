@@ -46,7 +46,7 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         }
 
         [HttpGet]
-        [Route("{id}/products")]
+        [Route("{category}/products")]
         [AllowAnonymous]
         [SwaggerOperation(Summary = "Get products by category", Description = "Return a list of paginated products by pagination creteria and category id")]
         [Consumes("application/json")]
@@ -55,14 +55,14 @@ namespace Mubbi.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> GetProductsByCategory(
-            [SwaggerParameter("The category Id", Required = true)][FromRoute] Guid id,
+            [SwaggerParameter("The category name", Required = true)][FromRoute] string category,
             [SwaggerParameter("The page to be displayed", Required = false)][FromQuery] int? currentPage,
             [SwaggerParameter("The max number of pages that should be returned, the default value is 50", Required = false)][FromQuery] int? pageSize,
             [SwaggerParameter("If the product should be sorted by property, the default value is sort property is 'Id'", Required = false)][FromQuery] string sortBy,
             [SwaggerParameter("If the sort order should be ascendant or descendant, the default value is descendant", Required = false)][FromQuery] string sortOrder)
         {
             var paginateCriteria = new PaginateCriteria(currentPage, pageSize, sortBy, sortOrder);
-            var command = new GetProductsByCategoryCommand(id, paginateCriteria);
+            var command = new GetProductsByCategoryCommand(category, paginateCriteria);
 
             var response = await _mediatorHandler.SendCommand<GetProductsByCategoryCommand, GetProductsByCategoryCommandResponse>(command);
             return GetResponse(response);

@@ -28,8 +28,8 @@ namespace Mubbi.Marketplace.Catalog.Usecases.GetProductsByCategory
             var paginatedProducts = await queryRepository.FindAllAsync(
                 request.PaginateCriteria,
                 product => product,
-                product => product.CategoryId == request.CategoryId,
-                product => product.Include(x => x.CustomFields));
+                product => product.Category.Name.Trim().ToLower() == request.Category.Trim().ToLower(),
+                product => product.Include(x => x.Category).Include(x => x.CustomFields));
 
             return new GetProductsByCategoryCommandResponse()
             {
