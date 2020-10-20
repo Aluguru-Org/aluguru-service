@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Aluguru.Marketplace.Crosscutting.Mailing\Aluguru.Marketplace.Crosscutting.Mailing.csproj" />
+    <ProjectReference Include="..\Aluguru.Marketplace.Infrastructure.Bus\Aluguru.Marketplace.Infrastructure.Bus.csproj" />
+    <ProjectReference Include="..\Aluguru.Marketplace.Infrastructure.Data\Aluguru.Marketplace.Infrastructure.Data.csproj" />
+    <ProjectReference Include="..\Aluguru.Marketplace.Security\Aluguru.Marketplace.Security.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Usecases\ActivateUser\" />
+  </ItemGroup>
+
+</Project>

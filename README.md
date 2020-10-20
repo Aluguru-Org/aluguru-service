@@ -1,14 +1,14 @@
-# mubbi-service
+# aluguru-service
 
-![Diagram](mubbi-service-architecture.png)
+![Diagram](aluguru-service-architecture.png)
 
 # User Secrets
 
 In order to fully test your application, you will have to setup the secrets (sensitive data that are not replicated to the repository).
-You can get access to them by talking to any Mubbi core team member.
+You can get access to them by talking to any Aluguru core team member.
 
 To setup your secrets do the following:
-1. On the project folder, run `dotnet user-secrets init --project .\src\Mubbi.Marketplace.API\`
+1. On the project folder, run `dotnet user-secrets init --project .\src\Aluguru.Marketplace.API\`
 2. Go to the {PATH} and add the secrets on to the secrets.json file
 
 The {PATH} refers to:

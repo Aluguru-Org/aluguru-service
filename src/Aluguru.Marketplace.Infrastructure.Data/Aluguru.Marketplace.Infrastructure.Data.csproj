@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <SonarQubeExclude>true</SonarQubeExclude>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Aluguru.Marketplace.Domain\Aluguru.Marketplace.Domain.csproj" />
+    <ProjectReference Include="..\Aluguru.Marketplace.Infrastructure.Bus\Aluguru.Marketplace.Infrastructure.Bus.csproj" />
+    <ProjectReference Include="..\Aluguru.Marketplace.Infrastructure\Aluguru.Marketplace.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
