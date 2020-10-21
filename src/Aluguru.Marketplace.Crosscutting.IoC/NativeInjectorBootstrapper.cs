@@ -55,6 +55,7 @@ using Aluguru.Marketplace.Crosscutting.Mailing;
 using Aluguru.Marketplace.Register.Usecases.UpdateUserPassword;
 using Aluguru.Marketplace.Communication.IntegrationEvents;
 using Aluguru.Marketplace.Notification.Handlers;
+using Aluguru.Marketplace.Register.Usecases.ActivateUser;
 
 namespace Aluguru.Marketplace.Crosscutting.IoC
 {
@@ -118,6 +119,7 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             services.AddScoped<IRequestHandler<CreateUserCommand, CreateUserCommandResponse>, CreateUserHandler>();
             services.AddScoped<IRequestHandler<UpdateUserCommand, UpdateUserCommandResponse>, UpdateUserHandler>();
             services.AddScoped<IRequestHandler<UpdateUserPasswordCommand, bool>, UpdateUserPasswordHandler>();
+            services.AddScoped<IRequestHandler<ActivateUserCommand, bool>, ActivateUserHandler>();
             services.AddScoped<IRequestHandler<DeleteUserCommand, bool>, DeleteUserHandler>();
             
             // Product Command Handlers
