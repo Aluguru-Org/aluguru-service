@@ -21,25 +21,31 @@ namespace Aluguru.Marketplace.Register.UnitTests
         [Fact]
         public void CreateUser_WhenInvalidEmail_ShouldThrowDomainException()
         {
-            Assert.Throws<DomainException>(() => new User(new Randomizer().String(), Cryptography.Encrypt("really"), "Aluguru Admin", Guid.NewGuid()));
+            Assert.Throws<DomainException>(() => new User(new Randomizer().String(), Cryptography.Encrypt("really"), "Aluguru Admin", Guid.NewGuid(), Cryptography.CreateRandomHash()));
         }        
 
         [Fact]
         public void CreateUser_WhenInvalidPassword_ShouldThrowDomainException()
         {
-            Assert.Throws<DomainException>(() => new User("admin@aluguru.com", "really", "Felipe de Almeida", Guid.NewGuid()));
+            Assert.Throws<DomainException>(() => new User("admin@aluguru.com", "really", "Felipe de Almeida", Guid.NewGuid(), Cryptography.CreateRandomHash()));
         }
 
         [Fact]
         public void CreateUser_WhenInvalidFullName_ShouldThrowDomainException()
         {
-            Assert.Throws<DomainException>(() => new User("admin@aluguru.com", Cryptography.Encrypt("really"), "", Guid.NewGuid()));
+            Assert.Throws<DomainException>(() => new User("admin@aluguru.com", Cryptography.Encrypt("really"), "", Guid.NewGuid(), Cryptography.CreateRandomHash()));
         }
 
         [Fact]
         public void CreateUser_WhenInvalidRoleIdGuid_ShouldThrowDomainException()
         {
-            Assert.Throws<DomainException>(() => new User("admin@aluguru.com", Cryptography.Encrypt("really"), "", Guid.Empty));
+            Assert.Throws<DomainException>(() => new User("admin@aluguru.com", Cryptography.Encrypt("really"), "", Guid.Empty, Cryptography.CreateRandomHash()));
+        }
+
+        [Fact]
+        public void CreateUser_WhenInvalidActivationHash_ShouldThrowDomainException()
+        {
+            Assert.Throws<DomainException>(() => new User("admin@aluguru.com", Cryptography.Encrypt("really"), "", Guid.NewGuid(), ""));
         }
 
         [Theory]
@@ -58,6 +64,24 @@ namespace Aluguru.Marketplace.Register.UnitTests
             user.UpdatePassword("24/74c0ZcIuP++wd2rtW88mWx3EOc1JFX66v634WEQE=");
         }
 
+        [Fact]
+        public void Activate_WhenUserIsInactive_ShouldActivateUser()
+        {
+            var user = CreateUser();
+
+            user.Activate(user.ActivationHash);
+
+            Assert.True(user.IsActive);
+        }
+
+        [Fact]
+        public void Activate_WhenUserIsInactive_AndInvalidActivationHash_ShouldThrowDomainExpception()
+        {
+            var user = CreateUser();
+
+            Assert.Throws<Exception>(() => user.Activate(string.Empty));
+        }
+
         private static User CreateUser()
         {
             return new Faker<User>()
@@ -65,7 +89,8 @@ namespace Aluguru.Marketplace.Register.UnitTests
                     x.Internet.Email(),
                     Cryptography.Encrypt(x.Internet.Password()),
                     x.Name.FullName(x.PickRandom<Bogus.DataSets.Name.Gender>()),
-                    x.Random.Guid()));
+                    x.Random.Guid(),
+                    Cryptography.CreateRandomHash()));
         }
     }
 }

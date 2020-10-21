@@ -82,7 +82,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aluguru.Marketplace.Crosscu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aluguru.Marketplace.Crosscutting.Mailing", "src\Aluguru.Marketplace.Crosscutting.Mailing\Aluguru.Marketplace.Crosscutting.Mailing.csproj", "{A7C6EFDF-9236-4A13-A0ED-CFCB70705BCB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notifications", "Notifications", "{4CC4782B-6653-434B-80CB-8AA7232F9477}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notification", "Notification", "{4CC4782B-6653-434B-80CB-8AA7232F9477}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aluguru.Marketplace.Notification", "src\Aluguru.Marketplace.Notification\Aluguru.Marketplace.Notification.csproj", "{F9D35B27-20A3-425C-B241-0DFA3A10ED0D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Communication", "Communication", "{C199B04B-4282-4A97-82D1-C07B596BF391}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aluguru.Marketplace.Communication", "src\Aluguru.Marketplace.Communication\Aluguru.Marketplace.Communication.csproj", "{D3D46120-513A-402F-9F39-D92A6A1265A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -162,6 +168,14 @@ Global
 		{A7C6EFDF-9236-4A13-A0ED-CFCB70705BCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7C6EFDF-9236-4A13-A0ED-CFCB70705BCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7C6EFDF-9236-4A13-A0ED-CFCB70705BCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9D35B27-20A3-425C-B241-0DFA3A10ED0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9D35B27-20A3-425C-B241-0DFA3A10ED0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9D35B27-20A3-425C-B241-0DFA3A10ED0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9D35B27-20A3-425C-B241-0DFA3A10ED0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3D46120-513A-402F-9F39-D92A6A1265A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3D46120-513A-402F-9F39-D92A6A1265A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3D46120-513A-402F-9F39-D92A6A1265A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3D46120-513A-402F-9F39-D92A6A1265A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -200,6 +214,9 @@ Global
 		{8FCD2D54-0082-4E42-BBE1-70649BF8A5C7} = {4583262A-C887-40E3-8D5E-2A0C67406B1F}
 		{A7C6EFDF-9236-4A13-A0ED-CFCB70705BCB} = {4583262A-C887-40E3-8D5E-2A0C67406B1F}
 		{4CC4782B-6653-434B-80CB-8AA7232F9477} = {6A7680F2-87DF-473E-AB5B-FF3DD7081723}
+		{F9D35B27-20A3-425C-B241-0DFA3A10ED0D} = {4CC4782B-6653-434B-80CB-8AA7232F9477}
+		{C199B04B-4282-4A97-82D1-C07B596BF391} = {095C17CE-6F36-4CBB-8036-D361C4206076}
+		{D3D46120-513A-402F-9F39-D92A6A1265A1} = {C199B04B-4282-4A97-82D1-C07B596BF391}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7D3D5A09-667D-49DA-B8AA-6194FE3C3F51}

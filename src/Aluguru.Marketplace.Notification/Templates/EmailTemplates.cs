@@ -1,4 +1,4 @@
-﻿namespace Aluguru.Marketplace.Register.Templates
+﻿namespace Aluguru.Marketplace.Notification.Templates
 {
     public static class EmailTemplates
     {

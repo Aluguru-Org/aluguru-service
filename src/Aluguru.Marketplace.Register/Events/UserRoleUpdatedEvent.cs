@@ -1,8 +1,6 @@
 ﻿using Aluguru.Marketplace.Infrastructure.Bus.Messages;
 using Aluguru.Marketplace.Register.Domain;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Aluguru.Marketplace.Register.Events
 {

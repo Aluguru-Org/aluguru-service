@@ -124,6 +124,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
 
         [HttpPut]
         [Route("{id}/image")]
+        [Authorize(Policy = Policies.ProductWriter)]
         [Consumes("multipart/form-data")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -138,6 +139,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
 
         [HttpDelete]
         [Route("{id}/image")]
+        [Authorize(Policy = Policies.ProductWriter)]
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]

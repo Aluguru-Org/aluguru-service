@@ -19,26 +19,26 @@ namespace Aluguru.Marketplace.API.IntegrationTests
     public class OrderControllerTests
     {
         [Fact]
-        public async Task GetOrderById_ShouldPass()
+        public void GetOrderById_ShouldPass()
         {
             var client = Server.Instance.CreateClient();
 
-            await client.LogInUser();
+            client.LogInUser().Wait();
 
             var mockGuid = Guid.NewGuid();
-            var response = await client.GetAsync($"/api/v1/order/{mockGuid}");
+            var response = client.GetAsync($"/api/v1/order/{mockGuid}").Result;
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
         [Fact]
-        public async Task CreateOrder_ShouldPass()
+        public void CreateOrder_ShouldPass()
         {
             var client = Server.Instance.CreateClient();
 
-            await client.LogInUser();
+            client.LogInUser().Wait();
 
-            var product = await CreateProduct(client);
+            var product = CreateProduct(client).Result;
 
             var viewModel = new CreateOrderViewModel()
             {
@@ -63,7 +63,7 @@ namespace Aluguru.Marketplace.API.IntegrationTests
                     }
                 }
             };
-            var response = await client.PostAsync($"/api/v1/order", viewModel.ToStringContent());
+            var response = client.PostAsync($"/api/v1/order", viewModel.ToStringContent()).Result;
 
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }

@@ -15,14 +15,14 @@ namespace Aluguru.Marketplace.API.IntegrationTests
     public class UserControllerTests
     {
         [Fact]
-        public async Task GetUserById_ShouldPass()
+        public void GetUserById_ShouldPass()
         {
             var client = Server.Instance.CreateClient();
 
-            await client.LogInUser();
+            client.LogInUser().Wait();
 
             var userId = "96d1fb97-47e9-4ad5-b07e-448f88defd9c";
-            var response = await client.GetAsync($"/api/v1/user/{userId}");
+            var response = client.GetAsync($"/api/v1/user/{userId}").Result;
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -32,7 +32,7 @@ namespace Aluguru.Marketplace.API.IntegrationTests
         }
 
         [Fact]
-        public async Task CreateUser_ShouldPass()
+        public void CreateUser_ShouldPass()
         {
             var client = Server.Instance.CreateClient();
 
@@ -44,17 +44,17 @@ namespace Aluguru.Marketplace.API.IntegrationTests
                 Role = "User"
             };
 
-            var response = await client.PostAsync($"/api/v1/user", viewModel.ToStringContent());
+            var response = client.PostAsync($"/api/v1/user", viewModel.ToStringContent()).Result;
 
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
 
         [Fact]
-        public async Task UpdateUser_ShouldPass()
+        public void UpdateUser_ShouldPass()
         {
             var client = Server.Instance.CreateClient();
 
-            await client.LogInUser();
+            client.LogInUser().Wait();
 
             var userId = "96d1fb97-47e9-4ad5-b07e-448f88defd9c";
 
@@ -79,17 +79,17 @@ namespace Aluguru.Marketplace.API.IntegrationTests
                 }
             };
 
-            var response = await client.PutAsync($"/api/v1/user/{userId}", viewModel.ToStringContent());
+            var response = client.PutAsync($"/api/v1/user/{userId}", viewModel.ToStringContent()).Result;
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
         [Fact]
-        public async Task DeleteUser_ShouldPass()
+        public void DeleteUser_ShouldPass()
         {
             var client = Server.Instance.CreateClient();
 
-            await client.LogInUser();
+            client.LogInUser().Wait();
 
             var viewModel = new UserRegistrationViewModel()
             {
@@ -99,13 +99,13 @@ namespace Aluguru.Marketplace.API.IntegrationTests
                 Role = "User"
             };
 
-            var response = await client.PostAsync($"/api/v1/user", viewModel.ToStringContent());
+            var response = client.PostAsync($"/api/v1/user", viewModel.ToStringContent()).Result;
 
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
 
             var user = response.Deserialize<ApiResponse<CreateUserCommandResponse>>().Data.User;
 
-            response = await client.DeleteAsync($"/api/v1/user/{user.Id}");
+            response = client.DeleteAsync($"/api/v1/user/{user.Id}").Result;
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }

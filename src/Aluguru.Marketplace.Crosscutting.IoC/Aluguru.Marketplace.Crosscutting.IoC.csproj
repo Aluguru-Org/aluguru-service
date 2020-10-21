@@ -16,7 +16,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Aluguru.Marketplace.Catalog\Aluguru.Marketplace.Catalog.csproj" />
     <ProjectReference Include="..\Aluguru.Marketplace.Crosscutting.AzureStorage\Aluguru.Marketplace.Crosscutting.AzureStorage.csproj" />
+    <ProjectReference Include="..\Aluguru.Marketplace.Crosscutting.Mailing\Aluguru.Marketplace.Crosscutting.Mailing.csproj" />
     <ProjectReference Include="..\Aluguru.Marketplace.Data\Aluguru.Marketplace.Data.csproj" />
+    <ProjectReference Include="..\Aluguru.Marketplace.Notification\Aluguru.Marketplace.Notification.csproj" />
     <ProjectReference Include="..\Aluguru.Marketplace.Payment\Aluguru.Marketplace.Payment.csproj" />
     <ProjectReference Include="..\Aluguru.Marketplace.Register\Aluguru.Marketplace.Register.csproj" />
     <ProjectReference Include="..\Aluguru.Marketplace.Rent\Aluguru.Marketplace.Rent.csproj" />

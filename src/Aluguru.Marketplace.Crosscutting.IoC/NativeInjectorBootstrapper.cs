@@ -53,6 +53,8 @@ using Aluguru.Marketplace.Crosscutting.AzureStorage;
 using Aluguru.Marketplace.Catalog.Usecases.AddProductImage;
 using Aluguru.Marketplace.Crosscutting.Mailing;
 using Aluguru.Marketplace.Register.Usecases.UpdateUserPassword;
+using Aluguru.Marketplace.Communication.IntegrationEvents;
+using Aluguru.Marketplace.Notification.Handlers;
 
 namespace Aluguru.Marketplace.Crosscutting.IoC
 {
@@ -117,7 +119,7 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             services.AddScoped<IRequestHandler<UpdateUserCommand, UpdateUserCommandResponse>, UpdateUserHandler>();
             services.AddScoped<IRequestHandler<UpdateUserPasswordCommand, bool>, UpdateUserPasswordHandler>();
             services.AddScoped<IRequestHandler<DeleteUserCommand, bool>, DeleteUserHandler>();
-
+            
             // Product Command Handlers
             services.AddScoped<IRequestHandler<CreateProductCommand, CreateProductCommandResponse>, CreateProductHandler>();
             services.AddScoped<IRequestHandler<UpdateProductCommand, UpdateProductCommandResponse>, UpdateProductHandler>();
@@ -154,6 +156,9 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
 
             // Payment Services
             services.AddScoped<PaymentIntentService>();
+
+            // Notification Services
+            services.AddScoped<INotificationHandler<UserRegisteredEvent>, UserRegisteredHandler>();
 
             // CrossCutting
             services.AddScoped<IAzureStorageGateway, AzureStorageGateway>();

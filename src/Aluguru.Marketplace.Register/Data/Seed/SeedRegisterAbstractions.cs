@@ -74,10 +74,11 @@ namespace Aluguru.Marketplace.Register.Data.Seed
                 if (admin == null)
                 {
                     var userRepository = unitOfWork.Repository<User>();
+                    
+                    var activationHash = Cryptography.CreateRandomHash();
+                    admin = new User(Guid.Parse("96d1fb97-47e9-4ad5-b07e-448f88defd9c"), "admin@aluguru.com.br", "24/74c0ZcIuP++wd2rtW88mWx3EOc1JFX66v634WEQE=", "Aluguru Admin", adminRole.Id, activationHash);
 
-                    admin = new User(Guid.Parse("96d1fb97-47e9-4ad5-b07e-448f88defd9c"), "admin@aluguru.com.br", "24/74c0ZcIuP++wd2rtW88mWx3EOc1JFX66v634WEQE=", "Aluguru Admin", adminRole.Id);
-
-                    admin.Activate();
+                    admin.Activate(activationHash);
 
                     admin.Document = new Document("11111111111111", EDocumentType.CNPJ);
                     admin.Address = new Address(Guid.Parse("96d1fb97-47e9-4ad5-b07e-448f88defd9c"), "some-street", "some-number", "some-neighborhood", "some-city", "some-state", "some-country", "some-zipcode");

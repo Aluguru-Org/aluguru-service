@@ -19,6 +19,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Aluguru.Marketplace.Register.Usecases.ActivateUser;
 
 namespace Aluguru.Marketplace.API.Controllers.V1
 {
@@ -42,6 +43,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetUserByIdCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> Get([FromRoute] Guid id)
         {
@@ -73,6 +75,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateUserCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> Put(
             [FromRoute] Guid id,
@@ -91,6 +94,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiResponse<bool>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> UpdatePassword([FromRoute] Guid id, [FromBody] UpdateUserPasswordViewModel viewModel)
         {
@@ -99,6 +103,22 @@ namespace Aluguru.Marketplace.API.Controllers.V1
             return PutResponse();
         }
 
+        [HttpPut]
+        [Route("{id}/activate")]
+        [AllowAnonymous]
+        [SwaggerOperation(Summary = "Activate a user", Description = "Update a existing user password.")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task<ActionResult> ActivateUser([FromRoute] Guid id,
+            [SwaggerParameter("The user activation hash", Required = true)][FromQuery] string activationHash)
+        {
+            var command = new ActivateUserCommand(id, activationHash);
+            await _mediatorHandler.SendCommand<ActivateUserCommand, bool>(command);
+            return PutResponse();
+        }
 
         [HttpDelete]
         [Route("{id}")]
@@ -106,8 +126,9 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [SwaggerOperation(Summary = "Delete a user", Description = "Delete a existing user. You need to inform the user Id.")]
         [Consumes("application/json")]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> Delete([FromRoute] Guid id)
         {
