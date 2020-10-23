@@ -36,7 +36,6 @@ using Aluguru.Marketplace.Catalog.Usecases.DeleteProduct;
 using Aluguru.Marketplace.Register.Usecases.GetUserById;
 using Aluguru.Marketplace.Rent.Usecases.GetOrders;
 using Aluguru.Marketplace.Rent.Usecases.GetOrder;
-using Stripe;
 using Aluguru.Marketplace.Catalog.Usecases.CreateRentPeriod;
 using Aluguru.Marketplace.Catalog.Usecases.GetRentPeriods;
 using Aluguru.Marketplace.Catalog.Usecases.DeleteRentPeriod;
@@ -56,6 +55,7 @@ using Aluguru.Marketplace.Register.Usecases.UpdateUserPassword;
 using Aluguru.Marketplace.Communication.IntegrationEvents;
 using Aluguru.Marketplace.Notification.Handlers;
 using Aluguru.Marketplace.Register.Usecases.ActivateUser;
+using Aluguru.Marketplace.Notification.Settings;
 
 namespace Aluguru.Marketplace.Crosscutting.IoC
 {
@@ -84,6 +84,7 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
         {
             services.Configure<AzureStorageSettings>(configuration.GetSection("AzureStorageSettings"));
             services.Configure<MailingSettings>(configuration.GetSection("MailingSettings"));
+            services.Configure<NotificationSettings>(configuration.GetSection("NotificationSettings"));
 
             return services;
         }
@@ -157,7 +158,6 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             services.AddScoped<IRequestHandler<DeleteVoucherCommand, bool>, DeleteVoucherHandler>();
 
             // Payment Services
-            services.AddScoped<PaymentIntentService>();
 
             // Notification Services
             services.AddScoped<INotificationHandler<UserRegisteredEvent>, UserRegisteredHandler>();

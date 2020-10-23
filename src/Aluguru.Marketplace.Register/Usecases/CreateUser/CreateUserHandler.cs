@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Aluguru.Marketplace.Security;
 using Aluguru.Marketplace.Communication.IntegrationEvents;
+using Aluguru.Marketplace.Infrastructure.Bus.Messages;
 
 namespace Aluguru.Marketplace.Register.Usecases.CreateUser
 {
@@ -50,7 +51,7 @@ namespace Aluguru.Marketplace.Register.Usecases.CreateUser
 
             var user = new User(command.Email, Cryptography.Encrypt(command.Password), command.FullName, role.Id, Cryptography.CreateRandomHash());
 
-            await _mediatorHandler.PublishEvent(new UserRegisteredEvent(user.Id, user.FullName, user.Email, user.ActivationHash));         
+            await _mediatorHandler.PublishEvent(new UserRegisteredEvent(user.Id, user.FullName, user.Email, user.ActivationHash));
 
             user = await userRepository.AddAsync(user);
 

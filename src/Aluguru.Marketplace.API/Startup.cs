@@ -7,7 +7,6 @@ using Aluguru.Marketplace.API.Middleware;
 using Aluguru.Marketplace.Crosscutting.IoC;
 using Aluguru.Marketplace.Register.Data.Seed;
 using Aluguru.Marketplace.Security;
-using Stripe;
 
 namespace Aluguru.Marketplace.API
 {
@@ -17,8 +16,6 @@ namespace Aluguru.Marketplace.API
         {
             Configuration = configuration;
             Env = env;
-
-            StripeConfiguration.ApiKey = Configuration.GetSection("Stripe")["SecretKey"];
         }
 
         public IConfiguration Configuration { get; }
@@ -57,9 +54,6 @@ namespace Aluguru.Marketplace.API
             {
                 app.UseDeveloperExceptionPage();
                 
-            }
-            else
-            {
             }
 
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
