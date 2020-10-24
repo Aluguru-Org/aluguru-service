@@ -56,6 +56,10 @@ using Aluguru.Marketplace.Communication.IntegrationEvents;
 using Aluguru.Marketplace.Notification.Handlers;
 using Aluguru.Marketplace.Register.Usecases.ActivateUser;
 using Aluguru.Marketplace.Notification.Settings;
+using Aluguru.Marketplace.Crosscutting.Iugu;
+using Aluguru.Marketplace.Catalog.Usecases.DeleteProductImage;
+using Aluguru.Marketplace.Catalog.Usecases.AddCategoryImage;
+using Aluguru.Marketplace.Catalog.Usecases.DeleteCategoryImage;
 
 namespace Aluguru.Marketplace.Crosscutting.IoC
 {
@@ -85,12 +89,14 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             services.Configure<AzureStorageSettings>(configuration.GetSection("AzureStorageSettings"));
             services.Configure<MailingSettings>(configuration.GetSection("MailingSettings"));
             services.Configure<NotificationSettings>(configuration.GetSection("NotificationSettings"));
+            services.Configure<IuguSettings>(configuration.GetSection("IuguSettings"));
 
             return services;
         }
 
         public static IServiceCollection AddServiceComponents(this IServiceCollection services, params Assembly[] assemblies)
         {
+            services.AddHttpClient();
             services.AddMediatR(assemblies);
 
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(CommandValidationHandler<,>));
@@ -130,6 +136,7 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             services.AddScoped<IRequestHandler<GetProductsCommand, GetProductsCommandResponse>, GetProductsHandler>();
             services.AddScoped<IRequestHandler<DeleteProductCommand, bool>, DeleteProductHandler>();
             services.AddScoped<IRequestHandler<AddProductImageCommand, AddProductImageCommandResponse>, AddProductImageHandler>();
+            services.AddScoped<IRequestHandler<DeleteProductImageCommand, DeleteProductImageCommandResponse>, DeleteProductImageHandler>();
 
             // Category Command Handlers
             services.AddScoped<IRequestHandler<CreateCategoryCommand, CreateCategoryCommandResponse>, CreateCategoryHandler>();
@@ -137,6 +144,8 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             services.AddScoped<IRequestHandler<GetCategoriesCommand, GetCategoriesCommandResponse>, GetCategoriesCommandHandler>();
             services.AddScoped<IRequestHandler<GetProductsByCategoryCommand, GetProductsByCategoryCommandResponse>, GetProductsByCategoryHandler>();
             services.AddScoped<IRequestHandler<DeleteCategoryCommand, bool>, DeleteCategoryHandler>();
+            services.AddScoped<IRequestHandler<UpdateCategoryImageCommand, UpdateCategoryImageCommandResponse>, UpdateCategoryImageHandler>();
+            services.AddScoped<IRequestHandler<DeleteCategoryImageCommand, DeleteCategoryImageCommandResponse>, DeleteCategoryImageHandler>();
 
             // Rent Period Command Handlers
             services.AddScoped<IRequestHandler<CreateRentPeriodCommand, CreateRentPeriodCommandResponse>, CreateRentPeriodHandler>();
@@ -165,6 +174,7 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             // CrossCutting
             services.AddScoped<IAzureStorageGateway, AzureStorageGateway>();
             services.AddScoped<IMailingService, MailingService>();
+            services.AddScoped<IIuguService, IuguService>();
 
             return services;
         }

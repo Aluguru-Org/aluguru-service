@@ -19,6 +19,8 @@ using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Aluguru.Marketplace.Catalog.Usecases.AddCategoryImage;
+using Aluguru.Marketplace.Catalog.Usecases.DeleteCategoryImage;
 
 namespace Aluguru.Marketplace.API.Controllers.V1
 {
@@ -76,6 +78,8 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CreateCategoryCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> CreateCategory([FromBody]CreateCategoryViewModel viewModel)
         {
@@ -92,6 +96,8 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateCategoryCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> UpdateCategory([FromRoute] Guid id, [FromBody] UpdateCategoryViewModel viewModel)
         {
@@ -108,11 +114,46 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> Delete([FromRoute] Guid id)
         {
             await _mediatorHandler.SendCommand<DeleteCategoryCommand, bool>(new DeleteCategoryCommand(id));
             return DeleteResponse();
+        }
+
+        [HttpPut]
+        [Route("{id}/image")]
+        [Authorize(Policy = Policies.CategoryWriter)]
+        [Consumes("multipart/form-data")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateCategoryImageCommandResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task<ActionResult> UploadImage([FromRoute] Guid id, IFormFile file)
+        {
+            var command = new UpdateCategoryImageCommand(id, file);
+            var response = await _mediatorHandler.SendCommand<UpdateCategoryImageCommand, UpdateCategoryImageCommandResponse>(command);
+            return PutResponse(response);
+        }
+
+        [HttpDelete]
+        [Route("{id}/image")]
+        [Authorize(Policy = Policies.CategoryWriter)]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeleteCategoryImageHandler))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task<ActionResult> UploadImage([FromRoute] Guid id)
+        {
+            var command = new DeleteCategoryImageCommand(id);
+            var response = await _mediatorHandler.SendCommand<DeleteCategoryImageCommand, DeleteCategoryImageCommandResponse>(command);
+            return PutResponse(response);
         }
     }
 }

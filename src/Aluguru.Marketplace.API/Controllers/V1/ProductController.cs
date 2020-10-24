@@ -42,7 +42,6 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [Route("")]
         [AllowAnonymous]
         [SwaggerOperation(Summary = "Get products", Description = "Return a list of products")]
-        [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetProductsCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
@@ -64,7 +63,6 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [Route("{id}")]
         [AllowAnonymous]
         [SwaggerOperation(Summary = "Get product by id", Description = "Return the target product")]
-        [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetProductsCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
@@ -83,6 +81,8 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CreateProductCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]        
         public async Task<ActionResult> CreateProduct([FromBody] CreateProductViewModel viewModel)
         {
@@ -99,6 +99,8 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateProductCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> UpdateProduct([FromRoute] Guid id, [FromBody] UpdateProductViewModel viewModel)
         {
@@ -111,10 +113,11 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [Route("{id}")]
         [Authorize(Policy = Policies.ProductWriter)]
         [SwaggerOperation(Summary = "Delete a product", Description = "Delete a existing product.")]
-        [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> Delete([FromRoute] Guid id)
         {
@@ -127,8 +130,10 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [Authorize(Policy = Policies.ProductWriter)]
         [Consumes("multipart/form-data")]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AddProductImageCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> UploadImage([FromRoute] Guid id, List<IFormFile> files)
         {
@@ -142,8 +147,10 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [Authorize(Policy = Policies.ProductWriter)]
         [Consumes("application/json")]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeleteProductImageCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> DeleteImage([FromRoute] Guid id, [FromBody] List<string> imageUrls)
         {

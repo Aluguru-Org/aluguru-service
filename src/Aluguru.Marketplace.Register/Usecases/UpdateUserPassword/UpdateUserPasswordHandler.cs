@@ -43,7 +43,9 @@ namespace Aluguru.Marketplace.Register.Usecases.UpdateUserPassword
                 return false;
             }
 
-            if (user.Password == Cryptography.Encrypt(command.Password))
+            var encryptedNewPassword = Cryptography.Encrypt(command.Password);
+
+            if (user.Password == encryptedNewPassword)
             {
                 await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"The new password must be different from the previous one"));
                 return false;
@@ -51,7 +53,7 @@ namespace Aluguru.Marketplace.Register.Usecases.UpdateUserPassword
 
             var repository = _unitOfWork.Repository<User>();
 
-            user.UpdatePassword(command.Password);
+            user.UpdatePassword(encryptedNewPassword);
 
             repository.Update(user);
 

@@ -29,12 +29,24 @@ namespace Aluguru.Marketplace.Catalog.Domain
         }
 
         public string Name { get; private set; }
+        public string ImageUrl { get; private set; }
         public Guid? MainCategoryId { get; private set; }
         public Category MainCategory { get; set; }
         public IReadOnlyCollection<Category> SubCategories { get { return _childrenCategories; } }
         
         // EF Relational
         public List<Product> Products { get; set; }
+
+        public void UpdateImage(string url)
+        {
+            Ensure.That<DomainException>(!string.IsNullOrEmpty(url), "The image url cannot be empty");
+            ImageUrl = url;
+        }
+
+        public void RemoveImage()
+        {
+            ImageUrl = "";
+        }
 
         public Category UpdateCategory(UpdateCategoryCommand command)
         {

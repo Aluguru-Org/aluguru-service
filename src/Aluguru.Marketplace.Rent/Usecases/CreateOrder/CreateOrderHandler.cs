@@ -51,7 +51,7 @@ namespace Aluguru.Marketplace.Rent.Usecases.CreateOrder
                 // What should be the correct behaviour when the product is not found?
                 if (product == null) continue;
 
-                decimal price = 0;
+                decimal price = 0;                
 
                 switch(product.RentType)
                 {

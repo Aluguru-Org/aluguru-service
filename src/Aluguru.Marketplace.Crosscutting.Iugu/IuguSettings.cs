@@ -2,6 +2,7 @@
 {
     public class IuguSettings
     {
+        public string BaseUrl { get; set; }
         public string Token { get; set; }
     }
 }

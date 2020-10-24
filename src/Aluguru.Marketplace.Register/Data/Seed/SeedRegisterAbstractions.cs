@@ -44,6 +44,8 @@ namespace Aluguru.Marketplace.Register.Data.Seed
                 };
                 UserRole adminRole = CreateRole("Admin", adminClaims, unitOfWork, userRoleQueryRepository);
 
+                unitOfWork.SaveChanges();
+
                 List<UserClaim> companyClaims = new List<UserClaim>()
                 {
                     new UserClaim(Claims.Product, ClaimValues.Read.ToString()),
@@ -56,6 +58,8 @@ namespace Aluguru.Marketplace.Register.Data.Seed
                     new UserClaim(Claims.Voucher, ClaimValues.Read.ToString())
                 };
                 UserRole companyRole = CreateRole("Company", companyClaims, unitOfWork, userRoleQueryRepository);
+
+                unitOfWork.SaveChanges();
 
                 List<UserClaim> userClaims = new List<UserClaim>()
                 {
@@ -70,6 +74,8 @@ namespace Aluguru.Marketplace.Register.Data.Seed
                 };
                 UserRole userRole = CreateRole("User", userClaims, unitOfWork, userRoleQueryRepository);
                 
+                unitOfWork.SaveChanges();
+
                 var admin = userQueryRepository.FindOneAsync(x => x.Email == "admin@aluguru.com.br").Result;
 
                 if (admin == null)
@@ -102,14 +108,9 @@ namespace Aluguru.Marketplace.Register.Data.Seed
             {
                 role = new UserRole(roleName);
 
-                userRoleRepository.Add(role);
-            }
-
-            if (role.UserClaims.Count != userClaims.Count)
-            {
                 role.AddClaims(userClaims);
 
-                userRoleRepository.Update(role);
+                userRoleRepository.Add(role);
             }
 
             return role;

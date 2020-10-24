@@ -16,6 +16,7 @@ namespace Aluguru.Marketplace.Rent.Domain
             : base(NewId())
         {
             UserId = clientId;
+            OrderStatus = EOrderStatus.Draft;
 
             _orderItems = new List<OrderItem>();
 

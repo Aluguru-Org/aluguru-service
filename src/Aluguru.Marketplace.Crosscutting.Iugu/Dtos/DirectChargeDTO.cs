@@ -1,14 +1,11 @@
-﻿using Aluguru.Marketplace.Crosscutting.Iugu.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace Aluguru.Marketplace.Crosscutting.Iugu.Payment
+namespace Aluguru.Marketplace.Crosscutting.Iugu.Dtos
 {
-    public class DirectCharge
+    public class DirectChargeDTO
     {
-        private DirectCharge() { }
-        public DirectCharge(string method, string token, string email, string months, PayerDTO payer, IList<ItemDTO> items)
+        private DirectChargeDTO() { }
+        public DirectChargeDTO(string method, string token, string email, string months, PayerDTO payer, IList<ItemDTO> items)
         {
             Method = method;
             Token = token;
