@@ -7,6 +7,7 @@ using Aluguru.Marketplace.Security;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Aluguru.Marketplace.Register.Data.Repositories;
 
 namespace Aluguru.Marketplace.Register.Data.Seed
 {
@@ -94,17 +95,21 @@ namespace Aluguru.Marketplace.Register.Data.Seed
 
         private static UserRole CreateRole(string roleName, List<UserClaim> userClaims, IUnitOfWork unitOfWork, IQueryRepository<UserRole> userRoleQueryRepository)
         {
-            var role = userRoleQueryRepository.FindOneAsync(x => x.Name == roleName).Result;
+            var role = userRoleQueryRepository.GetUserRoleAsync(roleName).Result;
+            var userRoleRepository = unitOfWork.Repository<UserRole>();
 
             if (role == null)
             {
-                var userRoleRepository = unitOfWork.Repository<UserRole>();
-
                 role = new UserRole(roleName);
 
+                userRoleRepository.Add(role);
+            }
+
+            if (role.UserClaims.Count != userClaims.Count)
+            {
                 role.AddClaims(userClaims);
 
-                userRoleRepository.Add(role);
+                userRoleRepository.Update(role);
             }
 
             return role;
