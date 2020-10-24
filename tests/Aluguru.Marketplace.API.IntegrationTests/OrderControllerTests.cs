@@ -23,7 +23,7 @@ namespace Aluguru.Marketplace.API.IntegrationTests
         {
             var client = Server.Instance.CreateClient();
 
-            client.LogInUser().Wait();
+            client.LogInUser();
 
             var mockGuid = Guid.NewGuid();
             var response = client.GetAsync($"/api/v1/order/{mockGuid}").Result;
@@ -36,9 +36,9 @@ namespace Aluguru.Marketplace.API.IntegrationTests
         {
             var client = Server.Instance.CreateClient();
 
-            client.LogInUser().Wait();
+            client.LogInUser();
 
-            var product = CreateProduct(client).Result;
+            var product = CreateProduct(client);
 
             var viewModel = new CreateOrderViewModel()
             {
@@ -68,10 +68,10 @@ namespace Aluguru.Marketplace.API.IntegrationTests
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
 
-        private async Task<ProductViewModel> CreateProduct(HttpClient client)
+        private ProductViewModel CreateProduct(HttpClient client)
         {
-            var rentPeriod = await CreateRentPeriod(client);
-            var category = await CreateCategory(client);
+            var rentPeriod = CreateRentPeriod(client);
+            var category = CreateCategory(client);
 
             var viewModel = new CreateProductViewModel()
             {
@@ -104,25 +104,25 @@ namespace Aluguru.Marketplace.API.IntegrationTests
                 }
             };
 
-            var response = await client.PostAsync("/api/v1/product", viewModel.ToStringContent());
+            var response = client.PostAsync("/api/v1/product", viewModel.ToStringContent()).Result ;
 
             return response.Deserialize<ApiResponse<CreateProductCommandResponse>>().Data.Product;
         }
 
-        private async Task<RentPeriodViewModel> CreateRentPeriod(HttpClient client)
+        private RentPeriodViewModel CreateRentPeriod(HttpClient client)
         {
             var viewModel = new CreateRentPeriodViewModel() { Name = "1 week", Days = 7 };
 
-            var response = await client.PostAsync("/api/v1/rent-period", viewModel.ToStringContent());
+            var response = client.PostAsync("/api/v1/rent-period", viewModel.ToStringContent()).Result;
 
             return response.Deserialize<ApiResponse<CreateRentPeriodCommandResponse>>().Data.RentPeriod;
         }
 
-        private async Task<CategoryViewModel> CreateCategory(HttpClient client)
+        private CategoryViewModel CreateCategory(HttpClient client)
         {
             var viewModel = new CreateCategoryViewModel() { Name = "CreateProductTestCategory" };
 
-            var response = await client.PostAsync("/api/v1/category", viewModel.ToStringContent());
+            var response = client.PostAsync("/api/v1/category", viewModel.ToStringContent()).Result;
 
             return response.Deserialize<ApiResponse<CreateCategoryCommandResponse>>().Data.Category;
         }

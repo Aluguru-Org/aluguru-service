@@ -12,10 +12,10 @@ namespace Aluguru.Marketplace.API.IntegrationTests
 {
     public static class HttpClientExtension
     {
-        public static async Task<ApiResponse<LogInUserCommandResponse>> LogInUser(this HttpClient client, string email = "admin@aluguru.com.br", string password = "really")
+        public static ApiResponse<LogInUserCommandResponse> LogInUser(this HttpClient client, string email = "admin@aluguru.com.br", string password = "really")
         {
-            var response = await client.PostAsync("/api/v1/auth/login", CreateContent(email, password));
-            var apiResponse = JsonConvert.DeserializeObject<ApiResponse<LogInUserCommandResponse>>(await response.Content.ReadAsStringAsync());
+            var response = client.PostAsync("/api/v1/auth/login", CreateContent(email, password)).Result;
+            var apiResponse = JsonConvert.DeserializeObject<ApiResponse<LogInUserCommandResponse>>(response.Content.ReadAsStringAsync().Result);
 
             if (apiResponse.Success)
             {

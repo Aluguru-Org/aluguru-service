@@ -19,7 +19,7 @@ namespace Aluguru.Marketplace.API.IntegrationTests
         {
             var client = Server.Instance.CreateClient();
 
-            client.LogInUser().Wait();
+            client.LogInUser();
 
             var userId = "96d1fb97-47e9-4ad5-b07e-448f88defd9c";
             var response = client.GetAsync($"/api/v1/user/{userId}").Result;
@@ -54,7 +54,7 @@ namespace Aluguru.Marketplace.API.IntegrationTests
         {
             var client = Server.Instance.CreateClient();
 
-            client.LogInUser().Wait();
+            client.LogInUser();
 
             var userId = "96d1fb97-47e9-4ad5-b07e-448f88defd9c";
 
@@ -89,7 +89,7 @@ namespace Aluguru.Marketplace.API.IntegrationTests
         {
             var client = Server.Instance.CreateClient();
 
-            client.LogInUser().Wait();
+            client.LogInUser();
 
             var viewModel = new UserRegistrationViewModel()
             {

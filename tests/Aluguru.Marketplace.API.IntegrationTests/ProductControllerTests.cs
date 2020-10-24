@@ -16,38 +16,38 @@ namespace Aluguru.Marketplace.API.IntegrationTests
     public class ProductControllerTests
     { 
         [Fact]
-        public async Task CreateProduct_WhenInvalidProduct_ShouldFail()
+        public void CreateProduct_WhenInvalidProduct_ShouldFail()
         {
             var client = Server.Instance.CreateClient();
 
-            await client.LogInUser();
+            client.LogInUser();
 
             var viewModel = new CreateProductViewModel();
-            var response = await client.PostAsync("/api/v1/product", viewModel.ToStringContent());
+            var response = client.PostAsync("/api/v1/product", viewModel.ToStringContent()).Result;
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
-        [Fact(Skip = "True")]
-        public async Task CreateProduct_ShouldPass()
+        [Fact]
+        public void CreateProduct_ShouldPass()
         {
             var client = Server.Instance.CreateClient();
 
-            var user = await client.LogInUser();
+            var user = client.LogInUser();
 
-            var response = await RequestCreateProduct(client);
+            var response = RequestCreateProduct(client);
 
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
 
-        [Fact(Skip = "True")]
-        public async Task UpdateProduct_ShouldPass()
+        [Fact]
+        public void UpdateProduct_ShouldPass()
         {
             var client = Server.Instance.CreateClient();
 
-            var user = await client.LogInUser();
+            var user = client.LogInUser();
 
-            var response = await RequestCreateProduct(client);
+            var response = RequestCreateProduct(client);
 
             var product = response.Deserialize<ApiResponse<CreateProductCommandResponse>>().Data.Product;
 
@@ -71,29 +71,29 @@ namespace Aluguru.Marketplace.API.IntegrationTests
                 }
             };
 
-            response = await client.PutAsync($"/api/v1/product/{product.Id}", viewModel.ToStringContent());
+            response = client.PutAsync($"/api/v1/product/{product.Id}", viewModel.ToStringContent()).Result;
 
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
 
-        [Fact(Skip = "True")]
-        public async Task DeleteProduct_ShouldPass()
+        [Fact]
+        public void DeleteProduct_ShouldPass()
         {
             var client = Server.Instance.CreateClient();
 
-            var response = await RequestCreateProduct(client);
+            var response = RequestCreateProduct(client);
 
             var product = response.Deserialize<ApiResponse<CreateProductCommandResponse>>().Data.Product;
 
-            response = await client.DeleteAsync($"/api/v1/product/{product.Id}");
+            response = client.DeleteAsync($"/api/v1/product/{product.Id}").Result;
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
-        private async Task<HttpResponseMessage> RequestCreateProduct(HttpClient client)
+        private HttpResponseMessage RequestCreateProduct(HttpClient client)
         {
-            var rentPeriod = await CreateRentPeriod(client);
-            var category = await CreateCategory(client);
+            var rentPeriod = CreateRentPeriod(client);
+            var category = CreateCategory(client);
 
             var viewModel = new CreateProductViewModel()
             {
@@ -126,25 +126,25 @@ namespace Aluguru.Marketplace.API.IntegrationTests
                 }
             };
 
-            var response = await client.PostAsync("/api/v1/product", viewModel.ToStringContent());
+            var response = client.PostAsync("/api/v1/product", viewModel.ToStringContent()).Result;
 
             return response;
         }
 
-        private async Task<RentPeriodViewModel> CreateRentPeriod(HttpClient client)
+        private RentPeriodViewModel CreateRentPeriod(HttpClient client)
         {
             var viewModel = new CreateRentPeriodViewModel() { Name = "1 week", Days = 7 };
 
-            var response = await client.PostAsync("/api/v1/rent-period", viewModel.ToStringContent());
+            var response = client.PostAsync("/api/v1/rent-period", viewModel.ToStringContent()).Result;
 
             return response.Deserialize<ApiResponse<CreateRentPeriodCommandResponse>>().Data.RentPeriod;
         }
 
-        private async Task<CategoryViewModel> CreateCategory(HttpClient client)
+        private CategoryViewModel CreateCategory(HttpClient client)
         {
             var viewModel = new CreateCategoryViewModel() { Name = "CreateProductTestCategory" };
 
-            var response = await client.PostAsync("/api/v1/category", viewModel.ToStringContent());
+            var response = client.PostAsync("/api/v1/category", viewModel.ToStringContent()).Result;
 
             return response.Deserialize<ApiResponse<CreateCategoryCommandResponse>>().Data.Category;
         }

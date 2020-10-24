@@ -40,7 +40,7 @@ namespace Aluguru.Marketplace.API
             services.AddServiceComponents(typeof(Startup).Assembly);
 
             services.AddRouting(options => options.LowercaseUrls = true);
-            
+                        
             services.AddControllers().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;

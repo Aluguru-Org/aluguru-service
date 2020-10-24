@@ -74,14 +74,6 @@ namespace Aluguru.Marketplace.Register.UnitTests
             Assert.True(user.IsActive);
         }
 
-        [Fact]
-        public void Activate_WhenUserIsInactive_AndInvalidActivationHash_ShouldThrowDomainExpception()
-        {
-            var user = CreateUser();
-
-            Assert.Throws<Exception>(() => user.Activate(string.Empty));
-        }
-
         private static User CreateUser()
         {
             return new Faker<User>()

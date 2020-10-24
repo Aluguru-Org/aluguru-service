@@ -37,7 +37,7 @@ namespace Aluguru.Marketplace.Register.Services
             var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
             {
                 Issuer = _settings.Issuer,
-                Audience = "http://localhost:4200",
+                Audience = _settings.Audience,
                 Subject = tokenBuilder.IdentityClaims,
                 Expires = DateTime.UtcNow.AddHours(_settings.Expiration),
                 SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature)

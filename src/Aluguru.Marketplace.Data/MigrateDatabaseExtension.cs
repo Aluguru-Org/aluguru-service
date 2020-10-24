@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Aluguru.Marketplace.Infrastructure;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Aluguru.Marketplace.Data
 {

@@ -15,26 +15,26 @@ namespace Aluguru.Marketplace.API.IntegrationTests
     public class CategoryControllerTests
     {
         [Fact]
-        public async Task CreateCategory_WhenInvalidCategory_ShouldFail()
+        public void CreateCategory_WhenInvalidCategory_ShouldFail()
         {
             var client = Server.Instance.CreateClient();
 
-            await client.LogInUser();
+            client.LogInUser();
 
             var viewModel = new CreateCategoryViewModel();
             var data = new StringContent(JsonConvert.SerializeObject(viewModel), Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync("/api/v1/category", data);
+            var response = client.PostAsync("/api/v1/category", data).Result;
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
         [Fact]
-        public async Task CreateCategory_ShouldPass()
+        public void CreateCategory_ShouldPass()
         {
             var client = Server.Instance.CreateClient();
 
-            await client.LogInUser();
+            client.LogInUser();
 
             var viewModel = new CreateCategoryViewModel()
             {
@@ -42,24 +42,24 @@ namespace Aluguru.Marketplace.API.IntegrationTests
             };
             var data = new StringContent(JsonConvert.SerializeObject(viewModel), Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync("/api/v1/category", data);
+            var response = client.PostAsync("/api/v1/category", data).Result;
 
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
 
         [Fact]
-        public async Task CreateCategory_WhenSubCategory_ShouldPass()
+        public void CreateCategory_WhenSubCategory_ShouldPass()
         {
             var client = Server.Instance.CreateClient();
 
-            await client.LogInUser();
+            client.LogInUser();
 
             var viewModel = new CreateCategoryViewModel()
             {
                 Name = "Games"
             };
 
-            var response = await client.PostAsync("/api/v1/category", viewModel.ToStringContent());
+            var response = client.PostAsync("/api/v1/category", viewModel.ToStringContent()).Result;
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
 
             var mainCategory = response.Deserialize<ApiResponse<CreateCategoryCommandResponse>>().Data.Category;
@@ -71,7 +71,7 @@ namespace Aluguru.Marketplace.API.IntegrationTests
                 Name = "Computador"
             };
 
-            response = await client.PostAsync("/api/v1/category", viewModel.ToStringContent());
+            response = client.PostAsync("/api/v1/category", viewModel.ToStringContent()).Result;
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
             
             var apiResponse = response.Deserialize<ApiResponse<CreateCategoryCommandResponse>>();
@@ -80,18 +80,18 @@ namespace Aluguru.Marketplace.API.IntegrationTests
         }
 
         [Fact]
-        public async Task UpdateCategory_ShouldPass()
+        public void UpdateCategory_ShouldPass()
         {
             var client = Server.Instance.CreateClient();
 
-            await client.LogInUser();
+            client.LogInUser();
 
             var createViewModel = new CreateCategoryViewModel()
             {
                 Name = "Games"
             };
 
-            var response = await client.PostAsync("/api/v1/category", createViewModel.ToStringContent());
+            var response = client.PostAsync("/api/v1/category", createViewModel.ToStringContent()).Result;
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
 
             var category = response.Deserialize<ApiResponse<CreateCategoryCommandResponse>>().Data.Category;
@@ -102,7 +102,7 @@ namespace Aluguru.Marketplace.API.IntegrationTests
                 Name = "Jogos"
             };
 
-            response = await client.PutAsync($"/api/v1/category/{category.Id}", updateViewModel.ToStringContent());
+            response = client.PutAsync($"/api/v1/category/{category.Id}", updateViewModel.ToStringContent()).Result;
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             var editedCategory = response.Deserialize<ApiResponse<UpdateCategoryCommandResponse>>().Data.Category;
@@ -111,32 +111,32 @@ namespace Aluguru.Marketplace.API.IntegrationTests
         }
 
         [Fact]
-        public async Task GetAllCategory_ShouldPass()
+        public void GetAllCategory_ShouldPass()
         {
             var client = Server.Instance.CreateClient();
 
-            var getAllResponse = await client.GetAsync("/api/v1/category");
+            var getAllResponse = client.GetAsync("/api/v1/category").Result;
             Assert.Equal(HttpStatusCode.OK, getAllResponse.StatusCode);
         }
 
         [Fact]
-        public async Task DeleteCategory_ShouldPass()
+        public void DeleteCategory_ShouldPass()
         {
             var client = Server.Instance.CreateClient();
 
-            await client.LogInUser();
+            client.LogInUser();
 
             var createViewModel = new CreateCategoryViewModel()
             {
                 Name = "Games"
             };
 
-            var response = await client.PostAsync("/api/v1/category", createViewModel.ToStringContent());
+            var response = client.PostAsync("/api/v1/category", createViewModel.ToStringContent()).Result;
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
 
             var category = response.Deserialize<ApiResponse<CreateCategoryCommandResponse>>().Data.Category;
 
-            var deleteResponse = await client.DeleteAsync($"/api/v1/category/{category.Id}");
+            var deleteResponse = client.DeleteAsync($"/api/v1/category/{category.Id}").Result;
             Assert.Equal(HttpStatusCode.OK, deleteResponse.StatusCode);
         }
     }

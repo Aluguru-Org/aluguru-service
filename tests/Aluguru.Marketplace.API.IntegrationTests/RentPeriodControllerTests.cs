@@ -16,26 +16,26 @@ namespace Aluguru.Marketplace.API.IntegrationTests
         private const string RENT_PERIOD_ENDPOINT = "/api/v1/rent-period";
 
         [Fact]
-        public async Task CreateRentPeriod_WhenInvalidRentPeriod_ShouldFail()
+        public void CreateRentPeriod_WhenInvalidRentPeriod_ShouldFail()
         {
             var client = Server.Instance.CreateClient();
 
-            await client.LogInUser();
+            client.LogInUser();
 
             var viewModel = new CreateRentPeriodViewModel();
             var data = new StringContent(JsonConvert.SerializeObject(viewModel), Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync(RENT_PERIOD_ENDPOINT, data);
+            var response = client.PostAsync(RENT_PERIOD_ENDPOINT, data).Result;
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
         [Fact]
-        public async Task CreateRentPeriod_ShouldPass()
+        public void CreateRentPeriod_ShouldPass()
         {
             var client = Server.Instance.CreateClient();
 
-            await client.LogInUser();
+            client.LogInUser();
 
             var viewModel = new CreateRentPeriodViewModel()
             {
@@ -44,28 +44,28 @@ namespace Aluguru.Marketplace.API.IntegrationTests
             };
             var data = new StringContent(JsonConvert.SerializeObject(viewModel), Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync(RENT_PERIOD_ENDPOINT, data);
+            var response = client.PostAsync(RENT_PERIOD_ENDPOINT, data).Result;
 
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
 
         [Fact]
-        public async Task GetAllRentPeriod_ShouldPass()
+        public void GetAllRentPeriod_ShouldPass()
         {
             var client = Server.Instance.CreateClient();
 
-            await client.LogInUser();
+            client.LogInUser();
 
-            var getAllResponse = await client.GetAsync(RENT_PERIOD_ENDPOINT);
+            var getAllResponse = client.GetAsync(RENT_PERIOD_ENDPOINT).Result;
             Assert.Equal(HttpStatusCode.OK, getAllResponse.StatusCode);
         }
 
         [Fact]
-        public async Task DeleteRentPeriod_ShouldPass()
+        public void DeleteRentPeriod_ShouldPass()
         {
             var client = Server.Instance.CreateClient();
 
-            await client.LogInUser();
+            client.LogInUser();
 
             var createViewModel = new CreateRentPeriodViewModel()
             {
@@ -73,12 +73,12 @@ namespace Aluguru.Marketplace.API.IntegrationTests
                 Days = 30
             };
 
-            var response = await client.PostAsync(RENT_PERIOD_ENDPOINT, createViewModel.ToStringContent());
+            var response = client.PostAsync(RENT_PERIOD_ENDPOINT, createViewModel.ToStringContent()).Result;
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
 
             var rentPeriod = response.Deserialize<ApiResponse<CreateRentPeriodCommandResponse>>().Data.RentPeriod;
 
-            var deleteResponse = await client.DeleteAsync($"{RENT_PERIOD_ENDPOINT}/{rentPeriod.Id}");
+            var deleteResponse = client.DeleteAsync($"{RENT_PERIOD_ENDPOINT}/{rentPeriod.Id}").Result;
             Assert.Equal(HttpStatusCode.OK, deleteResponse.StatusCode);
         }
     }
