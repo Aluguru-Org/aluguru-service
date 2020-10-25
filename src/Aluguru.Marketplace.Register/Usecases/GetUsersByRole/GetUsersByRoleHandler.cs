@@ -2,7 +2,6 @@
 using MediatR;
 using Aluguru.Marketplace.Domain;
 using Aluguru.Marketplace.Register.ViewModels;
-using Aluguru.Marketplace.Register.Domain.Repositories;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;

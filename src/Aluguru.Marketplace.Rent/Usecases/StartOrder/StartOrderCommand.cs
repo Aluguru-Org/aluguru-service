@@ -1,10 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Aluguru.Marketplace.Infrastructure.Bus.Messages;
+using Aluguru.Marketplace.Rent.ViewModels;
+using FluentValidation;
+using System;
 
 namespace Aluguru.Marketplace.Rent.Usecases.StartOrder
 {
-    class StartOrderCommand
+    public class StartOrderCommand : Command<StartOrderCommandResponse>
     {
+        public Guid OrderId { get; private set; }
+    }
+
+    public class CreateOrderCommandValidator : AbstractValidator<StartOrderCommand>
+    {
+        public CreateOrderCommandValidator()
+        {
+            RuleFor(x => x.OrderId).NotEqual(Guid.Empty);
+        }
+    }
+
+    public class StartOrderCommandResponse
+    {
+        public OrderViewModel Order { get; set; }
     }
 }

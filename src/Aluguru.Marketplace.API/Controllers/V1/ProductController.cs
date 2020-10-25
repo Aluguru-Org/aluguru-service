@@ -22,6 +22,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Aluguru.Marketplace.API.Controllers.V1
 {
@@ -30,12 +31,14 @@ namespace Aluguru.Marketplace.API.Controllers.V1
     [ApiController]
     public class ProductController : ApiController
     {
-        private readonly IAspNetUser aspNetUser;
+        private readonly IAspNetUser _aspNetUser;
+        private readonly ILogger _logger;
 
-        public ProductController(INotificationHandler<DomainNotification> notifications, IMediatorHandler mediatorHandler, IMapper mapper, IAspNetUser aspNetUser)
+        public ProductController(INotificationHandler<DomainNotification> notifications, IMediatorHandler mediatorHandler, IMapper mapper, IAspNetUser aspNetUser, ILogger logger)
             : base(notifications, mediatorHandler, mapper)
         {
-            this.aspNetUser = aspNetUser;
+            _aspNetUser = aspNetUser;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -53,6 +56,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
             [SwaggerParameter("If the product should be sorted by property, the default value is sort property is 'Id'", Required = false)][FromQuery] string sortBy,
             [SwaggerParameter("If the sort order should be ascendant or descendant, the default value is descendant", Required = false)][FromQuery] string sortOrder)
         {
+            _logger.LogDebug("test");
             var paginateCriteria = new PaginateCriteria(currentPage, pageSize, sortBy, sortOrder);
             var command = new GetProductsCommand(userId, paginateCriteria);
             var response = await _mediatorHandler.SendCommand<GetProductsCommand, GetProductsCommandResponse>(command);

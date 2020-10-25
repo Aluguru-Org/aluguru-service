@@ -1,10 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Aluguru.Marketplace.Communication.Dtos;
+using Aluguru.Marketplace.Infrastructure.Bus.Messages;
 
 namespace Aluguru.Marketplace.Communication.IntegrationEvents
 {
-    class OrderStartedEvent
+    public class OrderStartedEvent : Event
     {
+        public OrderStartedEvent(OrderDTO order)
+        {
+            Order = order;
+        }
+
+        public OrderDTO Order { get; set; }
     }
 }

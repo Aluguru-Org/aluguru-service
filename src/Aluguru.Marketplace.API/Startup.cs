@@ -7,19 +7,22 @@ using Aluguru.Marketplace.API.Middleware;
 using Aluguru.Marketplace.Crosscutting.IoC;
 using Aluguru.Marketplace.Register.Data.Seed;
 using Aluguru.Marketplace.Security;
+using Microsoft.Extensions.Logging;
 
 namespace Aluguru.Marketplace.API
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, IWebHostEnvironment env)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             Configuration = configuration;
             Env = env;
+            LoggerFactory = loggerFactory;
         }
 
         public IConfiguration Configuration { get; }
         public IWebHostEnvironment Env { get; }
+        public ILoggerFactory LoggerFactory { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)

@@ -4,7 +4,6 @@ using Aluguru.Marketplace.Catalog.Data.Repositories;
 using Aluguru.Marketplace.Catalog.Domain;
 using Aluguru.Marketplace.Domain;
 using Aluguru.Marketplace.Infrastructure.Bus.Communication;
-using Aluguru.Marketplace.Infrastructure.Bus.Messages;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using Aluguru.Marketplace.Rent.Domain;
 using Aluguru.Marketplace.Rent.ViewModels;

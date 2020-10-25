@@ -4,7 +4,9 @@ using PampaDevs.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static PampaDevs.Utils.Helpers.DateTimeHelper;
 using static PampaDevs.Utils.Helpers.IdHelper;
+using Aluguru.Marketplace.Communication.IntegrationEvents;
 
 namespace Aluguru.Marketplace.Rent.Domain
 {
@@ -38,6 +40,18 @@ namespace Aluguru.Marketplace.Rent.Domain
         public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;
 
         public Voucher Voucher { get; private set; }
+
+        public void Initiate()
+        {
+            Ensure.That(OrderStatus < EOrderStatus.Initiated, "The order is already initiated");
+
+            OrderStatus = EOrderStatus.Initiated;
+
+            DateUpdated = NewDateTime();
+
+            var dto = new Communication.Dtos.OrderDTO(Id, UserId, TotalPrice, new List<Communication.Dtos.OrderItemDTO>(OrderItems.Select(x => new Communication.Dtos.OrderItemDTO(x.ProductId, x.ProductName, x.Amount, x.ProductPrice))));
+            AddEvent(new OrderStartedEvent(dto));
+        }
 
         public void AddItem(OrderItem orderItem)
         {
