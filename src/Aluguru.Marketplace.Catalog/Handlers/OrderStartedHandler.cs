@@ -10,12 +10,13 @@ namespace Aluguru.Marketplace.Catalog.Handlers
 {
     public class OrderStartedHandler : INotificationHandler<OrderStartedEvent>
     {
-        public OrderStartedHandler()
+        private readonly IMediatorHandler _mediatorHandler;
+        public OrderStartedHandler(IMediatorHandler mediatorHandler)
         {
-                            
+            _mediatorHandler = mediatorHandler;
         }
 
-        public Task Handle(OrderStartedEvent notification, CancellationToken cancellationToken)
+        public async Task Handle(OrderStartedEvent notification, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
