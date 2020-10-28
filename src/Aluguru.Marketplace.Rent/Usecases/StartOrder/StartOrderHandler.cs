@@ -1,4 +1,5 @@
-﻿using Aluguru.Marketplace.Domain;
+﻿using Aluguru.Marketplace.Communication.IntegrationEvents;
+using Aluguru.Marketplace.Domain;
 using Aluguru.Marketplace.Infrastructure.Bus.Communication;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using Aluguru.Marketplace.Rent.Data.Repositories;
@@ -6,6 +7,8 @@ using Aluguru.Marketplace.Rent.Domain;
 using Aluguru.Marketplace.Rent.ViewModels;
 using AutoMapper;
 using MediatR;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -37,6 +40,21 @@ namespace Aluguru.Marketplace.Rent.Usecases.StartOrder
             }
 
             order.Initiate();
+
+            var dto = new Communication.Dtos.OrderDTO(
+                order.Id, 
+                order.UserId, 
+                order.TotalPrice, 
+                new List<Communication.Dtos.OrderItemDTO>(
+                    order.OrderItems.Select(x => new Communication.Dtos.OrderItemDTO(
+                        x.ProductId, 
+                        x.ProductName, 
+                        x.Amount, 
+                        x.ProductPrice))
+                    )
+            );
+
+            order.AddEvent(new OrderStartedEvent(dto));
 
             order = orderRepository.Update(order);
 

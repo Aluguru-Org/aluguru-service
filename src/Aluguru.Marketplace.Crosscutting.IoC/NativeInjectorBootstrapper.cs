@@ -60,6 +60,7 @@ using Aluguru.Marketplace.Crosscutting.Iugu;
 using Aluguru.Marketplace.Catalog.Usecases.DeleteProductImage;
 using Aluguru.Marketplace.Catalog.Usecases.AddCategoryImage;
 using Aluguru.Marketplace.Catalog.Usecases.DeleteCategoryImage;
+using Aluguru.Marketplace.Notification.Usecases.SendAccountActivationEmail;
 
 namespace Aluguru.Marketplace.Crosscutting.IoC
 {
@@ -170,6 +171,7 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
 
             // Notification Services
             services.AddScoped<INotificationHandler<UserRegisteredEvent>, UserRegisteredHandler>();
+            services.AddScoped<IRequestHandler<SendAccountActivationEmailCommand, bool>, SendAccountActivationEmailHandler>();
 
             // CrossCutting
             services.AddScoped<IAzureStorageGateway, AzureStorageGateway>();

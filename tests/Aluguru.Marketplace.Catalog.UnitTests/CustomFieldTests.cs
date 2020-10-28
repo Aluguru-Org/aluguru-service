@@ -10,15 +10,9 @@ namespace Aluguru.Marketplace.Catalog.UnitTests
     public class CustomFieldTests
     {
         [Fact]
-        public void CreateCustomField_WhenNull_ShouldThrowDomainException()
-        {
-            Assert.Throws<DomainException>(() => new CustomField(null));
-        }
-
-        [Fact]
         public void CreateCustomField_WhenEmptyValueAsString_ShouldThrowDomainException()
         {
-            Assert.Throws<DomainException>(() => new CustomField(""));
+            Assert.Throws<DomainException>(() => new CustomField(EFieldType.Text, ""));
         }
 
         [Fact]
@@ -36,13 +30,13 @@ namespace Aluguru.Marketplace.Catalog.UnitTests
         [Fact]
         public void CreateCustomField_WhenText_ShouldPass()
         {
-            new CustomField("text");
+            new CustomField(EFieldType.Text, "text");
         }
 
         [Fact]
         public void CreateCustomField_WhenNumber_ShouldPass()
         {
-            new CustomField(50);
+            new CustomField(EFieldType.Number, "50");
         }
 
         [Fact]

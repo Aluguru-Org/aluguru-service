@@ -11,49 +11,49 @@ namespace Aluguru.Marketplace.Catalog.UnitTests
         [Fact]
         public void CreateProduct_WhenEmptyUserId_ShouldThrowDomainException()
         {
-            Assert.Throws<DomainException>(() => new Product(Guid.Empty, Guid.NewGuid(), null, "name", "description", ERentType.Indefinite, new Price(500000, 50000, null), true, 1, 2, 30, 1, new List<CustomField>() { new CustomField("fake") }));
+            Assert.Throws<DomainException>(() => new Product(Guid.Empty, Guid.NewGuid(), null, "name", "description", ERentType.Indefinite, new Price(500000, 50000, null), true, 1, 2, 30, 1, new List<CustomField>() { new CustomField(EFieldType.Text, "fake") }));
         }
 
         [Fact]
         public void CreateProduct_WhenEmptyCategoryId_ShouldThrowDomainException()
         {
-            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), Guid.Empty, null, "name", "description", ERentType.Indefinite, new Price(500000, 50000, null), true, 1, 2, 30, 1, new List<CustomField>() { new CustomField("fake")}));
+            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), Guid.Empty, null, "name", "description", ERentType.Indefinite, new Price(500000, 50000, null), true, 1, 2, 30, 1, new List<CustomField>() { new CustomField(EFieldType.Text, "fake") }));
         }
 
         [Fact]
         public void CreateProduct_WhenEmptyName_ShouldThrowDomainException()
         {            
-            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), Guid.NewGuid(), null, "", "description", ERentType.Indefinite, new Price(500000, 50000, null), true, 1, 2, 30, 1, new List<CustomField>() { new CustomField("fake") }));
+            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), Guid.NewGuid(), null, "", "description", ERentType.Indefinite, new Price(500000, 50000, null), true, 1, 2, 30, 1, new List<CustomField>() { new CustomField(EFieldType.Text, "fake") }));
         }
 
         [Fact]
         public void CreateProduct_WhenEmptyDescription_ShouldThrowDomainException()
         {
-            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), Guid.NewGuid(), null, "name", "", ERentType.Indefinite, new Price(500000, 50000, null), true, 1, 2, 30, 1, new List<CustomField>() { new CustomField("fake") }));
+            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), Guid.NewGuid(), null, "name", "", ERentType.Indefinite, new Price(500000, 50000, null), true, 1, 2, 30, 1, new List<CustomField>() { new CustomField(EFieldType.Text, "fake") }));
         }
 
         [Fact]
         public void CreateProduct_WhenPriceIsZero_ShouldThrowDomainException()
         {
-            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), Guid.NewGuid(), null, "name", "description", ERentType.Indefinite, null, true, 1, 2, 30, 1, new List<CustomField>() { new CustomField("fake") }));
+            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), Guid.NewGuid(), null, "name", "description", ERentType.Indefinite, null, true, 1, 2, 30, 1, new List<CustomField>() { new CustomField(EFieldType.Text, "fake") }));
         }
 
         [Fact]
         public void CreateProduct_WhenStockQuantityIsNegative_ShouldThrowDomainException()
         {
-            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), Guid.NewGuid(), null, "name", "description", ERentType.Indefinite, new Price(500000, 50000, null), true, -1, 2, 30, 1, new List<CustomField>() { new CustomField("fake") }));
+            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), Guid.NewGuid(), null, "name", "description", ERentType.Indefinite, new Price(500000, 50000, null), true, -1, 2, 30, 1, new List<CustomField>() { new CustomField(EFieldType.Text, "fake") }));
         }
 
         [Fact]
         public void CreateProduct_WhenMinLocationTimeIsGreaterThanMaxLocationTime_ShouldThrowDomainException()
         {
-            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), Guid.NewGuid(), null, "name", "description", ERentType.Indefinite, new Price(500000, 50000, null), true, -1, 30, 15, 1, new List<CustomField>() { new CustomField("fake") }));
+            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), Guid.NewGuid(), null, "name", "description", ERentType.Indefinite, new Price(500000, 50000, null), true, -1, 30, 15, 1, new List<CustomField>() { new CustomField(EFieldType.Text, "fake") }));
         }
 
         [Fact]
         public void CreateProduct_WhenMinNoticeRentDaysIsLessThanOne_ShouldThrowDomainException()
         {
-            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), Guid.NewGuid(), null, "name", "description", ERentType.Indefinite, new Price(500000, 50000, null), true, -1, 2, 30, 0, new List<CustomField>() { new CustomField("fake") }));
+            Assert.Throws<DomainException>(() => new Product(Guid.NewGuid(), Guid.NewGuid(), null, "name", "description", ERentType.Indefinite, new Price(500000, 50000, null), true, -1, 2, 30, 0, new List<CustomField>() { new CustomField(EFieldType.Text, "fake") }));
         }
 
         [Fact]
@@ -151,7 +151,7 @@ namespace Aluguru.Marketplace.Catalog.UnitTests
 
         private Product CreateProduct()
         {
-            return new Product(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), "TestProduct", "description", ERentType.Indefinite, new Price(500000, 50000, null), true, 1, 2, 30, 1, new List<CustomField> { new CustomField("Size") });
+            return new Product(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), "TestProduct", "description", ERentType.Indefinite, new Price(500000, 50000, null), true, 1, 2, 30, 1, new List<CustomField> { new CustomField(EFieldType.Text, "Size") });
         }
     }
 

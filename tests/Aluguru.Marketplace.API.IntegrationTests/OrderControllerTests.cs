@@ -100,7 +100,7 @@ namespace Aluguru.Marketplace.API.IntegrationTests
                 ImageUrls = new List<string> { "image.png" },
                 CustomFields = new List<CreateCustomFieldViewModel>
                 {
-                    new CreateCustomFieldViewModel() {  FieldType = "Text", ValueAsString = "Observação?", Active = true }
+                    new CreateCustomFieldViewModel() {  FieldType = "Text", FieldName = "Observação?", Active = true }
                 }
             };
 

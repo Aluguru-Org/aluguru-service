@@ -4,4 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Aluguru.Marketplace.Communication\Aluguru.Marketplace.Communication.csproj" />
+    <ProjectReference Include="..\Aluguru.Marketplace.Infrastructure.Bus\Aluguru.Marketplace.Infrastructure.Bus.csproj" />
+  </ItemGroup>
+
 </Project>

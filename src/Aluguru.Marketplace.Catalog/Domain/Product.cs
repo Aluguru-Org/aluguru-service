@@ -96,8 +96,6 @@ namespace Aluguru.Marketplace.Catalog.Domain
                 Ensure.That<DomainException>(command.Product.MinNoticeRentDays.Value > 0, "The field MinNoticeRentDays from Product cannot be less than one");
             }
 
-            Ensure.That<DomainException>(command.Product.ImageUrls != null && command.Product.ImageUrls.Count >= 1, "The field ImageUrls from Product cannot be empty");
-
             if (command.Product.SubCategoryId.HasValue)
             {
                 Ensure.That<DomainException>(SubCategoryId != Guid.Empty, "The field SubCategoryId from Product cannot be empty");

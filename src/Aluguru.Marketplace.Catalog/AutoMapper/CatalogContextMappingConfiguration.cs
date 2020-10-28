@@ -103,9 +103,9 @@ namespace Aluguru.Marketplace.Catalog.AutoMapper
                     {
                         default:
                         case EFieldType.Text:
-                            return new CustomField(x.ValueAsString);
+                            return new CustomField(EFieldType.Text, x.FieldName);
                         case EFieldType.Number:
-                            return new CustomField(x.ValueAsInt.Value);
+                            return new CustomField(EFieldType.Number, x.FieldName);
                         case EFieldType.Radio:
                         case EFieldType.Checkbox:
                             return new CustomField(fieldType, x.ValueAsOptions);

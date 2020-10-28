@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using static PampaDevs.Utils.Helpers.DateTimeHelper;
 using static PampaDevs.Utils.Helpers.IdHelper;
-using Aluguru.Marketplace.Communication.IntegrationEvents;
 
 namespace Aluguru.Marketplace.Rent.Domain
 {
@@ -44,14 +43,18 @@ namespace Aluguru.Marketplace.Rent.Domain
         public void Initiate()
         {
             Ensure.That(OrderStatus < EOrderStatus.Initiated, "The order is already initiated");
-
             OrderStatus = EOrderStatus.Initiated;
-
             DateUpdated = NewDateTime();
-
-            var dto = new Communication.Dtos.OrderDTO(Id, UserId, TotalPrice, new List<Communication.Dtos.OrderItemDTO>(OrderItems.Select(x => new Communication.Dtos.OrderItemDTO(x.ProductId, x.ProductName, x.Amount, x.ProductPrice))));
-            AddEvent(new OrderStartedEvent(dto));
         }
+
+        public void CancelInitiation()
+        {
+            Ensure.That(OrderStatus != EOrderStatus.Draft, "The order is already draft");
+            OrderStatus = EOrderStatus.Draft;
+            DateUpdated = NewDateTime();
+        }
+
+
 
         public void AddItem(OrderItem orderItem)
         {

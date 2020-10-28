@@ -13,16 +13,14 @@ namespace Aluguru.Marketplace.API
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
             Env = env;
-            LoggerFactory = loggerFactory;
         }
 
         public IConfiguration Configuration { get; }
         public IWebHostEnvironment Env { get; }
-        public ILoggerFactory LoggerFactory { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -51,8 +49,9 @@ namespace Aluguru.Marketplace.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
+            
             if (Env.IsEnvironment("Local") || Env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
