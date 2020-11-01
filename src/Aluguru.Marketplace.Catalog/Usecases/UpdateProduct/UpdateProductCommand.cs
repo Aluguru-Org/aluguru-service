@@ -22,6 +22,7 @@ namespace Aluguru.Marketplace.Catalog.Usecases.UpdateProduct
         public UpdateProductCommandValidator()
         {
             RuleFor(x => x.Product.Name).NotEmpty();
+            RuleFor(x => x.Product.Uri).Matches(@"^([\w-]+)$").WithMessage("The uri should be in snake case. Like 'video-game', 'mobile-app', 'cars'");
             RuleFor(x => x.Product.Description).NotEmpty();
             RuleFor(x => x.Product.ImageUrls).NotEmpty();
 

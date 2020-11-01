@@ -9,13 +9,14 @@ namespace Aluguru.Marketplace.Catalog.Usecases.CreateProduct
 {
     public class CreateProductCommand : Command<CreateProductCommandResponse>
     {
-        public CreateProductCommand(Guid userId, Guid categoryId, Guid? subCategoryId, string name, string description, ERentType rentType, Price price, bool isActive, int stockQuantity, 
+        public CreateProductCommand(Guid userId, Guid categoryId, Guid? subCategoryId, string name, string uri, string description, ERentType rentType, Price price, bool isActive, int stockQuantity, 
             int minRentDays, int? maxRentDays, int? minNoticeRentDays, List<CustomField> customFields)
         {
             UserId = userId;
             CategoryId = categoryId;
             SubCategoryId = subCategoryId;
             Name = name;
+            Uri = uri;
             Description = description;
             RentType = rentType;
             Price = price;
@@ -31,6 +32,7 @@ namespace Aluguru.Marketplace.Catalog.Usecases.CreateProduct
         public Guid CategoryId { get; private set; }
         public Guid? SubCategoryId { get; private set; }
         public string Name { get; private set; }
+        public string Uri { get; private set; }
         public string Description { get; private set; }
         public ERentType RentType { get; private set; }
         public Price Price { get; private set; }
@@ -55,6 +57,7 @@ namespace Aluguru.Marketplace.Catalog.Usecases.CreateProduct
             RuleFor(x => x.UserId).NotEqual(Guid.Empty);
             RuleFor(x => x.CategoryId).NotEqual(Guid.Empty);
             RuleFor(x => x.Name).NotEmpty();
+            RuleFor(x => x.Uri).Matches(@"^([\w-]+)$").WithMessage("The uri should be in snake case. Like 'video-game', 'mobile-app', 'cars'");
             RuleFor(x => x.Description).NotEmpty();
 
             When(x => x.MaxRentDays.HasValue, () =>

@@ -29,6 +29,7 @@ namespace Aluguru.Marketplace.Catalog.Usecases.CreateProduct
                 command.CategoryId, 
                 command.SubCategoryId, 
                 command.Name, 
+                command.Uri,
                 command.Description, 
                 command.RentType,
                 command.Price, 

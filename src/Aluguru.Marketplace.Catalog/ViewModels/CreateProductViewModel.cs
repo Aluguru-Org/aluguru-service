@@ -16,6 +16,8 @@ namespace Aluguru.Marketplace.Catalog.ViewModels
         [Required]
         public string Name { get; set; }
         [Required]
+        public string Uri { get; set; }
+        [Required]
         public string Description { get; set; }
         [Required]
         [SwaggerSchema("The rent type. It can be 'Indefinite' or 'Fixed'")]

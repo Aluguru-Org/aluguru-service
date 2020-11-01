@@ -5,6 +5,7 @@ using PampaDevs.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.RegularExpressions;
 using static PampaDevs.Utils.Helpers.DateTimeHelper;
 using static PampaDevs.Utils.Helpers.IdHelper;
 
@@ -23,13 +24,14 @@ namespace Aluguru.Marketplace.Catalog.Domain
             _customFields = new List<CustomField>();
         }
 
-        public Product(Guid userId, Guid categoryId, Guid? subCategoryId, string name, string description, ERentType rentType, Price price, bool isActive, int stockQuantity, int minRentDays, int? maxRentDays, int? minNoticeRentDays, List<CustomField> customFields)
+        public Product(Guid userId, Guid categoryId, Guid? subCategoryId, string name, string uri, string description, ERentType rentType, Price price, bool isActive, int stockQuantity, int minRentDays, int? maxRentDays, int? minNoticeRentDays, List<CustomField> customFields)
             : base(NewId())
         {
             UserId = userId;
             CategoryId = categoryId;
             SubCategoryId = subCategoryId;
             Name = name;
+            Uri = uri;
             Description = description;
             RentType = rentType;
             Price = price;
@@ -48,6 +50,7 @@ namespace Aluguru.Marketplace.Catalog.Domain
         public Guid CategoryId { get; private set; }
         public Guid? SubCategoryId { get; private set; }
         public string Name { get; private set; }
+        public string Uri {get; private set; }
         public string Description { get; private set; }
         public ERentType RentType { get; private set; }
         public Price Price { get; set; }  
@@ -82,6 +85,7 @@ namespace Aluguru.Marketplace.Catalog.Domain
         public Product UpdateProduct(UpdateProductCommand command)
         {
             Ensure.That<DomainException>(!string.IsNullOrEmpty(command.Product.Name), "The field Name from product cannot be empty");
+            Ensure.That<DomainException>(new Regex(@"^([\w-]+)$").IsMatch(Uri), "The field Uri should be in snake case.");
             Ensure.That<DomainException>(!string.IsNullOrEmpty(command.Product.Description), "The field Description from Product cannot be empty");
             Ensure.That<DomainException>(command.Product.CategoryId != Guid.Empty, "The field CategoryId from Product cannot be empty");            
             Ensure.That<DomainException>(command.Product.StockQuantity > 0, "The field StockQuantity from Product cannot be smaller than zero");
@@ -160,6 +164,7 @@ namespace Aluguru.Marketplace.Catalog.Domain
         {
             Ensure.That<DomainException>(UserId != Guid.Empty, "The field UserId from Product cannot be empty");
             Ensure.That<DomainException>(!string.IsNullOrEmpty(Name), "The field Name from product cannot be empty");
+            Ensure.That<DomainException>(new Regex(@"^([\w-]+)$").IsMatch(Uri), "The field Uri should be in snake case.");
             Ensure.That<DomainException>(!string.IsNullOrEmpty(Description), "The field Description from Product cannot be empty");
             Ensure.That<DomainException>(CategoryId != Guid.Empty, "The field CategoryId from Product cannot be empty");
             Ensure.That<DomainException>(Price != null, "The field Price from Product cannot cannot be null");

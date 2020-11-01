@@ -78,6 +78,7 @@ namespace Aluguru.Marketplace.API.IntegrationTests
                 UserId = Guid.Parse("96d1fb97-47e9-4ad5-b07e-448f88defd9c"),
                 CategoryId = category.Id,
                 Name = "Test Product",
+                Uri = "test-product",
                 Description = "Test description",
                 RentType = "Indefinite",
                 Price = new PriceViewModel()
@@ -97,7 +98,6 @@ namespace Aluguru.Marketplace.API.IntegrationTests
                 MinRentDays = 7,
                 MaxRentDays = 30,
                 StockQuantity = 1,
-                ImageUrls = new List<string> { "image.png" },
                 CustomFields = new List<CreateCustomFieldViewModel>
                 {
                     new CreateCustomFieldViewModel() {  FieldType = "Text", FieldName = "Observação?", Active = true }

@@ -20,6 +20,16 @@ namespace Aluguru.Marketplace.Catalog.Data.Repositories
             return product;
         }
 
+        public static async Task<Product> GetProductAsync(this IQueryRepository<Product> repository, string productUri, bool disableTracking = true)
+        {
+            var product = await repository.FindOneAsync(
+                x => x.Uri.Trim() == productUri.Trim(),
+                product => product.Include(x => x.CustomFields),
+                disableTracking);
+
+            return product;
+        }
+
         public static async Task<IReadOnlyList<Product>> GetProductsAsync(this IQueryRepository<Product> repository, List<Guid> productIds, bool disableTracking = true)
         {
             var products = await repository.ListAsync(
