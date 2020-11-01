@@ -1,4 +1,5 @@
-﻿using PampaDevs.Utils;
+﻿using Microsoft.AspNetCore.Mvc;
+using PampaDevs.Utils;
 using System;
 using System.Collections.Generic;
 using System.Text;

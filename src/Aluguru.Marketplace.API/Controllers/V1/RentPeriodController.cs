@@ -34,9 +34,9 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetRentPeriodsCommandResponse))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> GetAll()
+        public async Task<ActionResult> Get()
         {
             var response = await _mediatorHandler.SendCommand<GetRentPeriodsCommand, GetRentPeriodsCommandResponse>(new GetRentPeriodsCommand());
             return GetResponse(response);
@@ -49,13 +49,13 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CreateRentPeriodCommandResponse))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> CreateRentPeriod([FromBody] CreateRentPeriodViewModel viewModel)
+        public async Task<ActionResult> Post([FromBody] CreateRentPeriodViewModel viewModel)
         {
             var command = _mapper.Map<CreateRentPeriodCommand>(viewModel);
             var response = await _mediatorHandler.SendCommand<CreateRentPeriodCommand, CreateRentPeriodCommandResponse>(command);
-            return PostResponse(nameof(CreateRentPeriod), response);
+            return PostResponse(nameof(Get), new { id = response.RentPeriod.Id }, response);
         }
 
         [HttpDelete]
@@ -65,7 +65,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> Delete([FromRoute] Guid id)
         {

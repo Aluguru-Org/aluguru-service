@@ -28,13 +28,13 @@ namespace Aluguru.Marketplace.Catalog.AutoMapper
                 .ForMember(x => x.ValidationResult, c => c.Ignore());
 
             CreateMap<CreateCategoryViewModel, CreateCategoryCommand>()
-                .ConstructUsing(x => new CreateCategoryCommand(x.Name, x.MainCategoryId))
+                .ConstructUsing(x => new CreateCategoryCommand(x.Name, x.Uri, x.MainCategoryId))
                 .ForMember(x => x.Timestamp, c => c.Ignore())
                 .ForMember(x => x.MessageType, c => c.Ignore())
                 .ForMember(x => x.ValidationResult, c => c.Ignore());
 
             CreateMap<CategoryViewModel, Category>()
-                .ConstructUsing(c => new Category(c.Name, c.MainCategoryId));
+                .ConstructUsing(c => new Category(c.Name, c.Uri, c.MainCategoryId));
 
             CreateMap<ProductViewModel, Product>()
                 .ConstructUsing((x, rc) =>
@@ -57,7 +57,9 @@ namespace Aluguru.Marketplace.Catalog.AutoMapper
                         x.MaxRentDays,
                         x.MinNoticeRentDays,
                         customFields);
-                });
+                })
+                .ForMember(x => x.Price, c => c.Ignore())
+                .ForMember(x => x.CustomFields, c => c.Ignore());
 
             CreateMap<CreateProductViewModel, CreateProductCommand>()
                 .ConstructUsing((x, rc) =>
@@ -83,7 +85,9 @@ namespace Aluguru.Marketplace.Catalog.AutoMapper
                 })
                 .ForMember(x => x.Timestamp, c => c.Ignore())
                 .ForMember(x => x.MessageType, c => c.Ignore())
-                .ForMember(x => x.ValidationResult, c => c.Ignore());
+                .ForMember(x => x.ValidationResult, c => c.Ignore())
+                .ForMember(x => x.Price, c => c.Ignore())
+                .ForMember(x => x.CustomFields, c => c.Ignore());
 
             CreateMap<PriceViewModel, Price>()
                 .ConstructUsing((x, rc) =>
@@ -94,6 +98,28 @@ namespace Aluguru.Marketplace.Catalog.AutoMapper
 
             CreateMap<PeriodPriceViewModel, PeriodPrice>()
                 .ConstructUsing((x, rc) => new PeriodPrice(x.RentPeriodId, x.Price));
+
+            CreateMap<CustomFieldViewModel, CustomField>()
+                .ConstructUsing((x, rc) =>
+                {
+                    var fieldType = (EFieldType)Enum.Parse(typeof(EFieldType), x.FieldType);
+                    switch (fieldType)
+                    {
+                        default:
+                        case EFieldType.Text:
+                            return new CustomField(EFieldType.Text, x.FieldName);
+                        case EFieldType.Number:
+                            return new CustomField(EFieldType.Number, x.FieldName);
+                        case EFieldType.Radio:
+                        case EFieldType.Checkbox:
+                            return new CustomField(fieldType, x.FieldName, x.ValueAsOptions);
+                    }
+                })
+                .ForMember(x => x.Id, c => c.Ignore())
+                .ForMember(x => x.ProductId, c => c.Ignore())
+                .ForMember(x => x.Product, c => c.Ignore())
+                .ForMember(x => x.DateCreated, c => c.Ignore())
+                .ForMember(x => x.DateUpdated, c => c.Ignore());
 
             CreateMap<CreateCustomFieldViewModel, CustomField>()
                 .ConstructUsing((x, rc) =>
@@ -108,7 +134,7 @@ namespace Aluguru.Marketplace.Catalog.AutoMapper
                             return new CustomField(EFieldType.Number, x.FieldName);
                         case EFieldType.Radio:
                         case EFieldType.Checkbox:
-                            return new CustomField(fieldType, x.ValueAsOptions);
+                            return new CustomField(fieldType, x.FieldName, x.ValueAsOptions);
                     }
                 })
                 .ForMember(x => x.Id, c => c.Ignore())

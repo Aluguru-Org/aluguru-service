@@ -35,7 +35,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetVouchersCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> GetAll()
+        public async Task<ActionResult> Get()
         {
             var response = await _mediatorHandler.SendCommand<GetVouchersCommand, GetVouchersCommandResponse>(new GetVouchersCommand());
             return GetResponse(response);
@@ -54,7 +54,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         {
             var command = _mapper.Map<CreateVoucherCommand>(viewModel);
             var response = await _mediatorHandler.SendCommand<CreateVoucherCommand, CreateVoucherCommandResponse>(command);
-            return PostResponse(nameof(CreateVoucher), response);
+            return PostResponse(nameof(Get), null, response);
         }
 
         [HttpDelete]

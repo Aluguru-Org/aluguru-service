@@ -3,7 +3,7 @@ param (
     [Parameter(Mandatory=$true)]
     [ValidateNotNull()]
     [ValidateNotNullOrEmpty()]
-    [ValidateSet("start", "stop", "delete", "bootstrap", "sonar", "add-migration")]
+    [ValidateSet("start", "stop", "delete", "bootstrap", "sonar", "deploy-dockerhub", "add-migration")]
     [String]
     $Operation,
     [Parameter(Mandatory=$false)]
@@ -20,23 +20,17 @@ process {
     Write-Host "======================> Aluguru.ps1 processing" -ForegroundColor Green
 
     if ($Operation -eq "start") {
-        Write-Host "      ___           ___           ___           ___                 " -ForegroundColor DarkRed
-        Write-Host "     /\__\         /\__\         /\  \         /\  \          ___   " -ForegroundColor DarkRed
-        Write-Host "    /::|  |       /:/  /        /::\  \       /::\  \        /\  \  " -ForegroundColor DarkRed
-        Write-Host "   /:|:|  |      /:/  /        /:/\:\  \     /:/\:\  \       \:\  \ " -ForegroundColor DarkRed
-        Write-Host "  /:/|:|__|__   /:/  /  ___   /::\~\:\__\   /::\~\:\__\      /::\__\" -ForegroundColor DarkRed
-        Write-Host " /:/ |::::\__\ /:/__/  /\__\ /:/\:\ \:|__| /:/\:\ \:|__|  __/:/\/__/" -ForegroundColor DarkRed
-        Write-Host " \/__/~~/:/  / \:\  \ /:/  / \:\~\:\/:/  / \:\~\:\/:/  / /\/:/  /   " -ForegroundColor DarkRed
-        Write-Host "       /:/  /   \:\  /:/  /   \:\ \::/  /   \:\ \::/  /  \::/__/    " -ForegroundColor DarkRed
-        Write-Host "      /:/  /     \:\/:/  /     \:\/:/  /     \:\/:/  /    \:\__\    " -ForegroundColor DarkRed
-        Write-Host "     /:/  /       \::/  /       \::/__/       \::/__/      \/__/    " -ForegroundColor DarkRed
-        Write-Host "     \/__/         \/__/         ~~            ~~                   " -ForegroundColor DarkRed
-
         docker-compose up -d
     } elseif ($Operation -eq "stop") {
-        docker-compose stop    
+        docker-compose stop
     } elseif ($Operation -eq "delete") {
         docker-compose down -v
+    } elseif ($Operation -eq "deploy-dockerhub") {
+        docker build . -t felipeallmeidadev/aluguru-service:$OperationArg1
+        docker build . -t felipeallmeidadev/aluguru-service:latest
+
+        docker push felipeallmeidadev/aluguru-service:$OperationArg1
+        docker push felipeallmeidadev/aluguru-service:latest
     } elseif($Operation -eq "sonar") {
         dotnet dotnet-sonarscanner begin /k:"aluguru" /d:sonar.login="684360a5c37971ef20f1e835bb7c1e3281a6a77d" /d:sonar.host.url="http://localhost:9999" /d:sonar.language="cs" /d:sonar.cs.opencover.reportsPaths="**/coverageResults/coverage.opencover.xml"
         dotnet build

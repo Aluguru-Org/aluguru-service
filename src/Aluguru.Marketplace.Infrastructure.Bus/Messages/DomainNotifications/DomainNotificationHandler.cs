@@ -27,9 +27,15 @@ namespace Aluguru.Marketplace.Infrastructure.Bus.Messages.DomainNotifications
             return _notifications;
         }
 
-        public virtual List<string> GetNotificationErrors()
+        public virtual Dictionary<string, string[]> GetNotificationErrors()
         {
-            return _notifications.Select(x => x.Value).ToList();
+            var keys = _notifications.Select(x => x.Key).Distinct();
+            var errors = new Dictionary<string, string[]>();
+            foreach(var key in keys)
+            {
+                errors[key] = _notifications.Where(x => x.Key.Equals(key, System.StringComparison.Ordinal)).Select(x => x.Value).ToArray();
+            }
+            return errors;
         }
 
         public virtual bool HasNotifications()

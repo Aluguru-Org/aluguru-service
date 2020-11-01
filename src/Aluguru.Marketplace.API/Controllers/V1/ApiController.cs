@@ -23,54 +23,39 @@ namespace Aluguru.Marketplace.API.Controllers.V1
 
         protected bool IsValidOperation() => !_notifications.HasNotifications();
 
-        protected ActionResult GetResponse<T>(T data = null) where T : class
+        protected ActionResult GetResponse<T>(T data) where T : class
         {
-            if (IsValidOperation()) return Ok(new ApiResponse<T>(true, "The resource has been fetched successfully", data));
+            if (data == null)
+                return NoContent();
 
-            return BadRequest(new ApiResponse<List<string>>(false, "The server was not able to process the request", _notifications.GetNotificationErrors()));
+            return Ok(new ApiResponse<T>(true, "The resource has been fetched successfully", data));
         }
 
-        protected ActionResult PostResponse<T>(string actionName, T data = null, bool isCreation = true) where T : class
+        protected ActionResult PostResponse<T>(string actionName, object route, T data) where T : class
         {
             if (IsValidOperation())
             {
-                if (isCreation)
-                    return CreatedAtAction(actionName, new ApiResponse<T>(true, "The resource was successfully created.", data));
-                else
-                    return Ok(new ApiResponse<T>(true, "The resource has been fetched successfully", data));
+                return CreatedAtAction(actionName, route, new ApiResponse<T>(true, "The resource was successfully created.", data));
             }
 
-            return BadRequest(new ApiResponse<List<string>>(false, "The server was not able to process the request", _notifications.GetNotificationErrors()));
+            return BadRequest(new ValidationProblemDetails(_notifications.GetNotificationErrors()));
         }
 
         protected ActionResult PutResponse()
         {
-            if (IsValidOperation()) return Ok(new ApiResponse(true, "The resource was updated successfully"));
+            if (IsValidOperation()) return NoContent();
 
-            return BadRequest(new ApiResponse<List<string>>(false, "The server was not able to process the request", _notifications.GetNotificationErrors()));
-        }
-
-        protected ActionResult PutResponse<T>(T data = null) where T : class
-        {
-            if (IsValidOperation()) return Ok(new ApiResponse<T>(true, "The resource was updated successfully", data));
-
-            return BadRequest(new ApiResponse<List<string>>(false, "The server was not able to process the request", _notifications.GetNotificationErrors()));
+            return BadRequest(new ValidationProblemDetails(_notifications.GetNotificationErrors()));
         }
 
         protected ActionResult DeleteResponse()
         {
             if (IsValidOperation())
+            {
                 return Ok(new ApiResponse(true, "The resource was deleted successfully"));
+            }
 
-            return BadRequest(new ApiResponse<List<string>>(false, "The server was not able to process the request", _notifications.GetNotificationErrors()));
-        }
-
-        protected ActionResult DeleteResponse<T>(T data = null) where T : class
-        {
-            if (IsValidOperation())
-                return Ok(new ApiResponse<T>(true, "The resource was deleted successfully", data));
-
-            return BadRequest(new ApiResponse<List<string>>(false, "The server was not able to process the request", _notifications.GetNotificationErrors()));
+            return BadRequest(new ValidationProblemDetails(_notifications.GetNotificationErrors()));
         }
     }
 

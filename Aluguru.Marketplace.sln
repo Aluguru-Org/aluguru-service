@@ -38,12 +38,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.dockerignore = .dockerignore
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
-		aluguru.ps1 = aluguru.ps1
-		aluguru.sh = aluguru.sh
 		docker-compose.yml = docker-compose.yml
 		Dockerfile = Dockerfile
 		.config\dotnet-tools.json = .config\dotnet-tools.json
 		README.md = README.md
+		run.ps1 = run.ps1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Migrations", "Migrations", "{B70520C1-48AF-44B0-B8D7-9A1190B66ED3}"
@@ -90,7 +89,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Communication", "Communicat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aluguru.Marketplace.Communication", "src\Aluguru.Marketplace.Communication\Aluguru.Marketplace.Communication.csproj", "{D3D46120-513A-402F-9F39-D92A6A1265A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aluguru.Marketplace.Crosscutting.Iugu", "src\Aluguru.Marketplace.Crosscutting.Iugu\Aluguru.Marketplace.Crosscutting.Iugu.csproj", "{2B47679F-58F5-4C56-B4D6-60F8EE0650A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aluguru.Marketplace.Crosscutting.Iugu", "src\Aluguru.Marketplace.Crosscutting.Iugu\Aluguru.Marketplace.Crosscutting.Iugu.csproj", "{2B47679F-58F5-4C56-B4D6-60F8EE0650A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

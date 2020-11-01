@@ -37,9 +37,9 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetUserRolesCommandResponse))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> GetRoles()
+        public async Task<ActionResult> Get()
         {
             var response = await _mediatorHandler.SendCommand<GetUserRolesCommand, GetUserRolesCommandResponse>(new GetUserRolesCommand());
             return GetResponse(response);
@@ -52,7 +52,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetUsersByRoleCommandResponse))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> GetUsersByRole([SwaggerParameter("The user role. It can be 'User', 'Company' or 'Admin'")][FromRoute] string role)
         {
@@ -67,14 +67,14 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateUserRoleCommandResponse))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> CreateRole([FromBody] CreateUserRoleViewModel viewModel)
+        public async Task<ActionResult> Post([FromBody] CreateUserRoleViewModel viewModel)
         {
             var command = _mapper.Map<CreateUserRoleCommand>(viewModel);
             var response = await _mediatorHandler.SendCommand<CreateUserRoleCommand, CreateUserRoleCommandResponse>(command);
-            return PostResponse(nameof(CreateRole), response);
+            return PostResponse(nameof(Get), null, response);
         }
 
         [HttpPut]
@@ -82,16 +82,15 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [Authorize(Policy = Policies.UserRoleWriter)]
         [SwaggerOperation(Summary = "Update a user role")]
         [Consumes("application/json")]
-        [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateUserRoleCommandResponse))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> CreateRole([FromRoute] Guid id, [FromBody] UpdateUserRoleViewModel viewModel)
+        public async Task<ActionResult> Put([FromRoute] Guid id, [FromBody] UpdateUserRoleViewModel viewModel)
         {
             var command = new UpdateUserRoleCommand(id, viewModel);
-            var response = await _mediatorHandler.SendCommand<UpdateUserRoleCommand, UpdateUserRoleCommandResponse>(command);
-            return PostResponse(nameof(CreateRole), response);
+            await _mediatorHandler.SendCommand<UpdateUserRoleCommand, UpdateUserRoleCommandResponse>(command);
+            return PutResponse();
         }
 
         [HttpDelete]
@@ -101,10 +100,10 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> CreateRole([FromRoute] Guid id)
+        public async Task<ActionResult> Delete([FromRoute] Guid id)
         {
             var command = new DeleteUserRoleCommand(id);
             await _mediatorHandler.SendCommand<DeleteUserRoleCommand, bool>(command);

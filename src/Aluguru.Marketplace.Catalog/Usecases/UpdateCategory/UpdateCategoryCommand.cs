@@ -28,6 +28,7 @@ namespace Aluguru.Marketplace.Catalog.Usecases.UpdateCategory
         {
             RuleFor(x => x.Category.Id).NotEqual(Guid.Empty);
             RuleFor(x => x.Category.Name).NotEmpty();
+            RuleFor(x => x.Category.Uri).Matches(@"^([\w-]+)$").WithMessage("The category should be in snake case. Like 'video-game', 'mobile-app', 'cars'");
         }
     }
 

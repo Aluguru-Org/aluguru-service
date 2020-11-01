@@ -32,7 +32,6 @@ namespace Aluguru.Marketplace.Catalog.ViewModels
         public int? MaxRentDays { get; set; }
         [Required]
         public int StockQuantity { get; set; }
-        public List<string> ImageUrls { get; set; }
         public List<CreateCustomFieldViewModel> CustomFields { get; set; }
     }
 }

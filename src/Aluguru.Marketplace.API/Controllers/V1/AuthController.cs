@@ -36,7 +36,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         {
             var command = new LogInUserCommand(viewModel.Email, viewModel.Password);
             var response = await _mediatorHandler.SendCommand<LogInUserCommand, LogInUserCommandResponse>(command);
-            return PostResponse(nameof(LogIn), response); 
+            return PostResponse(nameof(LogIn), null, response);
         }
     }
 }

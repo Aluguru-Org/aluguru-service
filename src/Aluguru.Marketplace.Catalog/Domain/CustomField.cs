@@ -21,9 +21,10 @@ namespace Aluguru.Marketplace.Catalog.Domain
             ValidateEntity();
         }
 
-        public CustomField(EFieldType fieldType, List<string> values) : this(fieldType)
+        public CustomField(EFieldType fieldType, string fieldName, List<string> values) : this(fieldType)
         {
-            _valueAsOptions = values;
+            FieldName = fieldName;
+            _valueAsOptions = new List<string>(values);
             ValidateEntity();
         }
 

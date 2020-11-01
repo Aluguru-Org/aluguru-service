@@ -10,13 +10,25 @@ namespace Aluguru.Marketplace.Catalog.UnitTests
         [Fact]
         public void CreateCategory_WhenEmptyName_ShouldThrowException()
         {
-            Assert.Throws<DomainException>(() => new Category("", null));
+            Assert.Throws<DomainException>(() => new Category("", "video-games", null));
+        }
+
+        [Fact]
+        public void CreateCategory_WhenEmptyUri_ShouldThrowException()
+        {
+            Assert.Throws<DomainException>(() => new Category("Video Games", "", null));
+        }
+
+        [Fact]
+        public void CreateCategory_WhenInvalidUri_ShouldThrowException()
+        {
+            Assert.Throws<DomainException>(() => new Category("Video Games", "Video Games", null));
         }
 
         [Fact]
         public void CreateCategory_WhenEmptyMainCategoryId_ShouldThrowException()
         {
-            Assert.Throws<DomainException>(() => new Category("Toys", Guid.Empty));
+            Assert.Throws<DomainException>(() => new Category("Video Games", "video-games", Guid.Empty));
         }
     }
 }

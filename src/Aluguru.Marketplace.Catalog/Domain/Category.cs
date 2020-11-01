@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using static PampaDevs.Utils.Helpers.IdHelper;
 using static PampaDevs.Utils.Helpers.DateTimeHelper;
 using Aluguru.Marketplace.Catalog.Events;
+using System.Text.RegularExpressions;
 
 namespace Aluguru.Marketplace.Catalog.Domain
 {
@@ -17,11 +18,12 @@ namespace Aluguru.Marketplace.Catalog.Domain
             _childrenCategories = new List<Category>();
         }
 
-        public Category(string name, Guid? mainCategoryId)
+        public Category(string name, string uri, Guid? mainCategoryId)
             : base(NewId())
         {
             MainCategoryId = mainCategoryId;
             Name = name;
+            Uri = uri;
 
             _childrenCategories = new List<Category>();
 
@@ -29,6 +31,7 @@ namespace Aluguru.Marketplace.Catalog.Domain
         }
 
         public string Name { get; private set; }
+        public string Uri { get; private set; }
         public string ImageUrl { get; private set; }
         public Guid? MainCategoryId { get; private set; }
         public Category MainCategory { get; set; }
@@ -52,6 +55,7 @@ namespace Aluguru.Marketplace.Catalog.Domain
         {
             MainCategoryId = command.Category.MainCategoryId;
             Name = command.Category.Name;
+            Uri = command.Category.Uri;
 
             DateUpdated = NewDateTime();
 
@@ -61,8 +65,9 @@ namespace Aluguru.Marketplace.Catalog.Domain
         }
 
         protected override void ValidateEntity()
-        {
+        {            
             Ensure.That<DomainException>(!string.IsNullOrEmpty(Name), "The field Name cannot be empty");
+            Ensure.That<DomainException>(new Regex(@"^([\w-]+)$").IsMatch(Uri), "The field Uri should be in snake case.");
             if (MainCategoryId != null)
             {
                 Ensure.That<DomainException>(MainCategoryId != Guid.Empty, "The field MainCategoryId cannot be empty");

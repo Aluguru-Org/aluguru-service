@@ -81,7 +81,7 @@ namespace Aluguru.Marketplace.Catalog.UnitTests
         {
             var product = CreateProduct();
 
-            var category = new Category("test", null);
+            var category = new Category("test", "test", null);
             product.UpdateCategory(category);
 
             Assert.Equal(category.Id, product.CategoryId);

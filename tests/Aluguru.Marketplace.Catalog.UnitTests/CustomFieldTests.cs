@@ -18,13 +18,13 @@ namespace Aluguru.Marketplace.Catalog.UnitTests
         [Fact]
         public void CreateCustomField_WhenEmptyOptions_AndFieldTypeCheckbox_ShouldThrowDomainException()
         {
-            Assert.Throws<DomainException>(() => new CustomField(EFieldType.Checkbox, new List<string>()));
+            Assert.Throws<DomainException>(() => new CustomField(EFieldType.Checkbox, "teste", new List<string>()));
         }
 
         [Fact]
         public void CreateCustomField_WhenEmptyOptions_AndFieldTypeRadio_ShouldThrowDomainException()
         {
-            Assert.Throws<DomainException>(() => new CustomField(EFieldType.Radio, new List<string>()));
+            Assert.Throws<DomainException>(() => new CustomField(EFieldType.Radio, "teste", new List<string>()));
         }
 
         [Fact]
@@ -42,13 +42,13 @@ namespace Aluguru.Marketplace.Catalog.UnitTests
         [Fact]
         public void CreateCustomField_WhenCheckbox_ShouldPass()
         {
-            new CustomField(EFieldType.Checkbox, new List<string> { "test", "test" });
+            new CustomField(EFieldType.Checkbox, "Checkbox Teste", new List<string> { "test", "test" });
         }
 
         [Fact]
         public void CreateCustomField_WhenRadio_ShouldPass()
         {
-            new CustomField(EFieldType.Radio, new List<string> { "test", "test" });
+            new CustomField(EFieldType.Radio, "Radio Teste", new List<string> { "test", "test" });
         }
     }
 }

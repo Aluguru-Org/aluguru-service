@@ -45,9 +45,9 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [SwaggerOperation(Summary = "Get products", Description = "Return a list of products")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetProductsCommandResponse))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> GetProducts(
+        public async Task<ActionResult> Get(
             [SwaggerParameter("The Id of a user", Required = false)][FromQuery] Guid? userId,
             [SwaggerParameter("The page to be displayed", Required = false)][FromQuery] int? currentPage,
             [SwaggerParameter("The max number of pages that should be returned, the default value is 50", Required = false)][FromQuery] int? pageSize,
@@ -66,9 +66,9 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [SwaggerOperation(Summary = "Get product by id", Description = "Return the target product")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetProductsCommandResponse))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> GetProductById([SwaggerParameter("The product Id", Required = true)][FromRoute] Guid id)
+        public async Task<ActionResult> GetById([SwaggerParameter("The product Id", Required = true)][FromRoute] Guid id)
         {
             var response = await _mediatorHandler.SendCommand<GetProductCommand, GetProductCommandResponse>(new GetProductCommand(id));
             return GetResponse(response);
@@ -81,15 +81,15 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CreateProductCommandResponse))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]        
-        public async Task<ActionResult> CreateProduct([FromBody] CreateProductViewModel viewModel)
+        public async Task<ActionResult> Post([FromBody] CreateProductViewModel viewModel)
         {
             var command = _mapper.Map<CreateProductCommand>(viewModel);
             var response = await _mediatorHandler.SendCommand<CreateProductCommand, CreateProductCommandResponse>(command);
-            return PostResponse(nameof(CreateProduct), response);
+            return PostResponse(nameof(Get), response != null ? new { id = response.Product.Id } : null, response);
         }
 
         [HttpPut]
@@ -97,17 +97,16 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [Authorize(Policy = Policies.ProductWriter)]
         [SwaggerOperation(Summary = "Update Product", Description = "Update a existing product in the catalog")]
         [Consumes("application/json")]
-        [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateProductCommandResponse))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> UpdateProduct([FromRoute] Guid id, [FromBody] UpdateProductViewModel viewModel)
         {
             var command = new UpdateProductCommand(id, viewModel);
-            var response = await _mediatorHandler.SendCommand<UpdateProductCommand, UpdateProductCommandResponse>(command);
-            return PostResponse(nameof(UpdateProduct), response);
+            await _mediatorHandler.SendCommand<UpdateProductCommand, UpdateProductCommandResponse>(command);
+            return PutResponse();
         }
 
         [HttpDelete]
@@ -116,7 +115,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [SwaggerOperation(Summary = "Delete a product", Description = "Delete a existing product.")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
@@ -126,13 +125,13 @@ namespace Aluguru.Marketplace.API.Controllers.V1
             return DeleteResponse();
         }
 
-        [HttpPut]
+        [HttpPost]
         [Route("{id}/image")]
         [Authorize(Policy = Policies.ProductWriter)]
         [Consumes("multipart/form-data")]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AddProductImageCommandResponse))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(AddProductImageCommandResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
@@ -140,7 +139,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         {
             var command = new AddProductImageCommand(id, files);
             var response = await _mediatorHandler.SendCommand<AddProductImageCommand, AddProductImageCommandResponse>(command);
-            return PutResponse(response);
+            return PostResponse(nameof(Get), new { id = response.Product.Id }, response);
         }
 
         [HttpDelete]
@@ -149,15 +148,15 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeleteProductImageCommandResponse))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> DeleteImage([FromRoute] Guid id, [FromBody] List<string> imageUrls)
         {
             var command = new DeleteProductImageCommand(id, imageUrls);
-            var response = await _mediatorHandler.SendCommand<DeleteProductImageCommand, DeleteProductImageCommandResponse>(command);
-            return DeleteResponse(response);
+            await _mediatorHandler.SendCommand<DeleteProductImageCommand, DeleteProductImageCommandResponse>(command);
+            return DeleteResponse();
         }
     }
 }
