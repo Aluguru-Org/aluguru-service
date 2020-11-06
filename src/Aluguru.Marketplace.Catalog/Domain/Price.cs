@@ -62,7 +62,7 @@ namespace Aluguru.Marketplace.Catalog.Domain
             {
                 Ensure.That<DomainException>(periodPrices.All(x => x.Price > 0), "The field PeriodRentPrices from Product cannot have a price that is smaller or equal than zero");
             }
-            periodPrices.Clear();
+            PeriodRentPrices.Clear();
 
             PeriodRentPrices = periodPrices.Select(x => new PeriodPrice(x.RentPeriodId, x.Price)).ToList();
         }
