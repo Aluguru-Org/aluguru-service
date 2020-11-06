@@ -16,10 +16,10 @@ namespace Aluguru.Marketplace.Register.Data.Seed
         public static IApplicationBuilder SeedRegisterContext(this IApplicationBuilder app)
         {
             var serviceScopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
-            var cryptography = app.ApplicationServices.GetRequiredService<ICryptography>();
 
             using (var serviceScope = serviceScopeFactory.CreateScope())
             {
+                var cryptography = serviceScope.ServiceProvider.GetRequiredService<ICryptography>();
                 var unitOfWork = serviceScope.ServiceProvider.GetRequiredService<IUnitOfWork>();
 
                 var userRoleQueryRepository = unitOfWork.QueryRepository<UserRole>();                
