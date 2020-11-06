@@ -1,4 +1,6 @@
-﻿using Aluguru.Marketplace.API.Models;
+﻿using Aluguru.Marketplace.API.IntegrationTests.Config;
+using Aluguru.Marketplace.API.IntegrationTests.Extensions;
+using Aluguru.Marketplace.API.Models;
 using Aluguru.Marketplace.Register.Usecases.LogInUser;
 using Aluguru.Marketplace.Register.ViewModels;
 using Newtonsoft.Json;
@@ -10,35 +12,22 @@ using Xunit;
 
 namespace Aluguru.Marketplace.API.IntegrationTests
 {
+    [TestCaseOrderer("Aluguru.Marketplace.API.IntegrationTests.Extensions.PriorityOrderer", "Aluguru.Marketplace.API.IntegrationTests")]
+    [Collection(nameof(IntegrationApiTestsFixtureCollection))]
     public class AuthControllerTests
-    {        
-        [Fact]
-        public async Task LogIn_WithExistingUser_ShouldReturnSuccess()
+    {
+        private readonly IntegrationTestsFixture<StartupTests> _fixture;
+        public AuthControllerTests(IntegrationTestsFixture<StartupTests> testsFixture)
         {
-            var client = Server.Instance.CreateClient();
-
-            var content = new StringContent(JsonConvert.SerializeObject(new LoginUserViewModel() { Email = "admin@aluguru.com.br", Password = "really" }), Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("/api/v1/auth/login", content);
-            var apiResponse = JsonConvert.DeserializeObject<ApiResponse<LogInUserCommandResponse>>(await response.Content.ReadAsStringAsync());
-
-            Assert.True(apiResponse.Success);
-            Assert.True(!string.IsNullOrEmpty(apiResponse.Data.Token));
+            _fixture = testsFixture;
         }
 
-
-        [Fact]
-        public async Task LogIn_WithNonRegisteredUser_ShouldNotReturnSuccess()
+        [Fact(DisplayName = "LogIn user with success"), TestPriority(1)]
+        [Trait("Register", "Api Integration - LogIn user")]
+        public void LogIn_WithExistingUser_ShouldReturnSuccess()
         {
-            var client = Server.Instance.CreateClient();
-
-            var content = new StringContent(JsonConvert.SerializeObject(new LoginUserViewModel() { Email = "test@test.com", Password = "test" }), Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("/api/v1/auth/login", content);
-            var apiResponse = JsonConvert.DeserializeObject<ApiResponse<List<string>>>(await response.Content.ReadAsStringAsync());
-
-            Assert.False(apiResponse.Success);
-            Assert.True(apiResponse.Data[0] == "The E-mail test@test.com does not exist");
+            _fixture.Admin.LogIn().Wait();
         }
-
 
     }
 }

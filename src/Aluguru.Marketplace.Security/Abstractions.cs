@@ -14,6 +14,16 @@ namespace Aluguru.Marketplace.Security
 {
     public static class Abstractions
     {
+        public static IServiceCollection AddCryptography(this IServiceCollection services, IConfiguration configuration)
+        {
+            var section = configuration.GetSection("SecuritySettings");
+            services.Configure<SecuritySettings>(section);
+
+            services.AddScoped<ICryptography, Cryptography>();
+
+            return services;
+        }
+
         public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             Ensure.Argument.NotNull(services);

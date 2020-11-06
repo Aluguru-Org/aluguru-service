@@ -3,6 +3,7 @@
     public enum ERentType
     {
         Indefinite,
-        Fixed
+        Fixed,
+        None
     }
 }

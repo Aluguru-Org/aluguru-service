@@ -1,67 +1,133 @@
-﻿using Aluguru.Marketplace.API.IntegrationTests.Extensions;
+﻿using Aluguru.Marketplace.API.IntegrationTests.Config;
+using Aluguru.Marketplace.API.IntegrationTests.Extensions;
 using Aluguru.Marketplace.API.Models;
 using Aluguru.Marketplace.Register.Usecases.CreateUser;
 using Aluguru.Marketplace.Register.Usecases.GetUserById;
 using Aluguru.Marketplace.Register.ViewModels;
-using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Aluguru.Marketplace.API.IntegrationTests
 {
+
+    [TestCaseOrderer("Aluguru.Marketplace.API.IntegrationTests.Extensions.PriorityOrderer", "Aluguru.Marketplace.API.IntegrationTests")]
+    [Collection(nameof(IntegrationApiTestsFixtureCollection))]
     public class UserControllerTests
     {
-        [Fact]
-        public void GetUserById_ShouldPass()
+        private readonly IntegrationTestsFixture<StartupTests> _fixture;
+        public UserControllerTests(IntegrationTestsFixture<StartupTests> testsFixture)
         {
-            var client = Server.Instance.CreateClient();
-
-            client.LogInUser();
-
-            var userId = "96d1fb97-47e9-4ad5-b07e-448f88defd9c";
-            var response = client.GetAsync($"/api/v1/user/{userId}").Result;
-
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-            var user = response.Deserialize<ApiResponse<GetUserByIdCommandResponse>>().Data.User;
-
-            Assert.Equal(Guid.Parse(userId), user.Id);
+            _fixture = testsFixture;
         }
 
-        [Fact]
+        [Fact(DisplayName = "Register user with success"), TestPriority(1)]
+        [Trait("Register", "Api Integration - Register user")]
         public void CreateUser_ShouldPass()
         {
-            var client = Server.Instance.CreateClient();
-
+            // Arrange
             var viewModel = new UserRegistrationViewModel()
             {
-                Email = "someemail@test.com",
-                Password = "someAwesomePa$$word1",
-                FullName = "Aluguru Admin Account",
+                Email = _fixture.User.Email,
+                Password = _fixture.User.Password,
+                FullName = _fixture.User.Name,
                 Role = "User"
             };
 
-            var response = client.PostAsync($"/api/v1/user", viewModel.ToStringContent()).Result;
+            // Act
+            var response = _fixture.User.Client.PostAsJsonAsync($"/api/v1/user", viewModel).Result;
 
+            var createUserResponse = response.Deserialize<ApiResponse<CreateUserCommandResponse>>().Data;
+
+            _fixture.User.Id = createUserResponse.User.Id;
+            _fixture.User.ActivationHash = createUserResponse.ActivationHash;
+
+            // Assert
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
 
-        [Fact]
+        [Fact(DisplayName = "Register company with success"), TestPriority(1)]
+        [Trait("Register", "Api Integration - Register company")]
+        public void CreateCompany_ShouldPass()
+        {
+            // Arrange
+            var viewModel = new UserRegistrationViewModel()
+            {
+                Email = _fixture.Company.Email,
+                Password = _fixture.Company.Password,
+                FullName = _fixture.Company.Name,
+                Role = "Company"
+            };
+
+            // Act
+            var response = _fixture.Company.Client.PostAsJsonAsync($"/api/v1/user", viewModel).Result;
+
+            var createUserResponse = response.Deserialize<ApiResponse<CreateUserCommandResponse>>().Data;
+
+            _fixture.Company.Id = createUserResponse.User.Id;
+            _fixture.Company.ActivationHash = createUserResponse.ActivationHash;
+
+            // Assert
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        }
+
+        [Fact(DisplayName = "Activate user with success"), TestPriority(2)]
+        [Trait("Register", "Api Integration - Activate user")]
+        public void ActivateUser_ShouldPass()
+        {
+            // Arrange
+            var id = _fixture.User.Id;
+            var activationHash = _fixture.User.ActivationHash;
+
+            // Act
+            var response = _fixture.User.Client.PutAsync($"/api/v1/user/{id}/activate?activationHash={activationHash}", null).Result;
+
+            // Assert
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        }
+
+        [Fact(DisplayName = "Activate company with success"), TestPriority(2)]
+        [Trait("Register", "Api Integration - Activate company")]
+        public void ActivateCompany_ShouldPass()
+        {
+            // Arrange
+            var id = _fixture.Company.Id;
+            var activationHash = _fixture.Company.ActivationHash;
+
+            // Act
+            var response = _fixture.Company.Client.PutAsync($"/api/v1/user/{id}/activate?activationHash={activationHash}", null).Result;
+
+            // Assert
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        }
+
+        [Fact(DisplayName = "Get user by id with success"), TestPriority(4)]
+        [Trait("Register", "API Integration - Get User by Id")]
+        public void GetUserById_ShouldPass()
+        {
+            // Arrange
+            var id = _fixture.Company.Id;
+
+            // Act
+            _fixture.Company.LogIn().Wait();
+            var response = _fixture.Company.Client.GetAsync($"/api/v1/user/{id}").Result;
+            var user = response.Deserialize<ApiResponse<GetUserByIdCommandResponse>>().Data.User;
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(id, user.Id);
+        }
+
+        [Fact(DisplayName = "Update user with success"), TestPriority(4)]
+        [Trait("Register", "API Integration - Update User")]
         public void UpdateUser_ShouldPass()
         {
-            var client = Server.Instance.CreateClient();
-
-            client.LogInUser();
-
-            var userId = "96d1fb97-47e9-4ad5-b07e-448f88defd9c";
+            // Arrange
+            var userId = _fixture.User.Id;            
 
             var viewModel = new UpdateUserViewModel()
             {
-                UserId = Guid.Parse("96d1fb97-47e9-4ad5-b07e-448f88defd9c"),
-                FullName = "Aluguru Admin Account",
+                UserId = userId,
+                FullName = _fixture.User.Name + "__TEST_UPDATE__",
                 Document = new DocumentViewModel()
                 {
                     Number = "02482668026",
@@ -69,44 +135,36 @@ namespace Aluguru.Marketplace.API.IntegrationTests
                 },
                 Address = new AddressViewModel()
                 {
-                    Street = "General Lima e Silva",
-                    Number = "480",
-                    Neighborhood = "Centro Histórico",
-                    City = "Porto Alegre",
-                    State = "Rio Grande do Sul",
-                    Country = "Brasil",
+                    Street = "some-address",
+                    Number = "some-number",
+                    Neighborhood = "some-neighborhood",
+                    City = "some-city",
+                    State = "some-state",
+                    Country = "some-country",
                     ZipCode = "90050-100"
                 }
             };
 
-            var response = client.PutAsync($"/api/v1/user/{userId}", viewModel.ToStringContent()).Result;
+            // Act
+            _fixture.User.LogIn().Wait();
+            var response = _fixture.User.Client.PutAsJsonAsync($"/api/v1/user/{userId}", viewModel).Result;
 
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            // Assert
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         }
 
-        [Fact]
+        [Fact(DisplayName = "Delete user with success"), TestPriority(9999)]
+        [Trait("Register", "API Integration - Delete User")]
         public void DeleteUser_ShouldPass()
         {
-            var client = Server.Instance.CreateClient();
+            // Arrange
+            var userId = _fixture.User.Id;
 
-            client.LogInUser();
+            // Act
+            _fixture.User.LogIn().Wait();
+            var response = _fixture.User.Client.DeleteAsync($"/api/v1/user/{userId}").Result;
 
-            var viewModel = new UserRegistrationViewModel()
-            {
-                Email = "someemail@test.com",
-                Password = "someAwesomePa$$word1",
-                FullName = "Aluguru Admin Account",
-                Role = "User"
-            };
-
-            var response = client.PostAsync($"/api/v1/user", viewModel.ToStringContent()).Result;
-
-            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-
-            var user = response.Deserialize<ApiResponse<CreateUserCommandResponse>>().Data.User;
-
-            response = client.DeleteAsync($"/api/v1/user/{user.Id}").Result;
-
+            // Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
     }

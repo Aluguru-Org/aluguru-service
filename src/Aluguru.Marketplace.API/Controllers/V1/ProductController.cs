@@ -22,7 +22,6 @@ using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 
 namespace Aluguru.Marketplace.API.Controllers.V1
 {
@@ -61,16 +60,16 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         }
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("{product}")]
         [AllowAnonymous]
-        [SwaggerOperation(Summary = "Get product by id", Description = "Return the target product")]
+        [SwaggerOperation(Summary = "Get product by uri", Description = "Return the target product")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetProductsCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> GetById([SwaggerParameter("The product Id", Required = true)][FromRoute] Guid id)
+        public async Task<ActionResult> GetById([SwaggerParameter("The product uri", Required = true)][FromRoute] string product)
         {
-            var response = await _mediatorHandler.SendCommand<GetProductCommand, GetProductCommandResponse>(new GetProductCommand(id));
+            var response = await _mediatorHandler.SendCommand<GetProductCommand, GetProductCommandResponse>(new GetProductCommand(product));
             return GetResponse(response);
         }    
 

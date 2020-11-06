@@ -12,31 +12,19 @@ namespace Aluguru.Marketplace.API.IntegrationTests
 {
     public static class HttpClientExtension
     {
-        public static ApiResponse<LogInUserCommandResponse> LogInUser(this HttpClient client, string email = "admin@aluguru.com.br", string password = "really")
+        public static Task<HttpResponseMessage> PostAsJsonAsync<T>(this HttpClient client, string requestUri, T value)
         {
-            var response = client.PostAsync("/api/v1/auth/login", CreateContent(email, password)).Result;
-            var apiResponse = JsonConvert.DeserializeObject<ApiResponse<LogInUserCommandResponse>>(response.Content.ReadAsStringAsync().Result);
-
-            if (apiResponse.Success)
-            {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, apiResponse.Data.Token);
-            }
-
-            return apiResponse;
+            return client.PostAsync(requestUri, value.ToStringContent());
         }
 
-        public static void LogOut(this HttpClient client)
+        public static Task<HttpResponseMessage> PutAsJsonAsync<T>(this HttpClient client, string requestUri, T value)
         {
-            if (client == null) return;
-            if (client.DefaultRequestHeaders == null) return;
-            if (client.DefaultRequestHeaders.Authorization == null) return;
-
-            client.DefaultRequestHeaders.Authorization = null;
+            return client.PutAsync(requestUri, value.ToStringContent());
         }
 
-        private static StringContent CreateContent(string email, string password)
+        private static StringContent ToStringContent(this object data, string mediaType = "application/json")
         {
-            return new StringContent(JsonConvert.SerializeObject(new LoginUserViewModel() { Email = email, Password = password }), Encoding.UTF8, "application/json");
+            return new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, mediaType);
         }
     }
 }

@@ -1,7 +1,5 @@
 ﻿using FluentValidation;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;
-using Aluguru.Marketplace.Security;
-using System;
 
 namespace Aluguru.Marketplace.Register.Usecases.LogInUser
 {
@@ -10,7 +8,7 @@ namespace Aluguru.Marketplace.Register.Usecases.LogInUser
         public LogInUserCommand(string username, string password)
         {
             Email = username;
-            Password = Cryptography.Encrypt(password);
+            Password = password;
         }
 
         public string Email { get; private set; }

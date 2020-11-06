@@ -1,85 +1,110 @@
-﻿using Aluguru.Marketplace.API.IntegrationTests.Extensions;
+﻿using Aluguru.Marketplace.API.IntegrationTests.Config;
+using Aluguru.Marketplace.API.IntegrationTests.Extensions;
 using Aluguru.Marketplace.API.Models;
 using Aluguru.Marketplace.Catalog.Usecases.CreateRentPeriod;
 using Aluguru.Marketplace.Catalog.ViewModels;
-using Newtonsoft.Json;
 using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Aluguru.Marketplace.API.IntegrationTests
 {
+    [TestCaseOrderer("Aluguru.Marketplace.API.IntegrationTests.Extensions.PriorityOrderer", "Aluguru.Marketplace.API.IntegrationTests")]
+    [Collection(nameof(IntegrationApiTestsFixtureCollection))]
     public class RentPeriodControllerTests
     {
         private const string RENT_PERIOD_ENDPOINT = "/api/v1/rent-period";
 
-        [Fact]
-        public void CreateRentPeriod_WhenInvalidRentPeriod_ShouldFail()
+        private readonly IntegrationTestsFixture<StartupTests> _fixture;
+        public RentPeriodControllerTests(IntegrationTestsFixture<StartupTests> testsFixture)
         {
-            var client = Server.Instance.CreateClient();
-
-            client.LogInUser();
-
-            var viewModel = new CreateRentPeriodViewModel();
-            var data = new StringContent(JsonConvert.SerializeObject(viewModel), Encoding.UTF8, "application/json");
-
-            var response = client.PostAsync(RENT_PERIOD_ENDPOINT, data).Result;
-
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            _fixture = testsFixture;
         }
 
-        [Fact]
+        [Fact(DisplayName = "Create rent period with success"), TestPriority(1)]
+        [Trait("Catalog", "Api Integration - Create Rent-Period")]
         public void CreateRentPeriod_ShouldPass()
         {
-            var client = Server.Instance.CreateClient();
-
-            client.LogInUser();
-
+            // Arrange
             var viewModel = new CreateRentPeriodViewModel()
             {
-                Name = "1 Month",
-                Days = 30
-            };
-            var data = new StringContent(JsonConvert.SerializeObject(viewModel), Encoding.UTF8, "application/json");
-
-            var response = client.PostAsync(RENT_PERIOD_ENDPOINT, data).Result;
-
-            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-        }
-
-        [Fact]
-        public void GetAllRentPeriod_ShouldPass()
-        {
-            var client = Server.Instance.CreateClient();
-
-            client.LogInUser();
-
-            var getAllResponse = client.GetAsync(RENT_PERIOD_ENDPOINT).Result;
-            Assert.Equal(HttpStatusCode.OK, getAllResponse.StatusCode);
-        }
-
-        [Fact]
-        public void DeleteRentPeriod_ShouldPass()
-        {
-            var client = Server.Instance.CreateClient();
-
-            client.LogInUser();
-
-            var createViewModel = new CreateRentPeriodViewModel()
-            {
-                Name = "3 Month",
-                Days = 30
+                Name = _fixture.RentPeriodMonth.Name,
+                Days = _fixture.RentPeriodMonth.Days
             };
 
-            var response = client.PostAsync(RENT_PERIOD_ENDPOINT, createViewModel.ToStringContent()).Result;
-            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-
+            // Act
+            _fixture.Admin.LogIn().Wait();
+            var response = _fixture.Admin.Client.PostAsJsonAsync(RENT_PERIOD_ENDPOINT, viewModel).Result;
             var rentPeriod = response.Deserialize<ApiResponse<CreateRentPeriodCommandResponse>>().Data.RentPeriod;
 
-            var deleteResponse = client.DeleteAsync($"{RENT_PERIOD_ENDPOINT}/{rentPeriod.Id}").Result;
-            Assert.Equal(HttpStatusCode.OK, deleteResponse.StatusCode);
+            _fixture.RentPeriodMonth.Id = rentPeriod.Id;
+
+            // Assert
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        }
+
+        [Fact(DisplayName = "Create rent period 2 with success"), TestPriority(1)]
+        [Trait("Catalog", "Api Integration - Create Rent-Period 2")]
+        public void CreateRentPeriod2_ShouldPass()
+        {
+            // Arrange
+            var viewModel = new CreateRentPeriodViewModel()
+            {
+                Name = _fixture.RentPeriodWeek.Name,
+                Days = _fixture.RentPeriodWeek.Days
+            };
+
+            // Act
+            _fixture.Admin.LogIn().Wait();
+            var response = _fixture.Admin.Client.PostAsJsonAsync(RENT_PERIOD_ENDPOINT, viewModel).Result;
+            var rentPeriod = response.Deserialize<ApiResponse<CreateRentPeriodCommandResponse>>().Data.RentPeriod;
+
+            _fixture.RentPeriodWeek.Id = rentPeriod.Id;
+
+            // Assert
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        }
+
+        [Fact(DisplayName = "Get all rent period with success"), TestPriority(2)]
+        [Trait("Catalog", "Api Integration - Get Rent-Periods")]
+        public void GetAllRentPeriod_ShouldPass()
+        {
+            // Arrange
+            // Act
+            _fixture.Admin.LogIn().Wait();
+            var response = _fixture.Admin.Client.GetAsync(RENT_PERIOD_ENDPOINT).Result;
+
+            // Assert            
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [Fact(DisplayName = "Delete rent period with success"), TestPriority(9999)]
+        [Trait("Catalog", "Api Integration - Delete Rent-Period 2")]
+        public void DeleteRentPeriod_Monthly_ShouldPass()
+        {
+            // Arrange
+            var rentPeriodId = _fixture.RentPeriodMonth.Id;
+
+            // Act
+            _fixture.Admin.LogIn().Wait();
+            var response = _fixture.Admin.Client.DeleteAsync($"{RENT_PERIOD_ENDPOINT}/{rentPeriodId}").Result;
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [Fact(DisplayName = "Delete rent period with success"), TestPriority(9999)]
+        [Trait("Catalog", "Api Integration - Delete Rent-Period 2")]
+        public void DeleteRentPeriod_Weekly_ShouldPass()
+        {
+            // Arrange
+            var rentPeriodId = _fixture.RentPeriodWeek.Id;
+
+            // Act
+            _fixture.Admin.LogIn().Wait();
+            var response = _fixture.Admin.Client.DeleteAsync($"{RENT_PERIOD_ENDPOINT}/{rentPeriodId}").Result;
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
     }
 }

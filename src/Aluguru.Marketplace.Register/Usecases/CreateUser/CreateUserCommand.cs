@@ -40,6 +40,7 @@ namespace Aluguru.Marketplace.Register.Usecases.CreateUser
 
     public class CreateUserCommandResponse
     {
+        public string ActivationHash { get; set; }
         public UserViewModel User { get; set; }
     }
 }

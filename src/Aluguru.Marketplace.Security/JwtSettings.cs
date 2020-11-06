@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Aluguru.Marketplace.Security
+﻿namespace Aluguru.Marketplace.Security
 {
     public class JwtSettings
     {

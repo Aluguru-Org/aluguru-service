@@ -1,120 +1,128 @@
-﻿using Aluguru.Marketplace.API.IntegrationTests.Extensions;
+﻿using Aluguru.Marketplace.API.IntegrationTests.Config;
+using Aluguru.Marketplace.API.IntegrationTests.Extensions;
 using Aluguru.Marketplace.API.Models;
-using Aluguru.Marketplace.Catalog.Usecases.CreateCategory;
+using Aluguru.Marketplace.Catalog.Domain;
 using Aluguru.Marketplace.Catalog.Usecases.CreateProduct;
-using Aluguru.Marketplace.Catalog.Usecases.CreateRentPeriod;
 using Aluguru.Marketplace.Catalog.ViewModels;
+using Bogus;
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Aluguru.Marketplace.API.IntegrationTests
 {
+    [TestCaseOrderer("Aluguru.Marketplace.API.IntegrationTests.Extensions.PriorityOrderer", "Aluguru.Marketplace.API.IntegrationTests")]
+    [Collection(nameof(IntegrationApiTestsFixtureCollection))]
     public class ProductControllerTests
-    { 
-        [Fact]
-        public void CreateProduct_WhenInvalidProduct_ShouldFail()
+    {
+        private readonly IntegrationTestsFixture<StartupTests> _fixture;
+
+        public ProductControllerTests(IntegrationTestsFixture<StartupTests> testsFixture)
         {
-            var client = Server.Instance.CreateClient();
-
-            client.LogInUser();
-
-            var viewModel = new CreateProductViewModel();
-            var response = client.PostAsync("/api/v1/product", viewModel.ToStringContent()).Result;
-
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            _fixture = testsFixture;
         }
 
-        [Fact]
-        public void CreateProduct_ShouldPass()
+        [Fact(DisplayName = "Create product with fixed price  with success"), TestPriority(5)]
+        [Trait("Catalog", "Api Integration - Create Product Fixed Price")]
+        public void CreateProduct_WithFixedPrice_ShouldPass()
         {
-            var client = Server.Instance.CreateClient();
+            // Arrange
+            var viewModel = CreateProduct(CreatePrice(ERentType.Fixed.ToString()));
 
-            var user = client.LogInUser();
+            // Act
+            _fixture.Company.LogIn().Wait();
+            var response = _fixture.Company.Client.PostAsJsonAsync("/api/v1/product", viewModel).Result;
+            var product = response.Deserialize<ApiResponse<CreateProductCommandResponse>>().Data.Product;
 
-            var response = RequestCreateProduct(client);
-
+            _fixture.ProductWithFixedPrice.ViewModel = product;
+            
+            // Assert
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
 
-        [Fact]
-        public void UpdateProduct_ShouldPass()
+        [Fact(DisplayName = "Create product with indefinite price  with success"), TestPriority(5)]
+        [Trait("Catalog", "Api Integration - Create Product Indefinite Price")]
+        public void CreateProduct_WithIndefinitePrice_ShouldPass()
         {
-            var client = Server.Instance.CreateClient();
+            // Arrange
+            var viewModel = CreateProduct(CreatePrice(ERentType.Indefinite.ToString()));
 
-            var user = client.LogInUser();
-
-            var response = RequestCreateProduct(client);
-
+            // Act
+            _fixture.Company.LogIn().Wait();
+            var response = _fixture.Company.Client.PostAsJsonAsync("/api/v1/product", viewModel).Result;
             var product = response.Deserialize<ApiResponse<CreateProductCommandResponse>>().Data.Product;
 
-            var viewModel = new UpdateProductViewModel()
-            {                
+            _fixture.ProductWithIndefinitePrice.ViewModel = product;
+
+            // Assert
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        }
+
+        [Fact(DisplayName = "Update product with fixed price with success"), TestPriority(6)]
+        [Trait("Catalog", "Api Integration - Update Product Fixed Price")]
+        public void UpdateProduct_ShouldPass()
+        {
+            // Arrange
+            var faker = new Faker("pt_BR");
+            var product = _fixture.ProductWithFixedPrice.ViewModel;
+
+            var updateProductViewModel = new UpdateProductViewModel()
+            {
                 Id = product.Id,
                 CategoryId = product.CategoryId,
-                Name = "Test Update Product",
-                Description = "Test description",
-                RentType = "Indefinite",
+                SubCategoryId = product.SubCategoryId,
+                Name = faker.Commerce.ProductName(),
+                Description = faker.Commerce.ProductDescription(),
+                RentType = ERentType.Fixed.ToString(),
                 Price = product.Price,
-                IsActive = false,
+                IsActive = true,
                 MinNoticeRentDays = 2,
                 MinRentDays = 7,
                 MaxRentDays = 30,
                 StockQuantity = 1,
-                ImageUrls = new List<string> { "image.png" },
                 CustomFields = new List<UpdateCustomFieldViewModel>
                 {
                     new UpdateCustomFieldViewModel() {  FieldType = "Text", ValueAsString = "Observação?", Active = true }
                 }
             };
 
-            response = client.PutAsync($"/api/v1/product/{product.Id}", viewModel.ToStringContent()).Result;
+            // Act
+            _fixture.Company.LogIn().Wait();
+            var response = _fixture.Company.Client.PutAsJsonAsync($"/api/v1/product/{updateProductViewModel.Id}", updateProductViewModel).Result;
 
-            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            // Assert
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         }
 
-        [Fact]
-        public void DeleteProduct_ShouldPass()
+        [Fact(DisplayName = "Delete product with fixed price with success"), TestPriority(9999)]
+        [Trait("Catalog", "Api Integration - Delete Product Fixed Price")]
+        public void DeleteProduct_WithFixedPrice_ShouldPass()
         {
-            var client = Server.Instance.CreateClient();
+            // Arrange
+            var productId = _fixture.ProductWithFixedPrice.ViewModel.Id;
 
-            var response = RequestCreateProduct(client);
+            // Act
+            _fixture.Company.LogIn().Wait();
+            var response = _fixture.Company.Client.DeleteAsync($"/api/v1/product/{productId}").Result;
 
-            var product = response.Deserialize<ApiResponse<CreateProductCommandResponse>>().Data.Product;
-
-            response = client.DeleteAsync($"/api/v1/product/{product.Id}").Result;
-
+            // Assert            
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
-        private HttpResponseMessage RequestCreateProduct(HttpClient client)
+        private CreateProductViewModel CreateProduct(PriceViewModel price)
         {
-            var rentPeriod = CreateRentPeriod(client);
-            var category = CreateCategory(client);
+            var faker = new Faker("pt_BR");
 
-            var viewModel = new CreateProductViewModel()
+            return new CreateProductViewModel()
             {
-                UserId = Guid.Parse("96d1fb97-47e9-4ad5-b07e-448f88defd9c"),
-                CategoryId = category.Id,
-                Name = "Test Product",
-                Uri = "test-product",
-                Description = "Test description",
+                UserId = _fixture.Company.Id,
+                CategoryId = _fixture.Category.Id,
+                SubCategoryId = _fixture.SubCategory.Id,
+                Name = faker.Commerce.Product(),
+                Description = faker.Commerce.ProductDescription(),
                 RentType = "Indefinite",
-                Price = new PriceViewModel()
-                {
-                    SellPrice = 500000,
-                    PeriodRentPrices = new List<PeriodPriceViewModel>()
-                    {
-                        new PeriodPriceViewModel()
-                        {
-                            RentPeriodId = rentPeriod.Id,
-                            Price = 50000
-                        }
-                    }
-                },
+                Price = price,
                 IsActive = true,
                 MinNoticeRentDays = 2,
                 MinRentDays = 7,
@@ -125,28 +133,35 @@ namespace Aluguru.Marketplace.API.IntegrationTests
                     new CreateCustomFieldViewModel() {  FieldType = "Text", FieldName = "Observação?", Active = true }
                 }
             };
-
-            var response = client.PostAsync("/api/v1/product", viewModel.ToStringContent()).Result;
-
-            return response;
         }
 
-        private RentPeriodViewModel CreateRentPeriod(HttpClient client)
+        private PriceViewModel CreatePrice(string rentType)
         {
-            var viewModel = new CreateRentPeriodViewModel() { Name = "1 week", Days = 7 };
+            decimal sellPrice = (decimal)new Random().NextDouble() * new Random().Next(100, 100000); 
 
-            var response = client.PostAsync("/api/v1/rent-period", viewModel.ToStringContent()).Result;
-
-            return response.Deserialize<ApiResponse<CreateRentPeriodCommandResponse>>().Data.RentPeriod;
-        }
-
-        private CategoryViewModel CreateCategory(HttpClient client)
-        {
-            var viewModel = new CreateCategoryViewModel() { Name = "CreateProductTestCategory" };
-
-            var response = client.PostAsync("/api/v1/category", viewModel.ToStringContent()).Result;
-
-            return response.Deserialize<ApiResponse<CreateCategoryCommandResponse>>().Data.Category;
+            switch(rentType)
+            {
+                default:
+                case "Fixed":
+                    return new PriceViewModel()
+                    {
+                        SellPrice = sellPrice,
+                        DailyRentPrice = sellPrice / 10
+                    };
+                case "Indefinite":
+                    return new PriceViewModel()
+                    {
+                        SellPrice = sellPrice,
+                        PeriodRentPrices = new List<PeriodPriceViewModel>()
+                    {
+                        new PeriodPriceViewModel()
+                        {
+                            RentPeriodId = _fixture.RentPeriodMonth.Id,
+                            Price = sellPrice/10
+                        }
+                    }
+                    };
+            }
         }
     }
 }

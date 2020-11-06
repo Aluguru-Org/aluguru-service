@@ -24,7 +24,7 @@ namespace Aluguru.Marketplace.Catalog.Usecases.GetProduct
         {
             var queryRepository = _unitOfWork.QueryRepository<Product>();
 
-            var product = await queryRepository.GetProductAsync(request.ProductId);
+            var product = await queryRepository.GetProductAsync(request.ProductUri);
 
             return new GetProductCommandResponse()
             {

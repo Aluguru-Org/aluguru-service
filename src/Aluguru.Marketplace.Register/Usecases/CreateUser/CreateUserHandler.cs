@@ -20,12 +20,14 @@ namespace Aluguru.Marketplace.Register.Usecases.CreateUser
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IMediatorHandler _mediatorHandler;
+        private readonly ICryptography _cryptography;
 
-        public CreateUserHandler(IUnitOfWork unitOfWork, IMapper mapper, IMediatorHandler mediatorHandler)
+        public CreateUserHandler(IUnitOfWork unitOfWork, IMapper mapper, IMediatorHandler mediatorHandler, ICryptography cryptography)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _mediatorHandler = mediatorHandler;
+            _cryptography = cryptography;
         }
 
         public async Task<CreateUserCommandResponse> Handle(CreateUserCommand command, CancellationToken cancellationToken)
@@ -49,7 +51,7 @@ namespace Aluguru.Marketplace.Register.Usecases.CreateUser
                 return default;
             }
 
-            var user = new User(command.Email, Cryptography.Encrypt(command.Password), command.FullName, role.Id, Cryptography.CreateRandomHash());
+            var user = new User(command.Email, _cryptography.Encrypt(command.Password), command.FullName, role.Id, _cryptography.CreateRandomHash());
 
             await _mediatorHandler.PublishEvent(new UserRegisteredEvent(user.Id, user.FullName, user.Email, user.ActivationHash));
 
@@ -57,6 +59,7 @@ namespace Aluguru.Marketplace.Register.Usecases.CreateUser
 
             return new CreateUserCommandResponse()
             {
+                ActivationHash = user.ActivationHash,
                 User = _mapper.Map<UserViewModel>(user)
             };
         }

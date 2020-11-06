@@ -2,7 +2,6 @@
 using Aluguru.Marketplace.Catalog.Domain;
 using Aluguru.Marketplace.Domain;
 using Aluguru.Marketplace.Infrastructure.Data;
-using PampaDevs.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +25,16 @@ namespace Aluguru.Marketplace.Catalog.Data.Repositories
         {
             var category = await repository.FindOneAsync(
                 x => x.Name == name,
+                null,
+                disableTracking);
+
+            return category;
+        }
+
+        public static async Task<Category> GetCategoryByUriAsync(this IQueryRepository<Category> repository, string uri, bool disableTracking = true)
+        {
+            var category = await repository.FindOneAsync(
+                x => x.Uri == uri,
                 null,
                 disableTracking);
 

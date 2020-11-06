@@ -61,7 +61,7 @@ namespace Aluguru.Marketplace.Catalog.AutoMapper
                 })
                 .ForMember(x => x.Price, c => c.Ignore())
                 .ForMember(x => x.CustomFields, c => c.Ignore());
-
+    
             CreateMap<CreateProductViewModel, CreateProductCommand>()
                 .ConstructUsing((x, rc) =>
                 {

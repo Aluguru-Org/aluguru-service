@@ -27,17 +27,22 @@ namespace Aluguru.Marketplace.Catalog.Usecases.CreateCategory
         public async Task<CreateCategoryCommandResponse> Handle(CreateCategoryCommand command, CancellationToken cancellationToken)
         {
             var queryRepository = _unitOfWork.QueryRepository<Category>();
-            var category = await queryRepository.GetCategoryByNameAsync(command.Name);
 
-            if (category != null)
+            if (await queryRepository.GetCategoryByNameAsync(command.Name) != null)
             {
-                await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"The Category {category} is already registered"));
+                await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"The Category {command.Name} is already registered"));
+                return new CreateCategoryCommandResponse();
+            }
+
+            if (await queryRepository.GetCategoryByUriAsync(command.Uri) != null)
+            {
+                await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"The Category Uri {command.Uri} is already registered"));
                 return new CreateCategoryCommandResponse();
             }
 
             var repository = _unitOfWork.Repository<Category>();
 
-            category = new Category(command.Name, command.Uri, command.MainCategoryId);
+            var category = new Category(command.Name, command.Uri, command.MainCategoryId);
 
             category = await repository.AddAsync(category);
 

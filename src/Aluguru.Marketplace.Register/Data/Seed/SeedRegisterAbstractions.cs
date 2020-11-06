@@ -16,6 +16,7 @@ namespace Aluguru.Marketplace.Register.Data.Seed
         public static IApplicationBuilder SeedRegisterContext(this IApplicationBuilder app)
         {
             var serviceScopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
+            var cryptography = app.ApplicationServices.GetRequiredService<ICryptography>();
 
             using (var serviceScope = serviceScopeFactory.CreateScope())
             {
@@ -82,8 +83,8 @@ namespace Aluguru.Marketplace.Register.Data.Seed
                 {
                     var userRepository = unitOfWork.Repository<User>();
                     
-                    var activationHash = Cryptography.CreateRandomHash();
-                    admin = new User(Guid.Parse("96d1fb97-47e9-4ad5-b07e-448f88defd9c"), "admin@aluguru.com.br", "24/74c0ZcIuP++wd2rtW88mWx3EOc1JFX66v634WEQE=", "Aluguru Admin", adminRole.Id, activationHash);
+                    var activationHash = cryptography.CreateRandomHash();
+                    admin = new User(Guid.Parse("96d1fb97-47e9-4ad5-b07e-448f88defd9c"), "admin@aluguru.com.br", cryptography.Encrypt("really"), "Aluguru Admin", adminRole.Id, activationHash);
 
                     admin.Activate(activationHash);
 

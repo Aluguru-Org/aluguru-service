@@ -1,20 +1,17 @@
 ﻿using FluentValidation;
 using Aluguru.Marketplace.Catalog.ViewModels;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Aluguru.Marketplace.Catalog.Usecases.GetProduct
 {
     public class GetProductCommand : Command<GetProductCommandResponse>
     {
-        public GetProductCommand(Guid productId)
+        public GetProductCommand(string productUri)
         {
-            ProductId = productId;
+            ProductUri = productUri;
         }
 
-        public Guid ProductId { get; private set; }
+        public string ProductUri { get; private set; }
 
         public override bool IsValid()
         {
@@ -27,7 +24,7 @@ namespace Aluguru.Marketplace.Catalog.Usecases.GetProduct
     {
         public GetProductCommandValidator()
         {
-            RuleFor(x => x.ProductId).NotEqual(Guid.Empty);
+            RuleFor(x => x.ProductUri).NotEmpty();
         }
     }
 

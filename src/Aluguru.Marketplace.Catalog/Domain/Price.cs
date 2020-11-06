@@ -68,8 +68,7 @@ namespace Aluguru.Marketplace.Catalog.Domain
         }
 
         protected override void ValidateValueObject()
-        {
-            Ensure.That<DomainException>(DailyRentPrice.HasValue || PeriodRentPrices != null, "The price object must have DailyRentPrice or PeriodRentPrice defined");
+        {   
             if (SellPrice.HasValue) Ensure.That<DomainException>(SellPrice.Value > 0, "The sell price cannot be less than one");
             if (DailyRentPrice.HasValue) Ensure.That<DomainException>(DailyRentPrice.Value > 0, "The daily rent price cannot be less than one");
             if (PeriodRentPrices != null && PeriodRentPrices.Count > 0)

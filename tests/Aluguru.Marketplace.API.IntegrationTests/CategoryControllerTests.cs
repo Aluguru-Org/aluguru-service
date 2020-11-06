@@ -1,143 +1,145 @@
-﻿using Aluguru.Marketplace.API.IntegrationTests.Extensions;
+﻿using Aluguru.Marketplace.API.IntegrationTests.Config;
+using Aluguru.Marketplace.API.IntegrationTests.Extensions;
 using Aluguru.Marketplace.API.Models;
 using Aluguru.Marketplace.Catalog.Usecases.CreateCategory;
-using Aluguru.Marketplace.Catalog.Usecases.UpdateCategory;
 using Aluguru.Marketplace.Catalog.ViewModels;
-using Newtonsoft.Json;
 using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Aluguru.Marketplace.API.IntegrationTests
 {
+    [TestCaseOrderer("Aluguru.Marketplace.API.IntegrationTests.Extensions.PriorityOrderer", "Aluguru.Marketplace.API.IntegrationTests")]
+    [Collection(nameof(IntegrationApiTestsFixtureCollection))]
     public class CategoryControllerTests
     {
-        [Fact]
+        private readonly IntegrationTestsFixture<StartupTests> _fixture;
+        public CategoryControllerTests(IntegrationTestsFixture<StartupTests> testsFixture)
+        {
+            _fixture = testsFixture;
+        }
+
+        [Fact(DisplayName = "Create category with error"), TestPriority(1)]
+        [Trait("Catalog", "Api Integration - Create category")]
         public void CreateCategory_WhenInvalidCategory_ShouldFail()
         {
-            var client = Server.Instance.CreateClient();
-
-            client.LogInUser();
-
+            // Arrange
             var viewModel = new CreateCategoryViewModel();
-            var data = new StringContent(JsonConvert.SerializeObject(viewModel), Encoding.UTF8, "application/json");
 
-            var response = client.PostAsync("/api/v1/category", data).Result;
+            // Act
+            _fixture.Admin.LogIn().Wait();
+            var response = _fixture.Admin.Client.PostAsJsonAsync("/api/v1/category", viewModel).Result;
 
+            // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
-        [Fact]
+        [Fact(DisplayName = "Create category with success"), TestPriority(1)]
+        [Trait("Catalog", "Api Integration - Create Category")]
         public void CreateCategory_ShouldPass()
         {
-            var client = Server.Instance.CreateClient();
-
-            client.LogInUser();
-
+            // Arrange
             var viewModel = new CreateCategoryViewModel()
             {
-                Name = "Móveis"
+                Name = _fixture.Category.Name,
+                Uri = _fixture.Category.Uri
             };
-            var data = new StringContent(JsonConvert.SerializeObject(viewModel), Encoding.UTF8, "application/json");
 
-            var response = client.PostAsync("/api/v1/category", data).Result;
+            // Act
+            _fixture.Admin.LogIn().Wait();
+            var response = _fixture.Admin.Client.PostAsJsonAsync("/api/v1/category", viewModel).Result;
+            var category = response.Deserialize<ApiResponse<CreateCategoryCommandResponse>>().Data.Category;
 
+            _fixture.Category.Id = category.Id;
+            _fixture.SubCategory.MainCategoryId = category.Id;
+
+            // Assert
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
 
-        [Fact]
+        [Fact(DisplayName = "Create sub category with success"), TestPriority(2)]
+        [Trait("Catalog", "Api Integration - Create Sub Category")]
         public void CreateCategory_WhenSubCategory_ShouldPass()
         {
-            var client = Server.Instance.CreateClient();
-
-            client.LogInUser();
-
+            // Arrange
             var viewModel = new CreateCategoryViewModel()
             {
-                Name = "Games"
+                MainCategoryId = _fixture.SubCategory.MainCategoryId,
+                Name = _fixture.SubCategory.Name,
+                Uri = _fixture.SubCategory.Uri
             };
 
-            var response = client.PostAsync("/api/v1/category", viewModel.ToStringContent()).Result;
+            // Act
+            _fixture.Admin.LogIn().Wait();
+            var response = _fixture.Admin.Client.PostAsJsonAsync("/api/v1/category", viewModel).Result;
+            var category = response.Deserialize<ApiResponse<CreateCategoryCommandResponse>>().Data.Category;
+
+            _fixture.SubCategory.Id = category.Id;            
+
+            //Assert
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-
-            var mainCategory = response.Deserialize<ApiResponse<CreateCategoryCommandResponse>>().Data.Category;
-            Assert.Equal("Games", mainCategory.Name);
-
-            viewModel = new CreateCategoryViewModel()
-            {
-                MainCategoryId = mainCategory.Id,
-                Name = "Computador"
-            };
-
-            response = client.PostAsync("/api/v1/category", viewModel.ToStringContent()).Result;
-            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-            
-            var apiResponse = response.Deserialize<ApiResponse<CreateCategoryCommandResponse>>();
-            Assert.Equal(mainCategory.Id, apiResponse.Data.Category.MainCategoryId);
-            Assert.Equal("Computador", apiResponse.Data.Category.Name);
         }
 
-        [Fact]
+        [Fact(DisplayName = "Update category with success"), TestPriority(3)]
+        [Trait("Catalog", "Api Integration - Update Category")]
         public void UpdateCategory_ShouldPass()
         {
-            var client = Server.Instance.CreateClient();
-
-            client.LogInUser();
-
-            var createViewModel = new CreateCategoryViewModel()
+            // Arrange            
+            var categoryId = _fixture.SubCategory.Id;
+            var viewModel = new UpdateCategoryViewModel()
             {
-                Name = "Games"
+                Id = _fixture.SubCategory.Id,
+                Name = "Games",
+                Uri = "games"
             };
 
-            var response = client.PostAsync("/api/v1/category", createViewModel.ToStringContent()).Result;
-            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            // Act
+            _fixture.Admin.LogIn().Wait();
+            var response = _fixture.Admin.Client.PutAsJsonAsync($"api/v1/category/{categoryId}", viewModel).Result;
 
-            var category = response.Deserialize<ApiResponse<CreateCategoryCommandResponse>>().Data.Category;
-
-            var updateViewModel = new UpdateCategoryViewModel()
-            {
-                Id = category.Id,
-                Name = "Jogos"
-            };
-
-            response = client.PutAsync($"/api/v1/category/{category.Id}", updateViewModel.ToStringContent()).Result;
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-            var editedCategory = response.Deserialize<ApiResponse<UpdateCategoryCommandResponse>>().Data.Category;
-            Assert.Equal(category.Id, editedCategory.Id);
-            Assert.Equal("Jogos", editedCategory.Name);
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         }
 
-        [Fact]
+        [Fact(DisplayName = "Get category with success"), TestPriority(3)]
+        [Trait("Catalog", "Api Integration - Get Category")]
         public void GetAllCategory_ShouldPass()
         {
-            var client = Server.Instance.CreateClient();
+            // Arrange
 
-            var getAllResponse = client.GetAsync("/api/v1/category").Result;
-            Assert.Equal(HttpStatusCode.OK, getAllResponse.StatusCode);
+            // Act
+            var response = _fixture.Admin.Client.GetAsync("/api/v1/category").Result;
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
-        [Fact]
+        [Fact(DisplayName = "Delete category with success"), TestPriority(9999)]
+        [Trait("Catalog", "Api Integration - Delete Category")]
         public void DeleteCategory_ShouldPass()
         {
-            var client = Server.Instance.CreateClient();
+            // Arrange
+            var categoryId = _fixture.Category.Id;
 
-            client.LogInUser();
+            // Act
+            _fixture.Admin.LogIn().Wait();
+            var response = _fixture.Admin.Client.DeleteAsync($"/api/v1/category/{categoryId}").Result;
 
-            var createViewModel = new CreateCategoryViewModel()
-            {
-                Name = "Games"
-            };
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
 
-            var response = client.PostAsync("/api/v1/category", createViewModel.ToStringContent()).Result;
-            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        [Fact(DisplayName = "Delete category with success"), TestPriority(9999)]
+        [Trait("Catalog", "Api Integration - Delete Sub Category")]
+        public void DeleteSubCategory_ShouldPass()
+        {
+            // Arrange
+            var categoryId = _fixture.SubCategory.Id;
 
-            var category = response.Deserialize<ApiResponse<CreateCategoryCommandResponse>>().Data.Category;
+            // Act
+            _fixture.Admin.LogIn().Wait();
+            var response = _fixture.Admin.Client.DeleteAsync($"/api/v1/category/{categoryId}").Result;
 
-            var deleteResponse = client.DeleteAsync($"/api/v1/category/{category.Id}").Result;
-            Assert.Equal(HttpStatusCode.OK, deleteResponse.StatusCode);
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
     }
 }

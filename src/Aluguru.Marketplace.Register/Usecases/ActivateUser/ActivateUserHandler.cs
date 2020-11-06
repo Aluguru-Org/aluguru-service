@@ -13,13 +13,11 @@ namespace Aluguru.Marketplace.Register.Usecases.ActivateUser
     public class ActivateUserHandler : IRequestHandler<ActivateUserCommand, bool>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
         private readonly IMediatorHandler _mediatorHandler;
 
         public ActivateUserHandler(IUnitOfWork unitOfWork, IMapper mapper, IMediatorHandler mediatorHandler)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
             _mediatorHandler = mediatorHandler;
         }
 
