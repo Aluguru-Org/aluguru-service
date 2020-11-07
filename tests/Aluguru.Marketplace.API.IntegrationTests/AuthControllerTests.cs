@@ -1,13 +1,5 @@
 ﻿using Aluguru.Marketplace.API.IntegrationTests.Config;
 using Aluguru.Marketplace.API.IntegrationTests.Extensions;
-using Aluguru.Marketplace.API.Models;
-using Aluguru.Marketplace.Register.Usecases.LogInUser;
-using Aluguru.Marketplace.Register.ViewModels;
-using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Aluguru.Marketplace.API.IntegrationTests

@@ -60,6 +60,10 @@ namespace Aluguru.Marketplace.Rent.Usecases.CreateOrder
                     case ERentType.Indefinite:
                         price = product.Price.GetPeriodRentPrice(orderItem.SelectedRentPeriod.Value); 
                         break;
+                    default:
+                    case ERentType.None:
+                        price = product.Price.SellPrice.Value;
+                        break;
                 }
 
                 var newOrderItem = new OrderItem(product.Id, product.Name, orderItem.Amount ?? 1, price);

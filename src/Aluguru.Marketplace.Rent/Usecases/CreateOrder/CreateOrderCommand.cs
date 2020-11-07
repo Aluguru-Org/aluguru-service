@@ -40,12 +40,3 @@ namespace Aluguru.Marketplace.Rent.Usecases.CreateOrder
         public OrderViewModel Order { get; set; }
     }
 }
-
-// Front
-// User -> Adicionou item no carrinho -> Salva no LocalStorage id's produto [].
-
-// Comprar -> SE Não estiver logado:
-// Logar -> Criar pedido oficializando
-
-// Back
-// Cria pedido com id do usuário e lista de produtos
