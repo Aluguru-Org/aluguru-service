@@ -22,7 +22,7 @@ namespace Aluguru.Marketplace.Data
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(ex.GetErrorMsg() + " | " + ex.GetErrorList());
+                    throw new Exception(ex.GetErrorMsg() + " | " + string.Join(", ", ex.GetErrorList()));
                 }
             }
             return webHost;
