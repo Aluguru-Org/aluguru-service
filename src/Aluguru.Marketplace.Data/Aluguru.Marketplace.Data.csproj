@@ -23,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Aluguru.Marketplace.Catalog\Aluguru.Marketplace.Catalog.csproj" />
     <ProjectReference Include="..\Aluguru.Marketplace.Infrastructure.Data\Aluguru.Marketplace.Infrastructure.Data.csproj" />
+    <ProjectReference Include="..\Aluguru.Marketplace.Newsletter\Aluguru.Marketplace.Newsletter.csproj" />
     <ProjectReference Include="..\Aluguru.Marketplace.Register\Aluguru.Marketplace.Register.csproj" />
     <ProjectReference Include="..\Aluguru.Marketplace.Rent\Aluguru.Marketplace.Rent.csproj" />
   </ItemGroup>

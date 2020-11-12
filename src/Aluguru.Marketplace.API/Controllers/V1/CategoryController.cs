@@ -143,7 +143,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [Route("{id}/image")]
         [Authorize(Policy = Policies.CategoryWriter)]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeleteCategoryImageHandler))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]

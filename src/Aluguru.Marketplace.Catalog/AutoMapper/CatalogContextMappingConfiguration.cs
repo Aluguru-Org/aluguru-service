@@ -3,11 +3,9 @@ using Aluguru.Marketplace.Catalog.Domain;
 using Aluguru.Marketplace.Catalog.Usecases.CreateCategory;
 using Aluguru.Marketplace.Catalog.Usecases.CreateProduct;
 using Aluguru.Marketplace.Catalog.Usecases.CreateRentPeriod;
-using Aluguru.Marketplace.Catalog.Usecases.UpdateCategory;
 using Aluguru.Marketplace.Catalog.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Aluguru.Marketplace.Catalog.AutoMapper
 {

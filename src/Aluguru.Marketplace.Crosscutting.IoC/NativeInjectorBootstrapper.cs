@@ -61,6 +61,8 @@ using Aluguru.Marketplace.Catalog.Usecases.DeleteProductImage;
 using Aluguru.Marketplace.Catalog.Usecases.AddCategoryImage;
 using Aluguru.Marketplace.Catalog.Usecases.DeleteCategoryImage;
 using Aluguru.Marketplace.Notification.Usecases.SendAccountActivationEmail;
+using Aluguru.Marketplace.Newsletter.AutoMapper;
+using Aluguru.Marketplace.Newsletter.Services;
 
 namespace Aluguru.Marketplace.Crosscutting.IoC
 {
@@ -109,11 +111,16 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             services.AddAutoMapper(
                 typeof(RegisterContextMappingConfiguration), 
                 typeof(CatalogContextMappingConfiguration),
-                typeof(RentContextMappingConfiguration));
+                typeof(RentContextMappingConfiguration),
+                typeof(NewsletterContextMappingConfiguration)
+            );
 
             // AuthUser
             services.AddScoped<IRequestHandler<LogInUserCommand, LogInUserCommandResponse>, LogInUserHandler>();
             services.AddScoped<ITokenBuilderService, TokenBuilderService>();
+
+            // Newsletter
+            services.AddScoped<INewsletterService, NewsletterService>();
 
             // User Role Command Handlers
             services.AddScoped<IRequestHandler<CreateUserRoleCommand, CreateUserRoleCommandResponse>, CreateUserRoleHandler>();
