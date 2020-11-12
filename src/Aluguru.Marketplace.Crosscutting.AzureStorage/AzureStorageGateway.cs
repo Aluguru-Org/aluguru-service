@@ -1,8 +1,10 @@
 ﻿using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Aluguru.Marketplace.Crosscutting.AzureStorage
 {
@@ -30,10 +32,17 @@ namespace Aluguru.Marketplace.Crosscutting.AzureStorage
 
                 using (var stream = file.OpenReadStream())
                 {
-                    var response = await blob.UploadAsync(stream);                    
+                    var response = await blob.UploadAsync(stream, new BlobUploadOptions
+                    {
+                        HttpHeaders = new BlobHttpHeaders
+                        {
+                            ContentType = file.ContentType,
+                            CacheControl = "public, max-age=31536000"
+                        }
+                    });
                 }
 
-                return blob.Uri.ToString();
+                return HttpUtility.UrlDecode(blob.Uri.ToString());
             }
             catch(Exception ex)
             {

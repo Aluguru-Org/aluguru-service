@@ -44,7 +44,7 @@ namespace Aluguru.Marketplace.Catalog.Usecases.DeleteProductImage
                 var array = imageUrl.Split('/');
                 var fileName = array[array.Length -1];
 
-                await _azureStorageGateway.DeleteBlob("img", fileName);
+                await _azureStorageGateway.DeleteBlob("img", $"products/{product.Id}/{fileName}");
                 product.RemoveImage(imageUrl);
             }
 

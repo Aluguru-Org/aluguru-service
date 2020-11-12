@@ -49,7 +49,7 @@ namespace Aluguru.Marketplace.Catalog.Usecases.AddProductImage
                 var fileName = string.Join("", temp.Take(temp.Length - 1));
                 var fileExtension = temp[temp.Length - 1];
 
-                var blobName = $"{product.Id}_{fileName}_{ToUnixEpochDate(NewDateTime())}.{fileExtension}";
+                var blobName = $"products/{product.Id}/{fileName}_{ToUnixEpochDate(NewDateTime())}.{fileExtension}";
 
                 var url = await _azureStorageGateway.UploadBlob("img", blobName, file);
 
