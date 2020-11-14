@@ -1,11 +1,9 @@
-﻿using Moq;
-using PampaDevs.Utils.Helpers;
+﻿using Aluguru.Marketplace.Rent.Domain;
 using System;
 using System.Threading;
-using System.Threading.Tasks;
 using Xunit;
 
-namespace Aluguru.Marketplace.Rent.Domain.Tests
+namespace Aluguru.Marketplace.Rent.Tests
 {
     public class VoucherTests
     {

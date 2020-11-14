@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Aluguru.Marketplace.Rent.Domain;
+using System;
 using Xunit;
 
-namespace Aluguru.Marketplace.Rent.Domain.Tests
+namespace Aluguru.Marketplace.Rent.Tests
 {
     public class OrderTests
     {
         [Fact]
         public void AddItem_WhenNew_ShouldAddNewItem()
         {
-            var item = new OrderItem(Guid.NewGuid(), "test", 1, 100);
+            var item = new OrderItem(Guid.NewGuid(), "test", DateTime.Now, 1, 100);
             var order = new Order(Guid.NewGuid());
 
             order.AddItem(item);
@@ -22,7 +21,7 @@ namespace Aluguru.Marketplace.Rent.Domain.Tests
         [Fact]
         public void RemoveItem_WhenExisting_ShouldRemoveItem()
         {
-            var item = new OrderItem(Guid.NewGuid(), "test", 1, 100);
+            var item = new OrderItem(Guid.NewGuid(), "test", DateTime.Now, 1, 100);
             var order = new Order(Guid.NewGuid());
 
             order.AddItem(item);
@@ -37,7 +36,7 @@ namespace Aluguru.Marketplace.Rent.Domain.Tests
         [Fact]
         public void AddItem_WhenExisting_ShouldUpdateItem()
         {
-            var item = new OrderItem(Guid.NewGuid(), "test", 1, 100);
+            var item = new OrderItem(Guid.NewGuid(), "test", DateTime.Now, 1, 100);
             var order = new Order(Guid.NewGuid());
 
             order.AddItem(item);
@@ -50,7 +49,7 @@ namespace Aluguru.Marketplace.Rent.Domain.Tests
         [Fact]
         public void ItemExists_WhenItemExists_ShouldReturnTrue()
         {
-            var item = new OrderItem(Guid.NewGuid(), "test", 1, 100);
+            var item = new OrderItem(Guid.NewGuid(), "test", DateTime.Now, 1, 100);
             var order = new Order(Guid.NewGuid());
 
             order.AddItem(item);
@@ -61,7 +60,7 @@ namespace Aluguru.Marketplace.Rent.Domain.Tests
         [Fact]
         public void ItemExists_WhenItemDoesNotExists_ShouldReturnFalse()
         {
-            var item = new OrderItem(Guid.NewGuid(), "test", 1, 100);
+            var item = new OrderItem(Guid.NewGuid(), "test", DateTime.Now, 1, 100);
             var order = new Order(Guid.NewGuid());
 
             Assert.False(order.ItemExists(item));
@@ -70,8 +69,8 @@ namespace Aluguru.Marketplace.Rent.Domain.Tests
         [Fact]
         public void ApplyVoucher_WhenValueDiscount_ShouldApplyDiscount()
         {
-            var itemA = new OrderItem(Guid.NewGuid(), "testA", 1, 100);
-            var itemB = new OrderItem(Guid.NewGuid(), "testB", 1, 300);
+            var itemA = new OrderItem(Guid.NewGuid(), "testA", DateTime.Now, 1, 100);
+            var itemB = new OrderItem(Guid.NewGuid(), "testB", DateTime.Now, 1, 300);
             var order = new Order(Guid.NewGuid());
             var voucher = new Voucher("some-code", EVoucherType.Value, 150, 1, DateTime.Now.AddDays(7));
 
@@ -89,8 +88,8 @@ namespace Aluguru.Marketplace.Rent.Domain.Tests
         [Fact]
         public void ApplyVoucher_WhenPercentDiscount_ShouldApplyDiscount()
         {
-            var itemA = new OrderItem(Guid.NewGuid(), "testA", 1, 100);
-            var itemB = new OrderItem(Guid.NewGuid(), "testB", 1, 300);
+            var itemA = new OrderItem(Guid.NewGuid(), "testA", DateTime.Now, 1, 100);
+            var itemB = new OrderItem(Guid.NewGuid(), "testB", DateTime.Now, 1, 300);
             var order = new Order(Guid.NewGuid());
             var voucher = new Voucher("some-code", EVoucherType.Percent, 50, 1, DateTime.Now.AddDays(7));
 

@@ -9,6 +9,8 @@ namespace Aluguru.Marketplace.Rent.ViewModels
         [Required]
         public Guid ProductId { get; set; }
         public string ProductName { get; set; }
+        [Required]
+        public DateTime RentStartDate { get; set; }
         public int RentDays { get; set; }
         public Guid? SelectedRentPeriod { get; set; }
         public int? Amount { get; set; }

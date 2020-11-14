@@ -3,12 +3,8 @@ using Aluguru.Marketplace.Infrastructure.Bus.Communication;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using Aluguru.Marketplace.Rent.Data.Repositories;
 using Aluguru.Marketplace.Rent.Domain;
-using Aluguru.Marketplace.Rent.Usecases.CancelOrderProcessing;
 using AutoMapper;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,13 +13,11 @@ namespace Aluguru.Marketplace.Rent.Usecases.CancelOrderProcessing
     public class CancelOrderProcessingHandler : IRequestHandler<CancelOrderProcessingCommand, bool>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
         private readonly IMediatorHandler _mediatorHandler;
 
-        public CancelOrderProcessingHandler(IUnitOfWork unitOfWork, IMapper mapper, IMediatorHandler mediatorHandler)
+        public CancelOrderProcessingHandler(IUnitOfWork unitOfWork, IMediatorHandler mediatorHandler)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
             _mediatorHandler = mediatorHandler;
         }
 

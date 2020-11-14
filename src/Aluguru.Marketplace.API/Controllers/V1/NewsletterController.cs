@@ -44,7 +44,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SubscriberViewModel))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> Post([FromQuery] SubscriberViewModel subscriberViewModel)
+        public async Task<ActionResult> Post([FromBody] SubscriberViewModel subscriberViewModel)
         {
             var response = await _newsletterService.AddSubscriber(subscriberViewModel);
             return PostResponse(nameof(Get), null, response);

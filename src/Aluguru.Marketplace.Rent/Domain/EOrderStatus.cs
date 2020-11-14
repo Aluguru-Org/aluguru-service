@@ -5,7 +5,7 @@
         Draft = 0,
         Initiated,
         PaymentConfirmed,
-        Delivered,
+        Finished,        
         Canceled
     }
 }

@@ -1,20 +1,21 @@
+using Aluguru.Marketplace.Rent.Domain;
 using System;
 using Xunit;
 
-namespace Aluguru.Marketplace.Rent.Domain.Tests
+namespace Aluguru.Marketplace.Rent.Tests
 {
     public class OrderItemTests
     {
         [Fact]
         public void CreateOrderItem_WhenEmptyProductId_ShouldThrowDomainException()
         {
-            Assert.Throws<Exception>(() => new OrderItem(Guid.Empty, "test", 1, 100));
+            Assert.Throws<Exception>(() => new OrderItem(Guid.Empty, "test", DateTime.Now, 1, 100));
         }
 
         [Fact]
         public void CreateOrderItem_WhenEmptyProductName_ShouldThrowDomainException()
         {
-            Assert.Throws<Exception>(() => new OrderItem(Guid.NewGuid(), "", 1, 100));
+            Assert.Throws<Exception>(() => new OrderItem(Guid.NewGuid(), "", DateTime.Now, 1, 100));
         }
 
         [Theory]
@@ -22,7 +23,7 @@ namespace Aluguru.Marketplace.Rent.Domain.Tests
         [InlineData(-1)]
         public void CreateOrderItem_WhenAmountSmallerOrEqualThanZero_ShouldThrowDomainException(int amount)
         {
-            Assert.Throws<Exception>(() => new OrderItem(Guid.NewGuid(), "test", amount, 100));
+            Assert.Throws<Exception>(() => new OrderItem(Guid.NewGuid(), "test", DateTime.Now, amount, 100));
         }
 
         [Theory]
@@ -30,7 +31,7 @@ namespace Aluguru.Marketplace.Rent.Domain.Tests
         [InlineData(-1)]
         public void CreateOrderItem_WhenProductPriceSmallerOrEqualThanZero_ShouldThrowDomainException(decimal price)
         {
-            Assert.Throws<Exception>(() => new OrderItem(Guid.NewGuid(), "test", 1, price));
+            Assert.Throws<Exception>(() => new OrderItem(Guid.NewGuid(), "test", DateTime.Now, 1, price));
         }
 
         [Theory]
@@ -39,7 +40,7 @@ namespace Aluguru.Marketplace.Rent.Domain.Tests
         [InlineData(400, 4, 100)]
         public void CalculatePrice(decimal result, int amount, decimal price)
         {
-            var item = new OrderItem(Guid.NewGuid(), "test", amount, price);
+            var item = new OrderItem(Guid.NewGuid(), "test", DateTime.Now, amount, price);
 
             var calcPrice = item.CalculatePrice();
 

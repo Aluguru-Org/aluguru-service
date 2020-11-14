@@ -82,6 +82,21 @@ namespace Aluguru.Marketplace.Catalog.Domain
             return _imageUrls.Remove(url);
         }
 
+        public bool CheckValidRentStartDate(DateTime rentStartDate)
+        {
+            var minRentStartDate = DateTime.Now;
+            if (MinNoticeRentDays.HasValue)
+            {
+                minRentStartDate.AddDays(MinNoticeRentDays.Value);
+            }
+            return rentStartDate > minRentStartDate;
+        }
+
+        public bool CheckValidRentDays(int rentDays)
+        {
+            return MinRentDays < rentDays && (MaxRentDays.HasValue ? rentDays < MaxRentDays.Value : true);
+        }
+
         public Product UpdateProduct(UpdateProductCommand command)
         {
             Ensure.That<DomainException>(!string.IsNullOrEmpty(command.Product.Name), "The field Name from product cannot be empty");

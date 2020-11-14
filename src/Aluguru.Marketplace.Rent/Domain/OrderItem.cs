@@ -1,17 +1,20 @@
 ﻿using Aluguru.Marketplace.Domain;
 using PampaDevs.Utils;
 using System;
+using static PampaDevs.Utils.Helpers.DateTimeHelper;
 using static PampaDevs.Utils.Helpers.IdHelper;
 
 namespace Aluguru.Marketplace.Rent.Domain
 {
     public class OrderItem : Entity
     {
-        public OrderItem(Guid productId, string productName, int amount, decimal productPrice)
+        public OrderItem(Guid productId, string productName, DateTime rentStartDate, int amount, decimal productPrice)
             : base(NewId())
         {
+            OrderItemStatus = EOrderItemStatus.Initiated;
             ProductId = productId;
             ProductName = productName;
+            RentStartDate = rentStartDate;
             Amount = amount;
             ProductPrice = productPrice;
 
@@ -20,6 +23,8 @@ namespace Aluguru.Marketplace.Rent.Domain
 
         public Guid OrderId { get; private set; }
         public Guid ProductId { get; private set; }
+        public EOrderItemStatus OrderItemStatus { get; set; }
+        public DateTime RentStartDate { get; set; }
         public string ProductName { get; private set; }
         public int Amount { get; private set; }
         public decimal ProductPrice { get; private set; }
@@ -34,6 +39,12 @@ namespace Aluguru.Marketplace.Rent.Domain
         public decimal CalculatePrice()
         {
             return Amount * ProductPrice;
+        }
+
+        public void MarkAsReturned()
+        {
+            OrderItemStatus = EOrderItemStatus.Returned;
+            DateUpdated = NewDateTime();
         }
 
         internal void AddAmount(int amount)

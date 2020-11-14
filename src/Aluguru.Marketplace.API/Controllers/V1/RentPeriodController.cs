@@ -29,7 +29,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
 
         [HttpGet]
         [Route("")]
-        [Authorize(Policy = Policies.RentPeriodReader)]
+        [AllowAnonymous]
         [SwaggerOperation(Summary = "Get all rent period", Description = "Get a list of all rent periods")]
         [Consumes("application/json")]
         [Produces("application/json")]

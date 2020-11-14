@@ -54,8 +54,6 @@ namespace Aluguru.Marketplace.Rent.Domain
             DateUpdated = NewDateTime();
         }
 
-
-
         public void AddItem(OrderItem orderItem)
         {
             orderItem.AssociateOrder(Id);
