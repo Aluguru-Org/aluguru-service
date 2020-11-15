@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Aluguru.Marketplace.Catalog.Domain;
-using Aluguru.Marketplace.Catalog.ViewModels;
+using Aluguru.Marketplace.Catalog.Dtos;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;
 using System;
 using System.Collections.Generic;
@@ -38,6 +38,6 @@ namespace Aluguru.Marketplace.Catalog.Usecases.AddProductImage
 
     public class AddProductImageCommandResponse
     {
-        public ProductViewModel Product { get; set; }
+        public ProductDTO Product { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
-using Aluguru.Marketplace.Catalog.ViewModels;
+using Aluguru.Marketplace.Catalog.Dtos;
 using Aluguru.Marketplace.Catalog.Domain;
 using Aluguru.Marketplace.Domain;
 using System.Collections.Generic;
@@ -29,7 +29,7 @@ namespace Aluguru.Marketplace.Catalog.Usecases.GetCategories
 
             return new GetCategoriesCommandResponse()
             {
-                Categories = _mapper.Map<List<CategoryViewModel>>(categories)
+                Categories = _mapper.Map<List<CategoryDTO>>(categories)
             };
         }
     }

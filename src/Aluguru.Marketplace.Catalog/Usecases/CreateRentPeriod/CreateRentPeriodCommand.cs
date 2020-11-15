@@ -1,5 +1,5 @@
 using FluentValidation;
-using Aluguru.Marketplace.Catalog.ViewModels;
+using Aluguru.Marketplace.Catalog.Dtos;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;
 using System;
 
@@ -34,6 +34,6 @@ namespace Aluguru.Marketplace.Catalog.Usecases.CreateRentPeriod
 
     public class CreateRentPeriodCommandResponse 
     {
-        public RentPeriodViewModel RentPeriod { get; set; }
+        public RentPeriodDTO RentPeriod { get; set; }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Aluguru.Marketplace.Domain;
-using Aluguru.Marketplace.Register.ViewModels;
+using Aluguru.Marketplace.Register.Dtos;
 using PampaDevs.Utils;
 using System;
 using static PampaDevs.Utils.Helpers.IdHelper;
@@ -35,7 +35,7 @@ namespace Aluguru.Marketplace.Register.Domain
         // Ef Relational
         public virtual User User { get; set; }
 
-        internal void UpdateAddress(AddressViewModel address)
+        internal void UpdateAddress(AddressDTO address)
         {
             Street = address.Street;
             Number = address.Number;

@@ -1,4 +1,4 @@
-﻿using Aluguru.Marketplace.Catalog.ViewModels;
+﻿using Aluguru.Marketplace.Catalog.Dtos;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;
 using FluentValidation;
 using System;
@@ -25,6 +25,6 @@ namespace Aluguru.Marketplace.Catalog.Usecases.DeleteCategoryImage
 
     public class DeleteCategoryImageCommandResponse
     {
-        public CategoryViewModel Category { get; set; }
+        public CategoryDTO Category { get; set; }
     }
 }

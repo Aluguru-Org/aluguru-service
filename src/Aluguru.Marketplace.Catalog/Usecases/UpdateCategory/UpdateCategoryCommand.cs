@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Aluguru.Marketplace.Catalog.ViewModels;
+using Aluguru.Marketplace.Catalog.Dtos;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;
 using System;
 
@@ -7,13 +7,13 @@ namespace Aluguru.Marketplace.Catalog.Usecases.UpdateCategory
 {
     public class UpdateCategoryCommand : Command<UpdateCategoryCommandResponse>
     {
-        public UpdateCategoryCommand(Guid categoryId, UpdateCategoryViewModel category)
+        public UpdateCategoryCommand(Guid categoryId, UpdateCategoryDTO category)
         {
             CategoryId = categoryId;
             Category = category;
         }
         public Guid CategoryId { get; private set; }
-        public UpdateCategoryViewModel Category { get; private set; }
+        public UpdateCategoryDTO Category { get; private set; }
 
         public override bool IsValid()
         {
@@ -34,6 +34,6 @@ namespace Aluguru.Marketplace.Catalog.Usecases.UpdateCategory
 
     public class UpdateCategoryCommandResponse
     {
-        public CategoryViewModel Category { get; set; }
+        public CategoryDTO Category { get; set; }
     }
 }

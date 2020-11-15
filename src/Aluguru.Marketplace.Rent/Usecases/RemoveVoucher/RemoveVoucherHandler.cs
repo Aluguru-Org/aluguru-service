@@ -5,7 +5,7 @@ using Aluguru.Marketplace.Infrastructure.Bus.Communication;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using Aluguru.Marketplace.Rent.Data.Repositories;
 using Aluguru.Marketplace.Rent.Domain;
-using Aluguru.Marketplace.Rent.ViewModels;
+using Aluguru.Marketplace.Rent.Dtos;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -50,7 +50,7 @@ namespace Aluguru.Marketplace.Rent.Usecases.RemoveVoucher
 
             return new DeleteVoucherCommandResponse()
             {
-                Order = _mapper.Map<OrderViewModel>(order)
+                Order = _mapper.Map<OrderDTO>(order)
             };
         }
     }

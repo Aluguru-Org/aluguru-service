@@ -1,4 +1,4 @@
-﻿using Aluguru.Marketplace.Catalog.ViewModels;
+﻿using Aluguru.Marketplace.Catalog.Dtos;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;
 using System.Collections.Generic;
 
@@ -11,6 +11,6 @@ namespace Aluguru.Marketplace.Catalog.Usecases.GetRentPeriods
 
     public class GetRentPeriodsCommandResponse
     {
-        public List<RentPeriodViewModel> RentPeriods { get; set; }
+        public List<RentPeriodDTO> RentPeriods { get; set; }
     }
 }

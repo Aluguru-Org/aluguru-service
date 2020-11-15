@@ -12,7 +12,7 @@ using Aluguru.Marketplace.Register.Usecases.DeleteUserRole;
 using Aluguru.Marketplace.Register.Usecases.GetUserRoles;
 using Aluguru.Marketplace.Register.Usecases.GetUsersByRole;
 using Aluguru.Marketplace.Register.Usecases.UpdateUserRole;
-using Aluguru.Marketplace.Register.ViewModels;
+using Aluguru.Marketplace.Register.Dtos;
 using Aluguru.Marketplace.Security;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
@@ -70,7 +70,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> Post([FromBody] CreateUserRoleViewModel viewModel)
+        public async Task<ActionResult> Post([FromBody] CreateUserRoleDTO viewModel)
         {
             var command = _mapper.Map<CreateUserRoleCommand>(viewModel);
             var response = await _mediatorHandler.SendCommand<CreateUserRoleCommand, CreateUserRoleCommandResponse>(command);
@@ -86,7 +86,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> Put([FromRoute] Guid id, [FromBody] UpdateUserRoleViewModel viewModel)
+        public async Task<ActionResult> Put([FromRoute] Guid id, [FromBody] UpdateUserRoleDTO viewModel)
         {
             var command = new UpdateUserRoleCommand(id, viewModel);
             await _mediatorHandler.SendCommand<UpdateUserRoleCommand, UpdateUserRoleCommandResponse>(command);

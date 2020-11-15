@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;
-using Aluguru.Marketplace.Rent.ViewModels;
+using Aluguru.Marketplace.Rent.Dtos;
 using System;
 
 namespace Aluguru.Marketplace.Rent.Usecases.GetOrder
@@ -28,6 +28,6 @@ namespace Aluguru.Marketplace.Rent.Usecases.GetOrder
 
     public class GetOrderCommandResponse
     {
-        public OrderViewModel Order { get; set; }
+        public OrderDTO Order { get; set; }
     }
 }

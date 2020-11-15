@@ -10,7 +10,7 @@ using Aluguru.Marketplace.API.Models;
 using Aluguru.Marketplace.Infrastructure.Bus.Communication;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using Aluguru.Marketplace.Register.Usecases.LogInUser;
-using Aluguru.Marketplace.Register.ViewModels;
+using Aluguru.Marketplace.Register.Dtos;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Aluguru.Marketplace.API.Controllers.V1
@@ -32,7 +32,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(LogInUserCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> LogIn([FromBody] LoginUserViewModel viewModel)
+        public async Task<ActionResult> LogIn([FromBody] LoginUserDTO viewModel)
         {
             var command = new LogInUserCommand(viewModel.Email, viewModel.Password);
             var response = await _mediatorHandler.SendCommand<LogInUserCommand, LogInUserCommandResponse>(command);

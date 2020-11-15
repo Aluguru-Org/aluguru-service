@@ -4,7 +4,7 @@ using Aluguru.Marketplace.Domain;
 using Aluguru.Marketplace.Infrastructure.Bus.Communication;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using Aluguru.Marketplace.Infrastructure.Data;
-using Aluguru.Marketplace.Register.ViewModels;
+using Aluguru.Marketplace.Register.Dtos;
 using Aluguru.Marketplace.Register.Domain;
 using Aluguru.Marketplace.Register.Domain.Repositories;
 using System.Threading;
@@ -60,7 +60,7 @@ namespace Aluguru.Marketplace.Register.Usecases.CreateUser
             return new CreateUserCommandResponse()
             {
                 ActivationHash = user.ActivationHash,
-                User = _mapper.Map<UserViewModel>(user)
+                User = _mapper.Map<UserDTO>(user)
             };
         }
     }

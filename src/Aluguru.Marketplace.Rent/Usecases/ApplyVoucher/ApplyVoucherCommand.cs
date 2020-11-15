@@ -1,6 +1,6 @@
 using FluentValidation;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;
-using Aluguru.Marketplace.Rent.ViewModels;
+using Aluguru.Marketplace.Rent.Dtos;
 using System;
 using System.Collections.Generic;
 
@@ -34,6 +34,6 @@ namespace Aluguru.Marketplace.Rent.Usecases.ApplyVoucher
 
     public class ApplyVoucherCommandResponse
     {
-        public OrderViewModel Order { get; set; }
+        public OrderDTO Order { get; set; }
     }
 }

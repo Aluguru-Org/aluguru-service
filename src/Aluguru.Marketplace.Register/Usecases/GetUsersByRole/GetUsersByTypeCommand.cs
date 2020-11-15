@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;
-using Aluguru.Marketplace.Register.ViewModels;
+using Aluguru.Marketplace.Register.Dtos;
 using Aluguru.Marketplace.Register.Domain;
 using System;
 using System.Collections.Generic;
@@ -33,6 +33,6 @@ namespace Aluguru.Marketplace.Register.Usecases.GetUsersByRole
 
     public class GetUsersByRoleCommandResponse
     {
-        public List<UserViewModel> Users { get; set; }
+        public List<UserDTO> Users { get; set; }
     }
 }

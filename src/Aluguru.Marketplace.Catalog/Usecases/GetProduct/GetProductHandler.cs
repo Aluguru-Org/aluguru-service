@@ -1,6 +1,6 @@
 ﻿ using AutoMapper;
 using MediatR;
-using Aluguru.Marketplace.Catalog.ViewModels;
+using Aluguru.Marketplace.Catalog.Dtos;
 using Aluguru.Marketplace.Catalog.Domain;
 using Aluguru.Marketplace.Domain;
 using System.Threading;
@@ -28,7 +28,7 @@ namespace Aluguru.Marketplace.Catalog.Usecases.GetProduct
 
             return new GetProductCommandResponse()
             {
-                Product = _mapper.Map<ProductViewModel>(product)
+                Product = _mapper.Map<ProductDTO>(product)
             };
         }
     }

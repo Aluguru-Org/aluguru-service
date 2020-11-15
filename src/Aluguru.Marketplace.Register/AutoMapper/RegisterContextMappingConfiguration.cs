@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Aluguru.Marketplace.Register.Usecases.CreateUser;
 using Aluguru.Marketplace.Register.Usecases.LogInUser;
-using Aluguru.Marketplace.Register.ViewModels;
+using Aluguru.Marketplace.Register.Dtos;
 using Aluguru.Marketplace.Register.Domain;
 using System;
 using System.Collections.Generic;
@@ -20,7 +20,7 @@ namespace Aluguru.Marketplace.Register.AutoMapper
 
         private void ViewModelToDomainConfiguration()
         {
-            CreateMap<ContactViewModel, Contact>()
+            CreateMap<ContactDTO, Contact>()
                 .ConstructUsing((request, context) =>
                 {
                     return new Contact(request.Name, request.PhoneNumber, request.Email);
@@ -29,7 +29,7 @@ namespace Aluguru.Marketplace.Register.AutoMapper
                 .ForMember(x => x.DateCreated, c => c.Ignore())
                 .ForMember(x => x.DateUpdated, c => c.Ignore());
 
-            CreateMap<DocumentViewModel, Document>()
+            CreateMap<DocumentDTO, Document>()
                 .ConstructUsing((request, context) =>
                 {
                     var documentType = (EDocumentType)Enum.Parse(typeof(EDocumentType), request.DocumentType);
@@ -39,7 +39,7 @@ namespace Aluguru.Marketplace.Register.AutoMapper
                 .ForMember(x => x.DateCreated, c => c.Ignore())
                 .ForMember(x => x.DateUpdated, c => c.Ignore());
 
-            CreateMap<AddressViewModel, Address>()
+            CreateMap<AddressDTO, Address>()
                 .ConstructUsing((request, context) =>
                 {
                     return new Address(request.UserId, request.Street, request.Number, request.Neighborhood, request.City, request.State, request.Country, request.ZipCode);
@@ -48,7 +48,7 @@ namespace Aluguru.Marketplace.Register.AutoMapper
                 .ForMember(x => x.DateCreated, c => c.Ignore())
                 .ForMember(x => x.DateUpdated, c => c.Ignore());
 
-            CreateMap<CreateUserRoleViewModel, CreateUserRoleCommand>()
+            CreateMap<CreateUserRoleDTO, CreateUserRoleCommand>()
                 .ConstructUsing((request, context) =>
                 {
                     var userClaims = context.Mapper.Map<List<UserClaim>>(request.UserClaims);
@@ -58,18 +58,18 @@ namespace Aluguru.Marketplace.Register.AutoMapper
                 .ForMember(x => x.MessageType, c => c.Ignore())
                 .ForMember(x => x.ValidationResult, c => c.Ignore());
 
-            CreateMap<CreateUserClaimViewModel, UserClaim>()
+            CreateMap<CreateUserClaimDTO, UserClaim>()
                 .ForMember(x => x.UserRole, c => c.Ignore())
                 .ForMember(x => x.DateCreated, c => c.Ignore())
                 .ForMember(x => x.DateUpdated, c => c.Ignore());
 
-            CreateMap<LoginUserViewModel, LogInUserCommand>()
+            CreateMap<LoginUserDTO, LogInUserCommand>()
                 .ConstructUsing(x => new LogInUserCommand(x.Email, x.Password))
                 .ForMember(x => x.Timestamp, c => c.Ignore())
                 .ForMember(x => x.MessageType, c => c.Ignore())
                 .ForMember(x => x.ValidationResult, c => c.Ignore());
 
-            CreateMap<UserRegistrationViewModel, CreateUserCommand>()
+            CreateMap<UserRegistrationDTO, CreateUserCommand>()
                 .ConstructUsing((x, rc) =>
                 {
                     return new CreateUserCommand(x.FullName, x.Password, x.Email, x.Role);
@@ -78,7 +78,7 @@ namespace Aluguru.Marketplace.Register.AutoMapper
                 .ForMember(x => x.MessageType, c => c.Ignore())
                 .ForMember(x => x.ValidationResult, c => c.Ignore());
 
-            CreateMap<UpdateUserViewModel, UpdateUserCommand>()
+            CreateMap<UpdateUserDTO, UpdateUserCommand>()
                 .ConstructUsing((x, rc) =>
                 {
                     return new UpdateUserCommand(x.UserId, x.FullName, x.Document, x.Contact, x.Address);
@@ -90,20 +90,20 @@ namespace Aluguru.Marketplace.Register.AutoMapper
 
         private void DomainToViewModelConfiguration()
         {
-            CreateMap<UserClaim, UserClaimViewModel>();
-            CreateMap<UserRole, UserRoleViewModel>();
+            CreateMap<UserClaim, UserClaimDTO>();
+            CreateMap<UserRole, UserRoleDTO>();
 
-            CreateMap<Address, AddressViewModel>();
-            CreateMap<Contact, ContactViewModel>();
-            CreateMap<Document, DocumentViewModel>()
+            CreateMap<Address, AddressDTO>();
+            CreateMap<Contact, ContactDTO>();
+            CreateMap<Document, DocumentDTO>()
                 .ForMember(x => x.DocumentType, opt => opt.MapFrom(c => c.DocumentType.ToString()));
-            CreateMap<User, UserViewModel>()
+            CreateMap<User, UserDTO>()
                 .ConstructUsing((x, rc) =>
                 {
-                    var document = rc.Mapper.Map<DocumentViewModel>(x.Document);
-                    var address = rc.Mapper.Map<AddressViewModel>(x.Address);
+                    var document = rc.Mapper.Map<DocumentDTO>(x.Document);
+                    var address = rc.Mapper.Map<AddressDTO>(x.Address);
 
-                    return new UserViewModel()
+                    return new UserDTO()
                     {
                         Id = x.Id,
                         FullName = x.FullName,

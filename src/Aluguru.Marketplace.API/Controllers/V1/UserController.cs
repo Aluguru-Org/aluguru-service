@@ -12,7 +12,7 @@ using Aluguru.Marketplace.Register.Usecases.DeleteUser;
 using Aluguru.Marketplace.Register.Usecases.GetUserById;
 using Aluguru.Marketplace.Register.Usecases.UpadeUser;
 using Aluguru.Marketplace.Register.Usecases.UpdateUserPassword;
-using Aluguru.Marketplace.Register.ViewModels;
+using Aluguru.Marketplace.Register.Dtos;
 using Aluguru.Marketplace.Security;
 using Aluguru.Marketplace.Security.User;
 using Swashbuckle.AspNetCore.Annotations;
@@ -60,7 +60,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CreateUserCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> Post([FromBody] UserRegistrationViewModel viewModel)
+        public async Task<ActionResult> Post([FromBody] UserRegistrationDTO viewModel)
         {
             var command = _mapper.Map<CreateUserCommand>(viewModel);
             var response = await _mediatorHandler.SendCommand<CreateUserCommand, CreateUserCommandResponse>(command);
@@ -78,7 +78,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> Put(
             [FromRoute] Guid id,
-            [FromBody] UpdateUserViewModel viewModel)
+            [FromBody] UpdateUserDTO viewModel)
         {            
             var command = _mapper.Map<UpdateUserCommand>(viewModel);
             await _mediatorHandler.SendCommand<UpdateUserCommand, UpdateUserCommandResponse>(command);
@@ -94,7 +94,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> UpdatePassword([FromRoute] Guid id, [FromBody] UpdateUserPasswordViewModel viewModel)
+        public async Task<ActionResult> UpdatePassword([FromRoute] Guid id, [FromBody] UpdateUserPasswordDTO viewModel)
         {
             var command = new UpdateUserPasswordCommand(_aspNetUser.GetUserId(), id, viewModel.Password);
             await _mediatorHandler.SendCommand<UpdateUserPasswordCommand, bool>(command);

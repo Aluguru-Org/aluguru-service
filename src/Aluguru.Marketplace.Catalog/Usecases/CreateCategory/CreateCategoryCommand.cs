@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Aluguru.Marketplace.Catalog.ViewModels;
+using Aluguru.Marketplace.Catalog.Dtos;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;
 using System;
 
@@ -36,6 +36,6 @@ namespace Aluguru.Marketplace.Catalog.Usecases.CreateCategory
 
     public class CreateCategoryCommandResponse
     {
-        public CategoryViewModel Category { get; set; }
+        public CategoryDTO Category { get; set; }
     }
 }

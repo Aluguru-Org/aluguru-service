@@ -1,7 +1,7 @@
 using FluentValidation;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;
 using Aluguru.Marketplace.Rent.Domain;
-using Aluguru.Marketplace.Rent.ViewModels;
+using Aluguru.Marketplace.Rent.Dtos;
 using System;
 using System.Collections.Generic;
 
@@ -9,12 +9,12 @@ namespace Aluguru.Marketplace.Rent.Usecases.CreateVoucher
 {
     public class CreateVoucherCommand : Command<CreateVoucherCommandResponse>
     {
-        public CreateVoucherCommand(CreateVoucherViewModel voucher)
+        public CreateVoucherCommand(CreateVoucherDTO voucher)
         {
             Voucher = voucher;
         }
 
-        public CreateVoucherViewModel Voucher { get; private set; }
+        public CreateVoucherDTO Voucher { get; private set; }
         public override bool IsValid()
         {
             ValidationResult = new CreateVoucherCommandValidator().Validate(this);
@@ -36,6 +36,6 @@ namespace Aluguru.Marketplace.Rent.Usecases.CreateVoucher
 
     public class CreateVoucherCommandResponse
     {
-        public VoucherViewModel Voucher { get; set; }
+        public VoucherDTO Voucher { get; set; }
     }
 }

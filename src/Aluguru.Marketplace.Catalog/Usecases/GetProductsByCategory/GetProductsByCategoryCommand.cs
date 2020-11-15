@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Aluguru.Marketplace.Catalog.ViewModels;
+using Aluguru.Marketplace.Catalog.Dtos;
 using Aluguru.Marketplace.Catalog.Domain;
 using Aluguru.Marketplace.Domain;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;

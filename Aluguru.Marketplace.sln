@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApps", "WebApps", "{EEDC09EE-E501-4644-9BD6-4FB6927A4E38}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "APIs", "APIs", "{EEDC09EE-E501-4644-9BD6-4FB6927A4E38}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aluguru.Marketplace.API", "src\Aluguru.Marketplace.API\Aluguru.Marketplace.API.csproj", "{05A35C0C-A5B6-4692-AFCA-B607834FEEF8}"
 EndProject
@@ -93,11 +93,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aluguru.Marketplace.Crosscu
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Newsletter", "Newsletter", "{A3535B01-10E6-4CB8-B7C7-10E2B48140A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aluguru.Marketplace.Newsletter", "src\Aluguru.Marketplace.Newsletter\Aluguru.Marketplace.Newsletter.csproj", "{0E83A11C-1939-4139-87B4-DC16605A9E82}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aluguru.Marketplace.Newsletter", "src\Aluguru.Marketplace.Newsletter\Aluguru.Marketplace.Newsletter.csproj", "{0E83A11C-1939-4139-87B4-DC16605A9E82}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{DFAAA1CC-36A7-4F56-A50B-4A29C03B7678}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aluguru.Marketplace.Newsletter.UnitTests", "tests\Aluguru.Marketplace.Newsletter.UnitTests\Aluguru.Marketplace.Newsletter.UnitTests.csproj", "{6AAF5488-F146-42D3-8FF5-6BD2C63CBB49}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aluguru.Marketplace.Newsletter.UnitTests", "tests\Aluguru.Marketplace.Newsletter.UnitTests\Aluguru.Marketplace.Newsletter.UnitTests.csproj", "{6AAF5488-F146-42D3-8FF5-6BD2C63CBB49}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

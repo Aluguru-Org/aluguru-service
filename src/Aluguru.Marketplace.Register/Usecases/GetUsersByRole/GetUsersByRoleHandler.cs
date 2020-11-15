@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Aluguru.Marketplace.Domain;
-using Aluguru.Marketplace.Register.ViewModels;
+using Aluguru.Marketplace.Register.Dtos;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,7 +27,7 @@ namespace Aluguru.Marketplace.Register.Usecases.GetUsersByRole
 
             var users = await userQueryRepository.GetUsersByRoleAsync(request.Role);
 
-            return new GetUsersByRoleCommandResponse { Users = _mapper.Map<List<UserViewModel>>(users) };
+            return new GetUsersByRoleCommandResponse { Users = _mapper.Map<List<UserDTO>>(users) };
         }
     }
 }

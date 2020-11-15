@@ -1,4 +1,4 @@
-﻿using Aluguru.Marketplace.Catalog.ViewModels;
+﻿using Aluguru.Marketplace.Catalog.Dtos;
 using Aluguru.Marketplace.Domain;
 using PampaDevs.Utils;
 using System;

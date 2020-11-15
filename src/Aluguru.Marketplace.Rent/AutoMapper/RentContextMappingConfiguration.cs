@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Aluguru.Marketplace.Rent.Domain;
 using Aluguru.Marketplace.Rent.Usecases.CreateOrder;
-using Aluguru.Marketplace.Rent.ViewModels;
+using Aluguru.Marketplace.Rent.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,7 +18,7 @@ namespace Aluguru.Marketplace.Rent.AutoMapper
 
         private void ViewModelToDomainConfiguration()
         {
-            CreateMap<CreateOrderViewModel, CreateOrderCommand>()
+            CreateMap<CreateOrderDTO, CreateOrderCommand>()
                 .ConstructUsing(x => new CreateOrderCommand(x.UserId, x.OrderItems))
                 .ForMember(x => x.Timestamp, c => c.Ignore())
                 .ForMember(x => x.MessageType, c => c.Ignore())
@@ -27,9 +27,9 @@ namespace Aluguru.Marketplace.Rent.AutoMapper
 
         private void DomainToViewModelConfiguration()
         {
-            CreateMap<Order, OrderViewModel>();
-            CreateMap<OrderItem, OrderItemViewModel>();
-            CreateMap<Voucher, VoucherViewModel>();
+            CreateMap<Order, OrderDTO>();
+            CreateMap<OrderItem, OrderItemDTO>();
+            CreateMap<Voucher, VoucherDTO>();
         }
     }
 }

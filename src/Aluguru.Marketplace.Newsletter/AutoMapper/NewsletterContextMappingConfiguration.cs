@@ -1,5 +1,5 @@
 ﻿using Aluguru.Marketplace.Newsletter.Domain;
-using Aluguru.Marketplace.Newsletter.ViewModels;
+using Aluguru.Marketplace.Newsletter.Dtos;
 using AutoMapper;
 
 namespace Aluguru.Marketplace.Newsletter.AutoMapper
@@ -14,7 +14,7 @@ namespace Aluguru.Marketplace.Newsletter.AutoMapper
 
         private void ViewModelToDomainConfiguration()
         {
-            CreateMap<SubscriberViewModel, Subscriber>()
+            CreateMap<SubscriberDto, Subscriber>()
                 .ConstructUsing(x => new Subscriber(x.Email))
                 .ForMember(x => x.Id, c => c.Ignore())
                 .ForMember(x => x.DateCreated, c => c.Ignore())
@@ -23,7 +23,7 @@ namespace Aluguru.Marketplace.Newsletter.AutoMapper
 
         private void DomainToViewModelConfiguration()
         {
-            CreateMap<Subscriber, SubscriberViewModel>();
+            CreateMap<Subscriber, SubscriberDto>();
         }
     }
 }

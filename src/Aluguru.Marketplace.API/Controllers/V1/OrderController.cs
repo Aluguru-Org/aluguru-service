@@ -13,7 +13,7 @@ using Aluguru.Marketplace.Rent.Usecases.RemoveVoucher;
 using Aluguru.Marketplace.Rent.Usecases.GetOrder;
 using Aluguru.Marketplace.Rent.Usecases.GetOrders;
 using Aluguru.Marketplace.Rent.Usecases.UpdateOrder;
-using Aluguru.Marketplace.Rent.ViewModels;
+using Aluguru.Marketplace.Rent.Dtos;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
@@ -80,7 +80,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CreateOrderCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]        
-        public async Task<ActionResult> Post([FromBody] CreateOrderViewModel viewModel)
+        public async Task<ActionResult> Post([FromBody] CreateOrderDTO viewModel)
         {
             var command = _mapper.Map<CreateOrderCommand>(viewModel);
             var response = await _mediatorHandler.SendCommand<CreateOrderCommand, CreateOrderCommandResponse>(command);
@@ -95,7 +95,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> Put([FromRoute] Guid id, [FromBody] UpdateOrderViewModel viewModel)
+        public async Task<ActionResult> Put([FromRoute] Guid id, [FromBody] UpdateOrderDTO viewModel)
         {
             var command = _mapper.Map<UpdateOrderCommand>(viewModel);
             await _mediatorHandler.SendCommand<UpdateOrderCommand, UpdateOrderCommandResponse>(command);
@@ -110,7 +110,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> ApplyVoucher([FromRoute] Guid id, [FromBody] ApplyVoucherViewModel viewModel)
+        public async Task<ActionResult> ApplyVoucher([FromRoute] Guid id, [FromBody] ApplyVoucherDTO viewModel)
         {
             var command = new ApplyVoucherCommand(id, viewModel.Code);
             await _mediatorHandler.SendCommand<ApplyVoucherCommand, ApplyVoucherCommandResponse>(command);

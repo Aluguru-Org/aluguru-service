@@ -1,5 +1,5 @@
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;
-using Aluguru.Marketplace.Rent.ViewModels;
+using Aluguru.Marketplace.Rent.Dtos;
 using System.Collections.Generic;
 
 namespace Aluguru.Marketplace.Rent.Usecases.GetVouchers
@@ -11,6 +11,6 @@ namespace Aluguru.Marketplace.Rent.Usecases.GetVouchers
 
     public class GetVouchersCommandResponse
     {
-        public List<VoucherViewModel> Vouchers { get; set; }
+        public List<VoucherDTO> Vouchers { get; set; }
     }
 }

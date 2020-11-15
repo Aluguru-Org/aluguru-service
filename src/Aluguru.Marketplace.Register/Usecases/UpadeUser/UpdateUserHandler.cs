@@ -5,7 +5,7 @@ using Aluguru.Marketplace.Infrastructure.Bus.Communication;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using Aluguru.Marketplace.Register.Domain;
 using Aluguru.Marketplace.Register.Domain.Repositories;
-using Aluguru.Marketplace.Register.ViewModels;
+using Aluguru.Marketplace.Register.Dtos;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -43,7 +43,7 @@ namespace Aluguru.Marketplace.Register.Usecases.UpadeUser
 
             return new UpdateUserCommandResponse()
             {
-                User = _mapper.Map<UserViewModel>(user)
+                User = _mapper.Map<UserDTO>(user)
             };
         }
     }

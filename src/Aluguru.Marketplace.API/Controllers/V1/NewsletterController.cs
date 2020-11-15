@@ -2,7 +2,7 @@
 using Aluguru.Marketplace.Infrastructure.Bus.Communication;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using Aluguru.Marketplace.Newsletter.Services;
-using Aluguru.Marketplace.Newsletter.ViewModels;
+using Aluguru.Marketplace.Newsletter.Dtos;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -41,10 +41,10 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [HttpPost]
         [Route("")]
         [SwaggerOperation(Summary = "Add new newsletter subscriber")]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SubscriberViewModel))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SubscriberDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> Post([FromBody] SubscriberViewModel subscriberViewModel)
+        public async Task<ActionResult> Post([FromBody] SubscriberDto subscriberViewModel)
         {
             var response = await _newsletterService.AddSubscriber(subscriberViewModel);
             return PostResponse(nameof(Get), null, response);
@@ -56,7 +56,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> Delete([FromQuery] SubscriberViewModel subscriberViewModel)
+        public async Task<ActionResult> Delete([FromQuery] SubscriberDto subscriberViewModel)
         {
             await _newsletterService.RemoveSubscriber(subscriberViewModel);
             return DeleteResponse();

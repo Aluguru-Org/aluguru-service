@@ -2,7 +2,7 @@
 using Aluguru.Marketplace.API.IntegrationTests.Extensions;
 using Aluguru.Marketplace.API.Models;
 using Aluguru.Marketplace.Catalog.Usecases.CreateRentPeriod;
-using Aluguru.Marketplace.Catalog.ViewModels;
+using Aluguru.Marketplace.Catalog.Dtos;
 using System.Net;
 using Xunit;
 
@@ -25,7 +25,7 @@ namespace Aluguru.Marketplace.API.IntegrationTests
         public void CreateRentPeriod_ShouldPass()
         {
             // Arrange
-            var viewModel = new CreateRentPeriodViewModel()
+            var viewModel = new CreateRentPeriodDTO()
             {
                 Name = _fixture.RentPeriodMonth.Name,
                 Days = _fixture.RentPeriodMonth.Days
@@ -47,7 +47,7 @@ namespace Aluguru.Marketplace.API.IntegrationTests
         public void CreateRentPeriod2_ShouldPass()
         {
             // Arrange
-            var viewModel = new CreateRentPeriodViewModel()
+            var viewModel = new CreateRentPeriodDTO()
             {
                 Name = _fixture.RentPeriodWeek.Name,
                 Days = _fixture.RentPeriodWeek.Days

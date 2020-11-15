@@ -1,5 +1,5 @@
 ﻿using Aluguru.Marketplace.Infrastructure.Bus.Messages;
-using Aluguru.Marketplace.Rent.ViewModels;
+using Aluguru.Marketplace.Rent.Dtos;
 using FluentValidation;
 using System;
 
@@ -9,8 +9,6 @@ namespace Aluguru.Marketplace.Rent.Usecases.StartOrder
     {
         public Guid OrderId { get; private set; }
         public string Token { get; private set; }
-        
-
     }
 
     public class CreateOrderCommandValidator : AbstractValidator<StartOrderCommand>
@@ -24,6 +22,6 @@ namespace Aluguru.Marketplace.Rent.Usecases.StartOrder
 
     public class StartOrderCommandResponse
     {
-        public OrderViewModel Order { get; set; }
+        public OrderDTO Order { get; set; }
     }
 }

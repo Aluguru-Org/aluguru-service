@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using Aluguru.Marketplace.Register.Events;
 using static PampaDevs.Utils.Helpers.IdHelper;
 using static PampaDevs.Utils.Helpers.DateTimeHelper;
-using Aluguru.Marketplace.Register.ViewModels;
+using Aluguru.Marketplace.Register.Dtos;
 
 namespace Aluguru.Marketplace.Register.Domain
 {
@@ -82,7 +82,7 @@ namespace Aluguru.Marketplace.Register.Domain
             Password = newPassword;
         }
 
-        private void UpdateDocument(DocumentViewModel document)
+        private void UpdateDocument(DocumentDTO document)
         {
             if (document == null) return;
 
@@ -98,7 +98,7 @@ namespace Aluguru.Marketplace.Register.Domain
             }
         }
 
-        private void UpdateContact(ContactViewModel contact)
+        private void UpdateContact(ContactDTO contact)
         {
             if (contact == null) return;
 
@@ -114,7 +114,7 @@ namespace Aluguru.Marketplace.Register.Domain
             }
         }
 
-        private void UpdateAddress(AddressViewModel address)
+        private void UpdateAddress(AddressDTO address)
         {
             if (Address == null)
             {

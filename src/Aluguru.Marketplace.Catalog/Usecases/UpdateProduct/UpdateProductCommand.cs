@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Aluguru.Marketplace.Catalog.ViewModels;
+using Aluguru.Marketplace.Catalog.Dtos;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;
 using System;
 
@@ -7,14 +7,14 @@ namespace Aluguru.Marketplace.Catalog.Usecases.UpdateProduct
 {
     public class UpdateProductCommand : Command<UpdateProductCommandResponse>
     {
-        public UpdateProductCommand(Guid productId, UpdateProductViewModel product)
+        public UpdateProductCommand(Guid productId, UpdateProductDTO product)
         {
             ProductId = productId;
             Product = product;
         }
 
         public Guid ProductId { get; private set; }
-        public UpdateProductViewModel Product { get; private set; }        
+        public UpdateProductDTO Product { get; private set; }        
     }
 
     public class UpdateProductCommandValidator : AbstractValidator<UpdateProductCommand>
@@ -35,6 +35,6 @@ namespace Aluguru.Marketplace.Catalog.Usecases.UpdateProduct
 
     public class UpdateProductCommandResponse 
     {
-        public ProductViewModel Product { get; set; }
+        public ProductDTO Product { get; set; }
     }
 }

@@ -37,7 +37,11 @@ namespace Aluguru.Marketplace.Catalog.Handlers
             {
                 var product = products.FirstOrDefault(x => x.Id == item.ProductId);
 
-                if (product == null) continue;
+                if (product == null)
+                {
+                    await _mediatorHandler.PublishNotification(new DomainNotification("Catalog", $"Product - {product.Name} does not exist"));
+                    continue;
+                }
 
                 if (product.HasStockFor(item.Amount))
                 {

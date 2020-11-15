@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;
-using Aluguru.Marketplace.Register.ViewModels;
+using Aluguru.Marketplace.Register.Dtos;
 using System.Text.RegularExpressions;
 
 namespace Aluguru.Marketplace.Register.Usecases.CreateUser
@@ -41,6 +41,6 @@ namespace Aluguru.Marketplace.Register.Usecases.CreateUser
     public class CreateUserCommandResponse
     {
         public string ActivationHash { get; set; }
-        public UserViewModel User { get; set; }
+        public UserDTO User { get; set; }
     }
 }

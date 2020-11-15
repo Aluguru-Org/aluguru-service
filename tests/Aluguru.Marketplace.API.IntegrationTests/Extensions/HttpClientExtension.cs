@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Aluguru.Marketplace.API.Models;
 using Aluguru.Marketplace.Register.Usecases.LogInUser;
-using Aluguru.Marketplace.Register.ViewModels;
+using Aluguru.Marketplace.Register.Dtos;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;

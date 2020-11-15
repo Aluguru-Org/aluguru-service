@@ -1,7 +1,7 @@
 ﻿using Aluguru.Marketplace.Domain;
 using Aluguru.Marketplace.Infrastructure.Data;
 using Aluguru.Marketplace.Newsletter.Domain;
-using Aluguru.Marketplace.Newsletter.ViewModels;
+using Aluguru.Marketplace.Newsletter.Dtos;
 using AutoMapper;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +12,8 @@ namespace Aluguru.Marketplace.Newsletter.Services
     public interface INewsletterService
     {
         Task<List<string>> GetAllSubscribers();
-        Task<SubscriberViewModel> AddSubscriber(SubscriberViewModel subscriber);
-        Task<bool> RemoveSubscriber(SubscriberViewModel subscriber);
+        Task<SubscriberDto> AddSubscriber(SubscriberDto subscriber);
+        Task<bool> RemoveSubscriber(SubscriberDto subscriber);
     }
 
     public class NewsletterService : INewsletterService
@@ -33,7 +33,7 @@ namespace Aluguru.Marketplace.Newsletter.Services
             return subscribers.Select(x => x.Email).ToList();
         }
 
-        public async Task<SubscriberViewModel> AddSubscriber(SubscriberViewModel subscriberViewModel)
+        public async Task<SubscriberDto> AddSubscriber(SubscriberDto subscriberViewModel)
         {
             var subscriber = _mapper.Map<Subscriber>(subscriberViewModel);
 
@@ -41,11 +41,11 @@ namespace Aluguru.Marketplace.Newsletter.Services
 
             await _unitOfWork.SaveChangesAsync(default);
 
-            return _mapper.Map<SubscriberViewModel>(subscriber);
+            return _mapper.Map<SubscriberDto>(subscriber);
         }
         
 
-        public async Task<bool> RemoveSubscriber(SubscriberViewModel subscriberViewModel)
+        public async Task<bool> RemoveSubscriber(SubscriberDto subscriberViewModel)
         {
             var subscriber = await _unitOfWork.QueryRepository<Subscriber>().FindOneAsync(
                 x => x.Email == subscriberViewModel.Email

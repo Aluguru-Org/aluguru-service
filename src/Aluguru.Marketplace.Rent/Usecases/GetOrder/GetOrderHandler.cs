@@ -3,7 +3,7 @@ using MediatR;
 using Aluguru.Marketplace.Domain;
 using Aluguru.Marketplace.Rent.Data.Repositories;
 using Aluguru.Marketplace.Rent.Domain;
-using Aluguru.Marketplace.Rent.ViewModels;
+using Aluguru.Marketplace.Rent.Dtos;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,7 +28,7 @@ namespace Aluguru.Marketplace.Rent.Usecases.GetOrder
 
             return new GetOrderCommandResponse()
             {
-                Order = _mapper.Map<OrderViewModel>(order)
+                Order = _mapper.Map<OrderDTO>(order)
             };
         }
     }

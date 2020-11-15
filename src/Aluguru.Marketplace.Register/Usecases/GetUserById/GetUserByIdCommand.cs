@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;
-using Aluguru.Marketplace.Register.ViewModels;
+using Aluguru.Marketplace.Register.Dtos;
 using System;
 
 namespace Aluguru.Marketplace.Register.Usecases.GetUserById
@@ -30,6 +30,6 @@ namespace Aluguru.Marketplace.Register.Usecases.GetUserById
 
     public class GetUserByIdCommandResponse
     {
-        public UserViewModel User { get; set; }
+        public UserDTO User { get; set; }
     }
 }

@@ -12,7 +12,7 @@ using Aluguru.Marketplace.Catalog.Usecases.DeleteProductImage;
 using Aluguru.Marketplace.Catalog.Usecases.GetProduct;
 using Aluguru.Marketplace.Catalog.Usecases.GetProducts;
 using Aluguru.Marketplace.Catalog.Usecases.UpdateProduct;
-using Aluguru.Marketplace.Catalog.ViewModels;
+using Aluguru.Marketplace.Catalog.Dtos;
 using Aluguru.Marketplace.Domain;
 using Aluguru.Marketplace.Infrastructure.Bus.Communication;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
@@ -84,7 +84,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]        
-        public async Task<ActionResult> Post([FromBody] CreateProductViewModel viewModel)
+        public async Task<ActionResult> Post([FromBody] CreateProductDTO viewModel)
         {
             var command = _mapper.Map<CreateProductCommand>(viewModel);
             var response = await _mediatorHandler.SendCommand<CreateProductCommand, CreateProductCommandResponse>(command);
@@ -101,7 +101,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> UpdateProduct([FromRoute] Guid id, [FromBody] UpdateProductViewModel viewModel)
+        public async Task<ActionResult> UpdateProduct([FromRoute] Guid id, [FromBody] UpdateProductDTO viewModel)
         {
             var command = new UpdateProductCommand(id, viewModel);
             await _mediatorHandler.SendCommand<UpdateProductCommand, UpdateProductCommandResponse>(command);

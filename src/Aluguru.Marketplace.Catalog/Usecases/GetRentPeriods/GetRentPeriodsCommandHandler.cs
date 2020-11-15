@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
-using Aluguru.Marketplace.Catalog.ViewModels;
+using Aluguru.Marketplace.Catalog.Dtos;
 using Aluguru.Marketplace.Catalog.Domain;
 using Aluguru.Marketplace.Domain;
 using System.Collections.Generic;
@@ -29,7 +29,7 @@ namespace Aluguru.Marketplace.Catalog.Usecases.GetRentPeriods
 
             return new GetRentPeriodsCommandResponse()
             {
-                RentPeriods = _mapper.Map<List<RentPeriodViewModel>>(rentPeriods)
+                RentPeriods = _mapper.Map<List<RentPeriodDTO>>(rentPeriods)
             };
         }
     }

@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;
 using Aluguru.Marketplace.Register.Domain;
-using Aluguru.Marketplace.Register.ViewModels;
+using Aluguru.Marketplace.Register.Dtos;
 using System.Collections.Generic;
 
 namespace Aluguru.Marketplace.Register.Usecases.CreateUserRole
@@ -34,6 +34,6 @@ namespace Aluguru.Marketplace.Register.Usecases.CreateUserRole
 
     public class CreateUserRoleCommandResponse
     {
-        public UserRoleViewModel Role { get; set; }
+        public UserRoleDTO Role { get; set; }
     }
 }

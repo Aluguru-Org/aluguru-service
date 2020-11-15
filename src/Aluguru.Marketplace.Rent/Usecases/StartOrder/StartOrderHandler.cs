@@ -4,7 +4,7 @@ using Aluguru.Marketplace.Infrastructure.Bus.Communication;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using Aluguru.Marketplace.Rent.Data.Repositories;
 using Aluguru.Marketplace.Rent.Domain;
-using Aluguru.Marketplace.Rent.ViewModels;
+using Aluguru.Marketplace.Rent.Dtos;
 using AutoMapper;
 using MediatR;
 using System.Collections.Generic;
@@ -37,6 +37,7 @@ namespace Aluguru.Marketplace.Rent.Usecases.StartOrder
             if (order == null)
             {
                 await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"Order {command.OrderId} does not exist"));
+                return default;
             }
 
             order.Initiate();
@@ -60,7 +61,7 @@ namespace Aluguru.Marketplace.Rent.Usecases.StartOrder
 
             return new StartOrderCommandResponse
             {
-                Order = _mapper.Map<OrderViewModel>(order)
+                Order = _mapper.Map<OrderDTO>(order)
             };
         }
     }

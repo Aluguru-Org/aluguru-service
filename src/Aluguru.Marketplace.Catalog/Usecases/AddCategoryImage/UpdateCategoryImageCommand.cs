@@ -1,4 +1,4 @@
-﻿using Aluguru.Marketplace.Catalog.ViewModels;
+﻿using Aluguru.Marketplace.Catalog.Dtos;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
@@ -37,6 +37,6 @@ namespace Aluguru.Marketplace.Catalog.Usecases.AddCategoryImage
 
     public class UpdateCategoryImageCommandResponse
     {
-        public CategoryViewModel Category { get; set; }
+        public CategoryDTO Category { get; set; }
     }
 }

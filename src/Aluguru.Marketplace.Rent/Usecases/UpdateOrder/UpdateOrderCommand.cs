@@ -1,6 +1,6 @@
 using FluentValidation;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;
-using Aluguru.Marketplace.Rent.ViewModels;
+using Aluguru.Marketplace.Rent.Dtos;
 using System;
 using System.Collections.Generic;
 
@@ -8,14 +8,14 @@ namespace Aluguru.Marketplace.Rent.Usecases.UpdateOrder
 {
     public class UpdateOrderCommand : Command<UpdateOrderCommandResponse>
     {
-        public UpdateOrderCommand(Guid orderId, List<CreateOrderItemViewModel> orderItems)
+        public UpdateOrderCommand(Guid orderId, List<CreateOrderItemDTO> orderItems)
         {
             OrderId = orderId;
             OrderItems = orderItems;
         }
 
         public Guid OrderId { get; private set; }
-        public List<CreateOrderItemViewModel> OrderItems { get; private set; }
+        public List<CreateOrderItemDTO> OrderItems { get; private set; }
         public override bool IsValid()
         {
             ValidationResult = new CreateOrderCommandValidator().Validate(this);
@@ -37,7 +37,7 @@ namespace Aluguru.Marketplace.Rent.Usecases.UpdateOrder
 
     public class UpdateOrderCommandResponse
     {
-        public OrderViewModel Order { get; set; }
+        public OrderDTO Order { get; set; }
     }
 }
 

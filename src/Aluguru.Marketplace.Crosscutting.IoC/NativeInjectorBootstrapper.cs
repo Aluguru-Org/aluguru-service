@@ -63,6 +63,7 @@ using Aluguru.Marketplace.Catalog.Usecases.DeleteCategoryImage;
 using Aluguru.Marketplace.Notification.Usecases.SendAccountActivationEmail;
 using Aluguru.Marketplace.Newsletter.AutoMapper;
 using Aluguru.Marketplace.Newsletter.Services;
+using Aluguru.Marketplace.Payment.Handlers;
 
 namespace Aluguru.Marketplace.Crosscutting.IoC
 {
@@ -115,29 +116,42 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
                 typeof(NewsletterContextMappingConfiguration)
             );
 
+
+            //
+            // ===================== Newsletter Context =====================
+            //
+            services.AddScoped<INewsletterService, NewsletterService>();
+
+            //
+            // ===================== Register Context =====================
+            //
+
             // AuthUser
             services.AddScoped<IRequestHandler<LogInUserCommand, LogInUserCommandResponse>, LogInUserHandler>();
             services.AddScoped<ITokenBuilderService, TokenBuilderService>();
 
-            // Newsletter
-            services.AddScoped<INewsletterService, NewsletterService>();
-
-            // User Role Command Handlers
+            // User Role
             services.AddScoped<IRequestHandler<CreateUserRoleCommand, CreateUserRoleCommandResponse>, CreateUserRoleHandler>();
             services.AddScoped<IRequestHandler<GetUserRolesCommand, GetUserRolesCommandResponse>, GetUserRolesHandler>();
             services.AddScoped<IRequestHandler<GetUsersByRoleCommand, GetUsersByRoleCommandResponse>, GetUsersByRoleHandler>();
             services.AddScoped<IRequestHandler<UpdateUserRoleCommand, UpdateUserRoleCommandResponse>, UpdateUserRoleHandler>();
             services.AddScoped<IRequestHandler<DeleteUserRoleCommand, bool>, DeleteUserRoleHandler>();
 
-            // User Command Handlers
+            // User
             services.AddScoped<IRequestHandler<GetUserByIdCommand, GetUserByIdCommandResponse>, GetUserByIdHandler>();
             services.AddScoped<IRequestHandler<CreateUserCommand, CreateUserCommandResponse>, CreateUserHandler>();
             services.AddScoped<IRequestHandler<UpdateUserCommand, UpdateUserCommandResponse>, UpdateUserHandler>();
             services.AddScoped<IRequestHandler<UpdateUserPasswordCommand, bool>, UpdateUserPasswordHandler>();
             services.AddScoped<IRequestHandler<ActivateUserCommand, bool>, ActivateUserHandler>();
             services.AddScoped<IRequestHandler<DeleteUserCommand, bool>, DeleteUserHandler>();
+
+
+
+            //
+            // ===================== Catalog Context =====================
+            //
             
-            // Product Command Handlers
+            // Product
             services.AddScoped<IRequestHandler<CreateProductCommand, CreateProductCommandResponse>, CreateProductHandler>();
             services.AddScoped<IRequestHandler<UpdateProductCommand, UpdateProductCommandResponse>, UpdateProductHandler>();
             services.AddScoped<IRequestHandler<GetProductCommand, GetProductCommandResponse>, GetProductHandler>();
@@ -146,7 +160,7 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             services.AddScoped<IRequestHandler<AddProductImageCommand, AddProductImageCommandResponse>, AddProductImageHandler>();
             services.AddScoped<IRequestHandler<DeleteProductImageCommand, DeleteProductImageCommandResponse>, DeleteProductImageHandler>();
 
-            // Category Command Handlers
+            // Category
             services.AddScoped<IRequestHandler<CreateCategoryCommand, CreateCategoryCommandResponse>, CreateCategoryHandler>();
             services.AddScoped<IRequestHandler<UpdateCategoryCommand, UpdateCategoryCommandResponse>, UpdateCategoryHandler>();
             services.AddScoped<IRequestHandler<GetCategoriesCommand, GetCategoriesCommandResponse>, GetCategoriesCommandHandler>();
@@ -155,12 +169,16 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             services.AddScoped<IRequestHandler<UpdateCategoryImageCommand, UpdateCategoryImageCommandResponse>, UpdateCategoryImageHandler>();
             services.AddScoped<IRequestHandler<DeleteCategoryImageCommand, DeleteCategoryImageCommandResponse>, DeleteCategoryImageHandler>();
 
-            // Rent Period Command Handlers
+            // Rent Period
             services.AddScoped<IRequestHandler<CreateRentPeriodCommand, CreateRentPeriodCommandResponse>, CreateRentPeriodHandler>();
             services.AddScoped<IRequestHandler<GetRentPeriodsCommand, GetRentPeriodsCommandResponse>, GetRentPeriodsCommandHandler>();
             services.AddScoped<IRequestHandler<DeleteRentPeriodCommand, bool>, DeleteRentPeriodHandler>();
 
-            // Order Command Handlers
+            //
+            // ===================== Rent Context =====================
+            //
+
+            // Order 
             services.AddScoped<IRequestHandler<GetOrdersCommand, GetOrdersCommandResponse>, GetOrdersHandler>();
             services.AddScoped<IRequestHandler<GetOrderCommand, GetOrderCommandResponse>, GetOrderHandler>();
             services.AddScoped<IRequestHandler<CreateOrderCommand, CreateOrderCommandResponse>, CreateOrderHandler>();
@@ -169,18 +187,25 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             services.AddScoped<IRequestHandler<RemoveVoucherCommand, DeleteVoucherCommandResponse>, RemoveVoucherHandler>();
             services.AddScoped<IRequestHandler<DeleteOrderCommand, bool>, DeleteOrderHandler>();
 
-            // Voucher Command Handlers
+            // Voucher 
             services.AddScoped<IRequestHandler<GetVouchersCommand, GetVouchersCommandResponse>, GetVouchersHandler>();
             services.AddScoped<IRequestHandler<CreateVoucherCommand, CreateVoucherCommandResponse>, CreateVoucherHandler>();
             services.AddScoped<IRequestHandler<DeleteVoucherCommand, bool>, DeleteVoucherHandler>();
 
-            // Payment Services
+            //
+            // ===================== Payment Context =====================
+            //
+            services.AddScoped<INotificationHandler<OrderStockConfirmedEvent>, PaymentEventHandler>();
 
-            // Notification Services
+            //
+            // ===================== Notification Context =====================
+            //
             services.AddScoped<INotificationHandler<UserRegisteredEvent>, UserRegisteredHandler>();
             services.AddScoped<IRequestHandler<SendAccountActivationEmailCommand, bool>, SendAccountActivationEmailHandler>();
 
-            // CrossCutting
+            //
+            // ===================== Crosscutting =====================
+            //
             services.AddScoped<IAzureStorageGateway, AzureStorageGateway>();
             services.AddScoped<IMailingService, MailingService>();
             services.AddScoped<IIuguService, IuguService>();

@@ -2,7 +2,7 @@
 using Aluguru.Marketplace.API.IntegrationTests.Extensions;
 using Aluguru.Marketplace.API.Models;
 using Aluguru.Marketplace.Catalog.Usecases.CreateCategory;
-using Aluguru.Marketplace.Catalog.ViewModels;
+using Aluguru.Marketplace.Catalog.Dtos;
 using System.Net;
 using Xunit;
 
@@ -23,7 +23,7 @@ namespace Aluguru.Marketplace.API.IntegrationTests
         public void CreateCategory_WhenInvalidCategory_ShouldFail()
         {
             // Arrange
-            var viewModel = new CreateCategoryViewModel();
+            var viewModel = new CreateCategoryDTO();
 
             // Act
             _fixture.Admin.LogIn().Wait();
@@ -38,7 +38,7 @@ namespace Aluguru.Marketplace.API.IntegrationTests
         public void CreateCategory_ShouldPass()
         {
             // Arrange
-            var viewModel = new CreateCategoryViewModel()
+            var viewModel = new CreateCategoryDTO()
             {
                 Name = _fixture.Category.Name,
                 Uri = _fixture.Category.Uri
@@ -61,7 +61,7 @@ namespace Aluguru.Marketplace.API.IntegrationTests
         public void CreateCategory_WhenSubCategory_ShouldPass()
         {
             // Arrange
-            var viewModel = new CreateCategoryViewModel()
+            var viewModel = new CreateCategoryDTO()
             {
                 MainCategoryId = _fixture.SubCategory.MainCategoryId,
                 Name = _fixture.SubCategory.Name,
@@ -85,7 +85,7 @@ namespace Aluguru.Marketplace.API.IntegrationTests
         {
             // Arrange            
             var categoryId = _fixture.SubCategory.Id;
-            var viewModel = new UpdateCategoryViewModel()
+            var viewModel = new UpdateCategoryDTO()
             {
                 Id = _fixture.SubCategory.Id,
                 Name = "Games",

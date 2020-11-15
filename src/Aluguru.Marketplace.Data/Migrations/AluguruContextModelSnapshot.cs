@@ -187,6 +187,46 @@ namespace Aluguru.Marketplace.Data.Migrations
                     b.ToTable("Subscriber");
                 });
 
+            modelBuilder.Entity("Aluguru.Marketplace.Payment.Domain.Payment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Identification")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InvoiceId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Paid")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("PaymentMethod")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Pdf")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Payment");
+                });
+
             modelBuilder.Entity("Aluguru.Marketplace.Register.Domain.Address", b =>
                 {
                     b.Property<Guid>("Id")
@@ -426,6 +466,9 @@ namespace Aluguru.Marketplace.Data.Migrations
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("OrderItemStatus")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
@@ -434,6 +477,9 @@ namespace Aluguru.Marketplace.Data.Migrations
 
                     b.Property<decimal>("ProductPrice")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("RentStartDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

@@ -3,7 +3,7 @@ using Aluguru.Marketplace.API.IntegrationTests.Extensions;
 using Aluguru.Marketplace.API.Models;
 using Aluguru.Marketplace.Catalog.Domain;
 using Aluguru.Marketplace.Catalog.Usecases.CreateProduct;
-using Aluguru.Marketplace.Catalog.ViewModels;
+using Aluguru.Marketplace.Catalog.Dtos;
 using Bogus;
 using System;
 using System.Collections.Generic;
@@ -67,7 +67,7 @@ namespace Aluguru.Marketplace.API.IntegrationTests
             var faker = new Faker("pt_BR");
             var product = _fixture.ProductWithFixedPrice.ViewModel;
 
-            var updateProductViewModel = new UpdateProductViewModel()
+            var updateProductViewModel = new UpdateProductDTO()
             {
                 Id = product.Id,
                 CategoryId = product.CategoryId,
@@ -81,9 +81,9 @@ namespace Aluguru.Marketplace.API.IntegrationTests
                 MinRentDays = 7,
                 MaxRentDays = 30,
                 StockQuantity = 1,
-                CustomFields = new List<UpdateCustomFieldViewModel>
+                CustomFields = new List<UpdateCustomFieldDTO>
                 {
-                    new UpdateCustomFieldViewModel() {  FieldType = "Text", ValueAsString = "Observação?", Active = true }
+                    new UpdateCustomFieldDTO() {  FieldType = "Text", ValueAsString = "Observação?", Active = true }
                 }
             };
 
@@ -110,11 +110,11 @@ namespace Aluguru.Marketplace.API.IntegrationTests
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
-        private CreateProductViewModel CreateProduct(PriceViewModel price)
+        private CreateProductDTO CreateProduct(PriceDTO price)
         {
             var faker = new Faker("pt_BR");
 
-            return new CreateProductViewModel()
+            return new CreateProductDTO()
             {
                 UserId = _fixture.Company.Id,
                 CategoryId = _fixture.Category.Id,
@@ -128,14 +128,14 @@ namespace Aluguru.Marketplace.API.IntegrationTests
                 MinRentDays = 7,
                 MaxRentDays = 30,
                 StockQuantity = 1,
-                CustomFields = new List<CreateCustomFieldViewModel>
+                CustomFields = new List<CreateCustomFieldDTO>
                 {
-                    new CreateCustomFieldViewModel() {  FieldType = "Text", FieldName = "Observação?", Active = true }
+                    new CreateCustomFieldDTO() {  FieldType = "Text", FieldName = "Observação?", Active = true }
                 }
             };
         }
 
-        private PriceViewModel CreatePrice(string rentType)
+        private PriceDTO CreatePrice(string rentType)
         {
             decimal sellPrice = (decimal)new Random().NextDouble() * new Random().Next(100, 100000); 
 
@@ -143,13 +143,13 @@ namespace Aluguru.Marketplace.API.IntegrationTests
             {
                 default:
                 case "Fixed":
-                    return new PriceViewModel()
+                    return new PriceDTO()
                     {
                         SellPrice = sellPrice,
                         DailyRentPrice = sellPrice / 10
                     };
                 case "Indefinite":
-                    return new PriceViewModel()
+                    return new PriceDTO()
                     {
                         SellPrice = sellPrice,
                         PeriodRentPrices = new List<PeriodPriceViewModel>()

@@ -10,7 +10,7 @@ using Aluguru.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using Aluguru.Marketplace.Rent.Usecases.CreateVoucher;
 using Aluguru.Marketplace.Rent.Usecases.DeleteVoucher;
 using Aluguru.Marketplace.Rent.Usecases.GetVouchers;
-using Aluguru.Marketplace.Rent.ViewModels;
+using Aluguru.Marketplace.Rent.Dtos;
 using Aluguru.Marketplace.Security;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Collections.Generic;
@@ -50,7 +50,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CreateVoucherCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> CreateVoucher([FromBody]CreateVoucherViewModel viewModel)
+        public async Task<ActionResult> CreateVoucher([FromBody]CreateVoucherDTO viewModel)
         {
             var command = _mapper.Map<CreateVoucherCommand>(viewModel);
             var response = await _mediatorHandler.SendCommand<CreateVoucherCommand, CreateVoucherCommandResponse>(command);

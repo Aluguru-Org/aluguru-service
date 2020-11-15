@@ -3,7 +3,7 @@ using Aluguru.Marketplace.API.IntegrationTests.Extensions;
 using Aluguru.Marketplace.API.Models;
 using Aluguru.Marketplace.Register.Usecases.CreateUser;
 using Aluguru.Marketplace.Register.Usecases.GetUserById;
-using Aluguru.Marketplace.Register.ViewModels;
+using Aluguru.Marketplace.Register.Dtos;
 using System.Net;
 using Xunit;
 
@@ -25,7 +25,7 @@ namespace Aluguru.Marketplace.API.IntegrationTests
         public void CreateUser_ShouldPass()
         {
             // Arrange
-            var viewModel = new UserRegistrationViewModel()
+            var viewModel = new UserRegistrationDTO()
             {
                 Email = _fixture.User.Email,
                 Password = _fixture.User.Password,
@@ -50,7 +50,7 @@ namespace Aluguru.Marketplace.API.IntegrationTests
         public void CreateCompany_ShouldPass()
         {
             // Arrange
-            var viewModel = new UserRegistrationViewModel()
+            var viewModel = new UserRegistrationDTO()
             {
                 Email = _fixture.Company.Email,
                 Password = _fixture.Company.Password,
@@ -124,16 +124,16 @@ namespace Aluguru.Marketplace.API.IntegrationTests
             // Arrange
             var userId = _fixture.User.Id;            
 
-            var viewModel = new UpdateUserViewModel()
+            var viewModel = new UpdateUserDTO()
             {
                 UserId = userId,
                 FullName = _fixture.User.Name + "__TEST_UPDATE__",
-                Document = new DocumentViewModel()
+                Document = new DocumentDTO()
                 {
                     Number = "02482668026",
                     DocumentType = "CPF"
                 },
-                Address = new AddressViewModel()
+                Address = new AddressDTO()
                 {
                     Street = "some-address",
                     Number = "some-number",

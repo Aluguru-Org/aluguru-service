@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Aluguru.Marketplace.Catalog.ViewModels;
+using Aluguru.Marketplace.Catalog.Dtos;
 using Aluguru.Marketplace.Catalog.Domain;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;
 using System;
@@ -74,6 +74,6 @@ namespace Aluguru.Marketplace.Catalog.Usecases.CreateProduct
 
     public class CreateProductCommandResponse
     {
-        public ProductViewModel Product { get; set; }
+        public ProductDTO Product { get; set; }
     }
 }

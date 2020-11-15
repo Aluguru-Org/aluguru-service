@@ -3,7 +3,7 @@ using Aluguru.Marketplace.Catalog.Domain;
 using Aluguru.Marketplace.Catalog.Usecases.CreateCategory;
 using Aluguru.Marketplace.Catalog.Usecases.CreateProduct;
 using Aluguru.Marketplace.Catalog.Usecases.CreateRentPeriod;
-using Aluguru.Marketplace.Catalog.ViewModels;
+using Aluguru.Marketplace.Catalog.Dtos;
 using System;
 using System.Collections.Generic;
 
@@ -19,22 +19,22 @@ namespace Aluguru.Marketplace.Catalog.AutoMapper
 
         private void ViewModelToDomainConfiguration()
         {
-            CreateMap<CreateRentPeriodViewModel, CreateRentPeriodCommand>()
+            CreateMap<CreateRentPeriodDTO, CreateRentPeriodCommand>()
                 .ConstructUsing(x => new CreateRentPeriodCommand(x.Name, x.Days))
                 .ForMember(x => x.Timestamp, c => c.Ignore())
                 .ForMember(x => x.MessageType, c => c.Ignore())
                 .ForMember(x => x.ValidationResult, c => c.Ignore());
 
-            CreateMap<CreateCategoryViewModel, CreateCategoryCommand>()
+            CreateMap<CreateCategoryDTO, CreateCategoryCommand>()
                 .ConstructUsing(x => new CreateCategoryCommand(x.Name, x.Uri, x.MainCategoryId))
                 .ForMember(x => x.Timestamp, c => c.Ignore())
                 .ForMember(x => x.MessageType, c => c.Ignore())
                 .ForMember(x => x.ValidationResult, c => c.Ignore());
 
-            CreateMap<CategoryViewModel, Category>()
+            CreateMap<CategoryDTO, Category>()
                 .ConstructUsing(c => new Category(c.Name, c.Uri, c.MainCategoryId));
 
-            CreateMap<ProductViewModel, Product>()
+            CreateMap<ProductDTO, Product>()
                 .ConstructUsing((x, rc) =>
                 {
                     var price = rc.Mapper.Map<Price>(x.Price);
@@ -60,7 +60,7 @@ namespace Aluguru.Marketplace.Catalog.AutoMapper
                 .ForMember(x => x.Price, c => c.Ignore())
                 .ForMember(x => x.CustomFields, c => c.Ignore());
     
-            CreateMap<CreateProductViewModel, CreateProductCommand>()
+            CreateMap<CreateProductDTO, CreateProductCommand>()
                 .ConstructUsing((x, rc) =>
                 {
                     var price = rc.Mapper.Map<Price>(x.Price);
@@ -89,7 +89,7 @@ namespace Aluguru.Marketplace.Catalog.AutoMapper
                 .ForMember(x => x.Price, c => c.Ignore())
                 .ForMember(x => x.CustomFields, c => c.Ignore());
 
-            CreateMap<PriceViewModel, Price>()
+            CreateMap<PriceDTO, Price>()
                 .ConstructUsing((x, rc) =>
                 {
                     var periodPrices = rc.Mapper.Map<List<PeriodPrice>>(x.PeriodRentPrices);
@@ -99,7 +99,7 @@ namespace Aluguru.Marketplace.Catalog.AutoMapper
             CreateMap<PeriodPriceViewModel, PeriodPrice>()
                 .ConstructUsing((x, rc) => new PeriodPrice(x.RentPeriodId, x.Price));
 
-            CreateMap<CustomFieldViewModel, CustomField>()
+            CreateMap<CustomFieldDTO, CustomField>()
                 .ConstructUsing((x, rc) =>
                 {
                     var fieldType = (EFieldType)Enum.Parse(typeof(EFieldType), x.FieldType);
@@ -121,7 +121,7 @@ namespace Aluguru.Marketplace.Catalog.AutoMapper
                 .ForMember(x => x.DateCreated, c => c.Ignore())
                 .ForMember(x => x.DateUpdated, c => c.Ignore());
 
-            CreateMap<CreateCustomFieldViewModel, CustomField>()
+            CreateMap<CreateCustomFieldDTO, CustomField>()
                 .ConstructUsing((x, rc) =>
                 {
                     var fieldType = (EFieldType)Enum.Parse(typeof(EFieldType), x.FieldType);
@@ -147,11 +147,11 @@ namespace Aluguru.Marketplace.Catalog.AutoMapper
         private void DomainToViewModelConfiguration()
         {
             CreateMap<PeriodPrice, PeriodPriceViewModel>();
-            CreateMap<Price, PriceViewModel>();
-            CreateMap<RentPeriod, RentPeriodViewModel>();
-            CreateMap<Category, CategoryViewModel>();
-            CreateMap<CustomField, CustomFieldViewModel>();
-            CreateMap<Product, ProductViewModel>();
+            CreateMap<Price, PriceDTO>();
+            CreateMap<RentPeriod, RentPeriodDTO>();
+            CreateMap<Category, CategoryDTO>();
+            CreateMap<CustomField, CustomFieldDTO>();
+            CreateMap<Product, ProductDTO>();
         }
     }
 }

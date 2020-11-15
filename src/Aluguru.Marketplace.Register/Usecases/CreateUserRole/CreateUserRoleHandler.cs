@@ -5,7 +5,7 @@ using Aluguru.Marketplace.Infrastructure.Bus.Communication;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using Aluguru.Marketplace.Infrastructure.Data;
 using Aluguru.Marketplace.Register.Domain;
-using Aluguru.Marketplace.Register.ViewModels;
+using Aluguru.Marketplace.Register.Dtos;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -42,7 +42,7 @@ namespace Aluguru.Marketplace.Register.Usecases.CreateUserRole
 
             return new CreateUserRoleCommandResponse()
             {
-                Role = _mapper.Map<UserRoleViewModel>(userRole)
+                Role = _mapper.Map<UserRoleDTO>(userRole)
             };
         }
     }

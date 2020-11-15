@@ -1,4 +1,4 @@
-﻿using Aluguru.Marketplace.Catalog.ViewModels;
+﻿using Aluguru.Marketplace.Catalog.Dtos;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;
 using System;
 using System.Collections.Generic;
@@ -13,6 +13,6 @@ namespace Aluguru.Marketplace.Catalog.Usecases.GetCategories
 
     public class GetCategoriesCommandResponse
     {
-        public List<CategoryViewModel> Categories { get; set; }
+        public List<CategoryDTO> Categories { get; set; }
     }
 }

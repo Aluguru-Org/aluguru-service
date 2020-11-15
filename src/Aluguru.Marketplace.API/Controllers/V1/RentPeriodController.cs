@@ -8,7 +8,7 @@ using Aluguru.Marketplace.API.Models;
 using Aluguru.Marketplace.Catalog.Usecases.CreateRentPeriod;
 using Aluguru.Marketplace.Catalog.Usecases.DeleteRentPeriod;
 using Aluguru.Marketplace.Catalog.Usecases.GetRentPeriods;
-using Aluguru.Marketplace.Catalog.ViewModels;
+using Aluguru.Marketplace.Catalog.Dtos;
 using Aluguru.Marketplace.Infrastructure.Bus.Communication;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using Aluguru.Marketplace.Security;
@@ -51,7 +51,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CreateRentPeriodCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> Post([FromBody] CreateRentPeriodViewModel viewModel)
+        public async Task<ActionResult> Post([FromBody] CreateRentPeriodDTO viewModel)
         {
             var command = _mapper.Map<CreateRentPeriodCommand>(viewModel);
             var response = await _mediatorHandler.SendCommand<CreateRentPeriodCommand, CreateRentPeriodCommandResponse>(command);

@@ -8,7 +8,7 @@ using Aluguru.Marketplace.Infrastructure.Bus.Messages;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using Aluguru.Marketplace.Rent.Data.Repositories;
 using Aluguru.Marketplace.Rent.Domain;
-using Aluguru.Marketplace.Rent.ViewModels;
+using Aluguru.Marketplace.Rent.Dtos;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -83,11 +83,11 @@ namespace Aluguru.Marketplace.Rent.Usecases.UpdateOrder
 
             return new UpdateOrderCommandResponse()
             {
-                Order = _mapper.Map<OrderViewModel>(order)
+                Order = _mapper.Map<OrderDTO>(order)
             };
         }
 
-        private decimal CalculateProductPrice(CreateOrderItemViewModel orderItem, Product product)
+        private decimal CalculateProductPrice(CreateOrderItemDTO orderItem, Product product)
         {
             decimal price = 0;
 
@@ -104,7 +104,7 @@ namespace Aluguru.Marketplace.Rent.Usecases.UpdateOrder
             return price;
         }
 
-        private List<DomainNotification> ValidateProduct(UpdateOrderCommand request, CreateOrderItemViewModel orderItem, Product product)
+        private List<DomainNotification> ValidateProduct(UpdateOrderCommand request, CreateOrderItemDTO orderItem, Product product)
         {
             List<DomainNotification> notifications = new List<DomainNotification>();            
 

@@ -1,6 +1,6 @@
 ﻿using Aluguru.Marketplace.API.Models;
 using Aluguru.Marketplace.Register.Usecases.LogInUser;
-using Aluguru.Marketplace.Register.ViewModels;
+using Aluguru.Marketplace.Register.Dtos;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Newtonsoft.Json;
 using System;
@@ -29,7 +29,7 @@ namespace Aluguru.Marketplace.API.IntegrationTests.Config
 
         public async Task<bool> LogIn()
         {
-            var viewModel = new LoginUserViewModel() { Email = Email, Password = Password };
+            var viewModel = new LoginUserDTO() { Email = Email, Password = Password };
             var response = await Client.PostAsJsonAsync("/api/v1/auth/login", viewModel);
 
             var apiResponse = JsonConvert.DeserializeObject<ApiResponse<LogInUserCommandResponse>>(response.Content.ReadAsStringAsync().Result);

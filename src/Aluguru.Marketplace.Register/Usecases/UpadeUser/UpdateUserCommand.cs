@@ -1,13 +1,13 @@
 ﻿using FluentValidation;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;
-using Aluguru.Marketplace.Register.ViewModels;
+using Aluguru.Marketplace.Register.Dtos;
 using System;
 
 namespace Aluguru.Marketplace.Register.Usecases.UpadeUser
 {
     public class UpdateUserCommand : Command<UpdateUserCommandResponse>
     {
-        public UpdateUserCommand(Guid userId, string fullName, DocumentViewModel document, ContactViewModel contact, AddressViewModel address)
+        public UpdateUserCommand(Guid userId, string fullName, DocumentDTO document, ContactDTO contact, AddressDTO address)
         {
             UserId = userId;
             FullName = fullName;
@@ -17,9 +17,9 @@ namespace Aluguru.Marketplace.Register.Usecases.UpadeUser
         }
         public Guid UserId { get; }
         public string FullName { get; }
-        public DocumentViewModel Document { get; }
-        public ContactViewModel Contact { get; }
-        public AddressViewModel Address { get; }
+        public DocumentDTO Document { get; }
+        public ContactDTO Contact { get; }
+        public AddressDTO Address { get; }
 
         public override bool IsValid()
         {
@@ -41,6 +41,6 @@ namespace Aluguru.Marketplace.Register.Usecases.UpadeUser
 
     public class UpdateUserCommandResponse
     {
-        public UserViewModel User { get; set; }
+        public UserDTO User { get; set; }
     }
 }

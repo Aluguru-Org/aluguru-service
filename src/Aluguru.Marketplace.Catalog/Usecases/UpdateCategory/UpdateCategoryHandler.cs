@@ -2,7 +2,7 @@
 using MediatR;
 using Aluguru.Marketplace.Catalog.Data.Repositories;
 using Aluguru.Marketplace.Catalog.Domain;
-using Aluguru.Marketplace.Catalog.ViewModels;
+using Aluguru.Marketplace.Catalog.Dtos;
 using Aluguru.Marketplace.Domain;
 using Aluguru.Marketplace.Infrastructure.Bus.Communication;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
@@ -50,7 +50,7 @@ namespace Aluguru.Marketplace.Catalog.Usecases.UpdateCategory
 
             return new UpdateCategoryCommandResponse()
             {
-                Category = _mapper.Map<CategoryViewModel>(category)
+                Category = _mapper.Map<CategoryDTO>(category)
             };
         }
     }

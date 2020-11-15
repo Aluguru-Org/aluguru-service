@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Aluguru.Marketplace.Domain;
-using Aluguru.Marketplace.Register.ViewModels;
+using Aluguru.Marketplace.Register.Dtos;
 using Aluguru.Marketplace.Register.Domain.Repositories;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,7 +26,7 @@ namespace Aluguru.Marketplace.Register.Usecases.GetUserById
 
             var user = await userRepository.GetUserAsync(command.UserId);
 
-            return new GetUserByIdCommandResponse { User = _mapper.Map<UserViewModel>(user) };
+            return new GetUserByIdCommandResponse { User = _mapper.Map<UserDTO>(user) };
         }
     }
 }

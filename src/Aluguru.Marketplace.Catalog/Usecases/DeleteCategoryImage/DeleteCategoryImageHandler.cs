@@ -1,6 +1,6 @@
 ﻿using Aluguru.Marketplace.Catalog.Data.Repositories;
 using Aluguru.Marketplace.Catalog.Domain;
-using Aluguru.Marketplace.Catalog.ViewModels;
+using Aluguru.Marketplace.Catalog.Dtos;
 using Aluguru.Marketplace.Crosscutting.AzureStorage;
 using Aluguru.Marketplace.Domain;
 using Aluguru.Marketplace.Infrastructure.Bus.Communication;
@@ -49,7 +49,7 @@ namespace Aluguru.Marketplace.Catalog.Usecases.DeleteCategoryImage
 
             return new DeleteCategoryImageCommandResponse()
             {
-                Category = _mapper.Map<CategoryViewModel>(category)
+                Category = _mapper.Map<CategoryDTO>(category)
             };
         }
     }
