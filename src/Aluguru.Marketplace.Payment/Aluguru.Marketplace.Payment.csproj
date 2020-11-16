@@ -13,10 +13,7 @@
     <ProjectReference Include="..\Aluguru.Marketplace.Crosscutting.Iugu\Aluguru.Marketplace.Crosscutting.Iugu.csproj" />
     <ProjectReference Include="..\Aluguru.Marketplace.Infrastructure.Bus\Aluguru.Marketplace.Infrastructure.Bus.csproj" />
     <ProjectReference Include="..\Aluguru.Marketplace.Register\Aluguru.Marketplace.Register.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Usecases\UpdateInvoiceStatus\" />
+    <ProjectReference Include="..\Aluguru.Marketplace.Rent\Aluguru.Marketplace.Rent.csproj" />
   </ItemGroup>
 
 </Project>

@@ -451,7 +451,6 @@ namespace Aluguru.Marketplace.Data.Migrations
             modelBuilder.Entity("Aluguru.Marketplace.Rent.Domain.OrderItem", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Amount")

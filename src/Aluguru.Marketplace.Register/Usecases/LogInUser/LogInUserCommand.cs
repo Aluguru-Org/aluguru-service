@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;
+using System;
 
 namespace Aluguru.Marketplace.Register.Usecases.LogInUser
 {
@@ -32,6 +33,7 @@ namespace Aluguru.Marketplace.Register.Usecases.LogInUser
 
     public class LogInUserCommandResponse
     {
+        public Guid UserId { get; set; }
         public string Token { get; set; }
     }
 }

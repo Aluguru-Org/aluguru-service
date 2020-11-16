@@ -32,9 +32,9 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(LogInUserCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> LogIn([FromBody] LoginUserDTO viewModel)
+        public async Task<ActionResult> LogIn([FromBody] LoginUserDTO loginuserDTO)
         {
-            var command = new LogInUserCommand(viewModel.Email, viewModel.Password);
+            var command = new LogInUserCommand(loginuserDTO.Email, loginuserDTO.Password);
             var response = await _mediatorHandler.SendCommand<LogInUserCommand, LogInUserCommandResponse>(command);
             return PostResponse(nameof(LogIn), null, response);
         }

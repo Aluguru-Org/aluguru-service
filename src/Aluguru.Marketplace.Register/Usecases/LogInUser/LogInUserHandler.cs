@@ -59,7 +59,7 @@ namespace Aluguru.Marketplace.Register.Usecases.LogInUser
                 options.WithJwtClaims();
             });
 
-            return new LogInUserCommandResponse() { Token = token };
+            return new LogInUserCommandResponse() { UserId = user.Id, Token = token };
         }
     }
 }

@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 using Aluguru.Marketplace.Catalog.AutoMapper;
 using Aluguru.Marketplace.Catalog.Usecases.CreateCategory;
 using Aluguru.Marketplace.Catalog.Usecases.CreateProduct;
@@ -26,7 +27,6 @@ using Aluguru.Marketplace.Register.Usecases.CreateUserRole;
 using Aluguru.Marketplace.Register.Usecases.CreateUser;
 using Aluguru.Marketplace.Register.Usecases.DeleteUser;
 using Aluguru.Marketplace.Register.Usecases.LogInUser;
-using System.Reflection;
 using Aluguru.Marketplace.Register.Services;
 using Aluguru.Marketplace.Register.Usecases.GetUsersByRole;
 using Aluguru.Marketplace.Register.Usecases.UpadeUser;
@@ -63,7 +63,14 @@ using Aluguru.Marketplace.Catalog.Usecases.DeleteCategoryImage;
 using Aluguru.Marketplace.Notification.Usecases.SendAccountActivationEmail;
 using Aluguru.Marketplace.Newsletter.AutoMapper;
 using Aluguru.Marketplace.Newsletter.Services;
-using Aluguru.Marketplace.Payment.Handlers;
+using Aluguru.Marketplace.Payment.Usecases.PayOrder;
+using Aluguru.Marketplace.Payment.AutoMapper;
+using Aluguru.Marketplace.Payment.Usecases.GetPayment;
+using Aluguru.Marketplace.Rent.Usecases.StartOrder;
+using Aluguru.Marketplace.Catalog.Handlers;
+using Aluguru.Marketplace.Catalog.Usecases.DebitProductStock;
+using Aluguru.Marketplace.Rent.Handler;
+using Aluguru.Marketplace.Rent.Usecases.CancelOrderProcessing;
 
 namespace Aluguru.Marketplace.Crosscutting.IoC
 {
@@ -113,9 +120,9 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
                 typeof(RegisterContextMappingConfiguration), 
                 typeof(CatalogContextMappingConfiguration),
                 typeof(RentContextMappingConfiguration),
-                typeof(NewsletterContextMappingConfiguration)
+                typeof(NewsletterContextMappingConfiguration),
+                typeof(PaymentContextMappingConfiguration)
             );
-
 
             //
             // ===================== Newsletter Context =====================
@@ -145,18 +152,18 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             services.AddScoped<IRequestHandler<ActivateUserCommand, bool>, ActivateUserHandler>();
             services.AddScoped<IRequestHandler<DeleteUserCommand, bool>, DeleteUserHandler>();
 
-
-
             //
             // ===================== Catalog Context =====================
             //
-            
+
             // Product
+            services.AddScoped<INotificationHandler<OrderStartedEvent>, OrderStartedHandler>();
             services.AddScoped<IRequestHandler<CreateProductCommand, CreateProductCommandResponse>, CreateProductHandler>();
             services.AddScoped<IRequestHandler<UpdateProductCommand, UpdateProductCommandResponse>, UpdateProductHandler>();
             services.AddScoped<IRequestHandler<GetProductCommand, GetProductCommandResponse>, GetProductHandler>();
             services.AddScoped<IRequestHandler<GetProductsCommand, GetProductsCommandResponse>, GetProductsHandler>();
             services.AddScoped<IRequestHandler<DeleteProductCommand, bool>, DeleteProductHandler>();
+            services.AddScoped<IRequestHandler<DebitProductStockCommand, bool>, DebitProductStockHandler>();
             services.AddScoped<IRequestHandler<AddProductImageCommand, AddProductImageCommandResponse>, AddProductImageHandler>();
             services.AddScoped<IRequestHandler<DeleteProductImageCommand, DeleteProductImageCommandResponse>, DeleteProductImageHandler>();
 
@@ -179,9 +186,12 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             //
 
             // Order 
+            services.AddScoped<INotificationHandler<OrderStockRejectedEvent>, OrderEventHandler>();
             services.AddScoped<IRequestHandler<GetOrdersCommand, GetOrdersCommandResponse>, GetOrdersHandler>();
             services.AddScoped<IRequestHandler<GetOrderCommand, GetOrderCommandResponse>, GetOrderHandler>();
             services.AddScoped<IRequestHandler<CreateOrderCommand, CreateOrderCommandResponse>, CreateOrderHandler>();
+            services.AddScoped<IRequestHandler<StartOrderCommand, StartOrderCommandResponse>, StartOrderHandler>();
+            services.AddScoped<IRequestHandler<CancelOrderProcessingCommand, bool>, CancelOrderProcessingHandler>();
             services.AddScoped<IRequestHandler<UpdateOrderCommand, UpdateOrderCommandResponse>, UpdateOrderHandler>();
             services.AddScoped<IRequestHandler<ApplyVoucherCommand, ApplyVoucherCommandResponse>, ApplyVoucherHandler>();
             services.AddScoped<IRequestHandler<RemoveVoucherCommand, DeleteVoucherCommandResponse>, RemoveVoucherHandler>();
@@ -195,7 +205,9 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             //
             // ===================== Payment Context =====================
             //
-            services.AddScoped<INotificationHandler<OrderStockConfirmedEvent>, PaymentEventHandler>();
+            services.AddScoped<IRequestHandler<GetPaymentCommand, GetPaymentCommandResponse>, GetPaymentHandler>();
+            services.AddScoped<IRequestHandler<PayOrderCommand, PayOrderCommandResponse>, PayOrderHandler>();
+            //services.AddScoped<IRequestHandler<UpdateInvoiceStatusCommand, UpdateInvoiceStatusCommand>, PayOrderHandler>();
 
             //
             // ===================== Notification Context =====================

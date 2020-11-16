@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Aluguru.Marketplace.Rent.Domain;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Aluguru.Marketplace.Data.Mappings
 {

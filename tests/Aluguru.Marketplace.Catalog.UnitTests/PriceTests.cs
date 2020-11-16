@@ -1,8 +1,6 @@
 ﻿using Aluguru.Marketplace.Catalog.Domain;
 using Aluguru.Marketplace.Domain;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using Xunit;
 using static PampaDevs.Utils.Helpers.IdHelper;
 

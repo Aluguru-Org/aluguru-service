@@ -72,6 +72,7 @@ namespace Aluguru.Marketplace.Rent.Usecases.CreateOrder
                 {
                     await _mediatorHandler.PublishNotification(notification);
                 }
+                return default;
             }
 
             order = await orderRepository.AddAsync(order);
@@ -103,7 +104,7 @@ namespace Aluguru.Marketplace.Rent.Usecases.CreateOrder
         {
             List<DomainNotification> notifications = new List<DomainNotification>();
 
-            if (product.CheckValidRentStartDate(orderItem.RentStartDate))
+            if (!product.CheckValidRentStartDate(orderItem.RentStartDate))
             {
                 notifications.Add(new DomainNotification(request.MessageType, $"The product {product.Id} does not have a valid rent start date"));
             }

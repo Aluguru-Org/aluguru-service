@@ -40,6 +40,12 @@ namespace Aluguru.Marketplace.Rent.Usecases.StartOrder
                 return default;
             }
 
+            if (order.UserId != command.UserId)
+            {
+                await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"Order {command.OrderId} does not belong to User {command.UserId}"));
+                return default;
+            }
+
             order.Initiate();
 
             var dto = new Communication.Dtos.OrderDTO(

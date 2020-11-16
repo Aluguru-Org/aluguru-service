@@ -21,6 +21,8 @@ using System.Threading.Tasks;
 using Aluguru.Marketplace.Rent.Usecases.ApplyVoucher;
 using Microsoft.AspNetCore.Authorization;
 using Aluguru.Marketplace.Security;
+using Aluguru.Marketplace.Rent.Usecases.StartOrder;
+using Aluguru.Marketplace.Security.User;
 
 namespace Aluguru.Marketplace.API.Controllers.V1
 {
@@ -30,14 +32,17 @@ namespace Aluguru.Marketplace.API.Controllers.V1
     [Authorize]
     public class OrderController : ApiController
     {
-        public OrderController(INotificationHandler<DomainNotification> notifications, IMediatorHandler mediator, IMapper mapper)
-            : base(notifications, mediator, mapper) { }
+        private readonly IAspNetUser _aspNetUser;
+        public OrderController(INotificationHandler<DomainNotification> notifications, IMediatorHandler mediator, IMapper mapper, IAspNetUser aspNetUser)
+            : base(notifications, mediator, mapper)
+        {
+            _aspNetUser = aspNetUser;
+        }
         
         [HttpGet]
         [Route("")]
         [Authorize(Policy = Policies.OrderReader)]
         [SwaggerOperation(Summary = "Get all orders", Description = "Get a list of all orders")]
-        [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetOrdersCommandResponse))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -85,6 +90,22 @@ namespace Aluguru.Marketplace.API.Controllers.V1
             var command = _mapper.Map<CreateOrderCommand>(viewModel);
             var response = await _mediatorHandler.SendCommand<CreateOrderCommand, CreateOrderCommandResponse>(command);
             return PostResponse(nameof(Get), new { id = response.Order.Id }, response);
+        }
+
+        [HttpPost]
+        [Route("{id}/start")]
+        [Authorize(Policy = Policies.OrderWriter)]
+        [SwaggerOperation(Summary = "Start Order", Description = "Start a order")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(StartOrderCommandResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task<ActionResult> Post([FromRoute] Guid id)
+        {
+            var command = new StartOrderCommand(_aspNetUser.GetUserId(), id);
+            var response = await _mediatorHandler.SendCommand<StartOrderCommand, StartOrderCommandResponse>(command);
+            return PostResponse(response);
         }
 
         [HttpPut]

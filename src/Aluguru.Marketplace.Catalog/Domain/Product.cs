@@ -87,7 +87,7 @@ namespace Aluguru.Marketplace.Catalog.Domain
             var minRentStartDate = DateTime.Now;
             if (MinNoticeRentDays.HasValue)
             {
-                minRentStartDate.AddDays(MinNoticeRentDays.Value);
+                minRentStartDate = minRentStartDate.AddDays(MinNoticeRentDays.Value);
             }
             return rentStartDate > minRentStartDate;
         }

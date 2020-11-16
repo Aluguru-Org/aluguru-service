@@ -15,5 +15,7 @@ namespace Aluguru.Marketplace.Security
 
         public const string Order = nameof(Order);
         public const string Voucher = nameof(Voucher);
+
+        public const string Payment = nameof(Payment);
     }
 }

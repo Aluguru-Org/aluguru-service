@@ -28,6 +28,11 @@ namespace Aluguru.Marketplace.Security
         public const string UserRoleWriter = nameof(UserRoleWriter);
         #endregion
 
+        #region Payment Context
+        public const string PaymentReader = nameof(PaymentReader);
+        public const string PaymentWriter = nameof(PaymentWriter);
+        #endregion
+
         #region Order Context
         public const string OrderReader = nameof(OrderReader);
         public const string OrderWriter = nameof(OrderWriter);

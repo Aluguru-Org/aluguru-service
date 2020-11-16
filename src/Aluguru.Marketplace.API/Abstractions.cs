@@ -71,7 +71,7 @@ namespace Aluguru.Marketplace.API
                 Scheme = "Bearer",
                 BearerFormat = "JWT",
                 In = ParameterLocation.Header,
-                Type = SecuritySchemeType.ApiKey
+                Type = SecuritySchemeType.Http
             });
 
             options.AddSecurityRequirement(new OpenApiSecurityRequirement

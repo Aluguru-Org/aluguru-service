@@ -7,8 +7,9 @@ namespace Aluguru.Marketplace.Communication.IntegrationEvents
 {
     public class OrderStockRejectedEvent : Event
     {
-        public OrderStockRejectedEvent(List<OrderItemDTO> orderItems)
+        public OrderStockRejectedEvent(Guid orderId, List<OrderItemDTO> orderItems)
         {
+            OrderId = orderId;
             OrderItems = orderItems;
         }
 

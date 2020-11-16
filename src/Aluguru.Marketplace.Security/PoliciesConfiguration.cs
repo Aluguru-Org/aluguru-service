@@ -105,6 +105,18 @@ namespace Aluguru.Marketplace.Security
                 policyBuilder.AddDefaultAuth();
                 policyBuilder.RequireClaim(Claims.Voucher, ClaimValuesHelper.ToPolicy(ClaimValues.Write));
             });
+
+            options.AddPolicy(Policies.PaymentReader, policyBuilder =>
+            {
+                policyBuilder.AddDefaultAuth();
+                policyBuilder.RequireClaim(Claims.Payment, ClaimValuesHelper.ToPolicy(ClaimValues.Read));
+            });
+
+            options.AddPolicy(Policies.PaymentWriter, policyBuilder =>
+            {
+                policyBuilder.AddDefaultAuth();
+                policyBuilder.RequireClaim(Claims.Payment, ClaimValuesHelper.ToPolicy(ClaimValues.Write));
+            });
         }
 
         private static void AddDefaultAuth(this AuthorizationPolicyBuilder builder)

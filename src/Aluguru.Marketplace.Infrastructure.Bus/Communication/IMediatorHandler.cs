@@ -1,8 +1,5 @@
 ﻿using Aluguru.Marketplace.Infrastructure.Bus.Messages;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Aluguru.Marketplace.Infrastructure.Bus.Communication

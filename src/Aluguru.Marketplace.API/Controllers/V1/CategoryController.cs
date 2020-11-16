@@ -85,7 +85,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         {
             var command = _mapper.Map<CreateCategoryCommand>(viewModel);
             var response = await _mediatorHandler.SendCommand<CreateCategoryCommand, CreateCategoryCommandResponse>(command);
-            return PostResponse(nameof(Get), new { category = response.Category.Name }, response);
+            return PostResponse(nameof(Get), new { category = response?.Category?.Name }, response);
         }
 
         [HttpPut]

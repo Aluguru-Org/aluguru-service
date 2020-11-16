@@ -31,12 +31,27 @@ namespace Aluguru.Marketplace.API.Controllers.V1
             return Ok(new ApiResponse<T>(true, "The resource has been fetched successfully", data));
         }
 
+        protected ActionResult PostResponse()
+        {
+            if (IsValidOperation())
+                return NoContent();
+
+            return BadRequest(new ValidationProblemDetails(_notifications.GetNotificationErrors()));
+        }
+
+        protected ActionResult PostResponse<T>(T data) where T : class
+        {
+            if (IsValidOperation())
+                return Ok(new ApiResponse<T>(true, "The request was successfully processed.", data));
+
+            return BadRequest(new ValidationProblemDetails(_notifications.GetNotificationErrors()));
+        }
+
         protected ActionResult PostResponse<T>(string actionName, object route, T data) where T : class
         {
             if (IsValidOperation())
-            {
                 return CreatedAtAction(actionName, route, new ApiResponse<T>(true, "The resource was successfully created.", data));
-            }
+
 
             return BadRequest(new ValidationProblemDetails(_notifications.GetNotificationErrors()));
         }

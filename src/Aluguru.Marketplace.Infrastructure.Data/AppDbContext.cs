@@ -4,6 +4,7 @@ using Aluguru.Marketplace.Infrastructure.Bus.Communication;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Aluguru.Marketplace.Infrastructure.Data
 {
@@ -23,7 +24,7 @@ namespace Aluguru.Marketplace.Infrastructure.Data
 
             if (result > 0)
             {
-                PublishEntityEvents();
+                PublishEntityEvents().Wait();
             }
 
             return result;
@@ -35,7 +36,7 @@ namespace Aluguru.Marketplace.Infrastructure.Data
 
             if (result > 0)
             {
-                PublishEntityEvents();
+                await PublishEntityEvents();
             }
 
             return result;
@@ -44,25 +45,26 @@ namespace Aluguru.Marketplace.Infrastructure.Data
         /// <summary>
         /// Source: https://github.com/ardalis/CleanArchitecture/blob/master/src/CleanArchitecture.Infrastructure/Data/AppDbContext.cs
         /// </summary>
-        private void PublishEntityEvents()
+        private async Task PublishEntityEvents()
         {
             var aggregators = ChangeTracker
                 .Entries<AggregateRoot>()
                 .Select(x => x.Entity)
                 .Where(e => e.GetUncommittedEvents().Count > 0);
 
-            foreach (var aggregator in aggregators)
-            {
-                var @events = aggregator.GetUncommittedEvents();
+            var domainEvents = aggregators
+                .SelectMany(x => x.GetUncommittedEvents())
+                .ToList();
 
-                foreach (var @event in @events)
+            aggregators.ToList().ForEach(x => x.ClearUncommittedEvents());
+
+            var tasks = domainEvents
+                .Select(async (domainEvent) =>
                 {
-                    _mediatorHandler.PublishEvent(@event);
-                }
-
-                aggregator.ClearUncommittedEvents();
-            }
+                    await _mediatorHandler.PublishEvent(domainEvent);
+                });
+            
+            await Task.WhenAll(tasks);                
         }
     }
-
 }

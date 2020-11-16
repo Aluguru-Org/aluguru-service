@@ -31,13 +31,13 @@ namespace Aluguru.Marketplace.Catalog.Usecases.CreateCategory
             if (await queryRepository.GetCategoryByNameAsync(command.Name) != null)
             {
                 await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"The Category {command.Name} is already registered"));
-                return new CreateCategoryCommandResponse();
+                return default;
             }
 
             if (await queryRepository.GetCategoryByUriAsync(command.Uri) != null)
             {
                 await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"The Category Uri {command.Uri} is already registered"));
-                return new CreateCategoryCommandResponse();
+                return default;
             }
 
             var repository = _unitOfWork.Repository<Category>();
