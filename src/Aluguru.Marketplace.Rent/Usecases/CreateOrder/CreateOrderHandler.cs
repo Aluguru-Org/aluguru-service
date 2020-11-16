@@ -57,7 +57,7 @@ namespace Aluguru.Marketplace.Rent.Usecases.CreateOrder
                 }
 
                 var notifications = ValidateProduct(request, orderItem, product);
-
+                errors.AddRange(notifications);
                 if (notifications.Count > 0) continue;
 
                 decimal price = CalculateProductPrice(orderItem, product);
@@ -90,10 +90,10 @@ namespace Aluguru.Marketplace.Rent.Usecases.CreateOrder
             switch (product.RentType)
             {
                 case ERentType.Fixed:
-                    price = orderItem.RentDays * product.Price.GetDailyRentPrice();
+                    price = product.Price.GetPeriodRentPrice(orderItem.SelectedRentPeriod.Value);
                     break;
                 case ERentType.Indefinite:
-                    price = product.Price.GetPeriodRentPrice(orderItem.SelectedRentPeriod.Value);
+                    price = orderItem.RentDays * product.Price.GetDailyRentPrice();
                     break;
             }
 
@@ -112,7 +112,7 @@ namespace Aluguru.Marketplace.Rent.Usecases.CreateOrder
             switch (product.RentType)
             {
                 case ERentType.Indefinite:
-                    if (product.CheckValidRentDays(orderItem.RentDays))
+                    if (!product.CheckValidRentDays(orderItem.RentDays))
                     {
                         notifications.Add(new DomainNotification(request.MessageType, $"The product {product.Id} have invalid rent days."));
                     }

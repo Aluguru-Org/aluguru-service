@@ -89,7 +89,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         {
             var command = _mapper.Map<CreateOrderCommand>(viewModel);
             var response = await _mediatorHandler.SendCommand<CreateOrderCommand, CreateOrderCommandResponse>(command);
-            return PostResponse(nameof(Get), new { id = response.Order.Id }, response);
+            return PostResponse(nameof(Get), new { id = response?.Order?.Id }, response);
         }
 
         [HttpPost]
