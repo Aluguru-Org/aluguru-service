@@ -1,5 +1,6 @@
 ﻿using Aluguru.Marketplace.Crosscutting.Iugu.Dtos;
 using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -22,10 +23,7 @@ namespace Aluguru.Marketplace.Crosscutting.Iugu
         public IuguService(IOptions<IuguSettings> options, IHttpClientFactory httpClientFactory)
         {
             _settings = options.Value;
-
             _httpClient = httpClientFactory.CreateClient();
-            
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(_settings.Token);
         }
 
         public async Task<PaymentResponseDTO> Charge(PaymentMethod paymentMethod, string token, int? installments, string email, PayerDTO payer, List<ItemDTO> items)
@@ -35,7 +33,7 @@ namespace Aluguru.Marketplace.Crosscutting.Iugu
             switch (paymentMethod)
             {
                 case PaymentMethod.BOLETO:
-                    directCharge.Method = "bank_slip";                    
+                    directCharge.Method = "bank_slip";
                     break;
                 case PaymentMethod.CREDIT_CARD:
                     directCharge.Token = token;
@@ -47,12 +45,28 @@ namespace Aluguru.Marketplace.Crosscutting.Iugu
             directCharge.Items = items;
             directCharge.Payer = payer;
 
-            var content = new StringContent(JsonSerializer.Serialize(directCharge), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync($"{_settings.BaseUrl}/charge", content);
 
-            var paymentResponse = JsonSerializer.Deserialize<PaymentResponseDTO>(await response.Content.ReadAsStringAsync());
+            var options = new JsonSerializerOptions
+            {
+                IgnoreNullValues = true,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+            Console.WriteLine($"{_settings.BaseUrl}/charge?api_token={_settings.Token}");
+            Console.WriteLine(JsonSerializer.Serialize(directCharge, options));
 
-            return paymentResponse;
+            var content = new StringContent(JsonSerializer.Serialize(directCharge, options), Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync($"{_settings.BaseUrl}/charge?api_token={_settings.Token}", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine(await response.Content.ReadAsStringAsync());
+                var paymentResponse = JsonSerializer.Deserialize<PaymentResponseDTO>(await response.Content.ReadAsStringAsync());
+                return paymentResponse;
+            }
+            else
+            {
+                throw new Exception(await response.Content.ReadAsStringAsync());
+            }
         }
     }
 }

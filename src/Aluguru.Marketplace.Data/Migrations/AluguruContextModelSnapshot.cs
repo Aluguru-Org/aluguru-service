@@ -368,7 +368,6 @@ namespace Aluguru.Marketplace.Data.Migrations
             modelBuilder.Entity("Aluguru.Marketplace.Register.Domain.UserClaim", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateCreated")

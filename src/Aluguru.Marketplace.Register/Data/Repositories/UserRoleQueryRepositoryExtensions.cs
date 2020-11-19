@@ -38,7 +38,7 @@ namespace Aluguru.Marketplace.Register.Data.Repositories
         {
             var userRole = await repository.FindOneAsync(
                 x => x.Name == roleName,
-                x => x.Include(x => x.UserClaims),
+                x => x.Include(x => x.UserClaims).Include(x => x.Users),
                 disableTracking);
 
             return userRole;

@@ -1,13 +1,10 @@
 ﻿using Aluguru.Marketplace.Infrastructure.Bus.Messages;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Aluguru.Marketplace.Communication.IntegrationEvents
 {
-    public class PaymentPaidEvent : Event
+    public class ProcessingPaymentEvent : Event
     {
-        public PaymentPaidEvent(string userName, string email, string orderUrl, string paymentUrl, string paymentPdf)
+        public ProcessingPaymentEvent(string userName, string email, string orderUrl, string paymentUrl, string paymentPdf)
         {
             UserName = userName;
             Email = email;

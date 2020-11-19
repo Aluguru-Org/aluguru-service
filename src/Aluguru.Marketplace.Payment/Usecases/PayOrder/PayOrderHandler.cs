@@ -49,9 +49,9 @@ namespace Aluguru.Marketplace.Payment.Usecases.PayOrder
                 return default;
             }
 
-            if (user.Address == null || user.Document == null)
+            if (user.Address == null || user.Document == null || user.Contact == null)
             {
-                await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"User {command.UserId} does not have a Address or a Document registered"));
+                await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"User {command.UserId} does not have a Address, Contact or Document registered"));
                 return default;
             }
 
@@ -88,16 +88,16 @@ namespace Aluguru.Marketplace.Payment.Usecases.PayOrder
             {
                 var item = new ItemDTO
                 {
-                    PriceCents = orderItem.ProductPrice.ToString(),
+                    PriceCents = (int)orderItem.ProductPrice,
                     Description = orderItem.ProductName,
-                    Quantity = orderItem.Amount.ToString()
+                    Quantity = (int)orderItem.Amount
                 };
                 items.Add(item);
             }
 
             var paymentResponse = await _iuguService.Charge(
                 paymentMethod: string.IsNullOrEmpty(command.Token) ? PaymentMethod.BOLETO : PaymentMethod.CREDIT_CARD,
-                command.Token, 1, user.Email, payer, items);
+                command.Token, command.Installments ?? 1, user.Email, payer, items);
 
             if (!paymentResponse.Success)
             {
@@ -113,7 +113,7 @@ namespace Aluguru.Marketplace.Payment.Usecases.PayOrder
 
             var payment = new Domain.Payment(command.UserId, command.OrderId, paymentMethod, paymentResponse.InvoiceId, paymentResponse.Url, paymentResponse.Pdf, paymentResponse.Identification);
 
-            payment.AddEvent(new PaymentPaidEvent(user.FullName, user.Email, $"/conta/pedidos/{command.OrderId}", payment.Url, payment.Pdf));
+            payment.AddEvent(new ProcessingPaymentEvent(user.FullName, user.Email, $"/conta/pedidos/{command.OrderId}", payment.Url, payment.Pdf));
 
             await paymentRepository.AddAsync(payment);
 

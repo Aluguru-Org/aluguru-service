@@ -64,7 +64,7 @@ namespace Aluguru.Marketplace.Infrastructure.Data
                     await _mediatorHandler.PublishEvent(domainEvent);
                 });
             
-            await Task.WhenAll(tasks);                
+            await Task.WhenAll(tasks);
         }
     }
 }

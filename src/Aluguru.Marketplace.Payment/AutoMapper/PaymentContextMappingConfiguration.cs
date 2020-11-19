@@ -15,10 +15,7 @@ namespace Aluguru.Marketplace.Payment.AutoMapper
         private void DtoToDomainConfiguration()
         {
             CreateMap<InvoiceStatusChangedDTO, UpdateInvoiceStatusCommand>()
-                .ConstructUsing(x => new UpdateInvoiceStatusCommand(
-                    x.Id,
-                    x.AccountId,
-                    x.Status))
+                .ConstructUsing(x => new UpdateInvoiceStatusCommand(x.Event, x.Data))
                 .ForMember(x => x.Timestamp, c => c.Ignore())
                 .ForMember(x => x.MessageType, c => c.Ignore())
                 .ForMember(x => x.ValidationResult, c => c.Ignore());

@@ -41,7 +41,9 @@ namespace Aluguru.Marketplace.Register.Data.Seed
                     new UserClaim(Claims.Order, ClaimValues.Read.ToString()),
                     new UserClaim(Claims.Order, ClaimValues.Write.ToString()),
                     new UserClaim(Claims.Voucher, ClaimValues.Read.ToString()),
-                    new UserClaim(Claims.Voucher, ClaimValues.Write.ToString())
+                    new UserClaim(Claims.Voucher, ClaimValues.Write.ToString()),
+                    new UserClaim(Claims.Payment, ClaimValues.Read.ToString()),
+                    new UserClaim(Claims.Payment, ClaimValues.Write.ToString())
                 };
                 UserRole adminRole = CreateRole("Admin", adminClaims, unitOfWork, userRoleQueryRepository);
 
@@ -56,7 +58,9 @@ namespace Aluguru.Marketplace.Register.Data.Seed
                     new UserClaim(Claims.User, ClaimValues.Read.ToString()),
                     new UserClaim(Claims.User, ClaimValues.Write.ToString()),
                     new UserClaim(Claims.Order, ClaimValues.Read.ToString()),
-                    new UserClaim(Claims.Voucher, ClaimValues.Read.ToString())
+                    new UserClaim(Claims.Voucher, ClaimValues.Read.ToString()),
+                    new UserClaim(Claims.Payment, ClaimValues.Read.ToString()),
+                    new UserClaim(Claims.Payment, ClaimValues.Write.ToString())
                 };
                 UserRole companyRole = CreateRole("Company", companyClaims, unitOfWork, userRoleQueryRepository);
 
@@ -71,7 +75,9 @@ namespace Aluguru.Marketplace.Register.Data.Seed
                     new UserClaim(Claims.User, ClaimValues.Write.ToString()),
                     new UserClaim(Claims.Order, ClaimValues.Read.ToString()),
                     new UserClaim(Claims.Order, ClaimValues.Write.ToString()),
-                    new UserClaim(Claims.Voucher, ClaimValues.Read.ToString())
+                    new UserClaim(Claims.Voucher, ClaimValues.Read.ToString()),
+                    new UserClaim(Claims.Payment, ClaimValues.Read.ToString()),
+                    new UserClaim(Claims.Payment, ClaimValues.Write.ToString())
                 };
                 UserRole userRole = CreateRole("User", userClaims, unitOfWork, userRoleQueryRepository);
                 
@@ -102,7 +108,7 @@ namespace Aluguru.Marketplace.Register.Data.Seed
 
         private static UserRole CreateRole(string roleName, List<UserClaim> userClaims, IUnitOfWork unitOfWork, IQueryRepository<UserRole> userRoleQueryRepository)
         {
-            var role = userRoleQueryRepository.GetUserRoleAsync(roleName).Result;
+            var role = userRoleQueryRepository.GetUserRoleAsync(roleName, false).Result;
             var userRoleRepository = unitOfWork.Repository<UserRole>();
 
             if (role == null)
@@ -112,6 +118,12 @@ namespace Aluguru.Marketplace.Register.Data.Seed
                 role.AddClaims(userClaims);
 
                 userRoleRepository.Add(role);
+            }
+            else
+            {
+                role.AddClaims(userClaims);
+
+                userRoleRepository.Update(role);
             }
 
             return role;

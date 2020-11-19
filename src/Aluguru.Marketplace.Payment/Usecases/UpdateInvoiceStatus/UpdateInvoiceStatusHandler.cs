@@ -1,4 +1,5 @@
-﻿using Aluguru.Marketplace.Domain;
+﻿using Aluguru.Marketplace.Communication.IntegrationEvents;
+using Aluguru.Marketplace.Domain;
 using Aluguru.Marketplace.Payment.Data.Repositories;
 using MediatR;
 using System.Threading;
@@ -25,6 +26,8 @@ namespace Aluguru.Marketplace.Payment.Usecases.UpdateInvoiceStatus
             {
                 payment.MarkAsPaid();
             }
+
+            payment.AddEvent(new OrderPaidEvent(payment.OrderId));
 
             repository.Update(payment);
 

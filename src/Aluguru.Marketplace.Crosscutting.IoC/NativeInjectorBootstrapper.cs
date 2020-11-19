@@ -71,6 +71,8 @@ using Aluguru.Marketplace.Catalog.Handlers;
 using Aluguru.Marketplace.Catalog.Usecases.DebitProductStock;
 using Aluguru.Marketplace.Rent.Handler;
 using Aluguru.Marketplace.Rent.Usecases.CancelOrderProcessing;
+using Aluguru.Marketplace.Payment.Usecases.UpdateInvoiceStatus;
+using Aluguru.Marketplace.Rent.Usecases.ConfirmOrderPayment;
 
 namespace Aluguru.Marketplace.Crosscutting.IoC
 {
@@ -187,6 +189,7 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
 
             // Order 
             services.AddScoped<INotificationHandler<OrderStockRejectedEvent>, OrderEventHandler>();
+            services.AddScoped<INotificationHandler<OrderPaidEvent>, OrderEventHandler>();
             services.AddScoped<IRequestHandler<GetOrdersCommand, GetOrdersCommandResponse>, GetOrdersHandler>();
             services.AddScoped<IRequestHandler<GetOrderCommand, GetOrderCommandResponse>, GetOrderHandler>();
             services.AddScoped<IRequestHandler<CreateOrderCommand, CreateOrderCommandResponse>, CreateOrderHandler>();
@@ -196,6 +199,7 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             services.AddScoped<IRequestHandler<ApplyVoucherCommand, ApplyVoucherCommandResponse>, ApplyVoucherHandler>();
             services.AddScoped<IRequestHandler<RemoveVoucherCommand, DeleteVoucherCommandResponse>, RemoveVoucherHandler>();
             services.AddScoped<IRequestHandler<DeleteOrderCommand, bool>, DeleteOrderHandler>();
+            services.AddScoped<IRequestHandler<ConfirmOrderPaymentCommand, bool>, ConfirmOrderPaymentHandler>();
 
             // Voucher 
             services.AddScoped<IRequestHandler<GetVouchersCommand, GetVouchersCommandResponse>, GetVouchersHandler>();
@@ -207,7 +211,7 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             //
             services.AddScoped<IRequestHandler<GetPaymentCommand, GetPaymentCommandResponse>, GetPaymentHandler>();
             services.AddScoped<IRequestHandler<PayOrderCommand, PayOrderCommandResponse>, PayOrderHandler>();
-            //services.AddScoped<IRequestHandler<UpdateInvoiceStatusCommand, UpdateInvoiceStatusCommand>, PayOrderHandler>();
+            services.AddScoped<IRequestHandler<UpdateInvoiceStatusCommand, bool>, UpdateInvoiceStatusHandler>();
 
             //
             // ===================== Notification Context =====================

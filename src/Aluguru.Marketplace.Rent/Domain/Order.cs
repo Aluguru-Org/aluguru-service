@@ -47,6 +47,13 @@ namespace Aluguru.Marketplace.Rent.Domain
             DateUpdated = NewDateTime();
         }
 
+        public void MarkAsPaid()
+        {
+            Ensure.That(OrderStatus == EOrderStatus.Initiated, "The order status cannot be mark as paid unless it has been initiated");
+            OrderStatus = EOrderStatus.PaymentConfirmed;
+            DateUpdated = NewDateTime();
+        }
+
         public void CancelInitiation()
         {
             Ensure.That(OrderStatus != EOrderStatus.Draft, "The order is already draft");

@@ -18,11 +18,6 @@ namespace Aluguru.Marketplace.Payment.Domain
             Pdf = pdf;
             Identification = identification;
 
-            if (paymentMethod == EPaymentMethod.CREDIT_CARD)
-            {
-                Paid = true;
-            }
-
             ValidateEntity();
         }
 
@@ -43,11 +38,10 @@ namespace Aluguru.Marketplace.Payment.Domain
         protected override void ValidateEntity()
         {
             Ensure.NotEqual(UserId, Guid.Empty, "The field UserId from Payment cannot be empty");
-            Ensure.NotEqual(UserId, Guid.Empty, "The field OrderId from Payment cannot be empty");
+            Ensure.NotEqual(OrderId, Guid.Empty, "The field OrderId from Payment cannot be empty");
             Ensure.NotNullOrEmpty(InvoiceId, "The field InvoiceId from Payment cannot be empty");
             Ensure.NotNullOrEmpty(Url, "The field Url from Payment cannot be empty");
             Ensure.NotNullOrEmpty(Pdf, "The field Pdf from Payment cannot be empty");
-            Ensure.NotNullOrEmpty(Identification, "The field Pdf from Identification cannot be empty");
         }
     }
 }

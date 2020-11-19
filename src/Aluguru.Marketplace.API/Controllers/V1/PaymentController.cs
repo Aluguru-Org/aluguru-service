@@ -67,11 +67,11 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [Route("update-invoice-status")]
         [AllowAnonymous]
         [SwaggerOperation(Summary = "Update invoice status")]
-        [Consumes("application/json")]
+        [Consumes("application/x-www-form-urlencoded")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]        
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> UpdateInvoice([FromBody] InvoiceStatusChangedDTO invoiceStatusChanged)
+        public async Task<ActionResult> UpdateInvoice([FromForm] InvoiceStatusChangedDTO invoiceStatusChanged)
         {
             var command = _mapper.Map<UpdateInvoiceStatusCommand>(invoiceStatusChanged);
             await _mediatorHandler.SendCommand<UpdateInvoiceStatusCommand, bool>(command);

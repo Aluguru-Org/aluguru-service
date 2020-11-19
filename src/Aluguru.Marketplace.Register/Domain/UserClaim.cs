@@ -14,6 +14,8 @@ namespace Aluguru.Marketplace.Register.Domain
         {
             Type = type;
             Value = value;
+
+            ValidateEntity();
         }
 
         public Guid UserRoleId { get; private set; }
