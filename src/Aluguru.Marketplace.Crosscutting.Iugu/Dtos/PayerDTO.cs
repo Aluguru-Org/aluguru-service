@@ -11,5 +11,6 @@ namespace Aluguru.Marketplace.Crosscutting.Iugu.Dtos
         public string PhonePrefix { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
+        public PayerAddressDTO Address { get; set; }
     }
 }

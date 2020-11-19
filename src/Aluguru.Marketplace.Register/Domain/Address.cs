@@ -9,7 +9,7 @@ namespace Aluguru.Marketplace.Register.Domain
     public class Address : Entity
     {
         private Address() : base(NewId()) { }
-        public Address(Guid userId, string street, string number, string neighborhood, string city, string state, string country, string zipCode)
+        public Address(Guid userId, string street, string number, string neighborhood, string city, string state, string country, string zipCode, string complement)
             : base(NewId())
         {
             UserId = userId;
@@ -20,6 +20,7 @@ namespace Aluguru.Marketplace.Register.Domain
             State = state;
             Country = country;
             ZipCode = zipCode;
+            Complement = complement;
 
             ValidateEntity();
         }
@@ -31,6 +32,7 @@ namespace Aluguru.Marketplace.Register.Domain
         public string State { get; private set; }
         public string Country { get; private set; }
         public string ZipCode { get; private set; }
+        public string Complement { get; set; }
 
         // Ef Relational
         public virtual User User { get; set; }

@@ -73,13 +73,32 @@ namespace Aluguru.Marketplace.Payment.Usecases.PayOrder
                 return default;
             }
 
+            var paymentMethod = string.IsNullOrEmpty(command.Token) ? EPaymentMethod.BOLETO : EPaymentMethod.CREDIT_CARD;
+
+            PayerAddressDTO address = null;
+
+            if (paymentMethod == EPaymentMethod.BOLETO)
+            {
+                address = new PayerAddressDTO
+                {
+                    Street = user.Address.Street,
+                    Number = user.Address.Number,
+                    Complement = user.Address.Complement,
+                    District = user.Address.Neighborhood,
+                    City = user.Address.City,
+                    State = user.Address.State,
+                    ZipCode = user.Address.ZipCode,
+                };
+            }
+
             var payer = new PayerDTO
             {
                 CpfCnpj = user.Document.Number,
                 Email = user.Email,
                 Name = user.FullName,
                 PhonePrefix = user.Contact.PhoneNumber.Substring(0, 2),
-                Phone = user.Contact.PhoneNumber.Substring(2)
+                Phone = user.Contact.PhoneNumber.Substring(2),
+                Address = address
             };
 
             var items = new List<ItemDTO>();
@@ -96,7 +115,7 @@ namespace Aluguru.Marketplace.Payment.Usecases.PayOrder
             }
 
             var paymentResponse = await _iuguService.Charge(
-                paymentMethod: string.IsNullOrEmpty(command.Token) ? PaymentMethod.BOLETO : PaymentMethod.CREDIT_CARD,
+                paymentMethod: paymentMethod == EPaymentMethod.BOLETO ? PaymentMethod.BOLETO : PaymentMethod.CREDIT_CARD,
                 command.Token, command.Installments ?? 1, user.Email, payer, items);
 
             if (!paymentResponse.Success)
@@ -108,8 +127,6 @@ namespace Aluguru.Marketplace.Payment.Usecases.PayOrder
                 }
                 return default;
             }
-
-            var paymentMethod = string.IsNullOrEmpty(command.Token) ? EPaymentMethod.BOLETO : EPaymentMethod.CREDIT_CARD;
 
             var payment = new Domain.Payment(command.UserId, command.OrderId, paymentMethod, paymentResponse.InvoiceId, paymentResponse.Url, paymentResponse.Pdf, paymentResponse.Identification);
 

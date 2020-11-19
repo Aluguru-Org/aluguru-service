@@ -118,7 +118,7 @@ namespace Aluguru.Marketplace.Register.Domain
         {
             if (Address == null)
             {
-                var newAddress = new Address(Id, address.Street, address.Number, address.Neighborhood, address.City, address.State, address.Country, address.ZipCode);                
+                var newAddress = new Address(Id, address.Street, address.Number, address.Neighborhood, address.City, address.State, address.Country, address.ZipCode, address.Complement);                
                 Address = newAddress;
             }
             else

@@ -42,7 +42,7 @@ namespace Aluguru.Marketplace.Register.AutoMapper
             CreateMap<AddressDTO, Address>()
                 .ConstructUsing((request, context) =>
                 {
-                    return new Address(request.UserId, request.Street, request.Number, request.Neighborhood, request.City, request.State, request.Country, request.ZipCode);
+                    return new Address(request.UserId, request.Street, request.Number, request.Neighborhood, request.City, request.State, request.Country, request.ZipCode, request.Complement);
                 })
                 .ForMember(x => x.User, c => c.Ignore())
                 .ForMember(x => x.DateCreated, c => c.Ignore())
