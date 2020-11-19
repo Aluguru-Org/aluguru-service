@@ -7,7 +7,7 @@ using Aluguru.Marketplace.API.Middleware;
 using Aluguru.Marketplace.Crosscutting.IoC;
 using Aluguru.Marketplace.Register.Data.Seed;
 using Aluguru.Marketplace.Security;
-using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace Aluguru.Marketplace.API
 {
@@ -37,10 +37,10 @@ namespace Aluguru.Marketplace.API
 
             services.AddRouting(options => options.LowercaseUrls = true);
 
-            services.AddControllers().AddJsonOptions(options =>
+            services.AddControllers().AddNewtonsoftJson(options =>
             {
-                options.JsonSerializerOptions.IgnoreNullValues = true;
-                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
             });
         }
 
