@@ -25,7 +25,6 @@ namespace Aluguru.Marketplace.Register.UnitTests
         public void CreateAddress_WhenInvalidData_ShouldThrowDomainException(string street, string number, string neighborhood, string city, string state, string country, string zipcode, string complement)
         {
             Assert.Throws<Exception>(() => new Address(Guid.NewGuid(), street, number, neighborhood, city, state, country, zipcode, complement));
-
         }
     }
 }

@@ -1,7 +1,8 @@
 ﻿using Aluguru.Marketplace.Domain;
 using System;
-using static PampaDevs.Utils.Helpers.IdHelper;
 using PampaDevs.Utils;
+using static PampaDevs.Utils.Helpers.IdHelper;
+using static PampaDevs.Utils.Helpers.DateTimeHelper;
 
 namespace Aluguru.Marketplace.Payment.Domain
 {
@@ -33,6 +34,7 @@ namespace Aluguru.Marketplace.Payment.Domain
         public void MarkAsPaid()
         {
             Paid = true;
+            DateUpdated = NewDateTime();
         }
 
         protected override void ValidateEntity()

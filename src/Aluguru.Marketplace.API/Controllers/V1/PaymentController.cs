@@ -77,6 +77,5 @@ namespace Aluguru.Marketplace.API.Controllers.V1
             await _mediatorHandler.SendCommand<UpdateInvoiceStatusCommand, bool>(command);
             return PostResponse();
         }
-
     }
 }
