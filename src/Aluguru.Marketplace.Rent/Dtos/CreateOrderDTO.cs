@@ -9,6 +9,6 @@ namespace Aluguru.Marketplace.Rent.Dtos
         [Required]
         public Guid UserId { get ;set; }
         [Required]
-        public List<CreateOrderItemDTO> OrderItems { get; set; }
+        public List<AddOrderItemDTO> OrderItems { get; set; }
     }
 }

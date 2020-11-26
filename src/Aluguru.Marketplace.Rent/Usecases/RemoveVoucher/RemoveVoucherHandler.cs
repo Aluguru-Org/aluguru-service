@@ -36,6 +36,8 @@ namespace Aluguru.Marketplace.Rent.Usecases.RemoveVoucher
                 return default;
             }
 
+
+
             if (order.Voucher == null)
             {
                 await _mediatorHandler.PublishNotification(new DomainNotification(request.MessageType, $"The user order Id=[{request.OrderId}] does not contain a voucher"));

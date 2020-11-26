@@ -12,7 +12,7 @@ using Aluguru.Marketplace.Rent.Usecases.DeleteOrder;
 using Aluguru.Marketplace.Rent.Usecases.RemoveVoucher;
 using Aluguru.Marketplace.Rent.Usecases.GetOrder;
 using Aluguru.Marketplace.Rent.Usecases.GetOrders;
-using Aluguru.Marketplace.Rent.Usecases.UpdateOrder;
+using Aluguru.Marketplace.Rent.Usecases.AddOrderItem;
 using Aluguru.Marketplace.Rent.Dtos;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.Authorization;
 using Aluguru.Marketplace.Security;
 using Aluguru.Marketplace.Rent.Usecases.StartOrder;
 using Aluguru.Marketplace.Security.User;
+using Aluguru.Marketplace.Rent.Usecases.RemoveOrderItem;
 
 namespace Aluguru.Marketplace.API.Controllers.V1
 {
@@ -109,18 +110,33 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         }
 
         [HttpPut]
-        [Route("{id}")]
+        [Route("{id}/add-item")]
         [Authorize(Policy = Policies.OrderWriter)]
-        [SwaggerOperation(Summary = "Update Order", Description = "Update a existing order")]
+        [SwaggerOperation(Summary = "Add Item to Order")]
         [Consumes("application/json")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AddOrderItemCommand))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> Put([FromRoute] Guid id, [FromBody] UpdateOrderDTO viewModel)
+        public async Task<ActionResult> AddOrderItem([FromRoute] Guid id, [FromBody] AddOrderItemDTO dto)
         {
-            var command = _mapper.Map<UpdateOrderCommand>(viewModel);
-            await _mediatorHandler.SendCommand<UpdateOrderCommand, UpdateOrderCommandResponse>(command);
-            return PutResponse();
+            var command = new AddOrderItemCommand(_aspNetUser.GetUserId(), id, dto);
+            var response = await _mediatorHandler.SendCommand<AddOrderItemCommand, AddOrderItemCommandResponse>(command);
+            return PutResponse(response);
+        }
+
+        [HttpPut]
+        [Route("{id}/remove-item")]
+        [Authorize(Policy = Policies.OrderWriter)]
+        [SwaggerOperation(Summary = "Remove Item from Order")]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RemoveOrderItemCommand))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task<ActionResult> RemoveOrderItem([FromRoute] Guid id, [FromBody] RemoveOrderItemDTO dto)
+        {
+            var command = new RemoveOrderItemCommand(_aspNetUser.GetUserId(), id, dto.ProductId);
+            var response = await _mediatorHandler.SendCommand<RemoveOrderItemCommand, RemoveOrderItemCommandResponse>(command);
+            return PutResponse(response);
         }
 
         [HttpPut]

@@ -83,7 +83,7 @@ namespace Aluguru.Marketplace.Rent.Usecases.CreateOrder
             };
         }
 
-        private decimal CalculateProductPrice(CreateOrderItemDTO orderItem, Product product)
+        private decimal CalculateProductPrice(AddOrderItemDTO orderItem, Product product)
         {
             decimal price = 0;
 
@@ -100,7 +100,7 @@ namespace Aluguru.Marketplace.Rent.Usecases.CreateOrder
             return price;
         }
 
-        private List<DomainNotification> ValidateProduct(CreateOrderCommand request, CreateOrderItemDTO orderItem, Product product)
+        private List<DomainNotification> ValidateProduct(CreateOrderCommand request, AddOrderItemDTO orderItem, Product product)
         {
             List<DomainNotification> notifications = new List<DomainNotification>();
 

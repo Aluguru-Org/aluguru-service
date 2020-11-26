@@ -8,14 +8,14 @@ namespace Aluguru.Marketplace.Rent.Usecases.CreateOrder
 {
     public class CreateOrderCommand : Command<CreateOrderCommandResponse>
     {
-        public CreateOrderCommand(Guid userId, List<CreateOrderItemDTO> orderItems)
+        public CreateOrderCommand(Guid userId, List<AddOrderItemDTO> orderItems)
         {
             UserId = userId;
             OrderItems = orderItems;
         }
 
         public Guid UserId { get; private set; }
-        public List<CreateOrderItemDTO> OrderItems { get; private set; }
+        public List<AddOrderItemDTO> OrderItems { get; private set; }
         public override bool IsValid()
         {
             ValidationResult = new CreateOrderCommandValidator().Validate(this);

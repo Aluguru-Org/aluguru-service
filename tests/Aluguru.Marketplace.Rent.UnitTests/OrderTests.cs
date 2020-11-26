@@ -26,11 +26,10 @@ namespace Aluguru.Marketplace.Rent.Tests
 
             order.AddItem(item);
 
-            order.RemoveItem(item);
+            order.RemoveItem(item.ProductId);
 
             Assert.Equal(0, order.OrderItems.Count);
             Assert.Equal(0, order.TotalPrice);
-
         }
 
         [Fact]

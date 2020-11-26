@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Aluguru.Marketplace.Rent.Dtos
 {
-    public class CreateOrderItemDTO
+    public class AddOrderItemDTO
     {
         [Required]
         public Guid ProductId { get; set; }

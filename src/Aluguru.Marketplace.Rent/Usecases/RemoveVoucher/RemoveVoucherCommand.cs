@@ -2,8 +2,6 @@
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;
 using Aluguru.Marketplace.Rent.Dtos;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Aluguru.Marketplace.Rent.Usecases.RemoveVoucher
 {

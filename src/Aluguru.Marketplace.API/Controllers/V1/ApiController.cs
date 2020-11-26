@@ -63,6 +63,13 @@ namespace Aluguru.Marketplace.API.Controllers.V1
             return BadRequest(new ValidationProblemDetails(_notifications.GetNotificationErrors()));
         }
 
+        protected ActionResult PutResponse<T>(T data) where T : class
+        {
+            if (IsValidOperation()) return Ok(new ApiResponse<T>(true, "The resource was updated successfully", data));
+
+            return BadRequest(new ValidationProblemDetails(_notifications.GetNotificationErrors()));
+        }
+
         protected ActionResult DeleteResponse()
         {
             if (IsValidOperation())

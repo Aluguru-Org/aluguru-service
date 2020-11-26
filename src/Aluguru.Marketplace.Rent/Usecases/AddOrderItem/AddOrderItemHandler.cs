@@ -14,80 +14,76 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
-namespace Aluguru.Marketplace.Rent.Usecases.UpdateOrder
+namespace Aluguru.Marketplace.Rent.Usecases.AddOrderItem
 {
-    public class UpdateOrderHandler : IRequestHandler<UpdateOrderCommand, UpdateOrderCommandResponse>
+    public class AddOrderItemHandler : IRequestHandler<AddOrderItemCommand, AddOrderItemCommandResponse>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IMediatorHandler _mediatorHandler;
 
-        public UpdateOrderHandler(IUnitOfWork unitOfWork, IMapper mapper, IMediatorHandler mediatorHandler)
+        public AddOrderItemHandler(IUnitOfWork unitOfWork, IMapper mapper, IMediatorHandler mediatorHandler)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _mediatorHandler = mediatorHandler;
         }
 
-        public async Task<UpdateOrderCommandResponse> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
+        public async Task<AddOrderItemCommandResponse> Handle(AddOrderItemCommand command, CancellationToken cancellationToken)
         {
             var orderQueryRepository = _unitOfWork.QueryRepository<Order>();
 
-            var order = await orderQueryRepository.GetOrderAsync(request.OrderId, false);
+            var order = await orderQueryRepository.GetOrderAsync(command.OrderId, false);
 
             if (order == null)
             {
-                await _mediatorHandler.PublishNotification(new DomainNotification(request.MessageType, $"Order not found"));
+                await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"Order not found"));
+                return default;
+            }
+
+            if (order.UserId != command.UserId)
+            {
+                await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"Order can only be edited by order owner"));
                 return default;
             }
 
             var productQueryRepository = _unitOfWork.QueryRepository<Product>();
 
-            var products = await productQueryRepository.GetProductsAsync(
-                request.OrderItems.Select(x => x.ProductId).ToList()
-            );
+            var product = await productQueryRepository.GetProductAsync(command.OrderItem.ProductId);
 
-            List<DomainNotification> errors = new List<DomainNotification>();
-
-            foreach(var orderItem in request.OrderItems)
+            if (product == null)
             {
-                var product = products.FirstOrDefault(x => x.Id == orderItem.ProductId);
-
-                if (product == null)
-                {
-                    await _mediatorHandler.PublishNotification(new DomainNotification(request.MessageType, $"The product {product.Id} was not found in catalog."));
-                    continue;
-                }
-
-                var notifications = ValidateProduct(request, orderItem, product);
-
-                if (notifications.Count > 0) continue;
-
-                decimal price = CalculateProductPrice(orderItem, product);
-
-                var newOrderItem = new OrderItem(product.Id, product.Name, orderItem.RentStartDate, orderItem.Amount ?? 1, price);
-                order.AddItem(newOrderItem);
+                await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"The product {product.Id} was not found in catalog."));
+                return default;
             }
+
+            var errors = ValidateProduct(command, command.OrderItem, product);
 
             if (errors.Count > 0)
             {
-                foreach(var notification in errors)
+                foreach (var notification in errors)
                 {
                     await _mediatorHandler.PublishNotification(notification);
                 }
+                return default;
             }
+
+            decimal price = CalculateProductPrice(command.OrderItem, product);
+
+            var newOrderItem = new OrderItem(product.Id, product.Name, command.OrderItem.RentStartDate, command.OrderItem.Amount ?? 1, price);
+            order.AddItem(newOrderItem);
 
             var orderRepository = _unitOfWork.Repository<Order>();
 
             order = orderRepository.Update(order);
 
-            return new UpdateOrderCommandResponse()
+            return new AddOrderItemCommandResponse()
             {
                 Order = _mapper.Map<OrderDTO>(order)
             };
         }
 
-        private decimal CalculateProductPrice(CreateOrderItemDTO orderItem, Product product)
+        private decimal CalculateProductPrice(AddOrderItemDTO orderItem, Product product)
         {
             decimal price = 0;
 
@@ -104,7 +100,7 @@ namespace Aluguru.Marketplace.Rent.Usecases.UpdateOrder
             return price;
         }
 
-        private List<DomainNotification> ValidateProduct(UpdateOrderCommand request, CreateOrderItemDTO orderItem, Product product)
+        private List<DomainNotification> ValidateProduct(AddOrderItemCommand request, AddOrderItemDTO orderItem, Product product)
         {
             List<DomainNotification> notifications = new List<DomainNotification>();            
 
