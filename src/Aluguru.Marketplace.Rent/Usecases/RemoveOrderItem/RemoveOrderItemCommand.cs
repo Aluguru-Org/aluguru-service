@@ -13,12 +13,12 @@ namespace Aluguru.Marketplace.Rent.Usecases.RemoveOrderItem
         {
             UserId = userId;
             OrderId = orderId;
-            ProductId = productId;
+            OrderItemId = productId;
         }
 
         public Guid UserId { get; private set; }
         public Guid OrderId { get; private set; }
-        public Guid ProductId { get; private set; }
+        public Guid OrderItemId { get; private set; }
 
         public override bool IsValid()
         {
@@ -33,7 +33,7 @@ namespace Aluguru.Marketplace.Rent.Usecases.RemoveOrderItem
         {
             RuleFor(x => x.UserId).NotEqual(Guid.Empty);
             RuleFor(x => x.OrderId).NotEqual(Guid.Empty);
-            RuleFor(x => x.ProductId).NotEqual(Guid.Empty);
+            RuleFor(x => x.OrderItemId).NotEqual(Guid.Empty);
         }
     }
 

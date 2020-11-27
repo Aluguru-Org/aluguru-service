@@ -79,9 +79,9 @@ namespace Aluguru.Marketplace.Rent.Domain
             CalculateOrderPrice();
         }
 
-        public void RemoveItem(Guid productId)
+        public void RemoveItem(Guid itemId)
         {
-            var existingItem = _orderItems.FirstOrDefault(x => x.ProductId == productId);
+            var existingItem = _orderItems.FirstOrDefault(x => x.Id == itemId);
 
             Ensure.NotNull(existingItem, "The item does not belong to the order");
 

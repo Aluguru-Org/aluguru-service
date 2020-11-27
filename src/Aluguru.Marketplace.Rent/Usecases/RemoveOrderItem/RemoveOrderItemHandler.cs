@@ -43,7 +43,7 @@ namespace Aluguru.Marketplace.Rent.Usecases.RemoveOrderItem
                 return default;
             }
 
-            order.RemoveItem(command.ProductId);
+            order.RemoveItem(command.OrderItemId);
 
             order = orderRepository.Update(order);
 

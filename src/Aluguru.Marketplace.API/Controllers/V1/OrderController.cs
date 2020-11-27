@@ -134,7 +134,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> RemoveOrderItem([FromRoute] Guid id, [FromBody] RemoveOrderItemDTO dto)
         {
-            var command = new RemoveOrderItemCommand(_aspNetUser.GetUserId(), id, dto.ProductId);
+            var command = new RemoveOrderItemCommand(_aspNetUser.GetUserId(), id, dto.OrderItemId);
             var response = await _mediatorHandler.SendCommand<RemoveOrderItemCommand, RemoveOrderItemCommandResponse>(command);
             return PutResponse(response);
         }

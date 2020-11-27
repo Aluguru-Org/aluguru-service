@@ -8,6 +8,6 @@ namespace Aluguru.Marketplace.Rent.Dtos
     public class RemoveOrderItemDTO : IDto
     {
         [Required]
-        public Guid ProductId { get; set; }
+        public Guid OrderItemId { get; set; }
     }
 }
