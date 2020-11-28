@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Aluguru.Marketplace.Rent.Utils;
 
 namespace Aluguru.Marketplace.Rent.Usecases.AddOrderItem
 {
@@ -57,7 +58,7 @@ namespace Aluguru.Marketplace.Rent.Usecases.AddOrderItem
                 return default;
             }
 
-            var errors = ValidateProduct(command, command.OrderItem, product);
+            var errors = RentUtils.ValidateProduct(command.MessageType, command.OrderItem, product);
 
             if (errors.Count > 0)
             {
@@ -68,7 +69,7 @@ namespace Aluguru.Marketplace.Rent.Usecases.AddOrderItem
                 return default;
             }
 
-            decimal price = CalculateProductPrice(command.OrderItem, product);
+            decimal price = RentUtils.CalculateProductPrice(command.OrderItem, product);
 
             var newOrderItem = new OrderItem(product.Id, product.Name, command.OrderItem.RentStartDate, command.OrderItem.Amount ?? 1, price);
             order.AddItem(newOrderItem);
@@ -81,45 +82,6 @@ namespace Aluguru.Marketplace.Rent.Usecases.AddOrderItem
             {
                 Order = _mapper.Map<OrderDTO>(order)
             };
-        }
-
-        private decimal CalculateProductPrice(AddOrderItemDTO orderItem, Product product)
-        {
-            decimal price = 0;
-
-            switch (product.RentType)
-            {
-                case ERentType.Fixed:
-                    price = orderItem.RentDays * product.Price.GetDailyRentPrice();
-                    break;
-                case ERentType.Indefinite:
-                    price = product.Price.GetPeriodRentPrice(orderItem.SelectedRentPeriod.Value);
-                    break;
-            }
-
-            return price;
-        }
-
-        private List<DomainNotification> ValidateProduct(AddOrderItemCommand request, AddOrderItemDTO orderItem, Product product)
-        {
-            List<DomainNotification> notifications = new List<DomainNotification>();            
-
-            if (product.CheckValidRentStartDate(orderItem.RentStartDate))
-            {
-                notifications.Add(new DomainNotification(request.MessageType, $"The product {product.Id} does not have a valid rent start date"));
-            }
-
-            switch(product.RentType)
-            {
-                case ERentType.Indefinite:
-                    if (product.CheckValidRentDays(orderItem.RentDays))
-                    {
-                        notifications.Add(new DomainNotification(request.MessageType, $"The product {product.Id} have invalid rent days."));
-                    }
-                    break;
-            }
-
-            return notifications;
         }
     }
 }

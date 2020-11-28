@@ -84,7 +84,7 @@ namespace Aluguru.Marketplace.Catalog.Domain
 
         public bool CheckValidRentStartDate(DateTime rentStartDate)
         {
-            var minRentStartDate = DateTime.Now;
+            var minRentStartDate = NewDateTime();
             if (MinNoticeRentDays.HasValue)
             {
                 minRentStartDate = minRentStartDate.AddDays(MinNoticeRentDays.Value);

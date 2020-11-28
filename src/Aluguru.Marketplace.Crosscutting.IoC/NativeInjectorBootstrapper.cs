@@ -74,6 +74,7 @@ using Aluguru.Marketplace.Rent.Usecases.CancelOrderProcessing;
 using Aluguru.Marketplace.Payment.Usecases.UpdateInvoiceStatus;
 using Aluguru.Marketplace.Rent.Usecases.ConfirmOrderPayment;
 using Aluguru.Marketplace.Rent.Usecases.RemoveOrderItem;
+using Aluguru.Marketplace.Rent.Usecases.UpdateOrderItemAmount;
 
 namespace Aluguru.Marketplace.Crosscutting.IoC
 {
@@ -197,6 +198,7 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             services.AddScoped<IRequestHandler<StartOrderCommand, StartOrderCommandResponse>, StartOrderHandler>();
             services.AddScoped<IRequestHandler<CancelOrderProcessingCommand, bool>, CancelOrderProcessingHandler>();
             services.AddScoped<IRequestHandler<AddOrderItemCommand, AddOrderItemCommandResponse>, AddOrderItemHandler>();
+            services.AddScoped<IRequestHandler<UpdateOrderItemAmountCommand, UpdateOrderItemAmountCommandResponse>, UpdateOrderItemAmountHandler>();
             services.AddScoped<IRequestHandler<RemoveOrderItemCommand, RemoveOrderItemCommandResponse>, RemoveOrderItemHandler>();
             services.AddScoped<IRequestHandler<ApplyVoucherCommand, ApplyVoucherCommandResponse>, ApplyVoucherHandler>();
             services.AddScoped<IRequestHandler<RemoveVoucherCommand, DeleteVoucherCommandResponse>, RemoveVoucherHandler>();

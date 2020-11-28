@@ -24,6 +24,7 @@ using Aluguru.Marketplace.Security;
 using Aluguru.Marketplace.Rent.Usecases.StartOrder;
 using Aluguru.Marketplace.Security.User;
 using Aluguru.Marketplace.Rent.Usecases.RemoveOrderItem;
+using Aluguru.Marketplace.Rent.Usecases.UpdateOrderItemAmount;
 
 namespace Aluguru.Marketplace.API.Controllers.V1
 {
@@ -114,7 +115,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [Authorize(Policy = Policies.OrderWriter)]
         [SwaggerOperation(Summary = "Add Item to Order")]
         [Consumes("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AddOrderItemCommand))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AddOrderItemCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> AddOrderItem([FromRoute] Guid id, [FromBody] AddOrderItemDTO dto)
@@ -125,11 +126,26 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         }
 
         [HttpPut]
+        [Route("{id}/update-item-amount")]
+        [Authorize(Policy = Policies.OrderWriter)]
+        [SwaggerOperation(Summary = "Update item amount")]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateOrderItemAmountCommandResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task<ActionResult> UpdateOrderItemAmount([FromRoute] Guid id, [FromBody] UpdateOrderItemAmountDTO dto)
+        {
+            var command = new UpdateOrderItemAmountCommand(_aspNetUser.GetUserId(), id, dto.OrderItemId, dto.Amount);
+            var response = await _mediatorHandler.SendCommand<UpdateOrderItemAmountCommand, UpdateOrderItemAmountCommandResponse>(command);
+            return PutResponse(response);
+        }
+
+        [HttpPut]
         [Route("{id}/remove-item")]
         [Authorize(Policy = Policies.OrderWriter)]
         [SwaggerOperation(Summary = "Remove Item from Order")]
         [Consumes("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RemoveOrderItemCommand))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RemoveOrderItemCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> RemoveOrderItem([FromRoute] Guid id, [FromBody] RemoveOrderItemDTO dto)

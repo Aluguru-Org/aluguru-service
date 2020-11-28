@@ -65,18 +65,24 @@ namespace Aluguru.Marketplace.Rent.Domain
         {
             orderItem.AssociateOrder(Id);
 
-            if (ItemExists(orderItem))
-            {
-                var existingItem = _orderItems.FirstOrDefault(x => x.ProductId == orderItem.ProductId);
-                existingItem.AddAmount(orderItem.Amount);
-                orderItem = existingItem;
-            }
-            else
-            {
-                _orderItems.Add(orderItem);
-            }
+            _orderItems.Add(orderItem);
 
             CalculateOrderPrice();
+
+            DateUpdated = NewDateTime();
+        }
+
+        public void UpdateItemAmount(Guid itemId, int amount)
+        {
+            var existingItem = _orderItems.FirstOrDefault(x => x.Id == itemId);
+
+            Ensure.NotNull(existingItem, "The item does not belong to the order");
+
+            existingItem.UpdateAmount(amount);
+
+            CalculateOrderPrice();
+
+            DateUpdated = NewDateTime();
         }
 
         public void RemoveItem(Guid itemId)
@@ -88,6 +94,8 @@ namespace Aluguru.Marketplace.Rent.Domain
             _orderItems.Remove(existingItem);
 
             CalculateOrderPrice();
+
+            DateUpdated = NewDateTime();
         }
 
         public ValidationResult ApplyVoucher(Voucher voucher)
@@ -101,6 +109,8 @@ namespace Aluguru.Marketplace.Rent.Domain
 
             CalculateOrderPrice();
 
+            DateUpdated = NewDateTime();
+
             return validationResult;
         }
 
@@ -112,11 +122,13 @@ namespace Aluguru.Marketplace.Rent.Domain
             VoucherUsed = false;
 
             CalculateOrderPrice();
+
+            DateUpdated = NewDateTime();
         }
 
         public bool ItemExists(OrderItem orderItem)
         {
-            return _orderItems.Any(x => x.Id == orderItem.Id);
+            return _orderItems.Any(x => x.ProductId == orderItem.ProductId);
         }
 
         private void CalculateOrderPrice()
