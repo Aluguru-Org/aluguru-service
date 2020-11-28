@@ -1,5 +1,5 @@
-﻿using Aluguru.Marketplace.Communication.Dtos;
-using Aluguru.Marketplace.Infrastructure.Bus.Messages;
+﻿using Aluguru.Marketplace.Infrastructure.Bus.Messages;
+using Aluguru.Marketplace.Rent.Dtos;
 using FluentValidation;
 using System;
 using System.Collections.Generic;

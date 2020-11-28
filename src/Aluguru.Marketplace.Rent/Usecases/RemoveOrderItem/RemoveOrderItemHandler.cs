@@ -1,9 +1,9 @@
-﻿using Aluguru.Marketplace.Communication.Dtos;
-using Aluguru.Marketplace.Domain;
+﻿using Aluguru.Marketplace.Domain;
 using Aluguru.Marketplace.Infrastructure.Bus.Communication;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using Aluguru.Marketplace.Rent.Data.Repositories;
 using Aluguru.Marketplace.Rent.Domain;
+using Aluguru.Marketplace.Rent.Dtos;
 using AutoMapper;
 using MediatR;
 using System.Threading;
