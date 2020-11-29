@@ -156,18 +156,18 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         }
 
         [HttpPut]
-        [Route("{id}/voucher")]
+        [Route("{id}/apply-voucher")]
         [Authorize(Policy = Policies.OrderWriter)]
         [SwaggerOperation(Summary = "Apply voucher", Description = "Apply a voucher to the order")]
         [Consumes("application/json")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApplyVoucherCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> ApplyVoucher([FromRoute] Guid id, [FromBody] ApplyVoucherDTO viewModel)
         {
             var command = new ApplyVoucherCommand(id, viewModel.Code);
-            await _mediatorHandler.SendCommand<ApplyVoucherCommand, ApplyVoucherCommandResponse>(command);
-            return PutResponse();
+            var response = await _mediatorHandler.SendCommand<ApplyVoucherCommand, ApplyVoucherCommandResponse>(command);
+            return PutResponse(response);
         }
 
         [HttpDelete]
@@ -185,19 +185,20 @@ namespace Aluguru.Marketplace.API.Controllers.V1
             return DeleteResponse();
         }
 
-        [HttpDelete]
-        [Route("{id}/voucher")]
+        [HttpPut]
+        [Route("{id}/remove-voucher")]
         [Authorize(Policy = Policies.VoucherWriter)]
-        [SwaggerOperation(Summary = "Delete a voucher ", Description = "Delete a existing voucher applyied to a order.")]
+        [SwaggerOperation(Summary = "Remove order voucher ")]
         [Consumes("application/json")]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeleteVoucherCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> DeleteVoucher([FromRoute] Guid id)
+        public async Task<ActionResult> RemoveVoucher([FromRoute] Guid id)
         {
-            await _mediatorHandler.SendCommand<RemoveVoucherCommand, DeleteVoucherCommandResponse>(new RemoveVoucherCommand(id));
-            return DeleteResponse();
+            var command = new RemoveVoucherCommand(id);
+            var response = await _mediatorHandler.SendCommand<RemoveVoucherCommand, DeleteVoucherCommandResponse>(command);
+            return PutResponse(response);
         }
     }
 }

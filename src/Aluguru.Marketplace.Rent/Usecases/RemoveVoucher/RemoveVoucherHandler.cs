@@ -24,23 +24,21 @@ namespace Aluguru.Marketplace.Rent.Usecases.RemoveVoucher
             _mapper = mapper;
         }
 
-        public async Task<DeleteVoucherCommandResponse> Handle(RemoveVoucherCommand request, CancellationToken cancellationToken)
+        public async Task<DeleteVoucherCommandResponse> Handle(RemoveVoucherCommand command, CancellationToken cancellationToken)
         {
             var queryRepository = _unitOfWork.QueryRepository<Order>();
 
-            var order = await queryRepository.GetOrderAsync(request.OrderId);
+            var order = await queryRepository.GetOrderAsync(command.OrderId, false);
             
             if (order == null)
             {
-                await _mediatorHandler.PublishNotification(new DomainNotification(request.MessageType, $"The user order Id=[{request.OrderId}] was not found"));
+                await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"The user order Id=[{command.OrderId}] was not found"));
                 return default;
             }
 
-
-
             if (order.Voucher == null)
             {
-                await _mediatorHandler.PublishNotification(new DomainNotification(request.MessageType, $"The user order Id=[{request.OrderId}] does not contain a voucher"));
+                await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"The user order Id=[{command.OrderId}] does not contain a voucher"));
                 return default;
             }
 
@@ -48,7 +46,7 @@ namespace Aluguru.Marketplace.Rent.Usecases.RemoveVoucher
 
             var userRepository = _unitOfWork.Repository<Order>();
 
-            userRepository.Delete(order);
+            order = userRepository.Update(order);
 
             return new DeleteVoucherCommandResponse()
             {

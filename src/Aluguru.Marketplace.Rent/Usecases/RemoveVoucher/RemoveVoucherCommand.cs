@@ -12,7 +12,7 @@ namespace Aluguru.Marketplace.Rent.Usecases.RemoveVoucher
             OrderId = orderId;
         }
 
-        public Guid OrderId { get; private set; }
+        public Guid OrderId { get; set; }
 
         public override bool IsValid()
         {
@@ -25,7 +25,7 @@ namespace Aluguru.Marketplace.Rent.Usecases.RemoveVoucher
     {
         public DeleteVoucherCommandValidator()
         {
-            RuleFor(x => x.OrderId).NotEqual(Guid.Empty);
+            RuleFor(x => x.OrderId).NotEmpty();
         }
     }
 

@@ -118,8 +118,10 @@ namespace Aluguru.Marketplace.Rent.Domain
         {
             if (Voucher == null) return;
 
+            VoucherId = null;
             Voucher = null;
             VoucherUsed = false;
+            Discount = 0;
 
             CalculateOrderPrice();
 

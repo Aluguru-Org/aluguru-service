@@ -27,11 +27,11 @@ namespace Aluguru.Marketplace.Rent.Usecases.CreateOrder
     {
         public CreateOrderCommandValidator()
         {
-            RuleFor(x => x.UserId).NotEqual(Guid.Empty);
+            RuleFor(x => x.UserId).NotEqual(Guid.Empty).WithMessage("UserId cannot be empty");
             RuleFor(x => x.OrderItems).NotEmpty().Must(x => 
             {
                 return x.TrueForAll(item => item.ProductId != Guid.Empty);
-            });
+            }).WithMessage("ProductId from OrderItem cannot be empty");
         }
     }
 

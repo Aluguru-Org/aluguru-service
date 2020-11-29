@@ -33,7 +33,7 @@ namespace Aluguru.Marketplace.Rent.Usecases.ApplyVoucher
             var voucherQueryRepository = _unitOfWork.QueryRepository<Voucher>();
             var orderQueryRepository = _unitOfWork.QueryRepository<Order>();
 
-            var voucher = await voucherQueryRepository.GetVoucherAsync(request.VoucherCode);
+            var voucher = await voucherQueryRepository.GetVoucherAsync(request.VoucherCode, false);
 
             if (voucher == null)
             {

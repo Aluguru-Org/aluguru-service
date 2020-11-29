@@ -11,7 +11,7 @@ namespace Aluguru.Marketplace.Rent.Domain
 {
     public class Voucher : AggregateRoot
     {
-        private Voucher() : base(NewId()) { }
+        protected Voucher() : base(NewId()) { }
         public Voucher(string code, EVoucherType voucherType, decimal discount, int amount, DateTime expirationDate)
             : base(NewId())
         {
