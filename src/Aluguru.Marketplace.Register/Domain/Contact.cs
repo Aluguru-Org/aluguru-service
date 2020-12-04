@@ -1,8 +1,6 @@
 ﻿using Aluguru.Marketplace.Domain;
 using PampaDevs.Utils;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
 using static PampaDevs.Utils.Helpers.IdHelper;
 using static PampaDevs.Utils.Helpers.DateTimeHelper;
@@ -28,6 +26,7 @@ namespace Aluguru.Marketplace.Register.Domain
         {
             UserId = userId;
         }
+
         public void UpdateContact(string name, string phoneNumber, string email)
         {
             Name = name;
@@ -36,6 +35,7 @@ namespace Aluguru.Marketplace.Register.Domain
 
             DateUpdated = NewDateTime();
         }
+
         protected override void ValidateEntity()
         {
             Ensure.That<DomainException>(!string.IsNullOrEmpty(Name), "The field Name from Contact cannot be created null or empty");

@@ -6,7 +6,10 @@ using Aluguru.Marketplace.Register.Domain;
 using System;
 using System.Collections.Generic;
 using Aluguru.Marketplace.Register.Usecases.CreateUserRole;
-using Aluguru.Marketplace.Register.Usecases.UpadeUser;
+using Aluguru.Marketplace.Register.Usecases.UpadeUserName;
+using Aluguru.Marketplace.Register.Usecases.UpadeUserContact;
+using Aluguru.Marketplace.Register.Usecases.UpadeUserDocument;
+using Aluguru.Marketplace.Register.Usecases.UpadeUserAddress;
 
 namespace Aluguru.Marketplace.Register.AutoMapper
 {
@@ -42,7 +45,7 @@ namespace Aluguru.Marketplace.Register.AutoMapper
             CreateMap<AddressDTO, Address>()
                 .ConstructUsing((request, context) =>
                 {
-                    return new Address(request.UserId, request.Street, request.Number, request.Neighborhood, request.City, request.State, request.Country, request.ZipCode, request.Complement);
+                    return new Address(request.Street, request.Number, request.Neighborhood, request.City, request.State, request.Country, request.ZipCode, request.Complement);
                 })
                 .ForMember(x => x.User, c => c.Ignore())
                 .ForMember(x => x.DateCreated, c => c.Ignore())
@@ -73,15 +76,6 @@ namespace Aluguru.Marketplace.Register.AutoMapper
                 .ConstructUsing((x, rc) =>
                 {
                     return new CreateUserCommand(x.FullName, x.Password, x.Email, x.Role);
-                })
-                .ForMember(x => x.Timestamp, c => c.Ignore())
-                .ForMember(x => x.MessageType, c => c.Ignore())
-                .ForMember(x => x.ValidationResult, c => c.Ignore());
-
-            CreateMap<UpdateUserDTO, UpdateUserCommand>()
-                .ConstructUsing((x, rc) =>
-                {
-                    return new UpdateUserCommand(x.UserId, x.FullName, x.Document, x.Contact, x.Address);
                 })
                 .ForMember(x => x.Timestamp, c => c.Ignore())
                 .ForMember(x => x.MessageType, c => c.Ignore())

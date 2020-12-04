@@ -6,6 +6,7 @@ using Aluguru.Marketplace.Domain;
 using Aluguru.Marketplace.Infrastructure.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using Aluguru.Marketplace.Catalog.Dtos;
 
 namespace Aluguru.Marketplace.Catalog.Usecases.GetProductsByCategory
 {
@@ -24,11 +25,12 @@ namespace Aluguru.Marketplace.Catalog.Usecases.GetProductsByCategory
         {
             var queryRepository = _unitOfWork.QueryRepository<Product>();
 
-            var paginatedProducts = await queryRepository.FindAllAsync(
+            var paginatedProducts = await queryRepository.FindAllAsync<Product, ProductDTO>(
+                _mapper,
                 request.PaginateCriteria,
                 product => product,
                 product => product.Category.Uri.Trim().ToLower() == request.Category.Trim().ToLower(),
-                product => product.Include(x => x.Category).Include(x => x.CustomFields));
+                product => product.Include(x => x.CustomFields));
 
             return new GetProductsByCategoryCommandResponse()
             {

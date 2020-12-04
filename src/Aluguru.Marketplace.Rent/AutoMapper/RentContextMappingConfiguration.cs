@@ -27,6 +27,7 @@ namespace Aluguru.Marketplace.Rent.AutoMapper
 
             CreateMap<CreateVoucherDTO, CreateVoucherCommand>()
                 .ConstructUsing(x => new CreateVoucherCommand(x))
+                .ForMember(x => x.Voucher, c => c.Ignore())
                 .ForMember(x => x.Timestamp, c => c.Ignore())
                 .ForMember(x => x.MessageType, c => c.Ignore())
                 .ForMember(x => x.ValidationResult, c => c.Ignore());

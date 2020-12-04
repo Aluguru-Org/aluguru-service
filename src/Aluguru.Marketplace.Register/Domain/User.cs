@@ -1,13 +1,10 @@
 ﻿using Aluguru.Marketplace.Domain;
 using Aluguru.Marketplace.Infrastructure;
-using Aluguru.Marketplace.Register.Usecases.UpadeUser;
 using PampaDevs.Utils;
 using System;
 using System.Text.RegularExpressions;
-using Aluguru.Marketplace.Register.Events;
 using static PampaDevs.Utils.Helpers.IdHelper;
 using static PampaDevs.Utils.Helpers.DateTimeHelper;
-using Aluguru.Marketplace.Register.Dtos;
 
 namespace Aluguru.Marketplace.Register.Domain
 {
@@ -44,7 +41,7 @@ namespace Aluguru.Marketplace.Register.Domain
         public string FullName { get; private set; }
         public Guid UserRoleId { get; private set; }
         public string ActivationHash { get; private set; }
-        public Contact Contact { get; private set; }
+        public Contact Contact { get; set; }
         public Document Document { get; set; }
         public Address Address { get; set; }
         // EF Relational
@@ -56,24 +53,18 @@ namespace Aluguru.Marketplace.Register.Domain
             return IsActive;
         }
 
-        public User UpdateUser(UpdateUserCommand command)
+        public User UpdateUserName(string fullName)
         {
-            FullName = command.FullName;            
+            Ensure.That<DomainException>(!string.IsNullOrEmpty(fullName), "The field FullName from User cannot be created null or empty");
 
-            UpdateDocument(command.Document);
-
-            UpdateContact(command.Contact);
-
-            UpdateAddress(command.Address);
+            FullName = fullName;        
 
             ValidateEntity();
 
             DateUpdated = NewDateTime();
 
-            AddEvent(new UserUpdatedEvent(Id, this));
-
             return this;
-        }
+        }        
 
         public void UpdatePassword(string newPassword)
         {
@@ -82,31 +73,29 @@ namespace Aluguru.Marketplace.Register.Domain
             Password = newPassword;
         }
 
-        private void UpdateDocument(DocumentDTO document)
+        public void UpdateDocument(Document document)
         {
             if (document == null) return;
 
             if (Document == null)
             {
-                var newDocument = new Document(document.Number, (EDocumentType)Enum.Parse(typeof(EDocumentType), document.DocumentType));
-                newDocument.AssignUser(Id);
-                Document = newDocument;
+                document.AssignUser(Id);
+                Document = document;
             }
             else
             {
-                Document.UpdateDocument((EDocumentType)Enum.Parse(typeof(EDocumentType), document.DocumentType), document.Number);
+                Document.UpdateDocument(document.DocumentType, document.Number);
             }
         }
 
-        private void UpdateContact(ContactDTO contact)
+        public void UpdateContact(Contact contact)
         {
             if (contact == null) return;
 
             if (Contact == null)
             {
-                var newContact = new Contact(contact.Name, contact.PhoneNumber, contact.Email);
-                newContact.AssignUser(Id);
-                Contact = newContact;
+                contact.AssignUser(Id);
+                Contact = contact;
             }
             else
             {
@@ -114,12 +103,14 @@ namespace Aluguru.Marketplace.Register.Domain
             }
         }
 
-        private void UpdateAddress(AddressDTO address)
+        public void UpdateAddress(Address address)
         {
+            if (address == null) return;
+
             if (Address == null)
             {
-                var newAddress = new Address(Id, address.Street, address.Number, address.Neighborhood, address.City, address.State, address.Country, address.ZipCode, address.Complement);                
-                Address = newAddress;
+                address.AssignUser(Id);
+                Address = address;
             }
             else
             {

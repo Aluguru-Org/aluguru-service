@@ -14,6 +14,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Aluguru.Marketplace.Rent.Utils;
+using Aluguru.Marketplace.Register.Domain;
+using Aluguru.Marketplace.Crosscutting.Google;
+using Aluguru.Marketplace.Register.Domain.Repositories;
 
 namespace Aluguru.Marketplace.Rent.Usecases.AddOrderItem
 {
@@ -22,17 +25,23 @@ namespace Aluguru.Marketplace.Rent.Usecases.AddOrderItem
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IMediatorHandler _mediatorHandler;
+        private readonly IDistanceMatrixService _distanceMatrixService;
 
-        public AddOrderItemHandler(IUnitOfWork unitOfWork, IMapper mapper, IMediatorHandler mediatorHandler)
+        public AddOrderItemHandler(IUnitOfWork unitOfWork, IMapper mapper, IMediatorHandler mediatorHandler, IDistanceMatrixService distanceMatrixService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _mediatorHandler = mediatorHandler;
+            _distanceMatrixService = distanceMatrixService;
         }
 
         public async Task<AddOrderItemCommandResponse> Handle(AddOrderItemCommand command, CancellationToken cancellationToken)
         {
+            var userQueryRepository = _unitOfWork.QueryRepository<User>();
+            var rentPeriodQueryRepository = _unitOfWork.QueryRepository<RentPeriod>();
             var orderQueryRepository = _unitOfWork.QueryRepository<Order>();
+
+            var rentPeriods = await rentPeriodQueryRepository.GetRentPeriodsAsync();
 
             var order = await orderQueryRepository.GetOrderAsync(command.OrderId, false);
 
@@ -48,6 +57,20 @@ namespace Aluguru.Marketplace.Rent.Usecases.AddOrderItem
                 return default;
             }
 
+            var user = await userQueryRepository.GetUserAsync(command.UserId);
+
+            if (user == null)
+            {
+                await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"User not found"));
+                return default;
+            }
+
+            if (user.Address == null)
+            {
+                await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"User not address found"));
+                return default;
+            }
+
             var productQueryRepository = _unitOfWork.QueryRepository<Product>();
 
             var product = await productQueryRepository.GetProductAsync(command.OrderItem.ProductId);
@@ -56,6 +79,14 @@ namespace Aluguru.Marketplace.Rent.Usecases.AddOrderItem
             {
                 await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"The product {product.Id} was not found in catalog."));
                 return default;
+            }
+
+            var owner = await userQueryRepository.GetUserAsync(product.UserId);
+
+            if (owner == null)
+            {
+                await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"The product {product.Id} owner was not found in register."));
+                return default; ;
             }
 
             var errors = RentUtils.ValidateProduct(command.MessageType, command.OrderItem, product);
@@ -69,9 +100,14 @@ namespace Aluguru.Marketplace.Rent.Usecases.AddOrderItem
                 return default;
             }
 
-            decimal price = RentUtils.CalculateProductPrice(command.OrderItem, product);
+            var distance = await _distanceMatrixService.Distance(owner.Address.ToString(), user.Address.ToString());
 
-            var newOrderItem = new OrderItem(product.Id, product.Name, command.OrderItem.RentStartDate, command.OrderItem.Amount ?? 1, price);
+            var price = RentUtils.CalculateProductPrice(command.OrderItem, product);
+            var freigthPrice = RentUtils.CalculateProductFreigthPrice(product, distance);
+            var rentDays = RentUtils.GetRentDays(rentPeriods, command.OrderItem, product);
+
+
+            var newOrderItem = new OrderItem(product.UserId, product.Id, product.Uri, product.Name, command.OrderItem.RentStartDate, rentDays, command.OrderItem.Amount ?? 1, price, freigthPrice);
             order.AddItem(newOrderItem);
 
             var orderRepository = _unitOfWork.Repository<Order>();

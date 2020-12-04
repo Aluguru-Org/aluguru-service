@@ -431,6 +431,9 @@ namespace Aluguru.Marketplace.Data.Migrations
                     b.Property<int>("OrderStatus")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("TotalFreigthPrice")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
 
@@ -458,11 +461,17 @@ namespace Aluguru.Marketplace.Data.Migrations
                     b.Property<int>("Amount")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DateUpdated")
                         .HasColumnType("datetime2");
+
+                    b.Property<decimal>("FreigthPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
@@ -478,6 +487,12 @@ namespace Aluguru.Marketplace.Data.Migrations
 
                     b.Property<decimal>("ProductPrice")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ProductUri")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RentDays")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("RentStartDate")
                         .HasColumnType("datetime2");
@@ -572,6 +587,9 @@ namespace Aluguru.Marketplace.Data.Migrations
                             b1.Property<decimal?>("DailyRentPrice")
                                 .HasColumnName("DailyRentPrice")
                                 .HasColumnType("decimal");
+
+                            b1.Property<decimal>("FreightPriceKM")
+                                .HasColumnType("decimal(18,2)");
 
                             b1.Property<string>("PeriodRentPrices")
                                 .HasColumnName("PeriodRentPrices")

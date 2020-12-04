@@ -53,10 +53,10 @@ namespace Aluguru.Marketplace.Catalog.Domain
         public string Uri {get; private set; }
         public string Description { get; private set; }
         public ERentType RentType { get; private set; }
-        public Price Price { get; set; }  
+        public Price Price { get; set; }
         public bool IsActive { get; private set; }
         public int StockQuantity { get; private set; }
-        public int MinRentDays { get; private set; }
+        public int MinRentDays { get; private set; }        
         public int? MaxRentDays { get; private set; }
         public int? MinNoticeRentDays { get; private set; }
         public IReadOnlyCollection<string> ImageUrls { get { return _imageUrls; } }
@@ -130,6 +130,7 @@ namespace Aluguru.Marketplace.Catalog.Domain
             MaxRentDays = command.Product.MaxRentDays;
             IsActive = command.Product.IsActive;
 
+            Price.UpdateFreightPriceByKM(command.Product.Price.FreightPriceKM);
             Price.UpdateSellPrice(command.Product.Price.SellPrice);
             Price.UpdateDailyRentPrice(command.Product.Price.DailyRentPrice);
             Price.UpdatePeriodRentPrices(command.Product.Price.PeriodRentPrices);

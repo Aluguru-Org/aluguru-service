@@ -93,7 +93,7 @@ namespace Aluguru.Marketplace.Catalog.AutoMapper
                 .ConstructUsing((x, rc) =>
                 {
                     var periodPrices = rc.Mapper.Map<List<PeriodPrice>>(x.PeriodRentPrices);
-                    return new Price(x.SellPrice, x.DailyRentPrice, periodPrices);
+                    return new Price(x.FreightPriceKM, x.SellPrice, x.DailyRentPrice, periodPrices);
                 });
 
             CreateMap<PeriodPriceViewModel, PeriodPrice>()

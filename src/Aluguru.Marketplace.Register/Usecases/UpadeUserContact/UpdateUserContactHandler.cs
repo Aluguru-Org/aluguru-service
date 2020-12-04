@@ -9,22 +9,20 @@ using Aluguru.Marketplace.Register.Dtos;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Aluguru.Marketplace.Register.Usecases.UpadeUser
+namespace Aluguru.Marketplace.Register.Usecases.UpadeUserContact
 {
-    public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, UpdateUserCommandResponse>
+    public class UpdateUserContactHandler : IRequestHandler<UpdateUserContactCommand, bool>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
         private readonly IMediatorHandler _mediatorHandler;
 
-        public UpdateUserHandler(IUnitOfWork unitOfWork, IMapper mapper, IMediatorHandler mediatorHandler)
+        public UpdateUserContactHandler(IUnitOfWork unitOfWork, IMediatorHandler mediatorHandler)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
             _mediatorHandler = mediatorHandler;
         }
 
-        public async Task<UpdateUserCommandResponse> Handle(UpdateUserCommand command, CancellationToken cancellationToken)
+        public async Task<bool> Handle(UpdateUserContactCommand command, CancellationToken cancellationToken)
         {
             var queryRepository = _unitOfWork.QueryRepository<User>();
 
@@ -33,18 +31,16 @@ namespace Aluguru.Marketplace.Register.Usecases.UpadeUser
             if (user == null)
             {
                 await _mediatorHandler.PublishNotification(new DomainNotification(command.MessageType, $"The User with Id [{command.UserId}] does not exist"));
-                return new UpdateUserCommandResponse();
+                return false;
             }
 
             var repository = _unitOfWork.Repository<User>();
 
-            user.UpdateUser(command);
+            var contact = new Contact(command.Name, command.PhoneNumber, command.Email);
+            user.UpdateContact(contact);
             repository.Update(user);
 
-            return new UpdateUserCommandResponse()
-            {
-                User = _mapper.Map<UserDTO>(user)
-            };
+            return true;
         }
     }
 }

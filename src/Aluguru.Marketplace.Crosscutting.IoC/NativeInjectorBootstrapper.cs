@@ -29,7 +29,7 @@ using Aluguru.Marketplace.Register.Usecases.DeleteUser;
 using Aluguru.Marketplace.Register.Usecases.LogInUser;
 using Aluguru.Marketplace.Register.Services;
 using Aluguru.Marketplace.Register.Usecases.GetUsersByRole;
-using Aluguru.Marketplace.Register.Usecases.UpadeUser;
+using Aluguru.Marketplace.Register.Usecases.UpadeUserName;
 using Aluguru.Marketplace.Register.Usecases.UpdateUserRole;
 using Aluguru.Marketplace.Register.Usecases.DeleteUserRole;
 using Aluguru.Marketplace.Catalog.Usecases.DeleteProduct;
@@ -75,6 +75,10 @@ using Aluguru.Marketplace.Payment.Usecases.UpdateInvoiceStatus;
 using Aluguru.Marketplace.Rent.Usecases.ConfirmOrderPayment;
 using Aluguru.Marketplace.Rent.Usecases.RemoveOrderItem;
 using Aluguru.Marketplace.Rent.Usecases.UpdateOrderItemAmount;
+using Aluguru.Marketplace.Register.Usecases.UpadeUserAddress;
+using Aluguru.Marketplace.Register.Usecases.UpadeUserDocument;
+using Aluguru.Marketplace.Register.Usecases.UpadeUserContact;
+using Aluguru.Marketplace.Crosscutting.Google;
 
 namespace Aluguru.Marketplace.Crosscutting.IoC
 {
@@ -105,6 +109,7 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             services.Configure<MailingSettings>(configuration.GetSection("MailingSettings"));
             services.Configure<NotificationSettings>(configuration.GetSection("NotificationSettings"));
             services.Configure<IuguSettings>(configuration.GetSection("IuguSettings"));
+            services.Configure<GoogleSettings>(configuration.GetSection("GoogleSettings"));
 
             return services;
         }
@@ -151,7 +156,10 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             // User
             services.AddScoped<IRequestHandler<GetUserByIdCommand, GetUserByIdCommandResponse>, GetUserByIdHandler>();
             services.AddScoped<IRequestHandler<CreateUserCommand, CreateUserCommandResponse>, CreateUserHandler>();
-            services.AddScoped<IRequestHandler<UpdateUserCommand, UpdateUserCommandResponse>, UpdateUserHandler>();
+            services.AddScoped<IRequestHandler<UpdateUserNameCommand, bool>, UpdateUserNameHandler>();
+            services.AddScoped<IRequestHandler<UpdateUserAddressCommand, bool>, UpdateUserAddressHandler>();
+            services.AddScoped<IRequestHandler<UpdateUserDocumentCommand, bool>, UpdateUserDocumentHandler>();
+            services.AddScoped<IRequestHandler<UpdateUserContactCommand, bool>, UpdateUserContactHandler>();
             services.AddScoped<IRequestHandler<UpdateUserPasswordCommand, bool>, UpdateUserPasswordHandler>();
             services.AddScoped<IRequestHandler<ActivateUserCommand, bool>, ActivateUserHandler>();
             services.AddScoped<IRequestHandler<DeleteUserCommand, bool>, DeleteUserHandler>();
@@ -229,6 +237,7 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             services.AddScoped<IAzureStorageGateway, AzureStorageGateway>();
             services.AddScoped<IMailingService, MailingService>();
             services.AddScoped<IIuguService, IuguService>();
+            services.AddScoped<IDistanceMatrixService, DistanceMatrixService>();
 
             return services;
         }

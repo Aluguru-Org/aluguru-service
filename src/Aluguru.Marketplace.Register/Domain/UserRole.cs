@@ -4,7 +4,6 @@ using PampaDevs.Utils;
 using System.Collections.Generic;
 using static PampaDevs.Utils.Helpers.IdHelper;
 using static PampaDevs.Utils.Helpers.DateTimeHelper;
-using Aluguru.Marketplace.Register.Events;
 using System.Linq;
 
 namespace Aluguru.Marketplace.Register.Domain
@@ -38,8 +37,6 @@ namespace Aluguru.Marketplace.Register.Domain
             ValidateEntity();
 
             DateUpdated = NewDateTime();
-
-            AddEvent(new UserRoleUpdatedEvent(Id, this));
 
             return this;
         }

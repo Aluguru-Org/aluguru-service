@@ -124,25 +124,9 @@ namespace Aluguru.Marketplace.API.IntegrationTests
             // Arrange
             var userId = _fixture.User.Id;            
 
-            var viewModel = new UpdateUserDTO()
+            var viewModel = new UpdateUserNameDTO()
             {
-                UserId = userId,
-                FullName = _fixture.User.Name + "__TEST_UPDATE__",
-                Document = new DocumentDTO()
-                {
-                    Number = "02482668026",
-                    DocumentType = "CPF"
-                },
-                Address = new AddressDTO()
-                {
-                    Street = "some-address",
-                    Number = "some-number",
-                    Neighborhood = "some-neighborhood",
-                    City = "some-city",
-                    State = "some-state",
-                    Country = "some-country",
-                    ZipCode = "90050-100"
-                }
+                FullName = _fixture.User.Name + "__TEST_UPDATE__"            
             };
 
             // Act

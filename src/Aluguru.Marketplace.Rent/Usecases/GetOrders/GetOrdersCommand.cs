@@ -1,6 +1,6 @@
 ﻿using Aluguru.Marketplace.Domain;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;
-using Aluguru.Marketplace.Rent.Domain;
+using Aluguru.Marketplace.Rent.Dtos;
 using System;
 
 namespace Aluguru.Marketplace.Rent.Usecases.GetOrders
@@ -19,6 +19,6 @@ namespace Aluguru.Marketplace.Rent.Usecases.GetOrders
 
     public class GetOrdersCommandResponse
     {
-        public PaginatedItem<Order> PaginatedOrders { get; set; }
+        public PaginatedItem<OrderDTO> PaginatedOrders { get; set; }
     }
 }

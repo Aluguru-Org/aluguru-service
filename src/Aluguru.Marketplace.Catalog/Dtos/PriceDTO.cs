@@ -5,6 +5,7 @@ namespace Aluguru.Marketplace.Catalog.Dtos
 {
     public class PriceDTO
     {
+        public int FreightPriceKM { get; set; }
         public decimal? SellPrice { get; set; }
         public decimal? DailyRentPrice { get; set; }
         public List<PeriodPriceViewModel> PeriodRentPrices { get; set; }

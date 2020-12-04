@@ -12,6 +12,7 @@ namespace Aluguru.Marketplace.Rent.Dtos
         public bool VoucherUsed { get; set; }
         public decimal Discount { get; set; }
         public decimal TotalPrice { get; set; }
+        public decimal TotalFreigthPrice { get; set; }
         public string OrderStatus { get; set; }
         public List<OrderItemDTO> OrderItems { get; set; }
         public VoucherDTO Voucher { get; set; }

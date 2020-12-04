@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace Aluguru.Marketplace.Infrastructure.Data
 {
@@ -62,35 +63,41 @@ namespace Aluguru.Marketplace.Infrastructure.Data
 
         public static async Task<PaginatedItem<TResponse>> QueryAsync<TEntity, TResponse>(
             this IQueryRepository<TEntity> repo,
+            IMapper mapper,
             PaginateCriteria paginateCriteria,
-            Expression<Func<TEntity, TResponse>> selector,
+            Expression<Func<TEntity, TEntity>> selector,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
             bool disableTracking = true)
             where TEntity : class, IAggregateRoot
+            where TResponse : IDto
         {
-            return await GetDataAsync<TEntity, TResponse>(repo, paginateCriteria, selector, null, include, disableTracking);
+            return await GetDataAsync<TEntity, TResponse>(repo, mapper, paginateCriteria, selector, null, include, disableTracking);
         }
 
         public static async Task<PaginatedItem<TResponse>> FindAllAsync<TEntity, TResponse>(
             this IQueryRepository<TEntity> repo,
+            IMapper mapper,
             PaginateCriteria paginateCriteria,
-            Expression<Func<TEntity, TResponse>> selector,
+            Expression<Func<TEntity, TEntity>> selector,
             Expression<Func<TEntity, bool>> filter,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
             bool disableTracking = true)
             where TEntity : class, IAggregateRoot
+            where TResponse : IDto
         {
-            return await GetDataAsync<TEntity, TResponse>(repo, paginateCriteria, selector, filter, include, disableTracking);
+            return await GetDataAsync<TEntity, TResponse>(repo, mapper, paginateCriteria, selector, filter, include, disableTracking);
         }
 
         private static async Task<PaginatedItem<TResponse>> GetDataAsync<TEntity, TResponse>(
             IQueryRepository<TEntity> repo,
+            IMapper mapper,
             PaginateCriteria paginateCriteria,
-            Expression<Func<TEntity, TResponse>> selector,
+            Expression<Func<TEntity, TEntity>> selector,
             Expression<Func<TEntity, bool>> filter = null,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
             bool disableTracking = true)
             where TEntity : class, IAggregateRoot
+            where TResponse : IDto
         {
             var queryable = repo.Queryable();
 
@@ -112,6 +119,8 @@ namespace Aluguru.Marketplace.Infrastructure.Data
                 .Select(selector)
                 .ToListAsync();
 
+            var dtos = mapper.Map<List<TResponse>>(results);
+
             var totalRecord = await queryable.CountAsync();
             var totalPages = (int)Math.Ceiling((double)totalRecord / paginateCriteria.PageSize);
 
@@ -120,7 +129,7 @@ namespace Aluguru.Marketplace.Infrastructure.Data
                 paginateCriteria.SetCurrentPage(totalPages);
             }
 
-            return new PaginatedItem<TResponse>(totalRecord, totalPages, results);
+            return new PaginatedItem<TResponse>(totalRecord, totalPages, dtos);
         }
     }
 }

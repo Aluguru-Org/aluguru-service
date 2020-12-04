@@ -1,9 +1,7 @@
 ﻿using FluentValidation;
 using Aluguru.Marketplace.Catalog.Dtos;
-using Aluguru.Marketplace.Catalog.Domain;
 using Aluguru.Marketplace.Domain;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;
-using System;
 
 namespace Aluguru.Marketplace.Catalog.Usecases.GetProductsByCategory
 {
@@ -35,6 +33,6 @@ namespace Aluguru.Marketplace.Catalog.Usecases.GetProductsByCategory
 
     public class GetProductsByCategoryCommandResponse
     {
-        public PaginatedItem<Product> PaginatedProducts { get; set; }
+        public PaginatedItem<ProductDTO> PaginatedProducts { get; set; }
     }
 }

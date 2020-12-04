@@ -10,7 +10,7 @@ using Aluguru.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using Aluguru.Marketplace.Register.Usecases.CreateUser;
 using Aluguru.Marketplace.Register.Usecases.DeleteUser;
 using Aluguru.Marketplace.Register.Usecases.GetUserById;
-using Aluguru.Marketplace.Register.Usecases.UpadeUser;
+using Aluguru.Marketplace.Register.Usecases.UpadeUserName;
 using Aluguru.Marketplace.Register.Usecases.UpdateUserPassword;
 using Aluguru.Marketplace.Register.Dtos;
 using Aluguru.Marketplace.Security;
@@ -20,6 +20,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Aluguru.Marketplace.Register.Usecases.ActivateUser;
+using Aluguru.Marketplace.Register.Usecases.UpadeUserDocument;
+using Aluguru.Marketplace.Register.Usecases.UpadeUserAddress;
+using Aluguru.Marketplace.Register.Usecases.UpadeUserContact;
 
 namespace Aluguru.Marketplace.API.Controllers.V1
 {
@@ -68,20 +71,74 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         }
 
         [HttpPut]
-        [Route("{id}")]
+        [Route("{id}/name")]
         [Authorize(Policy = Policies.UserWriter)]
-        [SwaggerOperation(Summary = "Update a user", Description = "Update a existing user. You need to inform may update the name, document and address")]
+        [SwaggerOperation(Summary = "Update user name")]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> Put(
+        public async Task<ActionResult> UpdateUserName(
             [FromRoute] Guid id,
-            [FromBody] UpdateUserDTO viewModel)
-        {            
-            var command = _mapper.Map<UpdateUserCommand>(viewModel);
-            await _mediatorHandler.SendCommand<UpdateUserCommand, UpdateUserCommandResponse>(command);
+            [FromBody] UpdateUserNameDTO dto)
+        {
+            var command = new UpdateUserNameCommand(id, dto.FullName);
+            await _mediatorHandler.SendCommand<UpdateUserNameCommand, bool>(command);
+            return PutResponse();
+        }
+
+        [HttpPut]
+        [Route("{id}/document")]
+        [Authorize(Policy = Policies.UserWriter)]
+        [SwaggerOperation(Summary = "Update user document")]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task<ActionResult> UpdateUserDocument(
+            [FromRoute] Guid id,
+            [FromBody] UpdateUserDocumentDTO dto)
+        {
+            var command = new UpdateUserDocumentCommand(id, dto.Number, dto.DocumentType);
+            await _mediatorHandler.SendCommand<UpdateUserDocumentCommand, bool>(command);
+            return PutResponse();
+        }
+
+        [HttpPut]
+        [Route("{id}/contact")]
+        [Authorize(Policy = Policies.UserWriter)]
+        [SwaggerOperation(Summary = "Update user contact")]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task<ActionResult> UpdateUserContact(
+            [FromRoute] Guid id,
+            [FromBody] UpdateUserContactDTO dto)
+        {
+            var command = new UpdateUserContactCommand(id, dto.Name, dto.PhoneNumber, dto.Email);
+            await _mediatorHandler.SendCommand<UpdateUserContactCommand, bool>(command);
+            return PutResponse();
+        }
+
+        [HttpPut]
+        [Route("{id}/address")]
+        [Authorize(Policy = Policies.UserWriter)]
+        [SwaggerOperation(Summary = "Update user address")]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task<ActionResult> UpdateUserAddress(
+            [FromRoute] Guid id,
+            [FromBody] UpdateUserAddressDTO dto)
+        {
+            var command = new UpdateUserAddressCommand(id, dto.Street, dto.Number, dto.Neightborhood, dto.City, dto.State, dto.Country, dto.ZipCode, dto.Complement);
+            await _mediatorHandler.SendCommand<UpdateUserAddressCommand, bool>(command);
             return PutResponse();
         }
 

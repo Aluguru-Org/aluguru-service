@@ -1,5 +1,4 @@
 ﻿using Aluguru.Marketplace.Domain;
-using Aluguru.Marketplace.Register.Dtos;
 using PampaDevs.Utils;
 using System;
 using static PampaDevs.Utils.Helpers.IdHelper;
@@ -9,10 +8,9 @@ namespace Aluguru.Marketplace.Register.Domain
     public class Address : Entity
     {
         private Address() : base(NewId()) { }
-        public Address(Guid userId, string street, string number, string neighborhood, string city, string state, string country, string zipCode, string complement)
+        public Address(string street, string number, string neighborhood, string city, string state, string country, string zipCode, string complement)
             : base(NewId())
         {
-            UserId = userId;
             Street = street;
             Number = number;
             Neighborhood = neighborhood;
@@ -37,7 +35,17 @@ namespace Aluguru.Marketplace.Register.Domain
         // Ef Relational
         public virtual User User { get; set; }
 
-        internal void UpdateAddress(AddressDTO address)
+        public override string ToString()
+        {
+            return $"{Street}, {Number} - {Neighborhood}, {City} - {State}, {ZipCode}, {Country}";
+        }
+
+        internal void AssignUser(Guid userId)
+        {
+            UserId = userId;
+        }
+
+        internal void UpdateAddress(Address address)
         {
             Street = address.Street;
             Number = address.Number;

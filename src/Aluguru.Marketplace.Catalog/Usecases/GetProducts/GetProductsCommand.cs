@@ -1,4 +1,4 @@
-﻿using Aluguru.Marketplace.Catalog.Domain;
+﻿using Aluguru.Marketplace.Catalog.Dtos;
 using Aluguru.Marketplace.Domain;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;
 using System;
@@ -19,6 +19,6 @@ namespace Aluguru.Marketplace.Catalog.Usecases.GetProducts
 
     public class GetProductsCommandResponse
     {
-        public PaginatedItem<Product> PaginatedProducts { get; set; }
+        public PaginatedItem<ProductDTO> PaginatedProducts { get; set; }
     }
 }

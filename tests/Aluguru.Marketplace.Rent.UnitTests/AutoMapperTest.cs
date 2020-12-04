@@ -2,7 +2,7 @@
 using Aluguru.Marketplace.Rent.AutoMapper;
 using Xunit;
 
-namespace Aluguru.Marketplace.Rent.UnitTests
+namespace Aluguru.Marketplace.Rent.Tests
 {
     public class AutoMapperTest
     {

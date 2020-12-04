@@ -94,8 +94,9 @@ namespace Aluguru.Marketplace.Register.Data.Seed
 
                     admin.Activate(activationHash);
 
-                    admin.Document = new Document("11111111111111", EDocumentType.CNPJ);
-                    admin.Address = new Address(Guid.Parse("96d1fb97-47e9-4ad5-b07e-448f88defd9c"), "some-street", "some-number", "some-neighborhood", "some-city", "some-state", "some-country", "some-zipcode", "some-complement");
+                    admin.UpdateDocument(new Document("11111111111111", EDocumentType.CNPJ));
+                    admin.UpdateContact(new Contact("Felipe", "51983468863", "admin@aluguru.com.br"));
+                    admin.UpdateAddress(new Address("General Lima e Silva", "480", "Centro Histórico", "Porto Alegre", "RS", "Brasil", "some-zipcode", "ap 02"));
 
                     userRepository.Add(admin);
                 }

@@ -9,14 +9,15 @@ namespace Aluguru.Marketplace.Catalog.Domain
 {
     public class Price : ValueObject
     {
-        public Price(decimal? sellPrice, decimal? dailyRentPrice, List<PeriodPrice> periodRentPrices)
+        public Price(decimal freightPriceKM, decimal? sellPrice, decimal? dailyRentPrice, List<PeriodPrice> periodRentPrices)
         {
+            FreightPriceKM = freightPriceKM;
             SellPrice = sellPrice;
             DailyRentPrice = dailyRentPrice;
             PeriodRentPrices = periodRentPrices;
             ValidateValueObject();
         }
-
+        public decimal FreightPriceKM { get; private set; }
         public decimal? SellPrice { get; private set; }
         public decimal? DailyRentPrice { get; private set; }
         public List<PeriodPrice> PeriodRentPrices { get; private set; }
@@ -36,6 +37,12 @@ namespace Aluguru.Marketplace.Catalog.Domain
             var periodPrice = PeriodRentPrices.FirstOrDefault(x => x.RentPeriodId == rentPeriodId);
 
             return periodPrice?.GetPrice() ?? 0;
+        }
+
+        public void UpdateFreightPriceByKM(decimal price)
+        {
+            Ensure.That<DomainException>(price > 0, "The field FreigthPriceKM from Product cannot be smaller or equal than zero");
+            FreightPriceKM = price;
         }
 
         public void UpdateSellPrice(decimal? price)
@@ -69,6 +76,7 @@ namespace Aluguru.Marketplace.Catalog.Domain
 
         protected override void ValidateValueObject()
         {
+            Ensure.That<DomainException>(FreightPriceKM > 0, "Freight must be greater than zero");
             Ensure.That<DomainException>(SellPrice != null || DailyRentPrice != null || PeriodRentPrices != null, "Price cannot be empty");
 
             if (SellPrice.HasValue) Ensure.That<DomainException>(SellPrice.Value > 0, "The sell price cannot be less than one");
@@ -84,6 +92,7 @@ namespace Aluguru.Marketplace.Catalog.Domain
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
+            yield return FreightPriceKM;
             yield return SellPrice;
             yield return DailyRentPrice;
             yield return PeriodRentPrices;

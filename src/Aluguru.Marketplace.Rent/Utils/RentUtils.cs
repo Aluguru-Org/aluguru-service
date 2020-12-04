@@ -1,7 +1,9 @@
 ﻿using Aluguru.Marketplace.Catalog.Domain;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
 using Aluguru.Marketplace.Rent.Dtos;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Aluguru.Marketplace.Rent.Utils
 {
@@ -44,6 +46,16 @@ namespace Aluguru.Marketplace.Rent.Utils
             }
 
             return notifications;
+        }
+
+        public static int GetRentDays(List<RentPeriod> rentPeriods, AddOrderItemDTO orderItem, Product product)
+        {
+            return product.RentType == ERentType.Indefinite ? orderItem.RentDays : rentPeriods.FirstOrDefault(x => x.Id == orderItem.SelectedRentPeriod.Value).Days;
+        }
+
+        internal static decimal CalculateProductFreigthPrice(Product product, double distance)
+        {
+            return product.Price.FreightPriceKM * (int)Math.Ceiling(distance/1000);
         }
     }
 }

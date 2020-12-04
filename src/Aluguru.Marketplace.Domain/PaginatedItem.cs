@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Aluguru.Marketplace.Domain
 {
-    public class PaginatedItem<TResponse> : ValueObject
+    public class PaginatedItem<TResponse> : ValueObject where TResponse : IDto
     {
         public PaginatedItem(long totalItems, long totalPages, IReadOnlyList<TResponse> items)
         {

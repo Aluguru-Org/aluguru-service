@@ -33,8 +33,9 @@ namespace Aluguru.Marketplace.Rent.Domain
         public Guid UserId { get; private set; }
         public Guid? VoucherId { get; private set; }
         public bool VoucherUsed { get; private set; }
-        public decimal Discount { get; private set; }
+        public decimal Discount { get; private set; }        
         public decimal TotalPrice { get; private set; }
+        public decimal TotalFreigthPrice { get; private set; }
         public EOrderStatus OrderStatus { get; private set; }
         public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;
 
@@ -137,6 +138,7 @@ namespace Aluguru.Marketplace.Rent.Domain
         {
             TotalPrice = _orderItems.Sum(x => x.CalculatePrice());
             CalculateOrderDiscount();
+            CalculateTotalFreigthPrice();
         }
 
         private void CalculateOrderDiscount()
@@ -167,6 +169,11 @@ namespace Aluguru.Marketplace.Rent.Domain
 
             TotalPrice = price < 0 ? 0 : price;
             Discount = discount;
+        }
+
+        private void CalculateTotalFreigthPrice()
+        {
+            TotalFreigthPrice = _orderItems.Sum(x => x.Amount * x.FreigthPrice);
         }
 
         protected override void ValidateEntity()
