@@ -38,10 +38,11 @@ process {
         dotnet dotnet-sonarscanner end /d:sonar.login="684360a5c37971ef20f1e835bb7c1e3281a6a77d"        
     } elseif ($Operation -eq "bootstrap") {
         # Installing necessary dotnet tools
-        dotnet tool install dotnet-sonarscanner
+        # dotnet tool install dotnet-sonarscanner
 
         # Building container images
-        docker-compose build
+        # docker-compose build
+        docker-compose up -d --build
     } elseif($Operation -eq "add-migration") {
         dotnet ef migrations add "$OperationArg1" --project src/Aluguru.Marketplace.Data/Aluguru.Marketplace.Data.csproj --startup-project src/Aluguru.Marketplace.API/Aluguru.Marketplace.API.csproj -v
 	}
