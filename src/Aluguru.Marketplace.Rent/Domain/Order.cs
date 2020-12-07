@@ -33,9 +33,11 @@ namespace Aluguru.Marketplace.Rent.Domain
         public Guid UserId { get; private set; }
         public Guid? VoucherId { get; private set; }
         public bool VoucherUsed { get; private set; }
+        public bool FreigthCalculated { get; private set; }
         public decimal Discount { get; private set; }        
         public decimal TotalPrice { get; private set; }
         public decimal TotalFreigthPrice { get; private set; }
+        public string DeliveryAddress { get; private set; }
         public EOrderStatus OrderStatus { get; private set; }
         public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;
 
@@ -52,6 +54,12 @@ namespace Aluguru.Marketplace.Rent.Domain
         {
             Ensure.That(OrderStatus == EOrderStatus.Initiated, "The order status cannot be mark as paid unless it has been initiated");
             OrderStatus = EOrderStatus.PaymentConfirmed;
+            DateUpdated = NewDateTime();
+        }
+
+        public void MarkAsFreigthCalculated()
+        {
+            FreigthCalculated = true;
             DateUpdated = NewDateTime();
         }
 
@@ -82,6 +90,28 @@ namespace Aluguru.Marketplace.Rent.Domain
             existingItem.UpdateAmount(amount);
 
             CalculateOrderPrice();
+
+            DateUpdated = NewDateTime();
+        }
+
+        public void UpdateItemFreigthPrice(Guid itemId, decimal freigthPrice)
+        {
+            var existingItem = _orderItems.FirstOrDefault(x => x.Id == itemId);
+
+            Ensure.NotNull(existingItem, "The item does not belong to the order");
+
+            existingItem.UpdateFreigthPrice(freigthPrice);
+
+            CalculateOrderPrice();
+
+            DateUpdated = NewDateTime();
+        }
+
+        public void UpdateDeliveryAddress(string address)
+        {
+            Ensure.NotNullOrEmpty(address, "Address cannot be null or empty");
+
+            DeliveryAddress = address;
 
             DateUpdated = NewDateTime();
         }

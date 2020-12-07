@@ -4,5 +4,6 @@
     {
         public string ApiKey { get; set; }
         public string DistanceMatrixUri { get; set; }
+        public string GeocodeUri { get; set; }
     }
 }

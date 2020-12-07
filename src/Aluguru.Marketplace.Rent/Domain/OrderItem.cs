@@ -8,19 +8,19 @@ namespace Aluguru.Marketplace.Rent.Domain
 {
     public class OrderItem : Entity
     {
-        public OrderItem(Guid companyId, Guid productId, string productUri, string productName, DateTime rentStartDate, int rentDays, int amount, decimal productPrice, decimal freigthPrice)
+        public OrderItem(Guid companyId, Guid productId, string productUri, string productName, string productImageUrl, DateTime rentStartDate, int rentDays, int amount, decimal productPrice)
             : base(NewId())
         {
             CompanyId = companyId;
             OrderItemStatus = EOrderItemStatus.Initiated;
-            ProductId = productId;
+            ProductId = productId;  
             ProductUri = productUri;
+            ProductImageUrl = productImageUrl;
             ProductName = productName;
             RentStartDate = rentStartDate;
             RentDays = rentDays;
             Amount = amount;
             ProductPrice = productPrice;
-            FreigthPrice = freigthPrice;
 
             ValidateEntity();
         }
@@ -28,6 +28,7 @@ namespace Aluguru.Marketplace.Rent.Domain
         public Guid OrderId { get; private set; }
         public Guid ProductId { get; private set; }
         public string ProductUri { get; private set; }
+        public string ProductImageUrl { get; private set; }
         public EOrderItemStatus OrderItemStatus { get; set; }
         public DateTime RentStartDate { get; set; }
         public int RentDays { get; set; }
@@ -66,6 +67,12 @@ namespace Aluguru.Marketplace.Rent.Domain
             Ensure.That(amount > 0, "The amount cannot be smaller than 0");
 
             Amount = amount;
+        }
+
+        internal void UpdateFreigthPrice(decimal freigthPrice)
+        {
+            Ensure.That(freigthPrice > 0, "The FreigthPrice cannot be smaller than 0");
+            FreigthPrice = freigthPrice;
         }
 
         protected override void ValidateEntity()

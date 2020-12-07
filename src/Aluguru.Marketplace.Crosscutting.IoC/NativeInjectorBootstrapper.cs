@@ -79,6 +79,9 @@ using Aluguru.Marketplace.Register.Usecases.UpadeUserAddress;
 using Aluguru.Marketplace.Register.Usecases.UpadeUserDocument;
 using Aluguru.Marketplace.Register.Usecases.UpadeUserContact;
 using Aluguru.Marketplace.Crosscutting.Google;
+using Aluguru.Marketplace.Rent.Usecases.CalculateOrderFreigth;
+using Aluguru.Marketplace.Crosscutting.Viacep;
+using Aluguru.Marketplace.Rent.Usecases.OrderPreview;
 
 namespace Aluguru.Marketplace.Crosscutting.IoC
 {
@@ -110,6 +113,7 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             services.Configure<NotificationSettings>(configuration.GetSection("NotificationSettings"));
             services.Configure<IuguSettings>(configuration.GetSection("IuguSettings"));
             services.Configure<GoogleSettings>(configuration.GetSection("GoogleSettings"));
+            services.Configure<ViacepSettings>(configuration.GetSection("ViacepSettings"));
 
             return services;
         }
@@ -206,12 +210,14 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             services.AddScoped<IRequestHandler<StartOrderCommand, StartOrderCommandResponse>, StartOrderHandler>();
             services.AddScoped<IRequestHandler<CancelOrderProcessingCommand, bool>, CancelOrderProcessingHandler>();
             services.AddScoped<IRequestHandler<AddOrderItemCommand, AddOrderItemCommandResponse>, AddOrderItemHandler>();
+            services.AddScoped<IRequestHandler<CalculateOrderFreigthCommand, CalculateOrderFreigthCommandResponse>, CalculateOrderFreigthHandler>();
             services.AddScoped<IRequestHandler<UpdateOrderItemAmountCommand, UpdateOrderItemAmountCommandResponse>, UpdateOrderItemAmountHandler>();
             services.AddScoped<IRequestHandler<RemoveOrderItemCommand, RemoveOrderItemCommandResponse>, RemoveOrderItemHandler>();
             services.AddScoped<IRequestHandler<ApplyVoucherCommand, ApplyVoucherCommandResponse>, ApplyVoucherHandler>();
             services.AddScoped<IRequestHandler<RemoveVoucherCommand, DeleteVoucherCommandResponse>, RemoveVoucherHandler>();
             services.AddScoped<IRequestHandler<DeleteOrderCommand, bool>, DeleteOrderHandler>();
             services.AddScoped<IRequestHandler<ConfirmOrderPaymentCommand, bool>, ConfirmOrderPaymentHandler>();
+            services.AddScoped<IRequestHandler<OrderPreviewCommand, OrderPreviewCommandResponse>, OrderPreviewHandler>();
 
             // Voucher 
             services.AddScoped<IRequestHandler<GetVouchersCommand, GetVouchersCommandResponse>, GetVouchersHandler>();
@@ -238,6 +244,8 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             services.AddScoped<IMailingService, MailingService>();
             services.AddScoped<IIuguService, IuguService>();
             services.AddScoped<IDistanceMatrixService, DistanceMatrixService>();
+            services.AddScoped<IGeocodeService, GeocodeService>();
+            services.AddScoped<ICepService, CepService>();
 
             return services;
         }

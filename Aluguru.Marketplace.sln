@@ -99,7 +99,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{DFAAA1CC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aluguru.Marketplace.Newsletter.UnitTests", "tests\Aluguru.Marketplace.Newsletter.UnitTests\Aluguru.Marketplace.Newsletter.UnitTests.csproj", "{6AAF5488-F146-42D3-8FF5-6BD2C63CBB49}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aluguru.Marketplace.Crosscutting.Google", "src\Aluguru.Marketplace.Crosscutting.Google\Aluguru.Marketplace.Crosscutting.Google.csproj", "{D3264310-837C-4D02-91F2-E4078E1BB374}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aluguru.Marketplace.Crosscutting.Google", "src\Aluguru.Marketplace.Crosscutting.Google\Aluguru.Marketplace.Crosscutting.Google.csproj", "{D3264310-837C-4D02-91F2-E4078E1BB374}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aluguru.Marketplace.Crosscutting.Viacep", "src\Aluguru.Marketplace.Crosscutting.Viacep\Aluguru.Marketplace.Crosscutting.Viacep.csproj", "{C0D63B5D-E8F8-4E52-BC6D-A9406A4C755F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -203,6 +205,10 @@ Global
 		{D3264310-837C-4D02-91F2-E4078E1BB374}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3264310-837C-4D02-91F2-E4078E1BB374}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3264310-837C-4D02-91F2-E4078E1BB374}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0D63B5D-E8F8-4E52-BC6D-A9406A4C755F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0D63B5D-E8F8-4E52-BC6D-A9406A4C755F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0D63B5D-E8F8-4E52-BC6D-A9406A4C755F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0D63B5D-E8F8-4E52-BC6D-A9406A4C755F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -250,6 +256,7 @@ Global
 		{DFAAA1CC-36A7-4F56-A50B-4A29C03B7678} = {A3535B01-10E6-4CB8-B7C7-10E2B48140A1}
 		{6AAF5488-F146-42D3-8FF5-6BD2C63CBB49} = {DFAAA1CC-36A7-4F56-A50B-4A29C03B7678}
 		{D3264310-837C-4D02-91F2-E4078E1BB374} = {4583262A-C887-40E3-8D5E-2A0C67406B1F}
+		{C0D63B5D-E8F8-4E52-BC6D-A9406A4C755F} = {4583262A-C887-40E3-8D5E-2A0C67406B1F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7D3D5A09-667D-49DA-B8AA-6194FE3C3F51}

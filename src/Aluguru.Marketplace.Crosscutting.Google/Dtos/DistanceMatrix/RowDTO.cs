@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Aluguru.Marketplace.Crosscutting.Google.Dtos
+namespace Aluguru.Marketplace.Crosscutting.Google.Dtos.DistanceMatrix
 {
     public class RowDTO
     {

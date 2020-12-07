@@ -25,6 +25,8 @@ using Aluguru.Marketplace.Rent.Usecases.StartOrder;
 using Aluguru.Marketplace.Security.User;
 using Aluguru.Marketplace.Rent.Usecases.RemoveOrderItem;
 using Aluguru.Marketplace.Rent.Usecases.UpdateOrderItemAmount;
+using Aluguru.Marketplace.Rent.Usecases.CalculateOrderFreigth;
+using Aluguru.Marketplace.Rent.Usecases.OrderPreview;
 
 namespace Aluguru.Marketplace.API.Controllers.V1
 {
@@ -126,6 +128,21 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         }
 
         [HttpPut]
+        [Route("{id}/calculate-order-freigth")]
+        [Authorize(Policy = Policies.OrderWriter)]
+        [SwaggerOperation(Summary = "Calculate order freigth")]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CalculateOrderFreigthCommandResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task<ActionResult> CalculateOrderFreigth([FromRoute] Guid id, [FromBody] CalculateOrderFreigthDTO dto)
+        {
+            var command = new CalculateOrderFreigthCommand(_aspNetUser.GetUserId(), id, dto.Number, dto.Complement, dto.ZipCode);
+            var response = await _mediatorHandler.SendCommand<CalculateOrderFreigthCommand, CalculateOrderFreigthCommandResponse>(command);
+            return PutResponse(response);
+        }
+
+        [HttpPut]
         [Route("{id}/update-item-amount")]
         [Authorize(Policy = Policies.OrderWriter)]
         [SwaggerOperation(Summary = "Update item amount")]
@@ -200,5 +217,22 @@ namespace Aluguru.Marketplace.API.Controllers.V1
             var response = await _mediatorHandler.SendCommand<RemoveVoucherCommand, DeleteVoucherCommandResponse>(command);
             return PutResponse(response);
         }
+
+        [HttpPost]
+        [Route("preview")]
+        [AllowAnonymous]
+        [SwaggerOperation(Summary = "Order preview")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrderPreviewCommandResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task<ActionResult> Post([FromBody] OrderPreviewDTO dto)
+        {
+            var command = new OrderPreviewCommand(dto);
+            var response = await _mediatorHandler.SendCommand<OrderPreviewCommand, OrderPreviewCommandResponse>(command);
+            return PostResponse(response);
+        }
+
     }
 }

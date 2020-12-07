@@ -2,9 +2,6 @@
 using Aluguru.Marketplace.Rent.Domain;
 using Aluguru.Marketplace.Rent.Usecases.CreateOrder;
 using Aluguru.Marketplace.Rent.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Aluguru.Marketplace.Rent.Usecases.CreateVoucher;
 
 namespace Aluguru.Marketplace.Rent.AutoMapper

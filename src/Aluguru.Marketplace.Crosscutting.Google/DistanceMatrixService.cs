@@ -4,14 +4,14 @@ using System.Text.Json;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
-using Aluguru.Marketplace.Crosscutting.Google.Dtos;
+using Aluguru.Marketplace.Crosscutting.Google.Dtos.DistanceMatrix;
 using System.Linq;
 
 namespace Aluguru.Marketplace.Crosscutting.Google
 {
     public interface IDistanceMatrixService
     {
-        public Task<double> Distance(string fromAddress, string toAddress);
+        public Task<DistanceMatrixResponse> Distance(string fromAddress, string toAddress);
     }
 
     public class DistanceMatrixService : IDistanceMatrixService
@@ -23,7 +23,7 @@ namespace Aluguru.Marketplace.Crosscutting.Google
             _settings = options.Value;
         }
 
-        public async Task<double> Distance(string fromAddress, string toAddress)
+        public async Task<DistanceMatrixResponse> Distance(string fromAddress, string toAddress)
         {
             using var client = new HttpClient();
 
@@ -47,7 +47,24 @@ namespace Aluguru.Marketplace.Crosscutting.Google
             var responseContent = await response.Content.ReadAsStringAsync();
             var distanceMatrix = JsonSerializer.Deserialize<DistanceMatrixDTO>(responseContent);
 
-            return distanceMatrix.Rows.First().Elements.First().Distance.Value;
+            if (distanceMatrix.Rows == null && distanceMatrix.Rows.Length == 0)
+            {
+                return new DistanceMatrixResponse(false);
+            }
+
+            var row = distanceMatrix.Rows.First();
+            if (row.Elements == null && row.Elements.Length == 0)
+            {
+                return new DistanceMatrixResponse(false);
+            }
+
+            var element = row.Elements.First();
+            if (element.Status == "ZERO_RESULTS")
+            {
+                return new DistanceMatrixResponse(false);
+            }
+
+            return new DistanceMatrixResponse(true, element.Distance.Value, element.Duration.Value);
         }
     }
 }

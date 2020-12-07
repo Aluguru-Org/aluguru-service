@@ -2,6 +2,7 @@
 using PampaDevs.Utils;
 using System;
 using static PampaDevs.Utils.Helpers.IdHelper;
+using static PampaDevs.Utils.Helpers.DateTimeHelper;
 
 namespace Aluguru.Marketplace.Register.Domain
 {
@@ -30,7 +31,7 @@ namespace Aluguru.Marketplace.Register.Domain
         public string State { get; private set; }
         public string Country { get; private set; }
         public string ZipCode { get; private set; }
-        public string Complement { get; set; }
+        public string Complement { get; private set; }
 
         // Ef Relational
         public virtual User User { get; set; }
@@ -54,6 +55,9 @@ namespace Aluguru.Marketplace.Register.Domain
             State = address.State;
             Country = address.Country;
             ZipCode = address.ZipCode;
+            Complement = address.Complement;
+
+            DateUpdated = NewDateTime();
         }
 
         protected override void ValidateEntity()

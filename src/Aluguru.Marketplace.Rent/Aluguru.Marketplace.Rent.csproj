@@ -12,6 +12,7 @@
     <ProjectReference Include="..\Aluguru.Marketplace.Catalog\Aluguru.Marketplace.Catalog.csproj" />
     <ProjectReference Include="..\Aluguru.Marketplace.Communication\Aluguru.Marketplace.Communication.csproj" />
     <ProjectReference Include="..\Aluguru.Marketplace.Crosscutting.Google\Aluguru.Marketplace.Crosscutting.Google.csproj" />
+    <ProjectReference Include="..\Aluguru.Marketplace.Crosscutting.Viacep\Aluguru.Marketplace.Crosscutting.Viacep.csproj" />
     <ProjectReference Include="..\Aluguru.Marketplace.Domain\Aluguru.Marketplace.Domain.csproj" />
     <ProjectReference Include="..\Aluguru.Marketplace.Infrastructure.Data\Aluguru.Marketplace.Infrastructure.Data.csproj" />
     <ProjectReference Include="..\Aluguru.Marketplace.Infrastructure.Bus\Aluguru.Marketplace.Infrastructure.Bus.csproj" />
