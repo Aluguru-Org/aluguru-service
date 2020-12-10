@@ -71,7 +71,7 @@ namespace Aluguru.Marketplace.Rent.Domain
 
         internal void UpdateFreigthPrice(decimal freigthPrice)
         {
-            Ensure.That(freigthPrice > 0, "The FreigthPrice cannot be smaller than 0");
+            Ensure.That(freigthPrice >= 0, "The FreigthPrice cannot be smaller than 0");
             FreigthPrice = freigthPrice;
         }
 

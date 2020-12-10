@@ -137,7 +137,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
             [FromRoute] Guid id,
             [FromBody] UpdateUserAddressDTO dto)
         {
-            var command = new UpdateUserAddressCommand(id, dto.Street, dto.Number, dto.Neightborhood, dto.City, dto.State, dto.Country, dto.ZipCode, dto.Complement);
+            var command = new UpdateUserAddressCommand(id, dto.Street, dto.Number, dto.Neighborhood, dto.City, dto.State, dto.Country, dto.ZipCode, dto.Complement);
             await _mediatorHandler.SendCommand<UpdateUserAddressCommand, bool>(command);
             return PutResponse();
         }

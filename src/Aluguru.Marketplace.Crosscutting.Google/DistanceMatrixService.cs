@@ -64,6 +64,11 @@ namespace Aluguru.Marketplace.Crosscutting.Google
                 return new DistanceMatrixResponse(false);
             }
 
+            if (element.Distance.Value < 0)
+            {
+                throw new Exception($"Distance between [{fromAddress}] and [{toAddress}] is negative. Distance: {element.Distance.Value}");
+            }
+
             return new DistanceMatrixResponse(true, element.Distance.Value, element.Duration.Value);
         }
     }

@@ -94,6 +94,7 @@ namespace Aluguru.Marketplace.Register.AutoMapper
             CreateMap<User, UserDTO>()
                 .ConstructUsing((x, rc) =>
                 {
+                    var contact = rc.Mapper.Map<ContactDTO>(x.Contact);
                     var document = rc.Mapper.Map<DocumentDTO>(x.Document);
                     var address = rc.Mapper.Map<AddressDTO>(x.Address);
 
@@ -102,6 +103,7 @@ namespace Aluguru.Marketplace.Register.AutoMapper
                         Id = x.Id,
                         FullName = x.FullName,
                         Email = x.Email,
+                        Contact = contact,
                         Address = address,
                         Document = document
                     };
