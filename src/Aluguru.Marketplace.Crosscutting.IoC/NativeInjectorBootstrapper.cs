@@ -26,7 +26,7 @@ using Aluguru.Marketplace.Register.Usecases.GetUserRoles;
 using Aluguru.Marketplace.Register.Usecases.CreateUserRole;
 using Aluguru.Marketplace.Register.Usecases.CreateUser;
 using Aluguru.Marketplace.Register.Usecases.DeleteUser;
-using Aluguru.Marketplace.Register.Usecases.LogInUser;
+using Aluguru.Marketplace.Register.Usecases.LogInBackofficeClient;
 using Aluguru.Marketplace.Register.Services;
 using Aluguru.Marketplace.Register.Usecases.GetUsersByRole;
 using Aluguru.Marketplace.Register.Usecases.UpadeUserName;
@@ -82,6 +82,7 @@ using Aluguru.Marketplace.Crosscutting.Google;
 using Aluguru.Marketplace.Rent.Usecases.CalculateOrderFreigth;
 using Aluguru.Marketplace.Crosscutting.Viacep;
 using Aluguru.Marketplace.Rent.Usecases.OrderPreview;
+using Aluguru.Marketplace.Register.Usecases.LogInClient;
 
 namespace Aluguru.Marketplace.Crosscutting.IoC
 {
@@ -147,7 +148,8 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             //
 
             // AuthUser
-            services.AddScoped<IRequestHandler<LogInUserCommand, LogInUserCommandResponse>, LogInUserHandler>();
+            services.AddScoped<IRequestHandler<LogInUserBackofficeCommand, LogInUserBackofficeCommandResponse>, LogInUserBackofficeHandler>();
+            services.AddScoped<IRequestHandler<LogInUserClientCommand, LogInUserClientCommandResponse>, LogInUserClientHandler>();
             services.AddScoped<ITokenBuilderService, TokenBuilderService>();
 
             // User Role

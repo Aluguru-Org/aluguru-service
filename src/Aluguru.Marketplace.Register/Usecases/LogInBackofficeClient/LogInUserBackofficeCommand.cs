@@ -2,11 +2,11 @@
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;
 using System;
 
-namespace Aluguru.Marketplace.Register.Usecases.LogInUser
+namespace Aluguru.Marketplace.Register.Usecases.LogInBackofficeClient
 {
-    public class LogInUserCommand : Command<LogInUserCommandResponse>
+    public class LogInUserBackofficeCommand : Command<LogInUserBackofficeCommandResponse>
     {
-        public LogInUserCommand(string username, string password)
+        public LogInUserBackofficeCommand(string username, string password)
         {
             Email = username;
             Password = password;
@@ -17,21 +17,21 @@ namespace Aluguru.Marketplace.Register.Usecases.LogInUser
 
         public override bool IsValid()
         {
-            ValidationResult = new LogInUserCommandValidator().Validate(this);
+            ValidationResult = new LogInUserBackofficeCommandValidator().Validate(this);
             return ValidationResult.IsValid;
         }
     }
 
-    public class LogInUserCommandValidator : AbstractValidator<LogInUserCommand>
+    public class LogInUserBackofficeCommandValidator : AbstractValidator<LogInUserBackofficeCommand>
     {
-        public LogInUserCommandValidator()
+        public LogInUserBackofficeCommandValidator()
         {
             RuleFor(x => x.Email).NotEmpty();
             RuleFor(x => x.Password).NotEmpty();
         }
     }
 
-    public class LogInUserCommandResponse
+    public class LogInUserBackofficeCommandResponse
     {
         public Guid UserId { get; set; }
         public string Token { get; set; }

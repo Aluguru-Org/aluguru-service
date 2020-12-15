@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Aluguru.Marketplace.Register.Usecases.CreateUser;
-using Aluguru.Marketplace.Register.Usecases.LogInUser;
+using Aluguru.Marketplace.Register.Usecases.LogInBackofficeClient;
 using Aluguru.Marketplace.Register.Dtos;
 using Aluguru.Marketplace.Register.Domain;
 using System;
@@ -66,8 +66,8 @@ namespace Aluguru.Marketplace.Register.AutoMapper
                 .ForMember(x => x.DateCreated, c => c.Ignore())
                 .ForMember(x => x.DateUpdated, c => c.Ignore());
 
-            CreateMap<LoginUserDTO, LogInUserCommand>()
-                .ConstructUsing(x => new LogInUserCommand(x.Email, x.Password))
+            CreateMap<LoginUserDTO, LogInUserBackofficeCommand>()
+                .ConstructUsing(x => new LogInUserBackofficeCommand(x.Email, x.Password))
                 .ForMember(x => x.Timestamp, c => c.Ignore())
                 .ForMember(x => x.MessageType, c => c.Ignore())
                 .ForMember(x => x.ValidationResult, c => c.Ignore());

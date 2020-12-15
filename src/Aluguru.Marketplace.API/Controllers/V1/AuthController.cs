@@ -9,9 +9,10 @@ using Aluguru.Marketplace.API.Controllers.V1.Attributes;
 using Aluguru.Marketplace.API.Models;
 using Aluguru.Marketplace.Infrastructure.Bus.Communication;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
-using Aluguru.Marketplace.Register.Usecases.LogInUser;
+using Aluguru.Marketplace.Register.Usecases.LogInBackofficeClient;
 using Aluguru.Marketplace.Register.Dtos;
 using Swashbuckle.AspNetCore.Annotations;
+using Aluguru.Marketplace.Register.Usecases.LogInClient;
 
 namespace Aluguru.Marketplace.API.Controllers.V1
 {
@@ -25,18 +26,33 @@ namespace Aluguru.Marketplace.API.Controllers.V1
             : base(notifications, mediator, mapper) { }
 
         [HttpPost]
-        [Route("login")]
-        [SwaggerOperation(Summary = "LogIn a user", Description = "Try to LogIn a existing user")]
+        [Route("client")]
+        [SwaggerOperation(Summary = "LogIn a client user", Description = "Try to LogIn a existing user")]
         [Consumes("application/json")]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(LogInUserCommandResponse))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(LogInUserClientCommandResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> LogIn([FromBody] LoginUserDTO loginuserDTO)
+        public async Task<ActionResult> LogInClient([FromBody] LoginUserDTO loginuserDTO)
         {
-            var command = new LogInUserCommand(loginuserDTO.Email, loginuserDTO.Password);
-            var response = await _mediatorHandler.SendCommand<LogInUserCommand, LogInUserCommandResponse>(command);
-            return PostResponse(nameof(LogIn), null, response);
+            var command = new LogInUserClientCommand(loginuserDTO.Email, loginuserDTO.Password);
+            var response = await _mediatorHandler.SendCommand<LogInUserClientCommand, LogInUserClientCommandResponse>(command);
+            return PostResponse(nameof(LogInClient), null, response);
+        }
+
+        [HttpPost]
+        [Route("backoffice")]
+        [SwaggerOperation(Summary = "LogIn a backoffice user", Description = "Try to LogIn a existing user")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(LogInUserBackofficeCommandResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse<List<string>>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task<ActionResult> LogInBackoffice([FromBody] LoginUserDTO loginuserDTO)
+        {
+            var command = new LogInUserBackofficeCommand(loginuserDTO.Email, loginuserDTO.Password);
+            var response = await _mediatorHandler.SendCommand<LogInUserBackofficeCommand, LogInUserBackofficeCommandResponse>(command);
+            return PostResponse(nameof(LogInBackoffice), null, response);
         }
     }
 }
