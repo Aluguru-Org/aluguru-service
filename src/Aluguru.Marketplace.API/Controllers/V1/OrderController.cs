@@ -106,7 +106,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> Post([FromRoute] Guid id)
-        {
+        {            
             var command = new StartOrderCommand(_aspNetUser.GetUserId(), id);
             var response = await _mediatorHandler.SendCommand<StartOrderCommand, StartOrderCommandResponse>(command);
             return PostResponse(response);
@@ -204,7 +204,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
 
         [HttpPut]
         [Route("{id}/remove-voucher")]
-        [Authorize(Policy = Policies.VoucherWriter)]
+        [Authorize(Policy = Policies.OrderWriter)]
         [SwaggerOperation(Summary = "Remove order voucher ")]
         [Consumes("application/json")]
         [Produces("application/json")]

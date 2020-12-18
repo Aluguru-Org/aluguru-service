@@ -1,11 +1,11 @@
 ﻿using Aluguru.Marketplace.Infrastructure.Bus.Messages;
 using System;
 
-namespace Aluguru.Marketplace.Communication.IntegrationEvents
+namespace Aluguru.Marketplace.Notification.Usecases.SendOrderStartedEmail
 {
-    public class OrderPaidEvent : Event
+    public class SendOrderStartedEmailCommand : Command<bool>
     {
-        public OrderPaidEvent(Guid orderId, string userName, string userEmail)
+        public SendOrderStartedEmailCommand(Guid orderId, string userName, string userEmail)
         {
             OrderId = orderId;
             UserName = userName;

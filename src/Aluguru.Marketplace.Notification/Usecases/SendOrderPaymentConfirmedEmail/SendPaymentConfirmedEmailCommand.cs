@@ -1,11 +1,11 @@
 ﻿using Aluguru.Marketplace.Infrastructure.Bus.Messages;
 using System;
 
-namespace Aluguru.Marketplace.Communication.IntegrationEvents
+namespace Aluguru.Marketplace.Notification.Usecases.SendOrderPaymentConfirmedEmail
 {
-    public class OrderPaidEvent : Event
+    public class SendPaymentConfirmedEmailCommand : Command<bool>
     {
-        public OrderPaidEvent(Guid orderId, string userName, string userEmail)
+        public SendPaymentConfirmedEmailCommand(Guid orderId, string userName, string userEmail)
         {
             OrderId = orderId;
             UserName = userName;

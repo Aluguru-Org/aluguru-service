@@ -83,6 +83,8 @@ using Aluguru.Marketplace.Rent.Usecases.CalculateOrderFreigth;
 using Aluguru.Marketplace.Crosscutting.Viacep;
 using Aluguru.Marketplace.Rent.Usecases.OrderPreview;
 using Aluguru.Marketplace.Register.Usecases.LogInClient;
+using Aluguru.Marketplace.Notification.Usecases.SendOrderPaymentConfirmedEmail;
+using Aluguru.Marketplace.Notification.Usecases.SendOrderStartedEmail;
 
 namespace Aluguru.Marketplace.Crosscutting.IoC
 {
@@ -236,8 +238,12 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             //
             // ===================== Notification Context =====================
             //
-            services.AddScoped<INotificationHandler<UserRegisteredEvent>, UserRegisteredHandler>();
+            services.AddScoped<INotificationHandler<UserRegisteredEvent>, NotificationHandler>();
+            services.AddScoped<INotificationHandler<OrderStockAcceptedEvent>, NotificationHandler>();
+            services.AddScoped<INotificationHandler<OrderPaidEvent>, NotificationHandler>();
             services.AddScoped<IRequestHandler<SendAccountActivationEmailCommand, bool>, SendAccountActivationEmailHandler>();
+            services.AddScoped<IRequestHandler<SendPaymentConfirmedEmailCommand, bool>, SendPaymentConfirmedEmailHandler>();
+            services.AddScoped<IRequestHandler<SendOrderStartedEmailCommand, bool>, SendOrderStartedEmailHandler>();
 
             //
             // ===================== Crosscutting =====================

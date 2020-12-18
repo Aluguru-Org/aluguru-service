@@ -1,7 +1,5 @@
 ﻿using Aluguru.Marketplace.Infrastructure.Bus.Messages;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Aluguru.Marketplace.Notification.Usecases.SendAccountActivationEmail
 {

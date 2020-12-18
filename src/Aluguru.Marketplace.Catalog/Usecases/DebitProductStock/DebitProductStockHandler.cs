@@ -62,6 +62,8 @@ namespace Aluguru.Marketplace.Catalog.Usecases.DebitProductStock
                 {
                     productRepository.Update(products[i]);
                 }
+
+                await _mediatorHandler.PublishEvent(new OrderStockAcceptedEvent(command.Order));
                 return true;
             }
             else

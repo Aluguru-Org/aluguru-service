@@ -2,6 +2,8 @@
 using Aluguru.Marketplace.Domain;
 using Aluguru.Marketplace.Infrastructure.Bus.Communication;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages.DomainNotifications;
+using Aluguru.Marketplace.Register.Domain;
+using Aluguru.Marketplace.Register.Domain.Repositories;
 using Aluguru.Marketplace.Rent.Data.Repositories;
 using Aluguru.Marketplace.Rent.Domain;
 using Aluguru.Marketplace.Rent.Dtos;
@@ -29,9 +31,11 @@ namespace Aluguru.Marketplace.Rent.Usecases.StartOrder
 
         public async Task<StartOrderCommandResponse> Handle(StartOrderCommand command, CancellationToken cancellationToken)
         {
+            var userQueryRepository = _unitOfWork.QueryRepository<User>();
             var orderQueryRepository = _unitOfWork.QueryRepository<Order>();
             var orderRepository = _unitOfWork.Repository<Order>();
-
+            
+            var user = await userQueryRepository.GetUserAsync(command.UserId);
             var order = await orderQueryRepository.GetOrderAsync(command.OrderId, false);
 
             if (order == null)
@@ -50,7 +54,9 @@ namespace Aluguru.Marketplace.Rent.Usecases.StartOrder
 
             var dto = new Communication.Dtos.OrderDTO(
                 order.Id, 
-                order.UserId, 
+                order.UserId,
+                user.FullName,
+                user.Email,
                 order.TotalPrice, 
                 new List<Communication.Dtos.OrderItemDTO>(
                     order.OrderItems.Select(x => new Communication.Dtos.OrderItemDTO(

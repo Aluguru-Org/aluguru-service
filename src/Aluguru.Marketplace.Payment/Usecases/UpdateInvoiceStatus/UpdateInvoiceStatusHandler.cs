@@ -1,6 +1,8 @@
 ﻿using Aluguru.Marketplace.Communication.IntegrationEvents;
 using Aluguru.Marketplace.Domain;
 using Aluguru.Marketplace.Payment.Data.Repositories;
+using Aluguru.Marketplace.Register.Domain;
+using Aluguru.Marketplace.Register.Domain.Repositories;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,17 +19,20 @@ namespace Aluguru.Marketplace.Payment.Usecases.UpdateInvoiceStatus
 
         public async Task<bool> Handle(UpdateInvoiceStatusCommand command, CancellationToken cancellationToken)
         {
-            var queryRepository = _unitOfWork.QueryRepository<Domain.Payment>();
-            var repository = _unitOfWork.Repository<Domain.Payment>();
+            var paymentQueryRepository = _unitOfWork.QueryRepository<Domain.Payment>();
+            var userQueryRepository = _unitOfWork.QueryRepository<User>();
 
-            var payment = await queryRepository.GetPaymentByInvoiceIdAsync(command.Id);
+            var repository = _unitOfWork.Repository<Domain.Payment>();            
+
+            var payment = await paymentQueryRepository.GetPaymentByInvoiceIdAsync(command.Id);
+            var user = await userQueryRepository.GetUserAsync(payment.UserId);
 
             if (command.Status == "paid")
             {
                 payment.MarkAsPaid();
             }
 
-            payment.AddEvent(new OrderPaidEvent(payment.OrderId));
+            payment.AddEvent(new OrderPaidEvent(payment.OrderId, user.FullName, user.Email));
 
             repository.Update(payment);
 

@@ -34,6 +34,7 @@ namespace Aluguru.Marketplace.Register.Domain.Jwt
         public JwtTokenBuilder WithJwtClaims()
         {
             _claims.Add(new Claim(JwtRegisteredClaimNames.Sub, _user.Id.ToString()));
+            _claims.Add(new Claim("name", _user.FullName));
             _claims.Add(new Claim(JwtRegisteredClaimNames.Email, _user.Email));
             _claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
             _claims.Add(new Claim(JwtRegisteredClaimNames.Nbf, ToUnixEpochDate(NewDateTime()).ToString()));

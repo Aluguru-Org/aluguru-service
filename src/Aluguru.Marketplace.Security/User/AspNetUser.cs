@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 
 namespace Aluguru.Marketplace.Security.User
@@ -30,6 +31,11 @@ namespace Aluguru.Marketplace.Security.User
         public Guid GetUserId()
         {
             return IsAutenticated() ? Guid.Parse(_accessor.HttpContext.User.GetUserId()) : Guid.Empty;
+        }
+
+        public string GetUserName()
+        {
+            return IsAutenticated() ? _accessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "name")?.Value : "";
         }
 
         public string GetUserEmail()
