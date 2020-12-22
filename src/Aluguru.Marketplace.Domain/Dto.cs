@@ -1,14 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using PampaDevs.Utils;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using PampaDevs.Utils;
 
 namespace Aluguru.Marketplace.Domain
 {
     public interface IDto
     {        
-    }
+    }        
 
     public class PaginateCriteria : IDto
     {
@@ -50,7 +46,7 @@ namespace Aluguru.Marketplace.Domain
 
         public PaginateCriteria SetPageSize(int pageSize)
         {
-            Ensure.That<ValidationException>(pageSize >= 0, "PageSize should not be less than zero.");
+            Ensure.That<ValidationException>(pageSize >= 0, "Page size should not be less than zero.");
 
             PageSize = pageSize;
             return this;
@@ -58,7 +54,7 @@ namespace Aluguru.Marketplace.Domain
 
         public PaginateCriteria SetCurrentPage(int currentPage)
         {
-            Ensure.That<ValidationException>(currentPage >= 0, "CurrentPage should not be less than zero.");
+            Ensure.That<ValidationException>(currentPage >= 0, "Current page should not be less than zero.");
 
             CurrentPage = currentPage;
             return this;
