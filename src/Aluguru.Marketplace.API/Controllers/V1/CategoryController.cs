@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Aluguru.Marketplace.Catalog.Usecases.AddCategoryImage;
 using Aluguru.Marketplace.Catalog.Usecases.DeleteCategoryImage;
+using Aluguru.Marketplace.Catalog.Usecases.GetCategory;
 
 namespace Aluguru.Marketplace.API.Controllers.V1
 {
@@ -44,6 +45,21 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         public async Task<ActionResult> Get()
         {
             var response = await _mediatorHandler.SendCommand<GetCategoriesCommand, GetCategoriesCommandResponse>(new GetCategoriesCommand());
+            return GetResponse(response);
+        }
+
+        [HttpGet]
+        [Route("{category}")]
+        [AllowAnonymous]
+        [SwaggerOperation(Summary = "Get a category")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetCategoriesCommandResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task<ActionResult> GetById([SwaggerParameter("The category uri", Required = true)][FromRoute] string category)
+        {
+            var response = await _mediatorHandler.SendCommand<GetCategoryCommand, GetCategoryCommandResponse>(new GetCategoryCommand(category));
             return GetResponse(response);
         }
 

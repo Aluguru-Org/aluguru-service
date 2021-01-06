@@ -10,6 +10,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1.Attributes
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
+            
             if (!context.ModelState.IsValid)
             {
                 var errors = context.ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage).ToList();

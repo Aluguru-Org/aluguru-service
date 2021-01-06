@@ -85,6 +85,7 @@ using Aluguru.Marketplace.Rent.Usecases.OrderPreview;
 using Aluguru.Marketplace.Register.Usecases.LogInClient;
 using Aluguru.Marketplace.Notification.Usecases.SendOrderPaymentConfirmedEmail;
 using Aluguru.Marketplace.Notification.Usecases.SendOrderStartedEmail;
+using Aluguru.Marketplace.Catalog.Usecases.GetCategory;
 
 namespace Aluguru.Marketplace.Crosscutting.IoC
 {
@@ -191,6 +192,7 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             services.AddScoped<IRequestHandler<CreateCategoryCommand, CreateCategoryCommandResponse>, CreateCategoryHandler>();
             services.AddScoped<IRequestHandler<UpdateCategoryCommand, UpdateCategoryCommandResponse>, UpdateCategoryHandler>();
             services.AddScoped<IRequestHandler<GetCategoriesCommand, GetCategoriesCommandResponse>, GetCategoriesCommandHandler>();
+            services.AddScoped<IRequestHandler<GetCategoryCommand, GetCategoryCommandResponse>, GetCategoryHandler>();
             services.AddScoped<IRequestHandler<GetProductsByCategoryCommand, GetProductsByCategoryCommandResponse>, GetProductsByCategoryHandler>();
             services.AddScoped<IRequestHandler<DeleteCategoryCommand, bool>, DeleteCategoryHandler>();
             services.AddScoped<IRequestHandler<UpdateCategoryImageCommand, UpdateCategoryImageCommandResponse>, UpdateCategoryImageHandler>();

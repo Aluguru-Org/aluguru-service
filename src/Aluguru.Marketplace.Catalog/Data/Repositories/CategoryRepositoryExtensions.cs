@@ -21,6 +21,16 @@ namespace Aluguru.Marketplace.Catalog.Data.Repositories
             return category;
         }
 
+        public static async Task<Category> GetCategoryAsync(this IQueryRepository<Category> repository, string categoryUri, bool disableTracking = true)
+        {
+            var category = await repository.FindOneAsync(
+                x => x.Uri.Trim() == categoryUri.Trim(),
+                category => category.Include(x => x.SubCategories),
+                disableTracking);
+
+            return category;
+        }
+
         public static async Task<Category> GetCategoryByNameAsync(this IQueryRepository<Category> repository, string name, bool disableTracking = true)
         {
             var category = await repository.FindOneAsync(
