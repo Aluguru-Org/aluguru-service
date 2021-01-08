@@ -75,8 +75,14 @@ namespace Aluguru.Marketplace.Register.AutoMapper
             CreateMap<UserRegistrationDTO, CreateUserCommand>()
                 .ConstructUsing((x, rc) =>
                 {
-                    return new CreateUserCommand(x.FullName, x.Password, x.Email, x.Role);
+                    var address = rc.Mapper.Map<Address>(x.Address);
+                    var document = rc.Mapper.Map<Document>(x.Document);
+                    var contact = rc.Mapper.Map<Contact>(x.Contact);
+                    return new CreateUserCommand(x.FullName, x.Password, x.Email, x.Role, document, address, contact);
                 })
+                .ForMember(x => x.Address, c => c.Ignore())
+                .ForMember(x => x.Contact, c => c.Ignore())
+                .ForMember(x => x.Document, c => c.Ignore())
                 .ForMember(x => x.Timestamp, c => c.Ignore())
                 .ForMember(x => x.MessageType, c => c.Ignore())
                 .ForMember(x => x.ValidationResult, c => c.Ignore());

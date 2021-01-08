@@ -53,6 +53,10 @@ namespace Aluguru.Marketplace.Register.Usecases.CreateUser
 
             var user = new User(command.Email, _cryptography.Encrypt(command.Password), command.FullName, role.Id, _cryptography.CreateRandomHash());
 
+            user.UpdateAddress(command.Address);
+            user.UpdateDocument(command.Document);
+            user.UpdateContact(command.Contact);
+
             user.AddEvent(new UserRegisteredEvent(user.Id, user.FullName, user.Email, user.ActivationHash));
 
             user = await userRepository.AddAsync(user);

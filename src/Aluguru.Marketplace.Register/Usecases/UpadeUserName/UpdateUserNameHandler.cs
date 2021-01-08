@@ -13,13 +13,11 @@ namespace Aluguru.Marketplace.Register.Usecases.UpadeUserName
     public class UpdateUserNameHandler : IRequestHandler<UpdateUserNameCommand, bool>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
         private readonly IMediatorHandler _mediatorHandler;
 
-        public UpdateUserNameHandler(IUnitOfWork unitOfWork, IMapper mapper, IMediatorHandler mediatorHandler)
+        public UpdateUserNameHandler(IUnitOfWork unitOfWork, IMediatorHandler mediatorHandler)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
             _mediatorHandler = mediatorHandler;
         }
 
