@@ -27,6 +27,8 @@ using Aluguru.Marketplace.Rent.Usecases.RemoveOrderItem;
 using Aluguru.Marketplace.Rent.Usecases.UpdateOrderItemAmount;
 using Aluguru.Marketplace.Rent.Usecases.CalculateOrderFreigth;
 using Aluguru.Marketplace.Rent.Usecases.OrderPreview;
+using Aluguru.Marketplace.Rent.Usecases.GetRevenue;
+using Aluguru.Marketplace.Rent.Usecases.GetAverageRevenue;
 
 namespace Aluguru.Marketplace.API.Controllers.V1
 {
@@ -52,7 +54,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> Get(
-            [SwaggerParameter("The Id of a user", Required = false)][FromQuery] Guid? userId,
+            [SwaggerParameter("The Id of a user", Required = false)][FromQuery] Guid? userId,            
             [SwaggerParameter("The page to be displayed", Required = false)][FromQuery] int? currentPage,
             [SwaggerParameter("The max number of pages that should be returned, the default value is 50", Required = false)][FromQuery] int? pageSize,
             [SwaggerParameter("If the product should be sorted by property, the default value is sort property is 'Id'", Required = false)][FromQuery] string sortBy,
@@ -63,6 +65,78 @@ namespace Aluguru.Marketplace.API.Controllers.V1
             var command = new GetOrdersCommand(userId, paginateCriteria);
             var response = await _mediatorHandler.SendCommand<GetOrdersCommand, GetOrdersCommandResponse>(command);
             return GetResponse(response);
+        }
+        
+        [HttpGet]
+        [Route("company/{id}")]
+        [Authorize(Policy = Policies.OrderReader)]
+        [SwaggerOperation(Summary = "Get all orders from company", Description = "Get a list of all orders")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetOrdersCommandResponse))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task<ActionResult> GetOrderByCompany(
+            [SwaggerParameter("The Id of a user", Required = false)][FromQuery] Guid? companyId,
+            [SwaggerParameter("The page to be displayed", Required = false)][FromQuery] int? currentPage,
+            [SwaggerParameter("The max number of pages that should be returned, the default value is 50", Required = false)][FromQuery] int? pageSize,
+            [SwaggerParameter("If the product should be sorted by property, the default value is sort property is 'Id'", Required = false)][FromQuery] string sortBy,
+            [SwaggerParameter("If the sort order should be ascendant or descendant, the default value is descendant", Required = false)][FromQuery] string sortOrder
+        )
+        {
+            var paginateCriteria = new PaginateCriteria(currentPage, pageSize, sortBy, sortOrder);
+            var command = new GetOrdersCommand(companyId, paginateCriteria);
+            var response = await _mediatorHandler.SendCommand<GetOrdersCommand, GetOrdersCommandResponse>(command);
+            return GetResponse(response);
+        }
+
+        [HttpGet]
+        [Route("revenue")]
+        [Authorize(Policy = Policies.OrderReader)]
+        [SwaggerOperation(Summary = "Get revenue in a time range")]
+        public async Task<ActionResult> GetRevenue([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromQuery] Guid? companyId)
+        {
+
+            var command = new GetRevenueCommand(startDate, endDate, companyId);
+            var response = await _mediatorHandler.SendCommand<GetRevenueCommand, GetRevenueCommandResponse>(command);
+            return GetResponse(response);
+        }
+
+        [HttpGet]
+        [Route("average-revenue")]
+        [Authorize(Policy = Policies.OrderReader)]
+        [SwaggerOperation(Summary = "Get the average revenue in a time range")]
+        public async Task<ActionResult> GetAverageRevenue([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromQuery] Guid? companyId)
+        {
+            var command = new GetAverageRevenueCommand(startDate, endDate, companyId);
+            var response = await _mediatorHandler.SendCommand<GetAverageRevenueCommand, GetAverageRevenueCommandResponse>(command);
+            return GetResponse(response);
+        }
+
+        [HttpGet]
+        [Route("top-buyers")]
+        [Authorize(Policy = Policies.OrderReader)]
+        [SwaggerOperation(Summary = "Get top buyers in a time range")]
+        public async Task<ActionResult> GetTopBuyers([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
+        {
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("top-selling-products")]
+        [Authorize(Policy = Policies.OrderReader)]
+        [SwaggerOperation(Summary = "Get top selling products in a time range")]
+        public async Task<ActionResult> GetTopSellingProducts([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
+        {
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("best-seller-categories")]
+        [Authorize(Policy = Policies.OrderReader)]
+        [SwaggerOperation(Summary = "Get top selling categories in a time range")]
+        public async Task<ActionResult> GetTopSellingCategories([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
+        {
+            return Ok();
         }
 
         [HttpGet]
@@ -232,7 +306,6 @@ namespace Aluguru.Marketplace.API.Controllers.V1
             var command = new OrderPreviewCommand(dto);
             var response = await _mediatorHandler.SendCommand<OrderPreviewCommand, OrderPreviewCommandResponse>(command);
             return PostResponse(response);
-        }
-
+        }   
     }
 }

@@ -33,11 +33,16 @@ namespace Aluguru.Marketplace.Catalog.Data.Repositories
         public static async Task<IReadOnlyList<Product>> GetProductsAsync(this IQueryRepository<Product> repository, List<Guid> productIds, bool disableTracking = true)
         {
             var products = await repository.ListAsync(
-                x => productIds.Contains(x.Id),
+                NewMethod(productIds),
                 product => product.Include(x => x.CustomFields),
                 disableTracking);
 
             return products;
+
+            static System.Linq.Expressions.Expression<Func<Product, bool>> NewMethod(List<Guid> productIds)
+            {
+                return x => productIds.Contains(x.Id);
+            }
         }
 
         public static async Task<Product> GetProductByCategoryAsync(this IQueryRepository<Product> repository, Guid categoryId, bool disableTracking = true)

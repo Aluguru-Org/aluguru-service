@@ -86,6 +86,8 @@ using Aluguru.Marketplace.Register.Usecases.LogInClient;
 using Aluguru.Marketplace.Notification.Usecases.SendOrderPaymentConfirmedEmail;
 using Aluguru.Marketplace.Notification.Usecases.SendOrderStartedEmail;
 using Aluguru.Marketplace.Catalog.Usecases.GetCategory;
+using Aluguru.Marketplace.Rent.Usecases.GetRevenue;
+using Aluguru.Marketplace.Rent.Usecases.GetAverageRevenue;
 
 namespace Aluguru.Marketplace.Crosscutting.IoC
 {
@@ -224,6 +226,8 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             services.AddScoped<IRequestHandler<DeleteOrderCommand, bool>, DeleteOrderHandler>();
             services.AddScoped<IRequestHandler<ConfirmOrderPaymentCommand, bool>, ConfirmOrderPaymentHandler>();
             services.AddScoped<IRequestHandler<OrderPreviewCommand, OrderPreviewCommandResponse>, OrderPreviewHandler>();
+            services.AddScoped<IRequestHandler<GetRevenueCommand, GetRevenueCommandResponse>, GetRevenueHandler>();
+            services.AddScoped<IRequestHandler<GetAverageRevenueCommand, GetAverageRevenueCommandResponse>, GetAverageRevenueHandler>();
 
             // Voucher 
             services.AddScoped<IRequestHandler<GetVouchersCommand, GetVouchersCommandResponse>, GetVouchersHandler>();

@@ -67,7 +67,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         {
             var command = _mapper.Map<CreateUserCommand>(viewModel);
             var response = await _mediatorHandler.SendCommand<CreateUserCommand, CreateUserCommandResponse>(command);
-            return PostResponse(nameof(Get), new { id = response.User.Id }, response);
+            return PostResponse(nameof(Get), response != null ? new { id = response.User.Id } : null, response);
         }
 
         [HttpPut]

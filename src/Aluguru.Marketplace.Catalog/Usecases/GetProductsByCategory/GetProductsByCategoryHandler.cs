@@ -29,7 +29,8 @@ namespace Aluguru.Marketplace.Catalog.Usecases.GetProductsByCategory
                 _mapper,
                 request.PaginateCriteria,
                 product => product,
-                product => product.Category.Uri.Trim().ToLower() == request.Category.Trim().ToLower(),
+                product => (product.Category.Uri.Trim().ToLower() == request.Category.Trim().ToLower()) || 
+                           (product.SubCategory.Uri.Trim().ToLower() == request.Category.Trim().ToLower()),
                 product => product.Include(x => x.CustomFields));
 
             return new GetProductsByCategoryCommandResponse()

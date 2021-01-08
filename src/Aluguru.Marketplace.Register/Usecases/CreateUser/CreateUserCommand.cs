@@ -34,6 +34,14 @@ namespace Aluguru.Marketplace.Register.Usecases.CreateUser
             RuleFor(x => x.Email).EmailAddress();
             RuleFor(x => x.FullName).NotEmpty().MinimumLength(2);
             RuleFor(x => x.Password).NotEmpty().WithMessage("The password field cannot be empty");
+            When(x => new Regex(@"^(?=.*[A-Z])(?=.*[!@#$&*=-])(?=.*[0-9])(?=.*[a-z]).{8,32}$").IsMatch(x.Password) == false, () =>
+            {
+                RuleFor(x => x.Password).Matches(new Regex(@"^.{8,32}$")).WithMessage("The password must have between 8 and 32 characters");
+                RuleFor(x => x.Password).Matches(new Regex(@"[A-Z]")).WithMessage("The password must have at least 1 upper character");
+                RuleFor(x => x.Password).Matches(new Regex(@"[a-z]")).WithMessage("The password must have at least 1 lower character");
+                RuleFor(x => x.Password).Matches(new Regex(@"[0-9]")).WithMessage("The password must have at least 1 numeric character");
+                RuleFor(x => x.Password).Matches(new Regex(@"[!@#$&*=-]")).WithMessage("The password must have at least 1 special character (!@#$&*=-)");
+            });
             RuleFor(x => x.Role).Matches(@"company|user", RegexOptions.IgnoreCase).WithMessage("The user role must be Company or User");
         }
     }

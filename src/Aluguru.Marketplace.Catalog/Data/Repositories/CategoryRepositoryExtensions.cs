@@ -25,7 +25,9 @@ namespace Aluguru.Marketplace.Catalog.Data.Repositories
         {
             var category = await repository.FindOneAsync(
                 x => x.Uri.Trim() == categoryUri.Trim(),
-                category => category.Include(x => x.SubCategories),
+                category => category
+                    .Include(x => x.Products)
+                    .Include(x => x.SubCategories).ThenInclude(x => x.Products),
                 disableTracking);
 
             return category;
@@ -44,7 +46,7 @@ namespace Aluguru.Marketplace.Catalog.Data.Repositories
         public static async Task<Category> GetCategoryByUriAsync(this IQueryRepository<Category> repository, string uri, bool disableTracking = true)
         {
             var category = await repository.FindOneAsync(
-                x => x.Uri == uri,
+                x => x.Uri.ToLower().Trim() == uri.ToLower().Trim(),
                 null,
                 disableTracking);
 
