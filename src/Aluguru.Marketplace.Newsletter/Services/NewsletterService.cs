@@ -37,9 +37,11 @@ namespace Aluguru.Marketplace.Newsletter.Services
         {
             var subscriber = _mapper.Map<Subscriber>(subscriberViewModel);
 
-            subscriber = await _unitOfWork.Repository<Subscriber>().AddAsync(subscriber);
-
-            await _unitOfWork.SaveChangesAsync(default);
+            if (await _unitOfWork.QueryRepository<Subscriber>().FindOneAsync(x => x.Email.Trim().ToLower() == subscriber.Email.Trim().ToLower()) == null)
+            {
+                subscriber = await _unitOfWork.Repository<Subscriber>().AddAsync(subscriber);
+                await _unitOfWork.SaveChangesAsync(default);
+            }
 
             return _mapper.Map<SubscriberDto>(subscriber);
         }
