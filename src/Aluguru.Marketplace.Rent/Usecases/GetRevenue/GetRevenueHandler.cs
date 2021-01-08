@@ -26,7 +26,8 @@ namespace Aluguru.Marketplace.Rent.Usecases.GetRevenue
             var queryRepository = _unitOfWork.QueryRepository<Order>();
 
             var orders = await queryRepository.ListAsync(
-                order => 
+                order =>
+                    (order.OrderStatus == EOrderStatus.PaymentConfirmed) &&
                     (order.DateCreated >= command.StartDate && order.DateCreated <= command.EndDate) &&
                     (command.CompanyId.HasValue ? order.OrderItems.Any(item => item.CompanyId == command.CompanyId) : true),
                 order => order.Include(x => x.OrderItems));
