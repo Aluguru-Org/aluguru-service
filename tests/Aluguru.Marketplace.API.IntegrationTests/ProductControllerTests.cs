@@ -83,7 +83,7 @@ namespace Aluguru.Marketplace.API.IntegrationTests
                 StockQuantity = 1,
                 CustomFields = new List<UpdateCustomFieldDTO>
                 {
-                    new UpdateCustomFieldDTO() {  FieldType = "Text", ValueAsString = "Observação?", Active = true }
+                    new UpdateCustomFieldDTO() {  FieldType = "Text", FieldName = "Observação?", Active = true }
                 }
             };
 
