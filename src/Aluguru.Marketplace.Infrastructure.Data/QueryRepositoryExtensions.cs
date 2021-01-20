@@ -105,7 +105,7 @@ namespace Aluguru.Marketplace.Infrastructure.Data
 
             if (include != null) queryable = include.Invoke(queryable);
 
-            if (filter != null) queryable = queryable.Where(filter);
+            if (filter != null) queryable = queryable.Where(filter);            
 
             if (!string.IsNullOrWhiteSpace(paginateCriteria.SortBy))
             {

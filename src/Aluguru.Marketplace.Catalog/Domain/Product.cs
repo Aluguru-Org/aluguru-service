@@ -198,6 +198,14 @@ namespace Aluguru.Marketplace.Catalog.Domain
             return StockQuantity >= amount;
         }
 
+        public bool HasCategory(string categoryUri)
+        {
+            if (Category != null && Category.Uri.Trim().ToLower() == categoryUri) return true;
+            if (SubCategory != null && SubCategory.Uri.Trim().ToLower() == categoryUri) return true;
+
+            return false;
+        }
+
         protected override void ValidateEntity()
         {
             Ensure.That<DomainException>(UserId != Guid.Empty, "The field UserId from Product cannot be empty");

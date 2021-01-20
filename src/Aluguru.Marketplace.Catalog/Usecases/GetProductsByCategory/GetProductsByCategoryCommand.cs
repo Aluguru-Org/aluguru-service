@@ -2,18 +2,19 @@
 using Aluguru.Marketplace.Catalog.Dtos;
 using Aluguru.Marketplace.Domain;
 using Aluguru.Marketplace.Infrastructure.Bus.Messages;
+using System.Collections.Generic;
 
 namespace Aluguru.Marketplace.Catalog.Usecases.GetProductsByCategory
 {
     public class GetProductsByCategoryCommand : Command<GetProductsByCategoryCommandResponse>
     {
-        public GetProductsByCategoryCommand(string category, PaginateCriteria paginateCriteria)
+        public GetProductsByCategoryCommand(List<string> categories, PaginateCriteria paginateCriteria)
         {
-            Category = category;
+            Categories = categories;
             PaginateCriteria = paginateCriteria;
         }
 
-        public string Category { get; private set; }
+        public List<string> Categories { get; private set; }
         public PaginateCriteria PaginateCriteria { get; private set; }
 
         public override bool IsValid()
@@ -27,7 +28,7 @@ namespace Aluguru.Marketplace.Catalog.Usecases.GetProductsByCategory
     {
         public GetProductByCategoryCommandValidator()
         {
-            RuleFor(x => x.Category).NotEmpty();
+            RuleFor(x => x.Categories).NotEmpty();
         }
     }
 

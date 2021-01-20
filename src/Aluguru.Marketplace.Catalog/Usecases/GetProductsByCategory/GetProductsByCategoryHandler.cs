@@ -7,6 +7,8 @@ using Aluguru.Marketplace.Infrastructure.Data;
 using System.Threading;
 using System.Threading.Tasks;
 using Aluguru.Marketplace.Catalog.Dtos;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Aluguru.Marketplace.Catalog.Usecases.GetProductsByCategory
 {
@@ -29,14 +31,14 @@ namespace Aluguru.Marketplace.Catalog.Usecases.GetProductsByCategory
                 _mapper,
                 request.PaginateCriteria,
                 product => product,
-                product => (product.Category.Uri.Trim().ToLower() == request.Category.Trim().ToLower()) || 
-                           (product.SubCategory.Uri.Trim().ToLower() == request.Category.Trim().ToLower()),
+                product => request.Categories.Contains(product.Category.Uri) || 
+                           (product.SubCategory != null && request.Categories.Contains(product.SubCategory.Uri)),
                 product => product.Include(x => x.CustomFields));
 
             return new GetProductsByCategoryCommandResponse()
             {
                 PaginatedProducts = paginatedProducts
             };
-        }
+        }  
     }
 }

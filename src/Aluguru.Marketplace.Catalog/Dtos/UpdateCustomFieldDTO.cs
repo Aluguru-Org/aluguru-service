@@ -1,8 +1,6 @@
 ﻿using Aluguru.Marketplace.Domain;
 using Swashbuckle.AspNetCore.Annotations;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Aluguru.Marketplace.Catalog.Dtos
 {
