@@ -1,10 +1,8 @@
-﻿using Aluguru.Marketplace.Catalog.Domain;
-using Aluguru.Marketplace.Domain;
+﻿using Aluguru.Marketplace.Domain;
 using Aluguru.Marketplace.Infrastructure.Swagger;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace Aluguru.Marketplace.Catalog.Dtos
 {

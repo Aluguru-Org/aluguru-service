@@ -1,11 +1,8 @@
 ﻿using Aluguru.Marketplace.Domain;
 using PampaDevs.Utils;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 
 namespace Aluguru.Marketplace.Infrastructure
 {
@@ -21,7 +18,7 @@ namespace Aluguru.Marketplace.Infrastructure
             
             var type = typeof(TEntity);
             var arg = Expression.Parameter(type, "x");
-            var propertyInfo = type.GetProperty(propertyName);
+            var propertyInfo = type.GetProperty(propertyName.FirstCharToUpper());
             Expression expression = Expression.Property(arg, propertyInfo);
             type = propertyInfo.PropertyType;
 

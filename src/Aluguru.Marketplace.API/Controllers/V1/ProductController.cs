@@ -51,7 +51,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
             [SwaggerParameter("The page to be displayed", Required = false)][FromQuery] int? currentPage,
             [SwaggerParameter("The max number of pages that should be returned, the default value is 50", Required = false)][FromQuery] int? pageSize,
             [SwaggerParameter("If the product should be sorted by property, the default value is sort property is 'Id'", Required = false)][FromQuery] string sortBy,
-            [SwaggerParameter("If the sort order should be ascendant or descendant, the default value is descendant", Required = false)][FromQuery] string sortOrder)
+            [SwaggerParameter("If the sort order should be 'asc' (ascendant) or 'desc' (descendant), the default value is 'desc'", Required = false)][FromQuery] string sortOrder)
         {
             var paginateCriteria = new PaginateCriteria(currentPage, pageSize, sortBy, sortOrder);
             var command = new GetProductsCommand(userId, paginateCriteria);

@@ -16,6 +16,8 @@ namespace Aluguru.Marketplace.Rent.Dtos
         public decimal TotalFreigthPrice { get; set; }
         public string DeliveryAddress { get; private set; }
         public string OrderStatus { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime DateUpdated { get; set; }
         public List<OrderItemDTO> OrderItems { get; set; }
         public VoucherDTO Voucher { get; set; }
     }
