@@ -4,14 +4,16 @@ using Aluguru.Marketplace.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Aluguru.Marketplace.Data.Migrations
 {
     [DbContext(typeof(AluguruContext))]
-    partial class AluguruContextModelSnapshot : ModelSnapshot
+    [Migration("20210125215947_Added_Product_BlockedDates")]
+    partial class Added_Product_BlockedDates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

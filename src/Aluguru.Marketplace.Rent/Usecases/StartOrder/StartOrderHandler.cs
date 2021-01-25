@@ -63,7 +63,8 @@ namespace Aluguru.Marketplace.Rent.Usecases.StartOrder
                         x.ProductId, 
                         x.ProductName, 
                         x.Amount, 
-                        x.ProductPrice))
+                        x.ProductPrice,
+                        x.RentStartDate))
                     )
             );
 

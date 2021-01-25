@@ -1,5 +1,4 @@
-﻿using Aluguru.Marketplace.Catalog.Domain;
-using Aluguru.Marketplace.Domain;
+﻿using Aluguru.Marketplace.Domain;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
@@ -23,6 +22,7 @@ namespace Aluguru.Marketplace.Catalog.Dtos
         public int? MaxRentDays { get; set; }
         public int? MinNoticeRentDays { get; set; }
         public List<string> ImageUrls { get; set; }
+        public List<DateTime> BlockedDates { get; set; }
         public List<UpdateCustomFieldDTO> CustomFields { get; set; }
     }
 }

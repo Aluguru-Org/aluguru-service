@@ -30,6 +30,7 @@ namespace Aluguru.Marketplace.Catalog.Dtos
         [SwaggerExclude]
         public CategoryDTO SubCategory { get; set; }
         public List<string> ImageUrls { get; set; }
+        public List<DateTime> BlockedDates { get; set; }
         public List<CustomFieldDTO> CustomFields { get; set; }
     }
 }

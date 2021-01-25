@@ -34,6 +34,7 @@ namespace Aluguru.Marketplace.Catalog.Dtos
         public int? MaxRentDays { get; set; }
         [Required]
         public int StockQuantity { get; set; }
+        public List<DateTime> BlockedDates { get; set; }
         public List<CreateCustomFieldDTO> CustomFields { get; set; }
     }
 }

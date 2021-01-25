@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Aluguru.Marketplace.Catalog.Domain;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System;
 
 namespace Aluguru.Marketplace.Data.Mappings
 {
@@ -20,6 +21,13 @@ namespace Aluguru.Marketplace.Data.Mappings
 
             builder.Property(p => p.Description)
                     .IsRequired();
+
+            builder.Property(p => p.BlockedDates)
+                   .IsRequired()
+                   .HasConversion(
+                        v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
+                        v => JsonConvert.DeserializeObject<List<DateTime>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
+                    );
 
             builder.Property(p => p.ImageUrls)
                    .IsRequired()

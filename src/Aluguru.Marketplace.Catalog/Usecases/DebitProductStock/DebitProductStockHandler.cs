@@ -33,7 +33,7 @@ namespace Aluguru.Marketplace.Catalog.Usecases.DebitProductStock
 
             var products = await productQueryRepository.GetProductsAsync(productIds, false);
 
-            List<OrderItemDTO> noStockProducts = new List<OrderItemDTO>();
+            List<OrderItemDTO> debitRejectedProducts = new List<OrderItemDTO>();
 
             foreach (var item in command.Order.OrderItems)
             {
@@ -44,6 +44,13 @@ namespace Aluguru.Marketplace.Catalog.Usecases.DebitProductStock
                     await _mediatorHandler.PublishNotification(new DomainNotification("Catalog", $"Product - {product.Name} does not exist"));
                     continue;
                 }
+                
+                if (!product.HasDateAvaiabilityFor(item.RentStartDate))
+                {
+                    await _mediatorHandler.PublishNotification(new DomainNotification("Catalog", $"Product - {product.Name} cannot be rented on a blocked date ´[{item.RentStartDate.Date}]"));
+                    debitRejectedProducts.Add(item);
+                    continue;
+                }
 
                 if (product.HasStockFor(item.Amount))
                 {
@@ -52,11 +59,11 @@ namespace Aluguru.Marketplace.Catalog.Usecases.DebitProductStock
                 else
                 {
                     await _mediatorHandler.PublishNotification(new DomainNotification("Catalog", $"Product - {product.Name} is out of stock"));
-                    noStockProducts.Add(item);
+                    debitRejectedProducts.Add(item);
                 }
             }
 
-            if (noStockProducts.Count == 0)
+            if (debitRejectedProducts.Count == 0)
             {
                 for (int i = 0; i < products.Count; i++)
                 {
@@ -68,7 +75,7 @@ namespace Aluguru.Marketplace.Catalog.Usecases.DebitProductStock
             }
             else
             {
-                await _mediatorHandler.PublishEvent(new OrderStockRejectedEvent(command.Order.Id, noStockProducts));
+                await _mediatorHandler.PublishEvent(new OrderStockRejectedEvent(command.Order.Id, debitRejectedProducts));
                 return false;
             }
         }

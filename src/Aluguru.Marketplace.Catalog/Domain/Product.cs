@@ -5,6 +5,7 @@ using PampaDevs.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Text.RegularExpressions;
 using static PampaDevs.Utils.Helpers.DateTimeHelper;
 using static PampaDevs.Utils.Helpers.IdHelper;
@@ -15,11 +16,13 @@ namespace Aluguru.Marketplace.Catalog.Domain
     [Table("Product")]
     public class Product : AggregateRoot
     {
+        private readonly List<DateTime> _blockedDates;
         private readonly List<string> _imageUrls;
         private readonly List<CustomField> _customFields;
 
         private Product()
         {
+            _blockedDates = new List<DateTime>();
             _imageUrls = new List<string>();
             _customFields = new List<CustomField>();
         }
@@ -41,6 +44,7 @@ namespace Aluguru.Marketplace.Catalog.Domain
             MaxRentDays = maxRentDays;
             MinNoticeRentDays = minNoticeRentDays;
 
+            _blockedDates = new List<DateTime>();
             _imageUrls = new List<string>();
             _customFields = customFields;
 
@@ -59,6 +63,7 @@ namespace Aluguru.Marketplace.Catalog.Domain
         public int MinRentDays { get; private set; }        
         public int? MaxRentDays { get; private set; }
         public int? MinNoticeRentDays { get; private set; }
+        public IReadOnlyCollection<DateTime> BlockedDates { get { return _blockedDates; } }
         public IReadOnlyCollection<string> ImageUrls { get { return _imageUrls; } }
         public IReadOnlyCollection<CustomField> CustomFields { get { return _customFields; } }
 
@@ -72,12 +77,17 @@ namespace Aluguru.Marketplace.Catalog.Domain
         public void AddImage(string url)
         {
             Ensure.That<DomainException>(!string.IsNullOrEmpty(url), "The image url cannot be empty");
+
+            DateUpdated = NewDateTime();
+
             _imageUrls.Add(url);
         }
 
         public bool RemoveImage(string url)
         {
             Ensure.That<DomainException>(!string.IsNullOrEmpty(url), "The image url to be removed cannot be empty");
+
+            DateUpdated = NewDateTime();
 
             return _imageUrls.Remove(url);
         }
@@ -130,6 +140,9 @@ namespace Aluguru.Marketplace.Catalog.Domain
             MaxRentDays = command.Product.MaxRentDays;
             IsActive = command.Product.IsActive;
 
+            _blockedDates.Clear();
+            _blockedDates.AddRange(command.Product.BlockedDates);
+
             _customFields.Clear();
 
             foreach (var customField in command.Product.CustomFields)
@@ -169,6 +182,8 @@ namespace Aluguru.Marketplace.Catalog.Domain
 
             CategoryId = category.Id;
             Category = category;
+
+            DateUpdated = NewDateTime();
         }
 
         public void UpdateDescription(string description)
@@ -176,6 +191,7 @@ namespace Aluguru.Marketplace.Catalog.Domain
             Ensure.Argument.NotNullOrEmpty(description, "The field Description from product cannot be empty");
 
             Description = description;
+            DateUpdated = NewDateTime();
         }
 
         public void DebitStock(int amount)
@@ -184,6 +200,7 @@ namespace Aluguru.Marketplace.Catalog.Domain
             if (!HasStockFor(amount)) throw new DomainException($"Insufficient stock. Only the amount of {amount} is avaiable");
 
             StockQuantity -= amount;
+            DateUpdated = NewDateTime();
         }
 
         public void ReplenishStock(int amount)
@@ -191,6 +208,12 @@ namespace Aluguru.Marketplace.Catalog.Domain
             Ensure.Argument.Is(amount > 0, "The amount cannot be smaller or equal than 0");
 
             StockQuantity += amount;
+            DateUpdated = NewDateTime();
+        }
+
+        public bool HasDateAvaiabilityFor(DateTime rentStartDate)
+        {
+            return !_blockedDates.Any(date => date.Date == rentStartDate.Date);
         }
 
         public bool HasStockFor(int amount)
