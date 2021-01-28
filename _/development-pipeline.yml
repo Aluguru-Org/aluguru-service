@@ -44,5 +44,5 @@ steps:
 - template: '/pipelines/dotnet/deploy.yml@assets'
   parameters:
     azureSubscription: 'AluguruDevSubscription'
-    appName: 'sp-service'
+    appName: 'app-sp-service-dev-001'
     resourceGroupName: 'sp-dev'

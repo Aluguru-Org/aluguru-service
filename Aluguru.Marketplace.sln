@@ -38,9 +38,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.dockerignore = .dockerignore
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
+		_\development-pipeline.yml = _\development-pipeline.yml
 		docker-compose.yml = docker-compose.yml
 		Dockerfile = Dockerfile
 		.config\dotnet-tools.json = .config\dotnet-tools.json
+		_\production-pipeline.yml = _\production-pipeline.yml
 		README.md = README.md
 		run.ps1 = run.ps1
 	EndProjectSection
@@ -101,7 +103,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aluguru.Marketplace.Newslet
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aluguru.Marketplace.Crosscutting.Google", "src\Aluguru.Marketplace.Crosscutting.Google\Aluguru.Marketplace.Crosscutting.Google.csproj", "{D3264310-837C-4D02-91F2-E4078E1BB374}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aluguru.Marketplace.Crosscutting.Viacep", "src\Aluguru.Marketplace.Crosscutting.Viacep\Aluguru.Marketplace.Crosscutting.Viacep.csproj", "{C0D63B5D-E8F8-4E52-BC6D-A9406A4C755F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aluguru.Marketplace.Crosscutting.Viacep", "src\Aluguru.Marketplace.Crosscutting.Viacep\Aluguru.Marketplace.Crosscutting.Viacep.csproj", "{C0D63B5D-E8F8-4E52-BC6D-A9406A4C755F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
