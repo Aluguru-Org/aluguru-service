@@ -22,9 +22,6 @@ pool:
 variables:
   buildConfiguration: 'Release'
   projectName: 'Aluguru.Marketplace.API'
-  appName: 'sp-service'
-  resourceGroupName: 'sp-dev'
-  azureSubscription: 'AluguruDevSubscription'
 
 steps:
 - template: '/pipelines/dotnet/build.yml@assets'
@@ -46,6 +43,6 @@ steps:
   
 - template: '/pipelines/dotnet/deploy.yml@assets'
   parameters:
-    azureSubscription: $(azureSubscription)
-    appName: $(appName)
-    resourceGroupName: $(resourceGroupName)
+    azureSubscription: 'AluguruDevSubscription'
+    appName: 'sp-service'
+    resourceGroupName: 'sp-dev'
