@@ -1,0 +1,43 @@
+resources:
+  repositories:
+  - repository: assets
+    type: git
+    name: Aluguru/aluguru-assets
+    ref: 'refs/heads/trunk'
+
+trigger:
+  branches:
+    include:
+    - development
+  paths:
+    include:
+    - src/*
+    - tests/*
+    exclude:
+    - _/*
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  projectName: 'Aluguru.Marketplace.API'
+  appName: 'sp-service'
+  resourceGroupName: 'sp-dev'
+  azureSubscription: 'aluguru'
+
+steps:
+- template: '/pipelines/dotnet/build.yml@assets'
+  parameters:
+    projectName: $(projectName)
+
+- template: '/pipelines/dotnet/test.yml@assets'
+
+- template: '/pipelines/dotnet/publish.yml@assets'
+  parameters:
+    projectName: $(projectName)
+  
+- template: '/pipelines/dotnet/deploy.yml@assets'
+  parameters:
+    azureSubscription: '$(azureSubscription)'
+    appName: '$(appName)'
+    resourceGroupName: '$(resourceGroupName)'

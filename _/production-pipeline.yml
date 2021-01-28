@@ -1,0 +1,34 @@
+resources:
+  repositories:
+  - repository: assets
+    type: git
+    name: Aluguru/aluguru-assets
+    ref: 'refs/heads/trunk'
+
+trigger:
+  branches:
+    include: 
+    - master
+  paths:
+    include:
+    - src/*
+    - tests/*
+    exclude:
+    - _/*
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  projectName: 'Aluguru.Marketplace.API'
+
+steps:
+- template: '/pipelines/dotnet/build.yml@assets'
+  parameters:
+    projectName: '$(projectName)'
+
+- template: '/pipelines/dotnet/test.yml@assets'
+
+- template: '/pipelines/dotnet/publish.yml@assets'
+  parameters:
+    projectName: '$(projectName)'
