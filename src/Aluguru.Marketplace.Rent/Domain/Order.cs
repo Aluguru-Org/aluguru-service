@@ -57,9 +57,30 @@ namespace Aluguru.Marketplace.Rent.Domain
             DateUpdated = NewDateTime();
         }
 
-        public void MarkAsFreigthCalculated()
+        public void MarkOrderItemAsDelivered(Guid itemId)
         {
-            FreigthCalculated = true;
+            var item = _orderItems.FirstOrDefault(x => x.Id == itemId);
+
+            Ensure.NotNull(item, "The item does not belong to the order");
+
+            item.MarkAsDelivered();
+
+            DateUpdated = NewDateTime();
+        }
+
+        public void MarkOrderItemAsReturned(Guid itemId)
+        {
+            var item = _orderItems.FirstOrDefault(x => x.Id == itemId);
+
+            Ensure.NotNull(item, "The item does not belong to the order");
+
+            item.MarkAsDelivered();
+
+            if (_orderItems.All(x => x.OrderItemStatus == EOrderItemStatus.Delivered))
+            {
+                OrderStatus = EOrderStatus.Finished;
+            }
+
             DateUpdated = NewDateTime();
         }
 
@@ -67,6 +88,12 @@ namespace Aluguru.Marketplace.Rent.Domain
         {
             Ensure.That(OrderStatus != EOrderStatus.Draft, "The order is already draft");
             OrderStatus = EOrderStatus.Draft;
+            DateUpdated = NewDateTime();
+        }
+
+        public void MarkAsFreigthCalculated()
+        {
+            FreigthCalculated = true;
             DateUpdated = NewDateTime();
         }
 

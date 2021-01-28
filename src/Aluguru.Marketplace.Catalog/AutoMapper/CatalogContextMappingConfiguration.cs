@@ -38,6 +38,7 @@ namespace Aluguru.Marketplace.Catalog.AutoMapper
                 .ConstructUsing((x, rc) =>
                 {
                     var price = rc.Mapper.Map<Price>(x.Price);
+                    var invalidDates = rc.Mapper.Map<InvalidDates>(x.InvalidDates);
                     var customFields = rc.Mapper.Map<List<CustomField>>(x.CustomFields);
                     var rentType = (ERentType)Enum.Parse(typeof(ERentType), x.RentType);
 
@@ -55,6 +56,7 @@ namespace Aluguru.Marketplace.Catalog.AutoMapper
                         x.MinRentDays,
                         x.MaxRentDays,
                         x.MinNoticeRentDays,
+                        invalidDates,
                         customFields);
                 })
                 .ForMember(x => x.Price, c => c.Ignore())
@@ -64,6 +66,7 @@ namespace Aluguru.Marketplace.Catalog.AutoMapper
                 .ConstructUsing((x, rc) =>
                 {
                     var price = rc.Mapper.Map<Price>(x.Price);
+                    var invalidDates = rc.Mapper.Map<InvalidDates>(x.InvalidDates);
                     var customFields = rc.Mapper.Map<List<CustomField>>(x.CustomFields);
                     var rentType = (ERentType)Enum.Parse(typeof(ERentType), x.RentType);
 
@@ -81,12 +84,14 @@ namespace Aluguru.Marketplace.Catalog.AutoMapper
                         x.MinRentDays,
                         x.MaxRentDays,
                         x.MinNoticeRentDays,
+                        invalidDates,
                         customFields);
                 })
                 .ForMember(x => x.Timestamp, c => c.Ignore())
                 .ForMember(x => x.MessageType, c => c.Ignore())
                 .ForMember(x => x.ValidationResult, c => c.Ignore())
                 .ForMember(x => x.Price, c => c.Ignore())
+                .ForMember(x => x.InvalidDates, c => c.Ignore())
                 .ForMember(x => x.CustomFields, c => c.Ignore());
 
             CreateMap<PriceDTO, Price>()
@@ -95,6 +100,21 @@ namespace Aluguru.Marketplace.Catalog.AutoMapper
                     var periodPrices = rc.Mapper.Map<List<PeriodPrice>>(x.PeriodRentPrices);
                     return new Price(x.FreightPriceKM, x.SellPrice, x.DailyRentPrice, periodPrices);
                 });
+
+            CreateMap<InvalidDatesDTO, InvalidDates>()
+                .ConstructUsing((x, rc) =>
+                {
+                    var periods = rc.Mapper.Map<List<Period>>(x.Periods);
+                    return new InvalidDates(x.Days, x.Dates, periods);
+                })
+                .ForMember(x => x.Id, c => c.Ignore())
+                .ForMember(x => x.ProductId, c => c.Ignore())
+                .ForMember(x => x.Product, c => c.Ignore())
+                .ForMember(x => x.DateCreated, c => c.Ignore())
+                .ForMember(x => x.DateUpdated, c => c.Ignore());
+
+            CreateMap<PeriodDTO, Period>()
+                .ConstructUsing((x, rc) => new Period(x.Start, x.End));
 
             CreateMap<PeriodPriceViewModel, PeriodPrice>()
                 .ConstructUsing((x, rc) => new PeriodPrice(x.RentPeriodId, x.Price));
@@ -152,6 +172,8 @@ namespace Aluguru.Marketplace.Catalog.AutoMapper
             CreateMap<Category, CategoryDTO>();
             CreateMap<CustomField, CustomFieldDTO>();
             CreateMap<Product, ProductDTO>();
+            CreateMap<InvalidDates, InvalidDatesDTO>();
+            CreateMap<Period, PeriodDTO>();
         }
     }
 }

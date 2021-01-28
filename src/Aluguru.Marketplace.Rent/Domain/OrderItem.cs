@@ -49,6 +49,14 @@ namespace Aluguru.Marketplace.Rent.Domain
             return Amount * (ProductPrice + FreigthPrice);
         }
 
+        public void MarkAsDelivered()
+        {
+            Ensure.That(OrderItemStatus == EOrderItemStatus.Initiated, $"The order item {Id} is already canceled, returned or delivered");
+
+            OrderItemStatus = EOrderItemStatus.Delivered;
+            DateUpdated = NewDateTime();
+        }
+
         public void MarkAsReturned()
         {
             OrderItemStatus = EOrderItemStatus.Returned;

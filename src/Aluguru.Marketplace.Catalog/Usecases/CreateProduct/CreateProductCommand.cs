@@ -10,7 +10,7 @@ namespace Aluguru.Marketplace.Catalog.Usecases.CreateProduct
     public class CreateProductCommand : Command<CreateProductCommandResponse>
     {
         public CreateProductCommand(Guid userId, Guid categoryId, Guid? subCategoryId, string name, string uri, string description, ERentType rentType, Price price, bool isActive, int stockQuantity, 
-            int minRentDays, int? maxRentDays, int? minNoticeRentDays, List<CustomField> customFields)
+            int minRentDays, int? maxRentDays, int? minNoticeRentDays, InvalidDates invalidDates, List<CustomField> customFields)
         {
             UserId = userId;
             CategoryId = categoryId;
@@ -25,6 +25,7 @@ namespace Aluguru.Marketplace.Catalog.Usecases.CreateProduct
             MinRentDays = minRentDays;
             MaxRentDays = maxRentDays;
             MinNoticeRentDays = minNoticeRentDays;
+            InvalidDates = invalidDates;
             CustomFields = customFields;
         }
 
@@ -41,6 +42,7 @@ namespace Aluguru.Marketplace.Catalog.Usecases.CreateProduct
         public int MinRentDays { get; private set; }
         public int? MaxRentDays { get; private set; }
         public int? MinNoticeRentDays { get; private set; }
+        public InvalidDates InvalidDates { get; private set; }
         public List<CustomField> CustomFields { get; private set; }
 
         public override bool IsValid()

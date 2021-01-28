@@ -16,18 +16,16 @@ namespace Aluguru.Marketplace.Catalog.Domain
     [Table("Product")]
     public class Product : AggregateRoot
     {
-        private readonly List<DateTime> _blockedDates;
         private readonly List<string> _imageUrls;
         private readonly List<CustomField> _customFields;
 
         private Product()
         {
-            _blockedDates = new List<DateTime>();
             _imageUrls = new List<string>();
             _customFields = new List<CustomField>();
         }
 
-        public Product(Guid userId, Guid categoryId, Guid? subCategoryId, string name, string uri, string description, ERentType rentType, Price price, bool isActive, int stockQuantity, int minRentDays, int? maxRentDays, int? minNoticeRentDays, List<CustomField> customFields)
+        public Product(Guid userId, Guid categoryId, Guid? subCategoryId, string name, string uri, string description, ERentType rentType, Price price, bool isActive, int stockQuantity, int minRentDays, int? maxRentDays, int? minNoticeRentDays, InvalidDates invalidDates, List<CustomField> customFields)
             : base(NewId())
         {
             UserId = userId;
@@ -44,7 +42,7 @@ namespace Aluguru.Marketplace.Catalog.Domain
             MaxRentDays = maxRentDays;
             MinNoticeRentDays = minNoticeRentDays;
 
-            _blockedDates = new List<DateTime>();
+            InvalidDates = invalidDates != null ? invalidDates : new InvalidDates(new List<DayOfWeek>(), new List<DateTime>(), new List<Period>());
             _imageUrls = new List<string>();
             _customFields = customFields;
 
@@ -53,6 +51,7 @@ namespace Aluguru.Marketplace.Catalog.Domain
         public Guid UserId { get; private set; }
         public Guid CategoryId { get; private set; }
         public Guid? SubCategoryId { get; private set; }
+        public Guid InvalidDatesId { get; private set; }
         public string Name { get; private set; }
         public string Uri {get; private set; }
         public string Description { get; private set; }
@@ -63,13 +62,13 @@ namespace Aluguru.Marketplace.Catalog.Domain
         public int MinRentDays { get; private set; }        
         public int? MaxRentDays { get; private set; }
         public int? MinNoticeRentDays { get; private set; }
-        public IReadOnlyCollection<DateTime> BlockedDates { get { return _blockedDates; } }
         public IReadOnlyCollection<string> ImageUrls { get { return _imageUrls; } }
         public IReadOnlyCollection<CustomField> CustomFields { get { return _customFields; } }
 
         //EF Relational
         public virtual Category Category { get; set; }
         public virtual Category SubCategory { get; set; }
+        public virtual InvalidDates InvalidDates { get; set; }
 
         public void Active() => IsActive = true;
         public void Deactivate() => IsActive = false;
@@ -140,8 +139,7 @@ namespace Aluguru.Marketplace.Catalog.Domain
             MaxRentDays = command.Product.MaxRentDays;
             IsActive = command.Product.IsActive;
 
-            _blockedDates.Clear();
-            _blockedDates.AddRange(command.Product.BlockedDates);
+            InvalidDates.Update(command.Product.InvalidDates.Days, command.Product.InvalidDates.Dates, command.Product.InvalidDates.Periods);
 
             _customFields.Clear();
 
@@ -213,7 +211,7 @@ namespace Aluguru.Marketplace.Catalog.Domain
 
         public bool HasDateAvaiabilityFor(DateTime rentStartDate)
         {
-            return !_blockedDates.Any(date => date.Date == rentStartDate.Date);
+            return InvalidDates.HasDateAvaiabilityFor(rentStartDate);
         }
 
         public bool HasStockFor(int amount)

@@ -14,7 +14,7 @@ namespace Aluguru.Marketplace.Catalog.Data.Repositories
         {
             var product = await repository.GetByIdAsync(
                 productId,
-                product => product.Include(x => x.CustomFields),
+                product => product.Include(x => x.CustomFields).Include(x => x.InvalidDates),
                 disableTracking);
 
             return product;
@@ -24,7 +24,7 @@ namespace Aluguru.Marketplace.Catalog.Data.Repositories
         {
             var product = await repository.FindOneAsync(
                 x => x.Uri.Trim() == productUri.Trim(),
-                product => product.Include(x => x.CustomFields),
+                product => product.Include(x => x.CustomFields).Include(x => x.InvalidDates),
                 disableTracking);
 
             return product;
@@ -34,7 +34,7 @@ namespace Aluguru.Marketplace.Catalog.Data.Repositories
         {
             var products = await repository.ListAsync(
                 NewMethod(productIds),
-                product => product.Include(x => x.CustomFields),
+                product => product.Include(x => x.CustomFields).Include(x => x.InvalidDates),
                 disableTracking);
 
             return products;

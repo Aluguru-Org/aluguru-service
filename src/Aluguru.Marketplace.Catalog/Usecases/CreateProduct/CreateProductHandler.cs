@@ -51,6 +51,7 @@ namespace Aluguru.Marketplace.Catalog.Usecases.CreateProduct
                 command.MinRentDays, 
                 command.MaxRentDays, 
                 command.MinNoticeRentDays,
+                command.InvalidDates,
                 command.CustomFields);
 
             product = await productRepository.AddAsync(product);
