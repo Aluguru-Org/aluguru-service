@@ -31,6 +31,13 @@ steps:
     projectName: $(projectName)
 
 - template: '/pipelines/dotnet/test.yml@assets'
+  parameters:
+    testType: 'UnitTests'
+
+- template: '/pipelines/dotnet/test.yml@assets'
+  parameters:
+    testType: 'IntegrationTests'
+    continueOnError: true
 
 - template: '/pipelines/dotnet/publish.yml@assets'
   parameters:
