@@ -25,7 +25,10 @@ namespace Aluguru.Marketplace.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {               
-            services.AddAluguruSwagger();
+            if (Env.IsDevelopment())
+            {
+                services.AddAluguruSwagger();
+            }
 
             services.AddCryptography(Configuration);
             services.AddJwtAuthentication(Configuration);
@@ -50,11 +53,11 @@ namespace Aluguru.Marketplace.API
             if (Env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseAluguruSwagger();
             }
 
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
 
-            app.UseAluguruSwagger();
 
             app.UseHttpsRedirection();
 
