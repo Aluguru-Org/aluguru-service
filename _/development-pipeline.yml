@@ -20,6 +20,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
+  buildConfiguration: 'Release'
   projectName: 'Aluguru.Marketplace.API'
   appName: 'sp-service'
   resourceGroupName: 'sp-dev'
@@ -45,6 +46,6 @@ steps:
   
 - template: '/pipelines/dotnet/deploy.yml@assets'
   parameters:
-    azureSubscription: '$(azureSubscription)'
-    appName: '$(appName)'
-    resourceGroupName: '$(resourceGroupName)'
+    azureSubscription: $(azureSubscription)
+    appName: $(appName)
+    resourceGroupName: $(resourceGroupName)
