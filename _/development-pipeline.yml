@@ -23,7 +23,7 @@ variables:
   projectName: 'Aluguru.Marketplace.API'
   appName: 'sp-service'
   resourceGroupName: 'sp-dev'
-  azureSubscription: 'AluguruServiceDevSubscription'
+  azureSubscription: 'AluguruDevSubscription'
 
 steps:
 - template: '/pipelines/dotnet/build.yml@assets'
