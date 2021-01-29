@@ -1,7 +1,7 @@
 version: "3"
 services:
-  web:
-    build: .
+  service:
+    image: felipeallmeidadev/aluguru-service:latest
     ports:
       - "5000:80"      
     depends_on:
@@ -15,32 +15,32 @@ services:
     environment:
       SA_PASSWORD: "sqWkMD4k"
       ACCEPT_EULA: "Y"
-  postgresql:
-    image: 'bitnami/postgresql:latest'
-    ports:
-      - '5444:5432'
-    volumes:
-      - 'postgresql_data:/bitnami'
-    environment:
-      - ALLOW_EMPTY_PASSWORD=yes
-  sonarqube:
-    image: bitnami/sonarqube:latest
-    ports:
-      - '9999:9000'
-    environment:
-      - POSTGRESQL_HOST=postgresql
-      - POSTGRESQL_PORT=5444
-      - POSTGRESQL_ROOT_USER=postgres
-      - POSTGRESQL_CLIENT_CREATE_DATABASE_NAME=bitnami_sonarqube
-      - POSTGRESQL_CLIENT_CREATE_DATABASE_USERNAME=bn_sonarqube
-      - POSTGRESQL_CLIENT_CREATE_DATABASE_PASSWORD=bitnami1234
-      - SONARQUBE_DATABASE_NAME=bitnami_sonarqube
-      - SONARQUBE_DATABASE_USER=bn_sonarqube
-      - SONARQUBE_DATABASE_PASSWORD=bitnami1234
-    volumes:
-      - sonarqube_data:/bitnami
-volumes:
-  sonarqube_data:
-    driver: local
-  postgresql_data:
-    driver: local
+  # postgresql:
+  #   image: 'bitnami/postgresql:latest'
+  #   ports:
+  #     - '5444:5432'
+  #   volumes:
+  #     - 'postgresql_data:/bitnami'
+  #   environment:
+  #     - ALLOW_EMPTY_PASSWORD=yes
+#   sonarqube:
+#     image: bitnami/sonarqube:latest
+#     ports:
+#       - '9999:9000'
+#     environment:
+#       - POSTGRESQL_HOST=postgresql
+#       - POSTGRESQL_PORT=5444
+#       - POSTGRESQL_ROOT_USER=postgres
+#       - POSTGRESQL_CLIENT_CREATE_DATABASE_NAME=bitnami_sonarqube
+#       - POSTGRESQL_CLIENT_CREATE_DATABASE_USERNAME=bn_sonarqube
+#       - POSTGRESQL_CLIENT_CREATE_DATABASE_PASSWORD=bitnami1234
+#       - SONARQUBE_DATABASE_NAME=bitnami_sonarqube
+#       - SONARQUBE_DATABASE_USER=bn_sonarqube
+#       - SONARQUBE_DATABASE_PASSWORD=bitnami1234
+#     volumes:
+#       - sonarqube_data:/bitnami
+# volumes:
+#   sonarqube_data:
+#     driver: local
+#   postgresql_data:
+#     driver: local

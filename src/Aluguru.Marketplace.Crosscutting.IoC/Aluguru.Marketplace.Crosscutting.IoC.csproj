@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <SonarQubeExclude>true</SonarQubeExclude>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.9" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Aluguru.Marketplace.Catalog\Aluguru.Marketplace.Catalog.csproj" />
+    <ProjectReference Include="..\Aluguru.Marketplace.Crosscutting.AzureStorage\Aluguru.Marketplace.Crosscutting.AzureStorage.csproj" />
+    <ProjectReference Include="..\Aluguru.Marketplace.Crosscutting.Google\Aluguru.Marketplace.Crosscutting.Google.csproj" />
+    <ProjectReference Include="..\Aluguru.Marketplace.Crosscutting.Iugu\Aluguru.Marketplace.Crosscutting.Iugu.csproj" />
+    <ProjectReference Include="..\Aluguru.Marketplace.Crosscutting.Mailing\Aluguru.Marketplace.Crosscutting.Mailing.csproj" />
+    <ProjectReference Include="..\Aluguru.Marketplace.Crosscutting.Viacep\Aluguru.Marketplace.Crosscutting.Viacep.csproj" />
+    <ProjectReference Include="..\Aluguru.Marketplace.Data\Aluguru.Marketplace.Data.csproj" />
+    <ProjectReference Include="..\Aluguru.Marketplace.Notification\Aluguru.Marketplace.Notification.csproj" />
+    <ProjectReference Include="..\Aluguru.Marketplace.Payment\Aluguru.Marketplace.Payment.csproj" />
+    <ProjectReference Include="..\Aluguru.Marketplace.Register\Aluguru.Marketplace.Register.csproj" />
+    <ProjectReference Include="..\Aluguru.Marketplace.Rent\Aluguru.Marketplace.Rent.csproj" />
+  </ItemGroup>
+
+</Project>

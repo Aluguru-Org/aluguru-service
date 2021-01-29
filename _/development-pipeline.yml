@@ -1,0 +1,48 @@
+resources:
+  repositories:
+  - repository: assets
+    type: git
+    name: Aluguru/aluguru-assets
+    ref: 'refs/heads/trunk'
+
+trigger:
+  branches:
+    include:
+    - development
+  paths:
+    include:
+    - src/*
+    - tests/*
+    exclude:
+    - _/*
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+  projectName: 'Aluguru.Marketplace.API'
+
+steps:
+- template: '/pipelines/dotnet/build.yml@assets'
+  parameters:
+    projectName: $(projectName)
+
+- template: '/pipelines/dotnet/test.yml@assets'
+  parameters:
+    testType: 'UnitTests'
+
+# - template: '/pipelines/dotnet/test.yml@assets'
+#   parameters:
+#     testType: 'IntegrationTests'
+#     continueOnError: true
+
+- template: '/pipelines/dotnet/publish.yml@assets'
+  parameters:
+    projectName: $(projectName)
+  
+- template: '/pipelines/dotnet/deploy.yml@assets'
+  parameters:
+    azureSubscription: 'AluguruDevSubscription'
+    appName: 'sp-service'
+    resourceGroupName: 'sp-dev'

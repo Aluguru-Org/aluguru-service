@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="5.6.3" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Aluguru.Marketplace.Communication\Aluguru.Marketplace.Communication.csproj" />
+    <ProjectReference Include="..\Aluguru.Marketplace.Crosscutting.AzureStorage\Aluguru.Marketplace.Crosscutting.AzureStorage.csproj" />
+    <ProjectReference Include="..\Aluguru.Marketplace.Infrastructure.Data\Aluguru.Marketplace.Infrastructure.Data.csproj" />
+  </ItemGroup>
+
+</Project>
