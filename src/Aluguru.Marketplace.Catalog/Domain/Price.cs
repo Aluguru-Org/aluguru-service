@@ -65,13 +65,15 @@ namespace Aluguru.Marketplace.Catalog.Domain
 
         public void UpdatePeriodRentPrices(List<PeriodPriceViewModel> periodPrices)
         {
+            PeriodRentPrices.Clear();
+
+            if (periodPrices == null) return; 
+
             if (periodPrices != null && periodPrices.Count > 0)
             {
                 Ensure.That<DomainException>(periodPrices.All(x => x.Price > 0), "The field PeriodRentPrices from Product cannot have a price that is smaller or equal than zero");
+                PeriodRentPrices = periodPrices.Select(x => new PeriodPrice(x.RentPeriodId, x.Price)).ToList();
             }
-            PeriodRentPrices.Clear();
-
-            PeriodRentPrices = periodPrices.Select(x => new PeriodPrice(x.RentPeriodId, x.Price)).ToList();
         }
 
         protected override void ValidateValueObject()

@@ -45,11 +45,11 @@ namespace Aluguru.Marketplace.Catalog.Usecases.UpdateProduct
             var repository = _unitOfWork.Repository<Product>();
 
             var updated = existed.UpdateProduct(command);
-            var category = repository.Update(updated);
+            var product = repository.Update(updated);
 
             return new UpdateProductCommandResponse()
             {
-                Product = _mapper.Map<ProductDTO>(category)
+                Product = _mapper.Map<ProductDTO>(product)
             };
         }
     }

@@ -139,28 +139,34 @@ namespace Aluguru.Marketplace.Catalog.Domain
             MaxRentDays = command.Product.MaxRentDays;
             IsActive = command.Product.IsActive;
 
-            InvalidDates.Update(command.Product.InvalidDates.Days, command.Product.InvalidDates.Dates, command.Product.InvalidDates.Periods);
+            if (command.Product.InvalidDates != null)
+            {
+                InvalidDates.Update(command.Product.InvalidDates.Days, command.Product.InvalidDates.Dates, command.Product.InvalidDates.Periods);
+            }
 
             _customFields.Clear();
 
-            foreach (var customField in command.Product.CustomFields)
+            if (command.Product.CustomFields != null)
             {
-                var fieldType = (EFieldType)Enum.Parse(typeof(EFieldType), customField.FieldType);
-                CustomField newCustomField = null;
-
-                switch(fieldType)
+                foreach (var customField in command.Product.CustomFields)
                 {
-                    case EFieldType.Text:
-                    case EFieldType.Number:
-                        newCustomField = new CustomField(fieldType, customField.FieldName);
-                        break;
-                    case EFieldType.Checkbox:
-                    case EFieldType.Radio:
-                        newCustomField = new CustomField(fieldType, customField.FieldName, customField.ValueAsOptions);
-                        break;
+                    var fieldType = (EFieldType)Enum.Parse(typeof(EFieldType), customField.FieldType);
+                    CustomField newCustomField = null;
+
+                    switch(fieldType)
+                    {
+                        case EFieldType.Text:
+                        case EFieldType.Number:
+                            newCustomField = new CustomField(fieldType, customField.FieldName);
+                            break;
+                        case EFieldType.Checkbox:
+                        case EFieldType.Radio:
+                            newCustomField = new CustomField(fieldType, customField.FieldName, customField.ValueAsOptions);
+                            break;
+                    }
+                    _customFields.Add(newCustomField);
                 }
-                _customFields.Add(newCustomField);
-            }
+            } 
 
             Price.UpdateFreightPriceByKM(command.Product.Price.FreightPriceKM);
             Price.UpdateSellPrice(command.Product.Price.SellPrice);

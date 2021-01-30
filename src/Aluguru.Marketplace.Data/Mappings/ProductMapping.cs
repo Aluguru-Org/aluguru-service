@@ -42,7 +42,7 @@ namespace Aluguru.Marketplace.Data.Mappings
                 onb.Property(prc => prc.PeriodRentPrices)
                     .HasColumnName("PeriodRentPrices")
                     .HasConversion(
-                        v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
+                        v => JsonConvert.SerializeObject(v),
                         v => JsonConvert.DeserializeObject<List<PeriodPrice>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
                     );
             });
