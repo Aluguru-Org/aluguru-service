@@ -46,7 +46,7 @@ namespace Aluguru.Marketplace.Rent.Domain
 
         public decimal CalculatePrice()
         {
-            return Amount * (ProductPrice + FreigthPrice);
+            return Amount * (ProductPrice + FreigthPrice) + 1;
         }
 
         public void MarkAsDelivered()
