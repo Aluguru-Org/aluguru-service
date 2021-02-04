@@ -44,10 +44,10 @@ namespace Aluguru.Marketplace.Catalog.Usecases.DebitProductStock
                     await _mediatorHandler.PublishNotification(new DomainNotification("Catalog", $"Product - {product.Name} does not exist"));
                     continue;
                 }
-                
-                if (!product.HasDateAvaiabilityFor(item.RentStartDate))
+
+                if (!product.IsForSale() && !product.HasDateAvaiabilityFor(item.RentStartDate.Value))
                 {
-                    await _mediatorHandler.PublishNotification(new DomainNotification("Catalog", $"Product - {product.Name} cannot be rented on a blocked date ´[{item.RentStartDate.Date}]"));
+                    await _mediatorHandler.PublishNotification(new DomainNotification("Catalog", $"Product - {product.Name} cannot be rented on a blocked date ´[{item.RentStartDate.Value.Date}]"));
                     debitRejectedProducts.Add(item);
                     continue;
                 }

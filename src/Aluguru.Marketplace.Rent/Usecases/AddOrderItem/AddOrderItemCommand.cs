@@ -31,6 +31,8 @@ namespace Aluguru.Marketplace.Rent.Usecases.AddOrderItem
             RuleFor(x => x.UserId).NotEqual(Guid.Empty);
             RuleFor(x => x.OrderId).NotEqual(Guid.Empty);
             RuleFor(x => x.OrderItem.ProductId).NotEqual(Guid.Empty);
+
+            When(x => x.OrderItem.RentStartDate.HasValue, () => RuleFor(x => x.OrderItem.RentStartDate).NotEmpty());
         }
     }
 

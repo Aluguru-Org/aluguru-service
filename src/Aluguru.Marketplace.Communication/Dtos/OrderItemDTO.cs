@@ -5,7 +5,7 @@ namespace Aluguru.Marketplace.Communication.Dtos
 {
     public class OrderItemDTO : IDto
     {
-        public OrderItemDTO(Guid productId, string productName, int amount, decimal productPrice, DateTime rentStartDate)
+        public OrderItemDTO(Guid productId, string productName, int amount, decimal productPrice, DateTime? rentStartDate)
         {
             ProductId = productId;
             ProductName = productName;
@@ -18,7 +18,7 @@ namespace Aluguru.Marketplace.Communication.Dtos
         public string ProductName { get; set; }
         public int Amount { get; set; }
         public decimal ProductPrice { get; set; }
-        public DateTime RentStartDate { get; set; }
+        public DateTime? RentStartDate { get; set; }
         public decimal CalculatePrice()
         {
             return Amount * ProductPrice;

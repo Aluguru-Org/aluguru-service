@@ -19,7 +19,10 @@ namespace Aluguru.Marketplace.Rent.Utils
                     price = product.Price.GetPeriodRentPrice(orderItem.SelectedRentPeriod.Value);
                     break;
                 case ERentType.Indefinite:
-                    price = orderItem.RentDays * product.Price.GetDailyRentPrice();
+                    price = orderItem.RentDays.Value * product.Price.GetDailyRentPrice();
+                    break;
+                case ERentType.None:
+                    price = product.Price.GetSellPrice();
                     break;
             }
 
@@ -30,15 +33,19 @@ namespace Aluguru.Marketplace.Rent.Utils
         {
             List<DomainNotification> notifications = new List<DomainNotification>();
 
-            if (!product.CheckValidRentStartDate(orderItem.RentStartDate))
+            if (product.RentType != ERentType.None)
             {
-                notifications.Add(new DomainNotification(messageType, $"The product {product.Id} does not have a valid rent start date"));
+                if (!product.CheckValidRentStartDate(orderItem.RentStartDate.Value))
+                {
+                    notifications.Add(new DomainNotification(messageType, $"The product {product.Id} does not have a valid rent start date"));
+                }
             }
+            
 
             switch (product.RentType)
             {
                 case ERentType.Indefinite:
-                    if (!product.CheckValidRentDays(orderItem.RentDays))
+                    if (!product.CheckValidRentDays(orderItem.RentDays.Value))
                     {
                         notifications.Add(new DomainNotification(messageType, $"The product {product.Id} have invalid rent days."));
                     }
@@ -50,7 +57,16 @@ namespace Aluguru.Marketplace.Rent.Utils
 
         public static int GetRentDays(List<RentPeriod> rentPeriods, AddOrderItemDTO orderItem, Product product)
         {
-            return product.RentType == ERentType.Indefinite ? orderItem.RentDays : rentPeriods.FirstOrDefault(x => x.Id == orderItem.SelectedRentPeriod.Value).Days;
+            switch(product.RentType)
+            {
+                case ERentType.Indefinite:
+                    return orderItem.RentDays.Value;
+                case ERentType.Fixed:
+                    return rentPeriods.FirstOrDefault(x => x.Id == orderItem.SelectedRentPeriod.Value).Days;
+                default:
+                case ERentType.None:
+                    return 0;
+            }
         }
 
         internal static decimal CalculateProductFreigthPrice(Product product, double distance)

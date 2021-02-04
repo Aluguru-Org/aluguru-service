@@ -8,7 +8,7 @@ namespace Aluguru.Marketplace.Rent.Domain
 {
     public class OrderItem : Entity
     {
-        public OrderItem(Guid companyId, Guid productId, string productUri, string productName, string productImageUrl, DateTime rentStartDate, int rentDays, int amount, decimal productPrice)
+        public OrderItem(Guid companyId, Guid productId, string productUri, string productName, string productImageUrl, DateTime? rentStartDate, int? rentDays, int amount, decimal productPrice)
             : base(NewId())
         {
             CompanyId = companyId;
@@ -30,10 +30,10 @@ namespace Aluguru.Marketplace.Rent.Domain
         public string ProductUri { get; private set; }
         public string ProductImageUrl { get; private set; }
         public EOrderItemStatus OrderItemStatus { get; set; }
-        public DateTime RentStartDate { get; set; }
-        public int RentDays { get; set; }
+        public DateTime? RentStartDate { get; set; }
+        public int? RentDays { get; set; }
         public string ProductName { get; private set; }
-        public int Amount { get; private set; }
+        public int Amount { get; private set; } 
         public decimal ProductPrice { get; private set; }
         public decimal FreigthPrice { get; private set; }
 

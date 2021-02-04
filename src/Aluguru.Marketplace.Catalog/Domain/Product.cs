@@ -233,6 +233,11 @@ namespace Aluguru.Marketplace.Catalog.Domain
             return false;
         }
 
+        public bool IsForSale()
+        {
+            return RentType == ERentType.None;
+        }
+
         protected override void ValidateEntity()
         {
             Ensure.That<DomainException>(UserId != Guid.Empty, "The field UserId from Product cannot be empty");
