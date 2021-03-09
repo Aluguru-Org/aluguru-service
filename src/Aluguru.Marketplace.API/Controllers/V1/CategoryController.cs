@@ -22,6 +22,7 @@ using System.Threading.Tasks;
 using Aluguru.Marketplace.Catalog.Usecases.AddCategoryImage;
 using Aluguru.Marketplace.Catalog.Usecases.DeleteCategoryImage;
 using Aluguru.Marketplace.Catalog.Usecases.GetCategory;
+using Aluguru.Marketplace.Catalog.Usecases.GetHighlightedCategories;
 
 namespace Aluguru.Marketplace.API.Controllers.V1
 {
@@ -42,9 +43,34 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetCategoriesCommandResponse))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]        
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> Get()
+        public async Task<ActionResult> Get(
+            [SwaggerParameter("The page to be displayed", Required = false)][FromQuery] int? currentPage,
+            [SwaggerParameter("The max number of pages that should be returned, the default value is 50", Required = false)][FromQuery] int? pageSize,
+            [SwaggerParameter("If the category should be sorted by property, the default value is sort property is 'Id'", Required = false)][FromQuery] string sortBy,
+            [SwaggerParameter("If the sort order should be 'asc' (ascendant) or 'desc' (descendant), the default value is 'desc'", Required = false)][FromQuery] string sortOrder)
         {
-            var response = await _mediatorHandler.SendCommand<GetCategoriesCommand, GetCategoriesCommandResponse>(new GetCategoriesCommand());
+            var paginateCriteria = new PaginateCriteria(currentPage, pageSize, sortBy, sortOrder);
+            var response = await _mediatorHandler.SendCommand<GetCategoriesCommand, GetCategoriesCommandResponse>(new GetCategoriesCommand(paginateCriteria));
+            return GetResponse(response);
+        }
+
+        [HttpGet]
+        [Route("highlights")]
+        [AllowAnonymous]
+        [SwaggerOperation(Summary = "Get all highlighted categories", Description = "Get a list of all categories")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetCategoriesCommandResponse))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
+        public async Task<ActionResult> GetHighlightedCategories(
+            [SwaggerParameter("The page to be displayed", Required = false)][FromQuery] int? currentPage,
+            [SwaggerParameter("The max number of pages that should be returned, the default value is 50", Required = false)][FromQuery] int? pageSize,
+            [SwaggerParameter("If the category should be sorted by property, the default value is sort property is 'Id'", Required = false)][FromQuery] string sortBy,
+            [SwaggerParameter("If the sort order should be 'asc' (ascendant) or 'desc' (descendant), the default value is 'desc'", Required = false)][FromQuery] string sortOrder)
+        {
+            var paginateCriteria = new PaginateCriteria(currentPage, pageSize, sortBy, sortOrder);
+            var response = await _mediatorHandler.SendCommand<GetHighlightedCategoriesCommand, GetHighlightedCategoriesCommandResponse>(new GetHighlightedCategoriesCommand(paginateCriteria));
             return GetResponse(response);
         }
 

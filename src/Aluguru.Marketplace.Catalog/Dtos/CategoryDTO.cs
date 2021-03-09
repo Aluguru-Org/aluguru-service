@@ -16,6 +16,7 @@ namespace Aluguru.Marketplace.Catalog.Dtos
         [SwaggerSchema("Formatted category name. Examples: 'cellphone', 'trip-equipament', 'gamer-pc'")]
         public string Uri { get; set; }
         public string ImageUrl { get; set; }
+        public bool Highlights { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
         [SwaggerExclude]

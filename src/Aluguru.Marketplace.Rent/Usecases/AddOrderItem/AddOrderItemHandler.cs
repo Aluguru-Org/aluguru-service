@@ -22,7 +22,7 @@ namespace Aluguru.Marketplace.Rent.Usecases.AddOrderItem
         private readonly IMediatorHandler _mediatorHandler;
 
         public AddOrderItemHandler(IUnitOfWork unitOfWork, IMapper mapper, IMediatorHandler mediatorHandler)
-        {
+        {   
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _mediatorHandler = mediatorHandler;

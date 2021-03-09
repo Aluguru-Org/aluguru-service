@@ -4,14 +4,16 @@ using Aluguru.Marketplace.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Aluguru.Marketplace.Data.Migrations
 {
     [DbContext(typeof(AluguruContext))]
-    partial class AluguruContextModelSnapshot : ModelSnapshot
+    [Migration("20210309210840_Added_Category_Highlights")]
+    partial class Added_Category_Highlights
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

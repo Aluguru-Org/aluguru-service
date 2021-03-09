@@ -18,12 +18,13 @@ namespace Aluguru.Marketplace.Catalog.Domain
             _childrenCategories = new List<Category>();
         }
 
-        public Category(string name, string uri, Guid? mainCategoryId)
+        public Category(string name, string uri, bool highlights, Guid? mainCategoryId)
             : base(NewId())
         {
             MainCategoryId = mainCategoryId;
             Name = name;
             Uri = uri;
+            Highlights = false;
 
             _childrenCategories = new List<Category>();
 
@@ -33,6 +34,7 @@ namespace Aluguru.Marketplace.Catalog.Domain
         public string Name { get; private set; }
         public string Uri { get; private set; }
         public string ImageUrl { get; private set; }
+        public bool Highlights { get; private set; }
         public Guid? MainCategoryId { get; private set; }
         public Category MainCategory { get; set; }
         public IReadOnlyCollection<Category> SubCategories { get { return _childrenCategories; } }
@@ -56,6 +58,7 @@ namespace Aluguru.Marketplace.Catalog.Domain
             MainCategoryId = command.Category.MainCategoryId;
             Name = command.Category.Name;
             Uri = command.Category.Uri;
+            Highlights = command.Category.Highlights;
 
             DateUpdated = NewDateTime();
 

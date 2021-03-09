@@ -5,11 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Aluguru.Marketplace.Catalog.Usecases.GetCategories
+namespace Aluguru.Marketplace.Catalog.Usecases.GetHighlightedCategories
 {
-    public class GetCategoriesCommand : Command<GetCategoriesCommandResponse>
+    public class GetHighlightedCategoriesCommand : Command<GetHighlightedCategoriesCommandResponse>
     {
-        public GetCategoriesCommand(PaginateCriteria paginateCriteria)
+        public GetHighlightedCategoriesCommand(PaginateCriteria paginateCriteria)
         {
             PaginateCriteria = paginateCriteria;
         }
@@ -17,7 +17,7 @@ namespace Aluguru.Marketplace.Catalog.Usecases.GetCategories
         public PaginateCriteria PaginateCriteria { get; private set; }
     }
 
-    public class GetCategoriesCommandResponse
+    public class GetHighlightedCategoriesCommandResponse
     {
         public PaginatedItem<CategoryDTO> Categories { get; set; }
     }

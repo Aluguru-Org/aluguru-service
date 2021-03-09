@@ -88,6 +88,7 @@ using Aluguru.Marketplace.Notification.Usecases.SendOrderStartedEmail;
 using Aluguru.Marketplace.Catalog.Usecases.GetCategory;
 using Aluguru.Marketplace.Rent.Usecases.GetRevenue;
 using Aluguru.Marketplace.Rent.Usecases.GetAverageRevenue;
+using Aluguru.Marketplace.Catalog.Usecases.GetHighlightedCategories;
 
 namespace Aluguru.Marketplace.Crosscutting.IoC
 {
@@ -126,6 +127,7 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
 
         public static IServiceCollection AddServiceComponents(this IServiceCollection services, params Assembly[] assemblies)
         {
+
             services.AddHttpClient();
             services.AddMediatR(assemblies);
 
@@ -178,7 +180,7 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             //
             // ===================== Catalog Context =====================
             //
-
+            
             // Product
             services.AddScoped<INotificationHandler<OrderStartedEvent>, OrderStartedHandler>();
             services.AddScoped<IRequestHandler<CreateProductCommand, CreateProductCommandResponse>, CreateProductHandler>();
@@ -194,6 +196,7 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             services.AddScoped<IRequestHandler<CreateCategoryCommand, CreateCategoryCommandResponse>, CreateCategoryHandler>();
             services.AddScoped<IRequestHandler<UpdateCategoryCommand, UpdateCategoryCommandResponse>, UpdateCategoryHandler>();
             services.AddScoped<IRequestHandler<GetCategoriesCommand, GetCategoriesCommandResponse>, GetCategoriesCommandHandler>();
+            services.AddScoped<IRequestHandler<GetHighlightedCategoriesCommand, GetHighlightedCategoriesCommandResponse>, GetHighlightedCategoriesCommandHandler>();
             services.AddScoped<IRequestHandler<GetCategoryCommand, GetCategoryCommandResponse>, GetCategoryHandler>();
             services.AddScoped<IRequestHandler<GetProductsByCategoryCommand, GetProductsByCategoryCommandResponse>, GetProductsByCategoryHandler>();
             services.AddScoped<IRequestHandler<DeleteCategoryCommand, bool>, DeleteCategoryHandler>();
@@ -259,6 +262,7 @@ namespace Aluguru.Marketplace.Crosscutting.IoC
             services.AddScoped<IIuguService, IuguService>();
             services.AddScoped<IDistanceMatrixService, DistanceMatrixService>();
             services.AddScoped<IGeocodeService, GeocodeService>();
+
             services.AddScoped<ICepService, CepService>();
 
             return services;

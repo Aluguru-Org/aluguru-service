@@ -26,13 +26,13 @@ namespace Aluguru.Marketplace.Catalog.AutoMapper
                 .ForMember(x => x.ValidationResult, c => c.Ignore());
 
             CreateMap<CreateCategoryDTO, CreateCategoryCommand>()
-                .ConstructUsing(x => new CreateCategoryCommand(x.Name, x.Uri, x.MainCategoryId))
+                .ConstructUsing(x => new CreateCategoryCommand(x.Name, x.Uri, x.Highlights, x.MainCategoryId))
                 .ForMember(x => x.Timestamp, c => c.Ignore())
                 .ForMember(x => x.MessageType, c => c.Ignore())
                 .ForMember(x => x.ValidationResult, c => c.Ignore());
 
             CreateMap<CategoryDTO, Category>()
-                .ConstructUsing(c => new Category(c.Name, c.Uri, c.MainCategoryId));
+                .ConstructUsing(c => new Category(c.Name, c.Uri, c.Highlights, c.MainCategoryId));
 
             CreateMap<ProductDTO, Product>()
                 .ConstructUsing((x, rc) =>

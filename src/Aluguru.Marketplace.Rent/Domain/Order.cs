@@ -74,7 +74,7 @@ namespace Aluguru.Marketplace.Rent.Domain
 
             Ensure.NotNull(item, "The item does not belong to the order");
 
-            item.MarkAsDelivered();
+            item.MarkAsReturned();
 
             if (_orderItems.All(x => x.OrderItemStatus == EOrderItemStatus.Delivered))
             {

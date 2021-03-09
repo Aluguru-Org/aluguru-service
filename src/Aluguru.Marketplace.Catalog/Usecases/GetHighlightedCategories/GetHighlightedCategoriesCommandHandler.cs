@@ -8,20 +8,20 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Aluguru.Marketplace.Catalog.Dtos;
 
-namespace Aluguru.Marketplace.Catalog.Usecases.GetCategories
+namespace Aluguru.Marketplace.Catalog.Usecases.GetHighlightedCategories
 {
-    public class GetCategoriesCommandHandler : IRequestHandler<GetCategoriesCommand, GetCategoriesCommandResponse>
+    public class GetHighlightedCategoriesCommandHandler : IRequestHandler<GetHighlightedCategoriesCommand, GetHighlightedCategoriesCommandResponse>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public GetCategoriesCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public GetHighlightedCategoriesCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-        public async Task<GetCategoriesCommandResponse> Handle(GetCategoriesCommand request, CancellationToken cancellationToken)
+        public async Task<GetHighlightedCategoriesCommandResponse> Handle(GetHighlightedCategoriesCommand request, CancellationToken cancellationToken)
         {
             var queryRepository = _unitOfWork.QueryRepository<Category>();
 
@@ -29,10 +29,10 @@ namespace Aluguru.Marketplace.Catalog.Usecases.GetCategories
                 _mapper,
                 request.PaginateCriteria,
                 category => category,
-                category => !category.MainCategoryId.HasValue,
+                category => !category.MainCategoryId.HasValue && category.Highlights,
                 category => category.Include(x => x.SubCategories));
 
-            return new GetCategoriesCommandResponse()
+            return new GetHighlightedCategoriesCommandResponse()
             {
                 Categories = paginatedCategories
             };

@@ -13,5 +13,7 @@ namespace Aluguru.Marketplace.Catalog.Dtos
         [Required]
         [SwaggerSchema("Formatted category name. Examples: 'cellphone', 'trip-equipament', 'gamer-pc'")]
         public string Uri { get; set; }
+        [Required]
+        public bool Highlights { get; set; }
     }
 }

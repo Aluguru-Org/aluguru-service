@@ -7,16 +7,18 @@ namespace Aluguru.Marketplace.Catalog.Usecases.CreateCategory
 {
     public class CreateCategoryCommand : Command<CreateCategoryCommandResponse>
     {
-        public CreateCategoryCommand(string name, string uri, Guid? mainCategoryId = null)
+        public CreateCategoryCommand(string name, string uri, bool highlights, Guid? mainCategoryId = null)
         {
             Name = name;
             Uri = uri;
+            Highlights = highlights;
             MainCategoryId = mainCategoryId;
         }
 
         public Guid? MainCategoryId { get; private set; }
         public string Name { get; private set; }
         public string Uri { get; private set; }
+        public bool Highlights { get; private set; }
 
         public override bool IsValid()
         {

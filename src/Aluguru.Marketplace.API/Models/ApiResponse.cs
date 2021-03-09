@@ -1,6 +1,5 @@
 ﻿namespace Aluguru.Marketplace.API.Models
 {
-
     public class ApiResponse
     {
         public ApiResponse(bool success, string message)

@@ -42,7 +42,7 @@ namespace Aluguru.Marketplace.Catalog.Usecases.CreateCategory
 
             var repository = _unitOfWork.Repository<Category>();
 
-            var category = new Category(command.Name, command.Uri, command.MainCategoryId);
+            var category = new Category(command.Name, command.Uri, command.Highlights, command.MainCategoryId);
 
             category = await repository.AddAsync(category);
 
