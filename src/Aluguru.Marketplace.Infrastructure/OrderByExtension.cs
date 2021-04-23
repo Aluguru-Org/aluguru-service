@@ -8,19 +8,26 @@ namespace Aluguru.Marketplace.Infrastructure
 {
     public static class OrderByExtensions
     {
-        public static IQueryable<TEntity> OrderByPropertyName<TEntity>(
+        public static IOrderedQueryable<TEntity> OrderByPropertyName<TEntity>(
             this IQueryable<TEntity> source,
             string propertyName,
             bool isDescending) where TEntity : IEntity
         {
             Ensure.Argument.NotNull(source);
             Ensure.Argument.NotNull(propertyName);
-            
+
             var type = typeof(TEntity);
             var arg = Expression.Parameter(type, "x");
-            var propertyInfo = type.GetProperty(propertyName.FirstCharToUpper());
-            Expression expression = Expression.Property(arg, propertyInfo);
-            type = propertyInfo.PropertyType;
+
+            var parts = propertyName.Split('.');
+
+            Expression expression = arg;
+
+            foreach(var part in parts)
+            {
+                type = type.GetProperty(part.FirstCharToUpper()).PropertyType;
+                expression = Expression.Property(expression, part.FirstCharToUpper());
+            }
 
             var delegateType = typeof(Func<,>).MakeGenericType(typeof(TEntity), type);
             var lambda = Expression.Lambda(delegateType, expression, arg);
@@ -34,7 +41,7 @@ namespace Aluguru.Marketplace.Infrastructure
                 .MakeGenericMethod(typeof(TEntity), type)
                 .Invoke(null, new object[] { source, lambda });
 
-            return (IQueryable<TEntity>)result;
+            return (IOrderedQueryable<TEntity>)result;
         }
     }
 }
