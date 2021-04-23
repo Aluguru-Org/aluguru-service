@@ -63,7 +63,10 @@ namespace Aluguru.Marketplace.API
 
             app.UseRouting();
 
-            app.UseCors(Policies.AllowSpecificOrigins);
+            if (!Env.IsDevelopment())
+            {
+                app.UseCors(Policies.AllowSpecificOrigins);
+            }
 
             app.UseAuthentication();
             app.UseAuthorization();
