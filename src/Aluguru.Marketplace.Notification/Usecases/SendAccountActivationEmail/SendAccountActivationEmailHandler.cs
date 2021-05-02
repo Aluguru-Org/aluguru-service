@@ -25,7 +25,7 @@ namespace Aluguru.Marketplace.Notification.Usecases.SendAccountActivationEmail
 
         public async Task<bool> Handle(SendAccountActivationEmailCommand request, CancellationToken cancellationToken)
         {
-            var activationLink = $"{_settings.ClientDomain}/#/login/validacao?userId={request.UserId}&activationHash={request.ActivationHash}";
+            var activationLink = $"{_settings.ClientDomain}/ativacao?userId={request.UserId}&activationHash={request.ActivationHash}";
             var message = string.Format(EmailTemplates.RegisterUser, request.UserName, activationLink);
 
             if (!await _mailingService.SendMessageHtml(_settings.Sender, _settings.SenderEmail, request.UserName, request.Email, "Bem-vindo a Aluguru!", message))
