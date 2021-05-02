@@ -72,7 +72,7 @@ namespace Aluguru.Marketplace.Register.Domain
 
             Password = newPassword;
         }
-
+        
         public void UpdateDocument(Document document)
         {
             if (document == null) return;

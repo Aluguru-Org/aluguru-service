@@ -53,9 +53,31 @@ namespace Aluguru.Marketplace.Register.Usecases.CreateUser
 
             var user = new User(command.Email, _cryptography.Encrypt(command.Password), command.FullName, role.Id, _cryptography.CreateRandomHash());
 
-            user.UpdateAddress(command.Address);
-            user.UpdateDocument(command.Document);
-            user.UpdateContact(command.Contact);
+            if (command.Address != null)
+            {
+                var address = new Address(
+                    command.Address.Street, 
+                    command.Address.Number, 
+                    command.Address.Neighborhood, 
+                    command.Address.City,
+                    command.Address.State,
+                    command.Address.Country,
+                    command.Address.ZipCode, 
+                    command.Address.Complement);
+                user.UpdateAddress(address);
+            }
+
+            if (command.Document != null)
+            {
+                var document = new Document(command.Document.Number, command.Document.DocumentType);
+                user.UpdateDocument(document);
+            }
+
+            if (command.Contact != null)
+            {
+                var contact = new Contact(command.Contact.Name, command.Contact.PhoneNumber, command.Contact.Email);
+                user.UpdateContact(contact);                
+            }
 
             user.AddEvent(new UserRegisteredEvent(user.Id, user.FullName, user.Email, user.ActivationHash));
 
