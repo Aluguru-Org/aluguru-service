@@ -25,7 +25,10 @@ process {
         docker-compose stop
     } elseif ($Operation -eq "delete") {
         docker-compose down -v
-    } elseif ($Operation -eq "deploy-dockerhub") {
+    } elseif ($Operation -eq "prune") {
+        docker system prune -af
+    }     
+    elseif ($Operation -eq "deploy-dockerhub") {
         docker build . -t felipeallmeidadev/aluguru-service:$OperationArg1
         docker build . -t felipeallmeidadev/aluguru-service:latest
 

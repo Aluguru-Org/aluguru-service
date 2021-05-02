@@ -62,11 +62,8 @@ namespace Aluguru.Marketplace.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
-            if (!Env.IsDevelopment())
-            {
-                app.UseCors(Policies.AllowSpecificOrigins);
-            }
+            
+            app.UseCors(Policies.AllowSpecificOrigins);
 
             app.UseAuthentication();
             app.UseAuthorization();
