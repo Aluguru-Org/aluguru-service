@@ -3,7 +3,7 @@ param (
     [Parameter(Mandatory=$true)]
     [ValidateNotNull()]
     [ValidateNotNullOrEmpty()]
-    [ValidateSet("start", "stop", "delete", "bootstrap", "sonar", "deploy-dockerhub", "add-migration")]
+    [ValidateSet("start", "stop", "delete", "bootstrap", "prune", "sonar", "deploy-dockerhub", "add-migration")]
     [String]
     $Operation,
     [Parameter(Mandatory=$false)]
