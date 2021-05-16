@@ -9,6 +9,7 @@
     <ProjectReference Include="..\Aluguru.Marketplace.Communication\Aluguru.Marketplace.Communication.csproj" />
     <ProjectReference Include="..\Aluguru.Marketplace.Crosscutting.Mailing\Aluguru.Marketplace.Crosscutting.Mailing.csproj" />
     <ProjectReference Include="..\Aluguru.Marketplace.Infrastructure.Bus\Aluguru.Marketplace.Infrastructure.Bus.csproj" />
+    <ProjectReference Include="..\Aluguru.Marketplace.Register\Aluguru.Marketplace.Register.csproj" />
   </ItemGroup>
 
 </Project>

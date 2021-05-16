@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Aluguru.Marketplace.Crosscutting.Mailing

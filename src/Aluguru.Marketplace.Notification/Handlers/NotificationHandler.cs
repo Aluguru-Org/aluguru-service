@@ -23,7 +23,7 @@ namespace Aluguru.Marketplace.Notification.Handlers
 
         public async Task Handle(UserRegisteredEvent notification, CancellationToken cancellationToken)
         {
-            var command = new SendAccountActivationEmailCommand(notification.UserId, notification.UserName, notification.Email, notification.ActivationHash);
+            var command = new SendAccountActivationEmailCommand(notification.UserId);
             await _mediatorHandler.SendCommand<SendAccountActivationEmailCommand, bool>(command);
         }
 
