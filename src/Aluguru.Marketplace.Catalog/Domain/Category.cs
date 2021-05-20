@@ -24,7 +24,7 @@ namespace Aluguru.Marketplace.Catalog.Domain
             MainCategoryId = mainCategoryId;
             Name = name;
             Uri = uri;
-            Highlights = false;
+            Highlights = highlights;
 
             _childrenCategories = new List<Category>();
 
