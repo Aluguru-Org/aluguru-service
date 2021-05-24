@@ -51,7 +51,16 @@ namespace Aluguru.Marketplace.Rent.Usecases.ApplyVoucher
 
             var orderRepository = _unitOfWork.Repository<Order>();
 
-            order.ApplyVoucher(voucher);
+            var validationResult = order.ApplyVoucher(voucher);
+
+            if (!validationResult.IsValid)
+            {
+                foreach(var error in validationResult.Errors)
+                {
+                    await _mediatorHandler.PublishNotification(new DomainNotification(request.MessageType, error.ErrorMessage));
+                }
+                return default;
+            }
 
             order = orderRepository.Update(order);
 
