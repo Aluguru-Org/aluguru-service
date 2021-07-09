@@ -58,7 +58,6 @@ namespace Aluguru.Marketplace.API
 
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
 
-
             app.UseHttpsRedirection();
 
             app.UseRouting();
