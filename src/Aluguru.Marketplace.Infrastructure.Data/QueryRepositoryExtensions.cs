@@ -106,7 +106,9 @@ namespace Aluguru.Marketplace.Infrastructure.Data
             if (include != null) queryable = include.Invoke(queryable);
 
             if (filter != null) queryable = queryable.Where(filter);
-            
+
+            var totalRecord = await queryable.CountAsync();
+
             if (paginateCriteria != null)
             {
                 queryable = queryable
@@ -124,7 +126,6 @@ namespace Aluguru.Marketplace.Infrastructure.Data
 
             var dtos = mapper.Map<List<TResponse>>(results);
 
-            var totalRecord = await queryable.CountAsync();
             var totalPages = paginateCriteria == null ? 0 : (int)Math.Ceiling((double)totalRecord / paginateCriteria.PageSize);
 
             if (paginateCriteria != null && paginateCriteria.CurrentPage > totalPages)
