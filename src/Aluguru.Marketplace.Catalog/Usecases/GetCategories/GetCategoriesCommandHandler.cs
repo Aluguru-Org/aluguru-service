@@ -25,6 +25,8 @@ namespace Aluguru.Marketplace.Catalog.Usecases.GetCategories
         {
             var queryRepository = _unitOfWork.QueryRepository<Category>();
 
+            
+
             var paginatedCategories = await queryRepository.FindAllAsync<Category, CategoryDTO>(
                 _mapper,
                 request.PaginateCriteria,

@@ -106,25 +106,28 @@ namespace Aluguru.Marketplace.Infrastructure.Data
             if (include != null) queryable = include.Invoke(queryable);
 
             if (filter != null) queryable = queryable.Where(filter);
-
-            if (!string.IsNullOrWhiteSpace(paginateCriteria.SortBy))
+            
+            if (paginateCriteria != null)
             {
-                var isDesc = string.Equals(paginateCriteria.SortOrder, "desc", StringComparison.OrdinalIgnoreCase) ? true : false;
-                queryable = queryable.OrderByPropertyName(paginateCriteria.SortBy, isDesc);
+                queryable = queryable
+                    .Skip(paginateCriteria.CurrentPage * paginateCriteria.PageSize)
+                    .Take(paginateCriteria.PageSize);
+
+                if (!string.IsNullOrWhiteSpace(paginateCriteria.SortBy))
+                {
+                    var isDesc = string.Equals(paginateCriteria.SortOrder, "desc", StringComparison.OrdinalIgnoreCase) ? true : false;
+                    queryable = queryable.OrderByPropertyName(paginateCriteria.SortBy, isDesc);
+                }
             }
 
-            var results = await queryable
-                .Skip(paginateCriteria.CurrentPage * paginateCriteria.PageSize)
-                .Take(paginateCriteria.PageSize)
-                .Select(selector)
-                .ToListAsync();
+            var results = await queryable.Select(selector).ToListAsync();
 
             var dtos = mapper.Map<List<TResponse>>(results);
 
             var totalRecord = await queryable.CountAsync();
-            var totalPages = (int)Math.Ceiling((double)totalRecord / paginateCriteria.PageSize);
+            var totalPages = paginateCriteria == null ? 0 : (int)Math.Ceiling((double)totalRecord / paginateCriteria.PageSize);
 
-            if (paginateCriteria.CurrentPage > totalPages)
+            if (paginateCriteria != null && paginateCriteria.CurrentPage > totalPages)
             {
                 paginateCriteria.SetCurrentPage(totalPages);
             }

@@ -28,7 +28,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
 {
     [Route("api/v1/[controller]")]
     [ValidateModel]
-    [ApiController]    
+    [ApiController]
     public class CategoryController : ApiController
     {
         public CategoryController(INotificationHandler<DomainNotification> notifications, IMediatorHandler mediator, IMapper mapper)
@@ -41,7 +41,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetCategoriesCommandResponse))]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]        
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
         public async Task<ActionResult> Get(
             [SwaggerParameter("The page to be displayed", Required = false)][FromQuery] int? currentPage,
@@ -49,7 +49,11 @@ namespace Aluguru.Marketplace.API.Controllers.V1
             [SwaggerParameter("If the category should be sorted by property, the default value is sort property is 'Id'", Required = false)][FromQuery] string sortBy,
             [SwaggerParameter("If the sort order should be 'asc' (ascendant) or 'desc' (descendant), the default value is 'desc'", Required = false)][FromQuery] string sortOrder)
         {
-            var paginateCriteria = new PaginateCriteria(currentPage, pageSize, sortBy, sortOrder);
+            PaginateCriteria paginateCriteria = null;
+            if (currentPage != null || pageSize != null || sortBy != null || sortOrder != null)
+            {
+                paginateCriteria = new PaginateCriteria(currentPage, pageSize, sortBy, sortOrder);
+            }
             var response = await _mediatorHandler.SendCommand<GetCategoriesCommand, GetCategoriesCommandResponse>(new GetCategoriesCommand(paginateCriteria));
             return GetResponse(response);
         }
@@ -123,7 +127,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<List<string>>))]
-        public async Task<ActionResult> Post([FromBody]CreateCategoryDTO viewModel)
+        public async Task<ActionResult> Post([FromBody] CreateCategoryDTO viewModel)
         {
             var command = _mapper.Map<CreateCategoryCommand>(viewModel);
             var response = await _mediatorHandler.SendCommand<CreateCategoryCommand, CreateCategoryCommandResponse>(command);
