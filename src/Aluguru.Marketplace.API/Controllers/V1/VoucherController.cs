@@ -58,7 +58,7 @@ namespace Aluguru.Marketplace.API.Controllers.V1
         }
 
         [HttpDelete]
-        [Route("{id}")]
+        [Route("{code}")]
         [Authorize(Policy = Policies.VoucherWriter)]
         [SwaggerOperation(Summary = "Delete a voucher", Description = "Delete a voucher if is not used by order, otherwise the request will return a error")]
         [Consumes("application/json")]
